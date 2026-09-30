@@ -11,6 +11,7 @@ import sfiomn.legendarysurvivaloverhaul.client.itemproperties.SeasonalCalendarSe
 import sfiomn.legendarysurvivaloverhaul.client.itemproperties.SeasonalCalendarTimeProperty;
 import sfiomn.legendarysurvivaloverhaul.client.itemproperties.ThermometerProperty;
 import sfiomn.legendarysurvivaloverhaul.client.events.ClientModBusEvents;
+import sfiomn.legendarysurvivaloverhaul.client.events.FabricClientCallbacks;
 import sfiomn.legendarysurvivaloverhaul.client.screens.SewingTableScreen;
 import sfiomn.legendarysurvivaloverhaul.client.screens.ThermalScreen;
 import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
@@ -27,6 +28,7 @@ public final class LegendarySurvivalOverhaulClient implements ClientModInitializ
 	{
 		Config.Baked.bakeClient();
 		ClientModBusEvents.register();
+		FabricClientCallbacks.register();
 		KeyMappingRegistry.register();
 		ClientTickEvents.START_CLIENT_TICK.register(client -> {
 			if (client.player != null)
