@@ -1,23 +1,33 @@
 package sfiomn.legendarysurvivaloverhaul.common.capabilities.temperature;
 
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.*;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.ITemperatureItemCapability;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureEnum;
 import sfiomn.legendarysurvivaloverhaul.util.WorldUtil;
 
 public class TemperatureItemCapability implements ITemperatureItemCapability {
+    private static final String DATA_KEY = "legendarysurvivaloverhaul_temperature";
+
     private float temperature;
     private long updateTick;
+    private final ItemStack itemStack;
 
     public TemperatureItemCapability() {
+        this(null);
+    }
+
+    public TemperatureItemCapability(ItemStack itemStack) {
+        this.itemStack = itemStack;
         this.init();
+        if (itemStack != null) {
+            CompoundTag tag = itemStack.getTagElement(DATA_KEY);
+            if (tag != null) {
+                this.readNBT(tag);
+            }
+        }
     }
 
     private void init() {
@@ -34,6 +44,7 @@ public class TemperatureItemCapability implements ITemperatureItemCapability {
     public void updateWorldTemperature(Level world, Entity holder, long currentTick) {
         this.updateTick = currentTick;
         this.temperature = WorldUtil.calculateClientWorldEntityTemperature(world, holder);
+        this.save();
     }
 
     @Override
@@ -44,6 +55,7 @@ public class TemperatureItemCapability implements ITemperatureItemCapability {
     @Override
     public void setWorldTemperatureLevel(float temperature) {
         this.temperature = temperature;
+        this.save();
     }
 
     public CompoundTag writeNBT()
@@ -51,6 +63,7 @@ public class TemperatureItemCapability implements ITemperatureItemCapability {
         CompoundTag compound = new CompoundTag();
 
         compound.putFloat("temperature", this.temperature);
+        compound.putLong("update_tick", this.updateTick);
 
         return compound;
     }
@@ -59,38 +72,14 @@ public class TemperatureItemCapability implements ITemperatureItemCapability {
     {
         this.init();
         if (compound.contains("temperature"))
-            this.setWorldTemperatureLevel(compound.getFloat("temperature"));
+            this.temperature = compound.getFloat("temperature");
+        if (compound.contains("update_tick"))
+            this.updateTick = compound.getLong("update_tick");
     }
 
-    public static class TemperatureItemProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundTag>
+    private void save()
     {
-        public static Capability<TemperatureItemCapability> TEMPERATURE_ITEM_CAPABILITY = CapabilityManager.get(new CapabilityToken<TemperatureItemCapability>() { });
-        private final LazyOptional<TemperatureItemCapability> instance = LazyOptional.of(this::getInstance);
-        private TemperatureItemCapability temperatureItemCapability = null;
-
-        private TemperatureItemCapability getInstance() {
-            if (this.temperatureItemCapability == null) {
-                this.temperatureItemCapability = new TemperatureItemCapability();
-            }
-            return this.temperatureItemCapability;
-        }
-
-        @Override
-        public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction direction)
-        {
-            if (capability == TEMPERATURE_ITEM_CAPABILITY)
-                return instance.cast();
-            return LazyOptional.empty();
-        }
-
-        @Override
-        public CompoundTag serializeNBT() {
-            return getInstance().writeNBT();
-        }
-
-        @Override
-        public void deserializeNBT(CompoundTag tag) {
-            getInstance().readNBT(tag);
-        }
+        if (this.itemStack != null)
+            this.itemStack.getOrCreateTagElement(DATA_KEY).merge(this.writeNBT());
     }
 }

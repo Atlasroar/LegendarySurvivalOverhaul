@@ -13,6 +13,7 @@ import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
 import sfiomn.legendarysurvivaloverhaul.api.wetness.WetnessUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.jsonConfig.JsonIntegrationConfigRegistration;
+import sfiomn.legendarysurvivaloverhaul.common.capabilities.ModCapabilities;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.*;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.*;
@@ -60,6 +61,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		Config.register();
 		registerContent();
 		initializeRuntimeLogic();
+		ModCapabilities.registerServerEvents();
 		registerIntegrations();
 
 		BodyDamageUtilInternal.initMalusConfig();

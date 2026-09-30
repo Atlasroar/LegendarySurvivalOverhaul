@@ -1,67 +1,37 @@
 package sfiomn.legendarysurvivaloverhaul.common.capabilities;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.network.PacketDistributor;
-import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyDamageUtil;
 import sfiomn.legendarysurvivaloverhaul.api.health.HealthUtil;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.bodydamage.BodyDamageCapability;
-import sfiomn.legendarysurvivaloverhaul.common.capabilities.bodydamage.BodyDamageProvider;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.food.FoodCapability;
-import sfiomn.legendarysurvivaloverhaul.common.capabilities.food.FoodProvider;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.health.HealthCapability;
-import sfiomn.legendarysurvivaloverhaul.common.capabilities.health.HealthProvider;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.temperature.TemperatureCapability;
-import sfiomn.legendarysurvivaloverhaul.common.capabilities.temperature.TemperatureProvider;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
-import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstProvider;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessCapability;
-import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessProvider;
 import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
-import sfiomn.legendarysurvivaloverhaul.network.packets.*;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 
-@Mod.EventBusSubscriber(modid = LegendarySurvivalOverhaul.MOD_ID, bus = EventBusSubscriber.Bus.FORGE)
 public class ModCapabilities
 {
-	public static final ResourceLocation TEMPERATURE_RES = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "temperature");
-	public static final ResourceLocation WETNESS_RES = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "wetness");
-	public static final ResourceLocation THIRST_RES = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "thirst");
-	public static final ResourceLocation HEALTH_RES = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "health");
-	public static final ResourceLocation FOOD_RES = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "food");
-	public static final ResourceLocation BODY_DAMAGE_RES = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "body_damage");
-	
-	@SubscribeEvent
-	public static void attachCapabilityPlayer(AttachCapabilitiesEvent<Entity> event)
+	public static void registerServerEvents()
 	{
-		if (event.getObject() instanceof LivingEntity)
-		{
-			if (event.getObject() instanceof Player player)
-			{
-				event.addCapability(TEMPERATURE_RES, new TemperatureProvider());
-				event.addCapability(WETNESS_RES, new WetnessProvider());
-				event.addCapability(THIRST_RES, new ThirstProvider());
-				event.addCapability(HEALTH_RES, new HealthProvider());
-				event.addCapability(FOOD_RES, new FoodProvider());
-				event.addCapability(BODY_DAMAGE_RES, new BodyDamageProvider());
-			}
-		}
+		ServerTickEvents.START_SERVER_TICK.register(server -> server.getPlayerList().getPlayers()
+				.forEach(player -> onPlayerTick(player, TickPhase.START)));
+		ServerTickEvents.END_SERVER_TICK.register(server -> server.getPlayerList().getPlayers()
+				.forEach(player -> onPlayerTick(player, TickPhase.END)));
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> syncPlayerState(handler.player));
+		ServerPlayerEvents.COPY_FROM.register(ModCapabilities::copyPlayerState);
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, player, alive) -> syncPlayerState(player));
+		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> syncPlayerState(player));
 	}
 
-	@SubscribeEvent
 	public static void onPlayerTick(Player player, TickPhase phase)
 	{
 		if (player.level().isClientSide())
@@ -160,207 +130,71 @@ public class ModCapabilities
 		}
 	}
 
-	@SubscribeEvent
-	public static void deathHandler(PlayerEvent.Clone event)
+	private static void copyPlayerState(net.minecraft.server.level.ServerPlayer oldPlayer,
+			net.minecraft.server.level.ServerPlayer player, boolean alive)
 	{
-		Player orig = event.getOriginal();
-		Player player = event.getEntity();
+		PlayerSurvivalComponent oldState = PlayerSurvivalComponents.PLAYER_SURVIVAL.get(oldPlayer);
+		PlayerSurvivalComponent newState = PlayerSurvivalComponents.PLAYER_SURVIVAL.get(player);
 
-		if (event.isWasDeath())
-		{
-			if (Config.Baked.localizedBodyDamageEnabled && Config.Baked.healthOverhaulEnabled) {
-				BodyDamageUtil.updatePlayerBrokenHeartAttribute(player);
-			}
-
-			if (Config.Baked.temperatureEnabled)
-				player.getPersistentData().putBoolean("tempImmuneOnSpawn", orig.getPersistentData().getBoolean("tempImmuneOnSpawn"));
-
-			if (Config.Baked.thirstEnabled)
-			{
-				// Reset thirst to default values on death
-				ThirstCapability newThirstCap = CapabilityUtil.getThirstCapability(player);
-				newThirstCap.init();
-				sendThirstUpdate(player);
-			}
-
-			if (Config.Baked.localizedBodyDamageEnabled)
-			{
-				// Reset body damage to default values on death
-				BodyDamageCapability newBodyDamageCap = CapabilityUtil.getBodyDamageCapability(player);
-				newBodyDamageCap.init();
-				BodyDamageUtil.updatePlayerBrokenHeartAttribute(player);
-				sendBodyDamageUpdate(player);
-			}
-
-			if (Config.Baked.healthOverhaulEnabled)
-			{
-				orig.reviveCaps();
-				HealthCapability oldCap = CapabilityUtil.getHealthCapability(orig);
-				orig.invalidateCaps();
-
-				HealthCapability newCap = CapabilityUtil.getHealthCapability(player);
-				newCap.readNBT(oldCap.writeNBT());
-
-				HealthUtil.initializeHealthAttributes(player);
-
-				if (Config.Baked.heartsLostOnDeath > 0)
-					HealthUtil.loseHearth(player, Config.Baked.heartsLostOnDeath);
-				else
-					HealthUtil.updatePlayerMaxHealthAttribute(player);
-
-				player.setHealth(player.getMaxHealth());
-			}
+		if (alive) {
+			net.minecraft.nbt.CompoundTag state = new net.minecraft.nbt.CompoundTag();
+			oldState.writeToNbt(state);
+			newState.readFromNbt(state);
+		} else {
+			newState.setTempImmuneOnSpawn(oldState.tempImmuneOnSpawn());
+			newState.health().readNBT(oldState.health().writeNBT());
+			newState.thirst().init();
+			newState.bodyDamage().init();
 		}
-		else
-		{
-			if (Config.Baked.temperatureEnabled)
-			{
-				orig.reviveCaps();
-				TemperatureCapability oldCap = CapabilityUtil.getTempCapability(orig);
-				orig.invalidateCaps();
 
-				TemperatureCapability newCap = CapabilityUtil.getTempCapability(player);
-				newCap.readNBT(oldCap.writeNBT());
+		if (Config.Baked.localizedBodyDamageEnabled && Config.Baked.healthOverhaulEnabled)
+			BodyDamageUtil.updatePlayerBrokenHeartAttribute(player);
 
-				sendTemperatureUpdate(player);
-			}
-
-			if (Config.Baked.wetnessEnabled)
-			{
-				orig.reviveCaps();
-				WetnessCapability oldCap = CapabilityUtil.getWetnessCapability(orig);
-				orig.invalidateCaps();
-
-				WetnessCapability newCap = CapabilityUtil.getWetnessCapability(player);
-				newCap.readNBT(oldCap.writeNBT());
-
-				sendWetnessUpdate(player);
-			}
-
-			if (Config.Baked.thirstEnabled)
-			{
-				orig.reviveCaps();
-				ThirstCapability oldCap = CapabilityUtil.getThirstCapability(orig);
-				orig.invalidateCaps();
-
-				ThirstCapability newCap = CapabilityUtil.getThirstCapability(player);
-				newCap.readNBT(oldCap.writeNBT());
-
-				sendThirstUpdate(player);
-			}
-			
-			if (Config.Baked.healthOverhaulEnabled)
-			{
-				orig.reviveCaps();
-				HealthCapability oldCap = CapabilityUtil.getHealthCapability(orig);
-				orig.invalidateCaps();
-
-				HealthCapability newCap = CapabilityUtil.getHealthCapability(player);
-				newCap.readNBT(oldCap.writeNBT());
-
-				HealthUtil.initializeHealthAttributes(player);
+		if (Config.Baked.healthOverhaulEnabled) {
+			HealthUtil.initializeHealthAttributes(player);
+			if (!alive && Config.Baked.heartsLostOnDeath > 0)
+				HealthUtil.loseHearth(player, Config.Baked.heartsLostOnDeath);
+			else
 				HealthUtil.updatePlayerMaxHealthAttribute(player);
-				player.setHealth(player.getMaxHealth());
-				sendHealthUpdate(player);
-			}
-
-			if (Config.Baked.localizedBodyDamageEnabled)
-			{
-				orig.reviveCaps();
-				BodyDamageCapability oldCap = CapabilityUtil.getBodyDamageCapability(orig);
-				orig.invalidateCaps();
-
-				BodyDamageCapability newCap = CapabilityUtil.getBodyDamageCapability(player);
-				newCap.readNBT(oldCap.writeNBT());
-
-				BodyDamageUtil.updatePlayerBrokenHeartAttribute(player);
-				sendBodyDamageUpdate(player);
-			}
+			player.setHealth(player.getMaxHealth());
 		}
+
+		if (Config.Baked.localizedBodyDamageEnabled && !alive)
+			BodyDamageUtil.updatePlayerBrokenHeartAttribute(player);
+
 	}
 
 	private static void sendTemperatureUpdate(Player player)
 	{
-		if (!player.level().isClientSide())
-		{
-			UpdateTemperaturesPacket.sendTo(
-					PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-					CapabilityUtil.getTempCapability(player).writeNBT());
-		}
+		syncPlayerState(player);
 	}
 
 	private static void sendWetnessUpdate(Player player)
 	{
-		if (!player.level().isClientSide)
-		{
-			UpdateWetnessPacket.sendTo(
-					PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-					CapabilityUtil.getWetnessCapability(player).writeNBT());
-		}
+		syncPlayerState(player);
 	}
 
 	private static void sendThirstUpdate(Player player)
 	{
-		if (!player.level().isClientSide)
-		{
-			UpdateThirstPacket.sendTo(
-					PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-					CapabilityUtil.getThirstCapability(player).writeNBT());
-		}
+		syncPlayerState(player);
 	}
 
 	private static void sendBodyDamageUpdate(Player player)
 	{
-		if (!player.level().isClientSide)
-		{
-			UpdateBodyDamagePacket.sendTo(
-					PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-					CapabilityUtil.getBodyDamageCapability(player).writeNBT());
-		}
+		syncPlayerState(player);
 	}
 
 	private static void sendHealthUpdate(Player player)
 	{
-		if (!player.level().isClientSide)
-		{
-			UpdateHeartsPacket.sendTo(
-					PacketDistributor.PLAYER.with(() -> (ServerPlayer) player),
-					CapabilityUtil.getHealthCapability(player).writeNBT());
-		}
+		syncPlayerState(player);
 	}
 
-	@SubscribeEvent
-	public static void syncCapsOnDimensionChange(PlayerChangedDimensionEvent event)
+	private static void syncPlayerState(Player player)
 	{
-		Player player = event.getEntity();
-		if (Config.Baked.temperatureEnabled)
-			sendTemperatureUpdate(player);
-		if (Config.Baked.wetnessEnabled)
-			sendWetnessUpdate(player);
-		if (Config.Baked.thirstEnabled)
-			sendThirstUpdate(player);
-		if (Config.Baked.healthOverhaulEnabled)
-			sendHealthUpdate(player);
-		if (Config.Baked.localizedBodyDamageEnabled)
-			sendBodyDamageUpdate(player);
+		if (!player.level().isClientSide())
+			PlayerSurvivalComponents.PLAYER_SURVIVAL.sync(player);
 	}
 
-	@SubscribeEvent
-	public static void syncCapsOnLogin(PlayerLoggedInEvent event)
-	{
-		Player player = event.getEntity();
-		if (Config.Baked.temperatureEnabled)
-			sendTemperatureUpdate(player);
-		if (Config.Baked.wetnessEnabled)
-			sendWetnessUpdate(player);
-		if (Config.Baked.thirstEnabled)
-			sendThirstUpdate(player);
-		if (Config.Baked.healthOverhaulEnabled)
-			sendHealthUpdate(player);
-		if (Config.Baked.localizedBodyDamageEnabled)
-			sendBodyDamageUpdate(player);
-	}
-	
 	protected static boolean shouldSkipTick(Player player)
 	{
 		return player.isCreative() || player.isSpectator();

@@ -10,7 +10,6 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
-import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstProvider;
 import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 

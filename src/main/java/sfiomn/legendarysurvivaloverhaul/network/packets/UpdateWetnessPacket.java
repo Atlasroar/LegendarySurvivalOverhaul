@@ -10,7 +10,6 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessCapability;
-import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessProvider;
 import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 

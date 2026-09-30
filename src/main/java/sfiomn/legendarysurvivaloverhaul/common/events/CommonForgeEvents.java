@@ -53,6 +53,7 @@ import sfiomn.legendarysurvivaloverhaul.api.temperature.AttributeModifierBase;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.health.HealthCapability;
+import sfiomn.legendarysurvivaloverhaul.common.capabilities.PlayerSurvivalComponents;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
 import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.medsandherbs.MedsAndHerbsUtil;
@@ -408,8 +409,9 @@ public class CommonForgeEvents {
 
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (Config.Baked.temperatureImmunityOnFirstSpawnEnabled && Config.Baked.temperatureEnabled && !event.getEntity().getPersistentData().getBoolean("tempImmuneOnSpawn")) {
-            event.getEntity().getPersistentData().putBoolean("tempImmuneOnSpawn", true);
+        if (Config.Baked.temperatureImmunityOnFirstSpawnEnabled && Config.Baked.temperatureEnabled
+                && !PlayerSurvivalComponents.PLAYER_SURVIVAL.get(event.getEntity()).tempImmuneOnSpawn()) {
+            PlayerSurvivalComponents.PLAYER_SURVIVAL.get(event.getEntity()).setTempImmuneOnSpawn(true);
             event.getEntity().addEffect(new MobEffectInstance(MobEffectRegistry.TEMPERATURE_IMMUNITY.get(), Config.Baked.temperatureImmunityOnFirstSpawnTime, 0, false, false, true));
         }
 
