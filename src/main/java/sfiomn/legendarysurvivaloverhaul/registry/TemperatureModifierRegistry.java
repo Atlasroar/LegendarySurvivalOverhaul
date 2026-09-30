@@ -1,28 +1,18 @@
 package sfiomn.legendarysurvivaloverhaul.registry;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryBuilder;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryKey;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.AttributeModifierBase;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.DynamicModifierBase;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.ModifierBase;
-import sfiomn.legendarysurvivaloverhaul.common.integration.eclipticseasons.EclipticSeasonsModifier;
-import sfiomn.legendarysurvivaloverhaul.common.integration.origins.OriginsDynamicModifier;
-import sfiomn.legendarysurvivaloverhaul.common.integration.origins.OriginsModifier;
-import sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneSeasonsModifier;
-import sfiomn.legendarysurvivaloverhaul.common.integration.terrafirmacraft.TerraFirmaCraftHeatItemModifier;
-import sfiomn.legendarysurvivaloverhaul.common.integration.terrafirmacraft.TerraFirmaCraftModifier;
 import sfiomn.legendarysurvivaloverhaul.common.temperature.*;
 import sfiomn.legendarysurvivaloverhaul.common.temperature.attribute.CoatAttributeModifier;
 import sfiomn.legendarysurvivaloverhaul.common.temperature.attribute.ItemAttributeModifier;
 import sfiomn.legendarysurvivaloverhaul.common.temperature.dynamic.MountDynamicModifier;
 import sfiomn.legendarysurvivaloverhaul.common.temperature.dynamic.TemperatureResistanceModifier;
-
-import java.util.function.Supplier;
 
 public class TemperatureModifierRegistry
 {
@@ -30,13 +20,12 @@ public class TemperatureModifierRegistry
 	public static final ResourceLocation DYNAMIC_MODIFIERS_RESOURCE = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "dynamic_temperature_modifiers");
 	public static final ResourceLocation ITEM_ATTRIBUTE_MODIFIERS_RESOURCE = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "item_attribute_temperature_modifiers");
 
-	public static final DeferredRegister<ModifierBase> MODIFIERS = DeferredRegister.create(MODIFIERS_RESOURCE, LegendarySurvivalOverhaul.MOD_ID);
-	public static final DeferredRegister<DynamicModifierBase> DYNAMIC_MODIFIERS = DeferredRegister.create(DYNAMIC_MODIFIERS_RESOURCE, LegendarySurvivalOverhaul.MOD_ID);
-	public static final DeferredRegister<AttributeModifierBase> ITEM_ATTRIBUTE_MODIFIERS = DeferredRegister.create(ITEM_ATTRIBUTE_MODIFIERS_RESOURCE, LegendarySurvivalOverhaul.MOD_ID);
-
-	public static final Supplier<IForgeRegistry<ModifierBase>> MODIFIERS_REGISTRY = MODIFIERS.makeRegistry(RegistryBuilder::new);
-	public static final Supplier<IForgeRegistry<DynamicModifierBase>> DYNAMIC_MODIFIERS_REGISTRY = DYNAMIC_MODIFIERS.makeRegistry(RegistryBuilder::new);
-	public static final Supplier<IForgeRegistry<AttributeModifierBase>> ITEM_ATTRIBUTE_MODIFIERS_REGISTRY = ITEM_ATTRIBUTE_MODIFIERS.makeRegistry(RegistryBuilder::new);
+	public static final Registry<ModifierBase> MODIFIERS_REGISTRY = createRegistry(MODIFIERS_RESOURCE);
+	public static final Registry<DynamicModifierBase> DYNAMIC_MODIFIERS_REGISTRY = createRegistry(DYNAMIC_MODIFIERS_RESOURCE);
+	public static final Registry<AttributeModifierBase> ITEM_ATTRIBUTE_MODIFIERS_REGISTRY = createRegistry(ITEM_ATTRIBUTE_MODIFIERS_RESOURCE);
+	public static final FabricDeferredRegister<ModifierBase> MODIFIERS = FabricDeferredRegister.create(MODIFIERS_REGISTRY);
+	public static final FabricDeferredRegister<DynamicModifierBase> DYNAMIC_MODIFIERS = FabricDeferredRegister.create(DYNAMIC_MODIFIERS_REGISTRY);
+	public static final FabricDeferredRegister<AttributeModifierBase> ITEM_ATTRIBUTE_MODIFIERS = FabricDeferredRegister.create(ITEM_ATTRIBUTE_MODIFIERS_REGISTRY);
 
 	// Base Modifiers
 	public static final RegistryObject<ModifierBase> ALTITUDE = MODIFIERS.register("altitude", AltitudeModifier::new);
@@ -59,20 +48,14 @@ public class TemperatureModifierRegistry
 	public static final RegistryObject<DynamicModifierBase> TEMPERATURE_RESISTANCE = DYNAMIC_MODIFIERS.register("temperature_resistance", TemperatureResistanceModifier::new);
 	public static final RegistryObject<DynamicModifierBase> MOUNT_DYNAMIC = DYNAMIC_MODIFIERS.register("mount_dynamic", MountDynamicModifier::new);
 
-	// Mod Compat
-	public static final RegistryObject<ModifierBase> SERENE_SEASONS = MODIFIERS.register("integration/serene_seasons", SereneSeasonsModifier::new);
-	public static final RegistryObject<ModifierBase> ECLIPTIC_SEASONS = MODIFIERS.register("integration/ecliptic_seasons", EclipticSeasonsModifier::new);
+	public static void register(){
+		MODIFIERS.registerAll();
+		DYNAMIC_MODIFIERS.registerAll();
+		ITEM_ATTRIBUTE_MODIFIERS.registerAll();
+	}
 
-	public static final RegistryObject<ModifierBase> WORLD_TEMPERATURE_TERRA_FIRMA_CRAFT = MODIFIERS.register("integration/world_temp_tfc", TerraFirmaCraftModifier::new);
-	public static final RegistryObject<AttributeModifierBase> ITEM_TEMPERATURE_TERRA_FIRMA_CRAFT = ITEM_ATTRIBUTE_MODIFIERS.register("integration/item_temp_tfc", TerraFirmaCraftHeatItemModifier::new);
-
-	public static final RegistryObject<ModifierBase> ORIGINS = MODIFIERS.register("integration/origins", OriginsModifier::new);
-	public static final RegistryObject<DynamicModifierBase> ORIGINS_RESISTANCE = DYNAMIC_MODIFIERS.register("integration/origins_resistance", OriginsDynamicModifier::new);
-
-
-	public static void register(IEventBus eventBus){
-		MODIFIERS.register(eventBus);
-		DYNAMIC_MODIFIERS.register(eventBus);
-		ITEM_ATTRIBUTE_MODIFIERS.register(eventBus);
+	private static <T> Registry<T> createRegistry(ResourceLocation identifier) {
+		RegistryKey<Registry<T>> key = RegistryKey.createRegistryKey(identifier);
+		return FabricRegistryBuilder.<T>createSimple(key).buildAndRegister();
 	}
 }

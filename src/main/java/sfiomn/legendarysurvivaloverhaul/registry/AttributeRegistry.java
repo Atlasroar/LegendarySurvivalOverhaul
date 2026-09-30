@@ -2,15 +2,12 @@ package sfiomn.legendarysurvivaloverhaul.registry;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 
 public class AttributeRegistry {
-    public static DeferredRegister<Attribute> ATTRIBUTES =
-            DeferredRegister.create(ForgeRegistries.ATTRIBUTES, LegendarySurvivalOverhaul.MOD_ID);
+    public static FabricDeferredRegister<Attribute> ATTRIBUTES =
+            FabricDeferredRegister.create(BuiltInRegistries.ATTRIBUTE);
 
     public static final RegistryObject<Attribute> HEATING_TEMPERATURE = ATTRIBUTES.register("heating_temperature", () -> new RangedAttribute("attribute." + LegendarySurvivalOverhaul.MOD_ID + ".heating_temperature", 0.0f, -10000f, 10000f).setSyncable(true));
     public static final RegistryObject<Attribute> COOLING_TEMPERATURE = ATTRIBUTES.register("cooling_temperature", () -> new RangedAttribute("attribute." + LegendarySurvivalOverhaul.MOD_ID + ".cooling_temperature", 0.0f, -10000f, 10000f).setSyncable(true));
@@ -30,7 +27,7 @@ public class AttributeRegistry {
     public static final RegistryObject<Attribute> PERMANENT_HEART = ATTRIBUTES.register("permanent_heart", () -> new RangedAttribute("attribute." + LegendarySurvivalOverhaul.MOD_ID + ".permanent_heart", 1.0f, 1.0f, 10000.0f).setSyncable(true));
     public static final RegistryObject<Attribute> BROKEN_HEART_RESILIENCE = ATTRIBUTES.register("broken_heart_resilience", () -> new RangedAttribute("attribute." + LegendarySurvivalOverhaul.MOD_ID + ".broken_heart_resilience", 1.0f, 0.0f, 10000.0f).setSyncable(true));
 
-    public static void register(IEventBus eventBus) {
-        ATTRIBUTES.register(eventBus);
+    public static void register() {
+        ATTRIBUTES.registerAll();
     }
 }

@@ -1,11 +1,12 @@
 package sfiomn.legendarysurvivaloverhaul.config;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.IConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.registries.ForgeRegistries;
+import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
+import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
 import org.apache.commons.lang3.tuple.Pair;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.config.json_old.JsonConfigRegistration;
@@ -86,14 +87,18 @@ public class Config
 			}
 		}
 
-		ModLoadingContext context = ModLoadingContext.get();
-		context.registerConfig(ModConfig.Type.CLIENT, CLIENT_SPEC, CONFIG_FOLDER + "client.toml");
-		context.registerConfig(ModConfig.Type.COMMON, COMMON_SPEC, CONFIG_FOLDER + "common.toml");
-		context.registerConfig(ModConfig.Type.COMMON, TEMPERATURE_SPEC, CONFIG_FOLDER + "temperature.toml");
-		context.registerConfig(ModConfig.Type.COMMON, SEASONS_SPEC, CONFIG_FOLDER + "seasons.toml");
-		context.registerConfig(ModConfig.Type.COMMON, THIRST_SPEC, CONFIG_FOLDER + "thirst.toml");
-		context.registerConfig(ModConfig.Type.COMMON, HEALTH_SPEC, CONFIG_FOLDER + "health.toml");
-		context.registerConfig(ModConfig.Type.COMMON, BODY_DAMAGE_SPEC, CONFIG_FOLDER + "body_damage.toml");
+		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.CLIENT, CLIENT_SPEC, CONFIG_FOLDER + "client.toml");
+		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, COMMON_SPEC, CONFIG_FOLDER + "common.toml");
+		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, TEMPERATURE_SPEC, CONFIG_FOLDER + "temperature.toml");
+		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, SEASONS_SPEC, CONFIG_FOLDER + "seasons.toml");
+		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, THIRST_SPEC, CONFIG_FOLDER + "thirst.toml");
+		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, HEALTH_SPEC, CONFIG_FOLDER + "health.toml");
+		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, BODY_DAMAGE_SPEC, CONFIG_FOLDER + "body_damage.toml");
+		ModConfigEvents.loading(LegendarySurvivalOverhaul.MOD_ID).register(config -> bake(config.getSpec()));
+		ModConfigEvents.reloading(LegendarySurvivalOverhaul.MOD_ID).register(config -> {
+			if (config.getSpec() == CLIENT_SPEC)
+				Baked.bakeClient();
+		});
 
 		JsonConfigRegistration.init(LegendarySurvivalOverhaul.modConfigJsons.toFile());
 	}
@@ -136,12 +141,12 @@ public class Config
 
 	static boolean validateEffectName(final Object obj)
 	{
-		return obj instanceof final String effectName && ForgeRegistries.MOB_EFFECTS.containsKey(new ResourceLocation(effectName));
+		return obj instanceof final String effectName && BuiltInRegistries.MOB_EFFECT.containsKey(new ResourceLocation(effectName));
 	}
 
 	static boolean validateEntityType(final Object obj)
 	{
-		return obj instanceof final String entityName && ForgeRegistries.ENTITY_TYPES.containsKey(new ResourceLocation(entityName));
+		return obj instanceof final String entityName && BuiltInRegistries.ENTITY_TYPE.containsKey(new ResourceLocation(entityName));
 	}
 
 	public static class Baked

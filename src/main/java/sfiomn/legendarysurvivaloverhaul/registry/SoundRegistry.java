@@ -1,17 +1,14 @@
 package sfiomn.legendarysurvivaloverhaul.registry;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 
 public class SoundRegistry
 {
-	public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
-			DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, LegendarySurvivalOverhaul.MOD_ID);
+	public static final FabricDeferredRegister<SoundEvent> SOUND_EVENTS =
+			FabricDeferredRegister.create(BuiltInRegistries.SOUND_EVENT);
 
 	public static final RegistryObject<SoundEvent> HEAT_STROKE_EARLY = registerSoundEvent("heat_stroke_early");
 	public static final RegistryObject<SoundEvent> HEAT_STROKE = registerSoundEvent("heat_stroke");
@@ -36,7 +33,7 @@ public class SoundRegistry
 				new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, name)
 		));
 	}
-	public static void register(IEventBus eventBus) {
-		SOUND_EVENTS.register(eventBus);
+	public static void register() {
+		SOUND_EVENTS.registerAll();
 	}
 }

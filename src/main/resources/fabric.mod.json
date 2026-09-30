@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "legendarysurvivaloverhaul",
+  "version": "${version}",
+  "name": "Legendary Survival Overhaul",
+  "description": "Making survival harder. Highly configurable, so you can play the way you want.",
+  "authors": ["Sfiomn"],
+  "license": "GPL-3.0-only",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul"
+    ],
+    "client": [
+      "sfiomn.legendarysurvivaloverhaul.client.LegendarySurvivalOverhaulClient"
+    ]
+  },
+  "mixins": [
+    "legendarysurvivaloverhaul.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=17",
+    "fabric-api": "*",
+    "forgeconfigapiport": "*"
+  }
+}

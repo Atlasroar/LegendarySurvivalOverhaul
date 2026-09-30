@@ -5,25 +5,19 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
-import net.minecraftforge.common.crafting.StrictNBTIngredient;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistry;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.common.effects.*;
 
 public class MobEffectRegistry {
 
-	public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, LegendarySurvivalOverhaul.MOD_ID);
-	public static final DeferredRegister<Potion> TEMPERATURE_POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, LegendarySurvivalOverhaul.MOD_ID);
-	public static final DeferredRegister<Potion> THIRST_POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, LegendarySurvivalOverhaul.MOD_ID);
+	public static final FabricDeferredRegister<MobEffect> EFFECTS = FabricDeferredRegister.create(BuiltInRegistries.MOB_EFFECT);
+	public static final FabricDeferredRegister<Potion> TEMPERATURE_POTIONS = FabricDeferredRegister.create(BuiltInRegistries.POTION);
+	public static final FabricDeferredRegister<Potion> THIRST_POTIONS = FabricDeferredRegister.create(BuiltInRegistries.POTION);
 
 	public static final RegistryObject<MobEffect> THIRST = EFFECTS.register("thirst", ThirstEffect::new);
 	public static final RegistryObject<Potion> THIRST_POTION = THIRST_POTIONS.register("thirst", () -> new Potion("thirst", new MobEffectInstance(THIRST.get(), 3600, 0, false, true, true)));
@@ -90,17 +84,12 @@ public class MobEffectRegistry {
 
 	private static void addBrewingRecipe(Potion potionInput, Item ingredient, Potion potionResult)
 	{
-		BrewingRecipeRegistry.addRecipe(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), potionInput)), StrictNBTIngredient.of(new ItemStack(ingredient)), PotionUtils.setPotion(new ItemStack(Items.POTION), potionResult));
-	}
-
-	private static void addBrewingRecipe(Potion potionInput, Item ingredient, Item itemResult)
-	{
-		BrewingRecipeRegistry.addRecipe(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), potionInput)), StrictNBTIngredient.of(new ItemStack(ingredient)), new ItemStack(itemResult));
+		FabricBrewingRecipeRegistry.registerPotionRecipe(potionInput, ingredient, potionResult);
 	}
 	
-	public static void register(IEventBus eventBus){
-		EFFECTS.register(eventBus);
-		TEMPERATURE_POTIONS.register(eventBus);
-		THIRST_POTIONS.register(eventBus);
+	public static void register(){
+		EFFECTS.registerAll();
+		TEMPERATURE_POTIONS.registerAll();
+		THIRST_POTIONS.registerAll();
 	}
 }

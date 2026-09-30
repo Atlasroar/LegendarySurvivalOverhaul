@@ -2,7 +2,7 @@ package sfiomn.legendarysurvivaloverhaul.registry;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraftforge.event.RegisterCommandsEvent;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import sfiomn.legendarysurvivaloverhaul.common.commands.BodyDamageCommand;
 import sfiomn.legendarysurvivaloverhaul.common.commands.CommandBase;
 import sfiomn.legendarysurvivaloverhaul.common.commands.FernTestCommand;
@@ -16,10 +16,13 @@ public class CommandRegistry {
 	public static final CommandBase HEALTH_COMMAND = new HealthCommand();
 	public static final CommandBase FERN_TEST = new FernTestCommand();
 
-	public static void registerCommandsEvent(RegisterCommandsEvent event)
+	public static void register()
 	{
-		CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> registerCommands(dispatcher));
+	}
 
+	private static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher)
+	{
 		dispatcher.register(TEMPERATURE.getBuilder());
 		dispatcher.register(BODY_DAMAGE.getBuilder());
 		dispatcher.register(HEALTH_COMMAND.getBuilder());
