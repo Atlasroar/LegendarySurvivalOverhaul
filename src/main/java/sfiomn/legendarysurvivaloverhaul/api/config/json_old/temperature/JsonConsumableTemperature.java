@@ -1,7 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.api.config.json_old.temperature;
 
 import net.minecraft.world.effect.MobEffect;
-import net.minecraftforge.registries.RegistryObject;
+import sfiomn.legendarysurvivaloverhaul.registry.RegistryObject;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemporaryModifierGroupEnum;
 
 /**

@@ -7,8 +7,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
+import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.ITemperatureCapability;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureEnum;
@@ -134,9 +133,9 @@ public class TemperatureCapability implements ITemperatureCapability
 	}
 
 	@Override
-	public void tickUpdate(Player player, Level level, Phase phase)
+	public void tickUpdate(Player player, Level level, TickPhase phase)
 	{
-		if(phase == TickEvent.Phase.START)
+		if(phase == TickPhase.START)
 		{
 			packetTimer++;
 			return;
@@ -171,8 +170,8 @@ public class TemperatureCapability implements ITemperatureCapability
 	}
 
 	@Override
-	public void tickClient(Player player, Phase phase) {
-		if(phase == TickEvent.Phase.START) {
+	public void tickClient(Player player, TickPhase phase) {
+		if(phase == TickPhase.START) {
 			return;
 		}
 

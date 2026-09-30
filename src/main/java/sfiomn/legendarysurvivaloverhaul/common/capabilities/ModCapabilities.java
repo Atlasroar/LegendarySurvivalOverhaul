@@ -7,8 +7,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
@@ -31,6 +29,7 @@ import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapabil
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstProvider;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessCapability;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessProvider;
+import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.network.packets.*;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
@@ -63,25 +62,22 @@ public class ModCapabilities
 	}
 
 	@SubscribeEvent
-	public static void onPlayerTick(PlayerTickEvent event)
+	public static void onPlayerTick(Player player, TickPhase phase)
 	{
-		if (event.side.isClient())
+		if (player.level().isClientSide())
 		{
 			// Client Side
-			Player player = event.player;
-
 			if (shouldSkipTick(player)) return;
 
 			if (Config.Baked.temperatureEnabled) {
 				TemperatureCapability tempCap = CapabilityUtil.getTempCapability(player);
 
-				tempCap.tickClient(player, event.phase);
+				tempCap.tickClient(player, phase);
 			}
 		}
 		else
 		{
 			// Server Side
-			Player player = event.player;
 			Level level = player.level();
 
 			if (shouldSkipTick(player)) return;
@@ -94,9 +90,9 @@ public class ModCapabilities
 			if (Config.Baked.temperatureEnabled) {
 				TemperatureCapability tempCap = CapabilityUtil.getTempCapability(player);
 				
-				tempCap.tickUpdate(player, level, event.phase);
+				tempCap.tickUpdate(player, level, phase);
 				
-				if(event.phase == Phase.START && (tempCap.isDirty() || tempCap.getPacketTimer() % Config.Baked.routinePacketSync == 0))
+				if(phase == TickPhase.START && (tempCap.isDirty() || tempCap.getPacketTimer() % Config.Baked.routinePacketSync == 0))
 				{
 					tempCap.setClean();
 					sendTemperatureUpdate(player);
@@ -106,7 +102,7 @@ public class ModCapabilities
 			if (Config.Baked.wetnessEnabled) {
 				WetnessCapability wetCap = CapabilityUtil.getWetnessCapability(player);
 				
-				wetCap.tickUpdate(player, level, event.phase);
+				wetCap.tickUpdate(player, level, phase);
 				
 				/**
 				 * Because of the way wetness is ticked, if it's dirty, it's probably going to be dirty next tick,
@@ -115,7 +111,7 @@ public class ModCapabilities
 				 * just because the player is standing out in the rain
 				 * since it's not good for performance
 				 */
-				if (event.phase == Phase.START && (wetCap.getPacketTimer() % Config.Baked.routinePacketSync == 0 || wetCap.isDirty()))
+				if (phase == TickPhase.START && (wetCap.getPacketTimer() % Config.Baked.routinePacketSync == 0 || wetCap.isDirty()))
 				{
 					wetCap.setClean();
 					sendWetnessUpdate(player);
@@ -125,9 +121,9 @@ public class ModCapabilities
 			if (Config.Baked.thirstEnabled) {
 				ThirstCapability thirstCap = CapabilityUtil.getThirstCapability(player);
 
-				thirstCap.tickUpdate(player, level, event.phase);
+				thirstCap.tickUpdate(player, level, phase);
 
-				if (event.phase == Phase.START && (thirstCap.isDirty() || thirstCap.getPacketTimer() % Config.Baked.routinePacketSync == 0))
+				if (phase == TickPhase.START && (thirstCap.isDirty() || thirstCap.getPacketTimer() % Config.Baked.routinePacketSync == 0))
 				{
 					thirstCap.setClean();
 					sendThirstUpdate(player);
@@ -137,15 +133,15 @@ public class ModCapabilities
 			if (Config.Baked.baseFoodExhaustion > 0) {
 				FoodCapability foodCapability = CapabilityUtil.getFoodCapability(player);
 
-				foodCapability.tickUpdate(player, level, event.phase);
+				foodCapability.tickUpdate(player, level, phase);
 			}
 
 			if (Config.Baked.localizedBodyDamageEnabled) {
 				BodyDamageCapability bodyDamageCapability = CapabilityUtil.getBodyDamageCapability(player);
 
-				bodyDamageCapability.tickUpdate(player, level, event.phase);
+				bodyDamageCapability.tickUpdate(player, level, phase);
 
-				if(event.phase == Phase.START && (bodyDamageCapability.isDirty() || bodyDamageCapability.getPacketTimer() % Config.Baked.routinePacketSync == 0))
+				if(phase == TickPhase.START && (bodyDamageCapability.isDirty() || bodyDamageCapability.getPacketTimer() % Config.Baked.routinePacketSync == 0))
 				{
 					bodyDamageCapability.setClean();
 					sendBodyDamageUpdate(player);
@@ -155,7 +151,7 @@ public class ModCapabilities
 			if (Config.Baked.healthOverhaulEnabled) {
 				HealthCapability healthCapability = CapabilityUtil.getHealthCapability(player);
 
-				if(event.phase == Phase.START && healthCapability.isDirty())
+				if(phase == TickPhase.START && healthCapability.isDirty())
 				{
 					healthCapability.setClean();
 					sendHealthUpdate(player);

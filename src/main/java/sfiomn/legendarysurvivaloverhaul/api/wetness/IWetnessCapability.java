@@ -2,7 +2,7 @@ package sfiomn.legendarysurvivaloverhaul.api.wetness;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.TickEvent;
+import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 
 public interface IWetnessCapability
 {
@@ -41,7 +41,7 @@ public interface IWetnessCapability
 	 * @param world
 	 * @param phase
 	 */
-	public void tickUpdate(Player player, Level world, TickEvent.Phase phase);
+	public void tickUpdate(Player player, Level world, TickPhase phase);
 
 
 	/**

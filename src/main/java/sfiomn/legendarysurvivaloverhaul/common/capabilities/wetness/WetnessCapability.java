@@ -19,8 +19,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.LavaFluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
+import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.api.wetness.IWetnessCapability;
@@ -96,7 +95,7 @@ public class WetnessCapability implements IWetnessCapability
 	 * TODO: optimization!!
 	 */
 	@Override
-	public void tickUpdate(Player player, Level level, Phase phase)
+	public void tickUpdate(Player player, Level level, TickPhase phase)
 	{
 		if (getWetnessTickTimer() == -1 || CuriosUtil.isCurioItemEquipped(player, ItemRegistry.SPONGE.get())) {
 			if (this.getWetness() > 0)
@@ -104,7 +103,7 @@ public class WetnessCapability implements IWetnessCapability
 			return;
 		}
 
-		if(phase == TickEvent.Phase.START)
+		if(phase == TickPhase.START)
 		{
 			packetTimer++;
 			return;
