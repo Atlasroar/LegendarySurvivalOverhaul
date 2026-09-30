@@ -16,6 +16,7 @@ import sfiomn.legendarysurvivaloverhaul.common.integration.jsonConfig.JsonIntegr
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.ModCapabilities;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.*;
 import sfiomn.legendarysurvivaloverhaul.common.events.CanteenInteractionHandler;
+import sfiomn.legendarysurvivaloverhaul.common.events.FabricInteractionCallbacks;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.*;
 import sfiomn.legendarysurvivaloverhaul.util.internal.*;
@@ -67,6 +68,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		initializeRuntimeLogic();
 		ModCapabilities.registerServerEvents();
 		CanteenInteractionHandler.register();
+		FabricInteractionCallbacks.register();
 		registerIntegrations();
 
 		BodyDamageUtilInternal.initMalusConfig();
