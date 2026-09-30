@@ -5,9 +5,8 @@ Minecraft version: 1.20.1
 Java runtime: Java 17
 
 The mod targets Java 17, as required for Minecraft 1.20.1. The current Gradle
-build uses Fabric Loom 1.14.10, which itself requires JDK 21 to run Gradle.
-This build-tool requirement does not change the Java version required to run
-the mod.
+wrapper uses Gradle 8.8 and Fabric Loom 1.6.12, so the build can run on JDK 17
+as well.
 
 Build the mod
 -------------
