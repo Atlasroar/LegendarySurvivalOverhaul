@@ -1,6 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.common.items.drink;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -23,8 +24,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonMobEffect;
@@ -195,10 +194,10 @@ public class CanteenItem extends DrinkItem {
             player.swing(InteractionHand.MAIN_HAND, true);
 
             if (player instanceof ServerPlayer serverPlayer) {
-                ForgeRegistries.SOUND_EVENTS.getHolder(SoundEvents.BOTTLE_FILL).ifPresent(soundHolder -> serverPlayer.connection.send(
-                        new ClientboundSoundPacket(
-                                soundHolder, SoundSource.PLAYERS, serverPlayer.getX(),
-                                serverPlayer.getY(), serverPlayer.getZ(), 1.0F, 1.0F, player.level().getRandom().nextLong())));
+                serverPlayer.connection.send(new ClientboundSoundPacket(
+                        BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.BOTTLE_FILL), SoundSource.PLAYERS,
+                        serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 1.0F, 1.0F,
+                        player.level().getRandom().nextLong()));
             }
             this.fill(canteen);
             return InteractionResult.CONSUME;
@@ -209,7 +208,7 @@ public class CanteenItem extends DrinkItem {
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
-        HitResult positionLookedAt = player.pick(Math.max(3.0, player.getAttributeValue(ForgeMod.BLOCK_REACH.get()) / 2), 0.0F, true);
+        HitResult positionLookedAt = player.pick(3.0, 0.0F, true);
 
         ItemStack canteen = player.getItemInHand(hand);
 

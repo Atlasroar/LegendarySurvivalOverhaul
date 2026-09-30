@@ -1,6 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.util.internal;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -11,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureConsumable;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureConsumableBlock;
@@ -167,7 +167,7 @@ public class TemperatureUtilInternal implements ITemperatureUtil
 	@Override
 	public void applyConsumableBlockTemperature(Player player, BlockState blockState) {
 		if (Config.Baked.temperatureEnabled) {
-			ResourceLocation blockRegistryName = ForgeRegistries.BLOCKS.getKey(blockState.getBlock());
+			ResourceLocation blockRegistryName = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
 			List<JsonTemperatureConsumableBlock> jsonConsumableBlockTemperatures = TemperatureDataManager.getConsumableBlock(blockRegistryName);
 
 			if (jsonConsumableBlockTemperatures != null) {

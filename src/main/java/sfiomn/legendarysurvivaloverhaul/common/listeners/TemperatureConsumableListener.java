@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.fml.ModList;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
@@ -38,7 +38,7 @@ public class TemperatureConsumableListener extends SimpleJsonResourceReloadListe
             try {
                 var parsedJson = JsonTemperatureConsumable.LIST_CODEC.parse(JsonOps.INSTANCE, json);
                 List<JsonTemperatureConsumable> temperatures = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing temperature consumable : {}", error));
-                if (ModList.get().isLoaded(key.getNamespace()))
+                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
                     TEMPERATURE_CONSUMABLES.put(key, temperatures);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse temperature consumable json {}", key);

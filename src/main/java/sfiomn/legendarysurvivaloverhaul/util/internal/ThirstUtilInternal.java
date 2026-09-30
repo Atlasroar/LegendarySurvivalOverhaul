@@ -1,6 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.util.internal;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -11,7 +12,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonMobEffect;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonThirstBlock;
@@ -152,7 +152,7 @@ public class ThirstUtilInternal implements IThirstUtil {
         // Check for effect chance
         for (JsonMobEffect effect: effects) {
             if (effect.chance >= 0.0f && effect.duration > 0 && !effect.name.isEmpty() && player.level().random.nextFloat() < effect.chance) {
-                MobEffect mobEffect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(effect.name));
+                MobEffect mobEffect = BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(effect.name));
                 if (mobEffect != null) {
                     int effectDuration = effect.duration;
                     if (Config.Baked.cumulativeThirstEffectDuration &&
@@ -201,7 +201,7 @@ public class ThirstUtilInternal implements IThirstUtil {
         if (positionLookedAt.getType() == HitResult.Type.BLOCK) {
 
             FluidState fluidState = player.level().getFluidState(((BlockHitResult) positionLookedAt).getBlockPos());
-            ResourceLocation fluidRegistryName = ForgeRegistries.FLUIDS.getKey(fluidState.getType());
+            ResourceLocation fluidRegistryName = BuiltInRegistries.FLUID.getKey(fluidState.getType());
             JsonThirstBlock defaultThirst = null;
 
             if (fluidRegistryName != null && !fluidState.isEmpty()) {
@@ -251,7 +251,7 @@ public class ThirstUtilInternal implements IThirstUtil {
             JsonThirstBlock defaultThirst = null;
 
             BlockState blockState = player.level().getBlockState(((BlockHitResult) positionLookedAt).getBlockPos());
-            ResourceLocation blockRegistryName = ForgeRegistries.BLOCKS.getKey(blockState.getBlock());
+            ResourceLocation blockRegistryName = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
 
             if (blockRegistryName != null) {
                 List<JsonThirstBlock> jsonBlockFluidThirsts = ThirstDataManager.getBlock(blockRegistryName);

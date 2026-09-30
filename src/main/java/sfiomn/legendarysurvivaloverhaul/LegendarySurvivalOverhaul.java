@@ -15,6 +15,7 @@ import sfiomn.legendarysurvivaloverhaul.api.wetness.WetnessUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.jsonConfig.JsonIntegrationConfigRegistration;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.ModCapabilities;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.*;
+import sfiomn.legendarysurvivaloverhaul.common.events.CanteenInteractionHandler;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.*;
 import sfiomn.legendarysurvivaloverhaul.util.internal.*;
@@ -65,6 +66,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		registerContent();
 		initializeRuntimeLogic();
 		ModCapabilities.registerServerEvents();
+		CanteenInteractionHandler.register();
 		registerIntegrations();
 
 		BodyDamageUtilInternal.initMalusConfig();

@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.common.items.drink.CanteenItem;
 import sfiomn.legendarysurvivaloverhaul.registry.EnchantmentRegistry;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 import static sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul.LOGGER;
 
@@ -63,7 +63,7 @@ public class EnchantmentListener {
         ListTag listtag = EnchantedBookItem.getEnchantments(stack);
         if (listtag == null)
             return false;
-        ResourceLocation purityId = ForgeRegistries.ENCHANTMENTS.getKey(EnchantmentRegistry.PURITY.get());
+        ResourceLocation purityId =         BuiltInRegistries.ENCHANTMENT.getKey(EnchantmentRegistry.PURITY.get());
         if (purityId == null)
             return false;
         for (int i = 0; i < listtag.size(); ++i) {

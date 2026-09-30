@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.fml.ModList;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
@@ -37,7 +37,7 @@ public class TemperatureFuelItemListener extends SimpleJsonResourceReloadListene
             try {
                 var parsedJson = JsonTemperatureFuelItem.CODEC.parse(JsonOps.INSTANCE, json);
                 JsonTemperatureFuelItem temperatures = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing temperature fuel item : {}", error));
-                if (ModList.get().isLoaded(key.getNamespace()))
+                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
                     TEMPERATURE_FUEL_ITEMS.put(key, temperatures);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse temperature fuel item json {}", key);
