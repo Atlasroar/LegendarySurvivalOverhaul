@@ -28,6 +28,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
 	public static boolean betterWeatherLoaded;
+	public static boolean betterDaysLoaded;
 	public static boolean sereneSeasonsLoaded;
 	public static boolean eclipticSeasonsLoaded;
 	public static boolean terraFirmaCraftLoaded;
@@ -57,6 +58,8 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		modConfigPath = configPath.resolve(MOD_ID);
 		modConfigJsons = modConfigPath.resolve("json");
 		modIntegrationConfigJsons = modConfigJsons.resolve("integration");
+		sereneSeasonsLoaded = FabricLoader.getInstance().isModLoaded("sereneseasons");
+		betterDaysLoaded = FabricLoader.getInstance().isModLoaded("betterdays");
 
 		Config.register();
 		registerContent();

@@ -96,8 +96,7 @@ public class Config
 		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, BODY_DAMAGE_SPEC, CONFIG_FOLDER + "body_damage.toml");
 		ModConfigEvents.loading(LegendarySurvivalOverhaul.MOD_ID).register(config -> bake(config.getSpec()));
 		ModConfigEvents.reloading(LegendarySurvivalOverhaul.MOD_ID).register(config -> {
-			if (config.getSpec() == CLIENT_SPEC)
-				Baked.bakeClient();
+			bake(config.getSpec());
 		});
 
 		JsonConfigRegistration.init(LegendarySurvivalOverhaul.modConfigJsons.toFile());
@@ -114,8 +113,11 @@ public class Config
 			Baked.bakeCommon();
 		else if (spec == TEMPERATURE_SPEC)
 			Baked.bakeTemperature();
-		else if (spec == SEASONS_SPEC)
+		else if (spec == SEASONS_SPEC) {
 			Baked.bakeSeasons();
+			if (LegendarySurvivalOverhaul.sereneSeasonsLoaded)
+				sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneSeasonsUtil.initAverageTemperatures();
+		}
 		else if (spec == THIRST_SPEC)
 			Baked.bakeThirst();
 		else if (spec == HEALTH_SPEC)

@@ -26,5 +26,10 @@
     "cardinal-components-base": ">=5.2.2",
     "cardinal-components-entity": ">=5.2.2",
     "forgeconfigapiport": "*"
+  },
+  "suggests": {
+    "sereneseasons": "*",
+    "betterdays": "*",
+    "sereneseasonsplus": "*"
   }
 }

@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.6.12'
+    id 'fabric-loom' version '1.10.5'
     id 'maven-publish'
 }
 
@@ -19,6 +19,10 @@ repositories {
         name = 'Ladysnake'
         url = 'https://maven.ladysnake.org/releases'
     }
+    maven {
+        name = 'Curse Maven'
+        url = 'https://www.cursemaven.com'
+    }
 }
 
 dependencies {
@@ -32,6 +36,8 @@ dependencies {
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
     include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
+    modCompileOnly("curse.maven:serene-seasons-291874:6398228") { transitive = false }
+    modCompileOnly("curse.maven:glitchcore-955399:5787838") { transitive = false }
 }
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
