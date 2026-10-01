@@ -139,7 +139,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - Ported Forge's custom damage multipliers to LivingEntity and Player damage paths before LSO shield absorption and localized body damage.
 - Vulnerability retains Forge's current damage-source exclusions and amplifier multiplier. Hard Falling boosts fall damage and plays the configured sound.
-- Java 17 Gradle build succeeded. In-game behavior still needs verification.
+- Java 17 Gradle build succeeded. The user confirmed both effects behave as expected in-game.
 
 ## Release and edit notes
 
