@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The current public artifact is [Fabric 1.20.1 survival and body-damage test build `v1.20.1-2.4.7-fabric.6`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.6). It contains the initial Fabric survival slice, startup fixes, restored thirst/temperature/wetness/body-damage indicators, the shield/broken-heart and cold-hunger overlays, configured thirst-exhaustion gameplay hooks, and generic consumable hooks.
+The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.8`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.8). It includes the earlier survival port slices plus Trinkets support, shield-health handling, First Aid Supplies updates, and the verified Vulnerability and Hard Falling effects.
 
 The port is still incomplete. In particular, the health-bar replacement, several Forge event surfaces, data generation, and some optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
@@ -139,7 +139,13 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - Ported Forge's custom damage multipliers to LivingEntity and Player damage paths before LSO shield absorption and localized body damage.
 - Vulnerability retains Forge's current damage-source exclusions and amplifier multiplier. Hard Falling boosts fall damage and plays the configured sound.
-- Java 17 Gradle build succeeded. The user confirmed both effects behave as expected in-game.
+- Included in [prerelease `.8`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.8). The Java 17 Gradle build succeeded, and the user confirmed both effects behave as expected in-game.
+
+### 16. Recovery after sleeping
+
+- Restores the Forge sleep-finished recovery behavior when the server wakes sleepers after a successful night skip.
+- Players who slept long enough regain the configured ratio of each body part's maximum health and player maximum health. Broken-heart and maximum-health attributes are refreshed when applicable.
+- Java 17 Gradle build succeeded. In-game behavior still needs verification.
 
 ## Release and edit notes
 
@@ -155,13 +161,14 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | `v1.20.1-2.4.7-fabric.5` | Ports configured thirst exhaustion for jumping, successful block breaks, and attacks; attacks also apply food exhaustion. In-game tests confirmed all three thirst triggers, attack food exhaustion, and hydration preservation in Creative/Spectator. |
 | `v1.20.1-2.4.7-fabric.6` | Adds generic consumable finish effects and restores player body-part damage by injecting at `Player.actuallyHurt`. In-game tests confirmed body damage, healing items, hydration consumables, and successful client launch. |
 | `v1.20.1-2.4.7-fabric.7` | Restores configured temperature immunity after death. User verified the default 90-second duration. Dimension-change testing is deferred to a later test plan. |
+| `v1.20.1-2.4.7-fabric.8` | Adds Trinkets integration, Absorption-to-shield conversion, shield-first player damage processing, First Aid Supplies detection updates, and Vulnerability/Hard Falling damage behavior. Golden Apple shield conversion, First Aid healing, Vulnerability, and Hard Falling were verified in-game. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.7`
-- SHA-256: `516766ED63BCC14E4D05C7EE3C42C84AF75668693A9CF5D84E14BB0FC498D8AD`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.7>
+- Tag: `v1.20.1-2.4.7-fabric.8`
+- SHA-256: `AD6B1C7E40CD1D02895CEFA23905E84DE5A0EC1AE720479CD4DA72F587E22332`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.8>
 
 ## Feature and compatibility notes
 

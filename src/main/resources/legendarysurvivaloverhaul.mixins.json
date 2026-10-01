@@ -8,7 +8,8 @@
     "ItemStackConsumableMixin",
     "PlayerDamageMixin",
     "LivingEntityEffectMixin",
-    "LivingEntityDamageMixin"
+    "LivingEntityDamageMixin",
+    "ServerLevelSleepMixin"
   ],
   "injectors": {
     "defaultRequire": 1
