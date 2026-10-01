@@ -1,10 +1,8 @@
 package sfiomn.legendarysurvivaloverhaul.client.render;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureEnum;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.temperature.TemperatureCapability;
@@ -17,7 +15,6 @@ import sfiomn.legendarysurvivaloverhaul.util.MathUtil;
 
 import static sfiomn.legendarysurvivaloverhaul.util.RenderUtil.renderTextureOverlay;
 
-@OnlyIn(Dist.CLIENT)
 public class RenderTemperatureOverlay {
     private static TemperatureCapability TEMPERATURE_CAP = null;
     private static final ResourceLocation FROSTBITE_EFFECT = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "textures/gui/freeze_effect.png");
@@ -26,17 +23,11 @@ public class RenderTemperatureOverlay {
     private static float fadeLevel = 0;
     private static boolean triggerTemperatureSoundEffect;
 
-    public static IGuiOverlay TEMPERATURE_OVERLAY = (forgeGui, guiGraphics, partialTicks, width, height) -> {
-        if (Config.Baked.temperatureEnabled && temperatureEffect != null) {
-            Player player = forgeGui.getMinecraft().player;
-            if (player != null && temperatureEffect != null && !player.isCreative() && !player.isSpectator()) {
-
-                forgeGui.setupOverlayRenderState(true, false);
-
-                renderTextureOverlay(guiGraphics, temperatureEffect, width, height, fadeLevel);
-            }
-        }
-    };
+    public static void render(GuiGraphics guiGraphics, Player player, int width, int height) {
+        if (Config.Baked.temperatureEnabled && temperatureEffect != null
+                && !player.isCreative() && !player.isSpectator())
+            renderTextureOverlay(guiGraphics, temperatureEffect, width, height, fadeLevel);
+    }
 
     public static void updateTemperatureEffect(Player player) {
         if (player != null && player.isAlive()) {

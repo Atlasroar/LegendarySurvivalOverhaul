@@ -31,6 +31,7 @@ import sfiomn.legendarysurvivaloverhaul.client.network.FabricClientNetworkHandle
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderBodyDamageGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderBlurOverlay;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureOverlay;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderThirstGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderWetnessGui;
 import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
@@ -67,6 +68,7 @@ public final class FabricClientCallbacks {
         if (!client.isPaused() && player != null) {
             if (Config.Baked.temperatureEnabled) {
                 RenderTemperatureGui.updateTimer();
+                RenderTemperatureOverlay.updateTemperatureEffect(player);
                 if (Config.Baked.coldBreathEffectThreshold != -1000)
                     TemperatureBreathEffect.tickPlay(player);
                 if (Config.Baked.breathingSoundEnabled)

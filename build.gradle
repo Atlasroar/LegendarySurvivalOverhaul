@@ -57,7 +57,6 @@ sourceSets.main.java {
     exclude '**/common/events/CommonForgeEvents.java'
     exclude '**/common/events/CommonModBusEvents.java'
     exclude '**/client/events/ClientForgeEvents.java'
-    exclude '**/client/render/RenderTemperatureOverlay.java'
     exclude '**/client/render/RenderTooltipFrame.java'
     exclude '**/client/shaders/FocusShader.java'
     exclude '**/client/integration/sereneseasons/RenderSeasonCards.java'

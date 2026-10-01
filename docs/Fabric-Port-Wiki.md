@@ -168,7 +168,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - The user reports cold effects trigger, while Heat Stroke and heat-related thirst do not appear to trigger as expected.
 - The common temperature tick applies the heat secondary effect at the `HEAT_STROKE` state (temperature 32.5+); Heat Stroke damage additionally requires active thirst and temperature 35+. Confirm those state/config gates before changing behavior.
-- The Forge full-screen heat/cold overlay and its warning sounds remain excluded from Fabric; do not treat their absence as evidence that the common temperature effects failed.
+- The full-screen heat/cold warning overlays and warning sounds have now been wired to Fabric's client tick and HUD callbacks. In-game verification is pending.
 - The user confirmed the temperature commands work; whether the effects apply at a forced threshold still needs separate verification.
 - Use `/temperature set 40` and `/temperature get` in a test world to isolate threshold/effect application from ambient temperature. Confirm temperature and heat/danger/secondary toggles, remove heat/temperature immunity effects, and use a non-Peaceful difficulty when checking damage.
 
@@ -176,7 +176,13 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - Restored Forge's item-attribute data behavior for temperature and body-part resistance on supported vanilla equipment slots. Modifiers reconcile on server ticks and are removed when gear is unequipped, disabled, or no longer has corresponding data.
 - LSO Trinkets also receive data-driven body-part resistance alongside their existing temperature modifiers.
-- Java 17 build and in-game verification are pending.
+- The user tested a Snow Helmet datapack entry and confirmed the equipment modifier systems work as expected in-game.
+- The reusable test datapack is in `test-datapacks/equipment-resistance-test`.
+
+### 22. Temperature warning overlays
+
+- Restored the Forge heat-stroke and frostbite full-screen texture overlays, gradual fades, early/critical warning sounds, immunity checks, and client configuration gates on Fabric.
+- The implementation uses Fabric's client tick and HUD callbacks; Java 17 build and in-game verification are pending.
 
 ## Release and edit notes
 

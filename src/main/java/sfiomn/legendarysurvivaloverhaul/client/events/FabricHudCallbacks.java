@@ -8,6 +8,7 @@ import sfiomn.legendarysurvivaloverhaul.client.render.RenderBodyDamageGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderHealthGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderThirstGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureOverlay;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderWetnessGui;
 import sfiomn.legendarysurvivaloverhaul.common.integration.overflowingbars.OverflowingBarsUtil;
 
@@ -36,6 +37,8 @@ public final class FabricHudCallbacks {
         RenderBodyDamageGui.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
                 client.getWindow().getGuiScaledHeight());
         RenderTemperatureGui.renderColdHungerOverlay(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
+                client.getWindow().getGuiScaledHeight());
+        RenderTemperatureOverlay.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
                 client.getWindow().getGuiScaledHeight());
     }
 }
