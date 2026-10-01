@@ -15,9 +15,9 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.10`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.10). It includes the HUD-layer rewrite and health/shield/broken-heart rendering updates.
+The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.12`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.12). It removes unsupported Origins compatibility and fixes the Serene Seasons out-of-season bonemeal warning.
 
-The port is still incomplete. The health-bar renderer and ordered HUD anchors are implemented, and the user confirmed the `.10` broken-heart foreground layering. A follow-up audit of Forge event subscribers found several core event paths already replaced and identified the Purity-anvil effect and debug-screen game-mode filtering as remaining parity gaps; these are being restored in the current follow-up. Some Forge event surfaces, data generation, and selected optional integrations still need Fabric replacements or an explicit decision to remain omitted.
+The port is still incomplete. The user confirmed the `.10` broken-heart foreground layering and the `.12` Serene Seasons bonemeal warning. The Forge event-subscriber audit restored Purity anvil behavior, debug-screen game-mode filtering, loot injection, and biome placement on Fabric. Forge-only datagen execution and selected optional integrations remain omitted.
 
 ## Step-by-step port history
 
@@ -208,7 +208,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Shield hearts occupy their own row at the vanilla armor-row position; armor shifts upward only while shield hearts are present. Shield layers alternate yellow and orange every 10 hearts. The user confirmed the final broken-heart layering and the intended shield/armor placement in `.10`.
 - Third-party attribution, Overflowing Bars' MPL-2.0 text, and the separately authorized asset notice are included under `src/main/resources/META-INF/licenses/`.
 
-### 26. Forge event-subscriber audit (follow-up in progress)
+### 26. Forge event-subscriber audit (released in `.11` and `.12`)
 
 - Compared the excluded Forge event subscribers with Fabric callbacks, mixins, and lifecycle hooks. Core thirst interactions, consumable effects, survival exhaustion, damage/body-part handling, sleep recovery, mob-effect interception, login/respawn behavior, natural-regeneration gamerule setup, client timers, season cards, and HUD callbacks already have Fabric equivalents.
 - Restored the excluded loot-table injections with Fabric's loot-table modify event: heart fragments and resistance rings in their configured chests, First Aid Supplies in pillager outposts, Purity books in Nether chests, Water Purifiers from drowned, sponges from fishing treasure, and Nether Chalices from piglin bartering. The original weights and counts are preserved.
@@ -218,8 +218,9 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The user confirmed in-game that loot, Purity anvil behavior, world feature generation, and plant transparency appear correct. This follow-up adjusts spawn frequency and water-plant substrates after that validation.
 - Restored Purity's anvil side effect in `AnvilMenuMixin`: a canteen output with the Purity enchantment immediately converts existing normal water to purified water without mutating the input stack. The old grindstone handler had no behavior beyond comments; purified contents already persist through enchantment removal.
 - Restored the Forge debug-filter scope so position/target information is hidden only outside Creative and Spectator modes.
-- Still omitted: optional Supplementaries lunch-basket and Meds and Herbs interactions, and Forge-only datagen execution. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`.
+- Still omitted: Meds and Herbs integration (Forge-only and declined) and Forge-only datagen execution. Supplementaries has a Fabric 1.20.1 build and its lunch-basket delegates to the selected item's normal finish-use path, which LSO already handles; no adapter was needed. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`.
 - Origins-specific Fabric compatibility and generated data have been removed at the user's direction; Origins is intentionally unsupported in this port.
+- The out-of-season warning is injected into Serene Seasons' client-side `SeasonalCropGrowthHandler.applyBonemeal` event. Serene Seasons' Fabric/GlitchCore callback may cancel bonemeal client-side, so a server-side warning hook did not work. The user confirmed the warning with seasonal crops enabled and `out_of_season_crop_behavior = 1` (can't grow).
 
 ## Release and edit notes
 
@@ -257,7 +258,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Fabric player survival components and selected lifecycle/gameplay hooks.
 - Server-data JSON reload listeners and 14-dataset client synchronization.
 - Thirst, temperature, wetness, and body-damage HUD indicators.
-- LSO shield/broken-heart HUD overlay (shield/armor separation and broken-heart row placement verified in-game; latest foreground layering awaits fresh confirmation).
+- LSO shield/broken-heart HUD overlay (shield/armor separation and broken-heart foreground layering verified in-game).
 - Cold-hunger food-bar overlay is visually confirmed in `.4`. Its active duration is managed by the temperature system, not by command duration overrides.
 - Configured thirst exhaustion from jumping, successful block breaking, and attacking is user-validated in `.5`; attack food exhaustion also works, and Creative/Spectator do not lose hydration from those triggers.
 - Localized body damage and healing items are user-validated in `.6`; hydration consumables work. Temperature-consumable behavior still needs separate validation.
