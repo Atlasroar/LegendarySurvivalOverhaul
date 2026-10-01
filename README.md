@@ -42,12 +42,12 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest prerelease is [**v1.20.1-2.4.7-fabric.9**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.9), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
+The latest prerelease is [**v1.20.1-2.4.7-fabric.10**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.10), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
 
 Current highlights:
 
 - Temperature, thirst, wetness, and body-damage HUD indicators.
-- LSO shield/broken-heart indicators, visually adjusted to clear the armor row.
+- LSO shield/broken-heart health HUD layers, including broken hearts replacing health containers and shield rows separated from the armor bar.
 - Cold-hunger food overlay and thirst-row placement, visually confirmed.
 - Core survival items, including wearable armor and heater/chiller behavior.
 - Configured thirst exhaustion from jumping, mining, and attacking, validated in-game.
@@ -67,7 +67,7 @@ Current highlights:
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.
 
-The Fabric port is ongoing. The complete health-bar replacement, some Forge event behavior, data generators, and selected optional integrations are not yet included. See the [port wiki](docs/Fabric-Port-Wiki.md) for the migration history, known gaps, dependencies, and release-by-release notes.
+The Fabric port is ongoing. Some Forge event behavior, data generators, and selected optional integrations are not yet included. See the [port wiki](docs/Fabric-Port-Wiki.md) for the migration history, known gaps, dependencies, and release-by-release notes.
 
 Cold Hunger is a temperature-managed secondary effect: LSO applies it during dangerous cold and clears it when the player is no longer in that condition, so manually granting it with `/effect` outside dangerous cold will not keep it active for the requested duration.
 
