@@ -156,7 +156,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 ### 18. Debug-screen coordinate filtering
 
 - Restored the `Hide Info From Debug` client option for F3: coordinates are replaced by the compass hint, block/facing details are removed, and targeted information is reduced to its label.
-- Java 17 build and in-game verification are pending.
+- Java 17 build succeeded. The user confirmed the debug values are hidden when the option is enabled; testing the disabled setting remains useful.
 
 ## Release and edit notes
 
