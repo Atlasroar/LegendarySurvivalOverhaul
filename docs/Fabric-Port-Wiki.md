@@ -261,7 +261,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - LSO shield/broken-heart HUD overlay (shield/armor separation and broken-heart foreground layering verified in-game).
 - Cold-hunger food-bar overlay is visually confirmed in `.4`. Its active duration is managed by the temperature system, not by command duration overrides.
 - Configured thirst exhaustion from jumping, successful block breaking, and attacking is user-validated in `.5`; attack food exhaustion also works, and Creative/Spectator do not lose hydration from those triggers.
-- Localized body damage and healing items are user-validated in `.6`; hydration consumables work. Temperature-consumable behavior still needs separate validation.
+- Localized body damage and healing items are user-validated in `.6`; hydration consumables work. The user confirmed melon juice applies Cold for 60 seconds and glistering melon juice applies Cold II for 3 minutes, with the stronger effect replacing the weaker one and temperature behavior responding accordingly.
 - Death-respawn temperature immunity is user-validated in `.7` at the configured default 90-second duration and remains active across Nether dimension changes.
 - The user confirmed the configured F3 debug filter hides debug values when enabled; disabling the option still needs verification.
 - Item tooltips for hydration, consumable effects, and equipment temperature/resistance are restored and user-verified, including the Snow and Desert armor tooltip colors and values.
@@ -275,7 +275,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
 - Remaining Forge event edge cases and selected optional integrations.
-- Temperature-consumable behavior and healing recovery over time need further in-game validation.
+- Healing recovery over time needs further in-game validation.
 
 Do not describe excluded features as supported. Check `build.gradle` source exclusions and references from client/common initializers before restoring a class; removing an exclusion alone is not a port.
 
