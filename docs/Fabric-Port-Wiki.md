@@ -123,18 +123,23 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 ### 13. Mob-effect interception
 
 - Replaced the excluded Forge effect-applicable handler with mixins on both `LivingEntity.addEffect` overloads.
-- When the health overhaul and absorption override are enabled, Absorption is converted to two shield-health points and the vanilla effect is denied. This mirrors the existing Forge behavior.
+- When the health overhaul and absorption override are enabled, Absorption is converted to two shield-health points and the vanilla effect is denied. The user confirmed Golden Apples now grant the expected shield hearts and vanilla Absorption is gone.
 - Blocks the LSO Thirst effect while the player has the Water Purifier in either hand or a Trinkets slot.
-- The user confirmed the config values were enabled and reported the Absorption effect still appeared after eating a Golden Apple. The direct one-argument effect overload is now intercepted as well; the updated build is awaiting a repeat test.
 - Replaced the Fabric Curios stub with Trinkets 3.7.2+ support, including equip/use behavior, slot assignments for the LSO accessories, and data-driven temperature attribute modifiers on equipped LSO accessories.
-- Modrinth profile testing for these follow-up changes is pending.
+- Dedicated Trinkets slot placement and long-term wearable-item behavior need further testing.
 
 ### 14. Health HUD, shield damage, and First Aid Supplies follow-up
 
-- Moved broken-heart icons down 10 pixels so they align with the health row instead of the armor row.
+- Moved broken-heart icons down 10 pixels toward the health row. The user reports the visual display largely works, with overall HUD presentation still requiring future refinement.
 - Routed post-mitigation player damage through the health-overhaul shield pool before vanilla health and localized body damage are applied. Damage fully absorbed by shield health no longer causes body-part damage.
-- Refreshes First Aid Supplies held/equipped detection every server tick so switching between hands and Trinkets slots takes effect immediately. With the default config, limb healing runs every 300 ticks (15 seconds) and uses food exhaustion; confirm limb damage in the body menu after allowing that interval.
-- Client testing is pending for shield depletion on damage and First Aid Supplies healing.
+- Refreshes First Aid Supplies held/equipped detection every server tick so switching between hands and Trinkets slots takes effect immediately. The user confirmed First Aid Supplies now heals body parts.
+- The user confirmed Golden Apples grant shield hearts and First Aid Supplies heals. Shield depletion on damage and detailed HUD placement remain candidates for follow-up testing.
+
+### 15. Vulnerability and Hard Falling damage
+
+- Ported Forge's custom damage multipliers to LivingEntity and Player damage paths before LSO shield absorption and localized body damage.
+- Vulnerability retains Forge's current damage-source exclusions and amplifier multiplier. Hard Falling boosts fall damage and plays the configured sound.
+- Java 17 Gradle build succeeded. In-game behavior still needs verification.
 
 ## Release and edit notes
 

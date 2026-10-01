@@ -15,6 +15,7 @@ public abstract class PlayerDamageMixin {
     private float legendarysurvivaloverhaul$applyHealthOverhaul(
             float amount, DamageSource source) {
         if ((Object) this instanceof Player player) {
+            amount = FabricDamageHooks.modifyIncomingDamage(player, source, amount);
             if (!player.level().isClientSide && !player.isCreative() && !player.isSpectator()
                     && Config.Baked.healthOverhaulEnabled) {
                 amount = HealthUtil.hurtPlayer(player, amount);
