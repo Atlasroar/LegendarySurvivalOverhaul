@@ -31,6 +31,7 @@ public class RenderHealthGui
 	// Dimensions of the icon
 	private static final int HEART_TEXTURE_WIDTH = 9;
 	private static final int HEART_TEXTURE_HEIGHT = 9;
+	private static final int HEALTH_BAR_VERTICAL_OFFSET = -9;
 
 	public static void render(GuiGraphics guiGraphics, Player player, int width, int height) {
 		if (Config.Baked.healthOverhaulEnabled
@@ -65,7 +66,7 @@ public class RenderHealthGui
 			return;
 
 		int left = width / 2 - 91; // Same x offset as the health bar
-		int top = height - leftHeight;
+		int top = height - leftHeight + HEALTH_BAR_VERTICAL_OFFSET;
 
 		int playerHearts = 0;
 

@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The current public artifact is [Fabric 1.20.1 HUD test build `v1.20.1-2.4.7-fabric.2`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.2). It contains the initial Fabric survival slice, startup fixes, and restored HUD indicators including thirst. The released HUD has built and reached an integrated world in development; the user has confirmed that release looks good. The in-progress next slice restores the custom shield/broken-heart overlay; it still needs visual feedback before being treated as verified.
+The current public artifact is [Fabric 1.20.1 HUD test build `v1.20.1-2.4.7-fabric.2`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.2). It contains the initial Fabric survival slice, startup fixes, and restored HUD indicators including thirst. The released HUD has built and reached an integrated world in development; the user has confirmed that release looks good. The in-progress next slice restores the custom shield/broken-heart overlay. Visual feedback found it was overlapping the armor row, so the added hearts are being moved 9 pixels upward.
 
 The port is still incomplete. In particular, the health-bar replacement, cold-hunger food overlay, several Forge event surfaces, data generation, and some optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
@@ -81,7 +81,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Ported the custom health overlay from Forge's `IGuiOverlay` entry point to the Fabric HUD callback.
 - Reads and reserves the optional shared left HUD height for its additional shield/broken-heart rows; estimates vanilla health rows from maximum health when Overflowing Bars is absent.
 - Keeps vanilla hearts in place and draws only LSO's shield/broken-heart extension, gated by the health-overhaul config and survival HUD visibility.
-- This work is not yet part of a release. Validate row placement with ordinary and extended maximum health, shield health, body damage, and optional Overflowing Bars before calling it complete.
+- The first visual test confirmed the shield heart appeared but overlapped the armor row; the current fix moves it upward by 9 pixels. Validate row placement with ordinary and extended maximum health, shield health, body damage, and optional Overflowing Bars before calling it complete.
 
 ## Release and edit notes
 
