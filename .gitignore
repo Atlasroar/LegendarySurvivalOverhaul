@@ -28,4 +28,6 @@ src/generated/resources/.cache/cache
 /run-data/
 /src/generated/resources/.cache/
 /docs/
+!/docs/
+!/docs/Fabric-Port-Wiki.md
 /runs/

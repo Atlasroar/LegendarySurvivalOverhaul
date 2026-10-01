@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderBodyDamageGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderHealthGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderThirstGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderWetnessGui;
@@ -24,6 +25,8 @@ public final class FabricHudCallbacks {
         if (player == null)
             return;
 
+        RenderHealthGui.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
+                client.getWindow().getGuiScaledHeight());
         RenderThirstGui.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
                 client.getWindow().getGuiScaledHeight(), OverflowingBarsUtil.rightHeight(39));
         RenderTemperatureGui.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
