@@ -264,13 +264,14 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | `v1.20.1-2.4.7-fabric.10` | Reworks HUD render anchors and health-bar rendering; places broken hearts in the visible health row at foreground depth, gives shield hearts separate alternating rows, and moves armor only while shield rows are present. |
 | `v1.20.1-2.4.7-fabric.11` | Restores Fabric cutout rendering for the survival plants, corrects fern biome/substrate placement, increases plant feature frequency to once per 15 chunks, and enables water plants on farmland and grass. |
 | `v1.20.1-2.4.7-fabric.12` | Removes unsupported Origins integration and restores the Serene Seasons out-of-season bonemeal warning, verified in-game. |
+| `v1.20.1-2.4.7-fabric.13` | Fixes the sewing table not opening (`ExtendedScreenHandlerFactory` mismatch), restores vanilla heater/cooler fuel entries, fixes thermal fuel tick timing/persistence, and fixes sewing-table preview/advancement-timing bugs. User-verified: heater, cooler, sewing table opening, warm/cold string recipes, and coat application to armor. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.12`
-- SHA-256: `225D7F7A5EC9295FFF88A3E906767B6DD1D1BFD75AB68D532432650E81E9596E`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.12>
+- Tag: `v1.20.1-2.4.7-fabric.13`
+- SHA-256: `0B38E8D0E5626B8594136C2424E467C0F0DF1655DF65FC42A5491BF4DE8D5769`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.13>
 
 ## Feature and compatibility notes
 
