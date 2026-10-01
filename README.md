@@ -55,6 +55,7 @@ Current highlights:
 - Configured temperature immunity after death is validated for its 90-second default duration.
 - Absorption-to-shield conversion and Water Purifier effect blocking have passed initial in-game verification; shield depletion and the HUD presentation remain under further testing.
 - Vulnerability and Hard Falling damage adjustments have been verified in-game.
+- Configured player-health and body-part recovery after sleeping has been verified in-game.
 - Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.

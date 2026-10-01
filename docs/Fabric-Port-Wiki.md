@@ -145,7 +145,13 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - Restores the Forge sleep-finished recovery behavior when the server wakes sleepers after a successful night skip.
 - Players who slept long enough regain the configured ratio of each body part's maximum health and player maximum health. Broken-heart and maximum-health attributes are refreshed when applicable.
-- Java 17 Gradle build succeeded. In-game behavior still needs verification.
+- Java 17 Gradle build succeeded. The user confirmed sleep recovery behaves as intended in-game.
+
+### 17. Projectile headshots
+
+- Restores the configured unhelmeted headshot multiplier when projectile impact designation hits the head, with the Forge headshot sound.
+- Preserves Forge ordering: body-part damage is based on post-shield damage before the headshot multiplier is applied to remaining player health damage.
+- Java 17 build and in-game verification are pending.
 
 ## Release and edit notes
 
