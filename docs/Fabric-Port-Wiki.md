@@ -275,7 +275,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
 - Remaining Forge event edge cases and selected optional integrations.
-- Healing recovery over time needs further in-game validation.
+- Healing recovery over time is user-validated: a tonic applied Recovery II and gradually restored player health as expected.
 
 Do not describe excluded features as supported. Check `build.gradle` source exclusions and references from client/common initializers before restoring a class; removing an exclusion alone is not a port.
 
