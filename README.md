@@ -4,9 +4,9 @@
 
 **Make survival matter.** Legendary Survival Overhaul (LSO) adds configurable temperature, hydration, localized body damage, and health systems to Minecraft.
 
-[Modrinth project](https://modrinth.com/mod/legendary-survival-overhaul) · [Fabric test releases](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) · [Port and release notes](docs/Fabric-Port-Wiki.md) · [Community Discord](https://discord.gg/XPHtcP89P3) · [Guide](https://minecraft-legendary-edition.gitbook.io/minecraft-legendary-edition)
+[Modrinth project](https://modrinth.com/mod/legendary-survival-overhaul) · [Fabric releases](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) · [Port and release notes](docs/Fabric-Port-Wiki.md) · [Community Discord](https://discord.gg/XPHtcP89P3) · [Guide](https://minecraft-legendary-edition.gitbook.io/minecraft-legendary-edition)
 
-> **Fabric port status:** The current Fabric 1.20.1 build is an early prerelease, not feature-complete or feature-equivalent to the Forge version. It has been tested in a development client and visually tested by players; back up worlds before trying prereleases.
+> **Fabric port status:** The Fabric 1.20.1 build is now a full release. The port is feature-complete and every tracked gameplay slice is user-verified in a development client, pending further in-game testing (particularly multiplayer/dedicated-server scenarios). Back up worlds before updating.
 
 ## Screenshots
 
@@ -42,7 +42,7 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest prerelease is [**v1.20.1-2.4.7-fabric.14**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.14), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
+The latest release is [**v1.20.1-2.4.7-fabric.15**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.15), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**. This is the first full (non-prerelease) release of the Fabric port.
 
 Current highlights:
 
@@ -67,15 +67,16 @@ Current highlights:
 - Meds and Herbs compatibility is intentionally unsupported because the mod is Forge-only.
 - Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required.
 - Datapack-driven survival data loading and synchronization.
-- Optional shared HUD spacing with Overflowing Bars.
+- Optional shared HUD spacing with Overflowing Bars, including shield/armor row separation, broken-heart rendering, and vehicle-row gap correction, verified in-game.
+- The final Forge event-subscriber audit found no remaining behavioral gaps; all excluded Forge-only handlers have Fabric equivalents, are intentional feature drops, or are justified platform adaptations.
 
-The Fabric port is ongoing. Some Forge event behavior, data generators, and selected optional integrations are not yet included. See the [port wiki](docs/Fabric-Port-Wiki.md) for the migration history, known gaps, dependencies, and release-by-release notes.
+The Fabric port is feature-complete, pending further in-game testing (particularly multiplayer/dedicated-server scenarios). Forge-only data generators and selected optional integrations (Origins, Meds and Herbs) remain intentionally omitted. See the [port wiki](docs/Fabric-Port-Wiki.md) for the migration history, known gaps, dependencies, and release-by-release notes.
 
 Cold Hunger is a temperature-managed secondary effect: LSO applies it during dangerous cold and clears it when the player is no longer in that condition, so manually granting it with `/effect` outside dangerous cold will not keep it active for the requested duration.
 
 ## Installation
 
-Install the latest Fabric prerelease from the [GitHub releases page](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases), along with:
+Install the latest Fabric release from the [GitHub releases page](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases), along with:
 
 - Minecraft **1.20.1**
 - Fabric Loader
