@@ -52,7 +52,6 @@ sourceSets.main.java {
     exclude '**/common/events/CommonForgeEvents.java'
     exclude '**/common/events/CommonModBusEvents.java'
     exclude '**/client/events/ClientForgeEvents.java'
-    exclude '**/client/render/RenderHealthGui.java'
     exclude '**/client/render/RenderTemperatureOverlay.java'
     exclude '**/client/render/RenderTooltipFrame.java'
     exclude '**/client/render/RenderBlurOverlay.java'

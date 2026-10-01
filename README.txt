@@ -28,7 +28,13 @@ Port status
 -----------
 
 The current Fabric build is an early compatibility slice, not a feature-complete
-release. Forge-only HUD overlays, data generators, several Forge event handlers,
-and some optional integrations are still excluded or awaiting Fabric replacements.
-Runtime behavior has not yet been validated in a Minecraft client or server, so
-back up worlds before testing.
+release. The released HUD test build restores thirst, temperature, wetness, and
+body-damage indicators. The health-bar replacement, cold-hunger food overlay,
+some Forge event handlers, data generators, and selected optional integrations
+are still excluded or awaiting Fabric replacements.
+
+The client has been built and launched to an integrated world. Back up worlds
+before testing prereleases. See the versioned port wiki for the migration history,
+release notes, dependencies, test instructions, and remaining work:
+
+https://github.com/Atlasroar/LegendarySurvivalOverhaul/blob/1.20.1/docs/Fabric-Port-Wiki.md
