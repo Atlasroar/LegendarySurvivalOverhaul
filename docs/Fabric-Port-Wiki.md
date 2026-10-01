@@ -17,7 +17,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.9`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.9). It includes the verified tooltip restoration and previous Fabric port slices.
 
-The port is still incomplete. In particular, the health-bar replacement, some Forge event surfaces, data generation, and selected optional integrations still need Fabric replacements or an explicit decision to remain omitted.
+The port is still incomplete. The initial health-bar renderer and ordered HUD anchors are implemented but await in-game validation; some Forge event surfaces, data generation, and selected optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
 ## Step-by-step port history
 

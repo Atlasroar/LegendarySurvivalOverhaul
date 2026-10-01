@@ -38,7 +38,7 @@ Damage can affect specific body parts and cause secondary effects. Treat injurie
 
 ![Broken hearts](https://cdn.modrinth.com/data/cached_images/1d2c85437c1d9fa0e42882bbfb838e0469c7ad65.png)
 
-The health systems include additional, broken, resilient, permanent, and shield hearts. The current Fabric prerelease includes the shield/broken-heart HUD overlay; the full vanilla health-bar replacement is still being ported.
+The health systems include additional, broken, resilient, permanent, and shield hearts. The current Fabric HUD rewrite adds the Overflowing Bars-based health-bar rendering foundation and retains the shield/broken-heart overlay; in-game visual validation is pending.
 
 ## Current Fabric release
 
