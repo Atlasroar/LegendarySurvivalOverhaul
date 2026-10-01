@@ -5,10 +5,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyPartEnum;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.bodydamage.BodyDamageCapability;
+import sfiomn.legendarysurvivaloverhaul.common.integration.overflowingbars.OverflowingBarsUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 
@@ -27,32 +27,26 @@ public class RenderBodyDamageGui
 	private static final Map<BodyPartEnum, Integer> flashCounters = new HashMap<>();
 	private static final Map<BodyPartEnum, Float> bodyPartHealth = new HashMap<>();
 	
-	public static IGuiOverlay BODY_DAMAGE_GUI = (forgeGui, guiGraphics, partialTicks, width, height) -> {
-
+	public static void render(GuiGraphics guiGraphics, Player player, int width, int height) {
 		if (Config.Baked.localizedBodyDamageEnabled
 				&& !Minecraft.getInstance().options.hideGui
-				&& forgeGui.shouldDrawSurvivalElements()) {
-
-			Player player = forgeGui.getMinecraft().player;
-
-			if (player != null) {
-				forgeGui.setupOverlayRenderState(true, false);
-
+				&& !player.isCreative() && !player.isSpectator()) {
 				if (BODY_DAMAGE_CAP == null || player.tickCount % 20 == 0)
 					BODY_DAMAGE_CAP = CapabilityUtil.getBodyDamageCapability(player);
 
 				if (BODY_DAMAGE_CAP.isWoundedBelow((float) Config.Baked.bodyDamageIndicatorRenderHealthLimit)) {
 					Minecraft.getInstance().getProfiler().push("body_damage_gui");
-					drawBodyDamage(guiGraphics, player, BODY_DAMAGE_CAP, width, height);
+					drawBodyDamage(guiGraphics, player, BODY_DAMAGE_CAP, width, height,
+							OverflowingBarsUtil.rightHeight(39));
 					Minecraft.getInstance().getProfiler().pop();
+					OverflowingBarsUtil.reserveRightHeight(32);
 				}
-			}
 		}
-	};
+	}
 	
-	public static void drawBodyDamage(GuiGraphics gui, Player player, BodyDamageCapability cap, int width, int height) {
+	public static void drawBodyDamage(GuiGraphics gui, Player player, BodyDamageCapability cap, int width, int height, int rightHeight) {
 		int x = width / 2 + 92 + Config.Baked.bodyDamageIndicatorOffsetX;
-		int y = height - 33 + Config.Baked.bodyDamageIndicatorOffsetY;
+		int y = height - rightHeight + 6 + Config.Baked.bodyDamageIndicatorOffsetY;
 
 		if (!player.getOffhandItem().isEmpty() && player.getMainArm() == HumanoidArm.LEFT && Config.Baked.bodyDamageIndicatorOffsetX == 0 && Config.Baked.bodyDamageIndicatorOffsetY == 0)
 			x += 31;

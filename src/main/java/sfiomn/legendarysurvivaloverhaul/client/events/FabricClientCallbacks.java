@@ -27,6 +27,10 @@ import sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneS
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.config.json_old.JsonConfigRegistration;
 import sfiomn.legendarysurvivaloverhaul.client.network.FabricClientNetworkHandler;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderBodyDamageGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderThirstGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderWetnessGui;
 import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.KeyMappingRegistry;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
@@ -43,12 +47,14 @@ public final class FabricClientCallbacks {
     public static void register() {
         UseItemCallback.EVENT.register(FabricClientCallbacks::onUseItem);
         ClientTickEvents.END_CLIENT_TICK.register(FabricClientCallbacks::onEndClientTick);
+        FabricHudCallbacks.register();
     }
 
     private static void onEndClientTick(Minecraft client) {
         Player player = client.player;
         if (!client.isPaused() && player != null) {
             if (Config.Baked.temperatureEnabled) {
+                RenderTemperatureGui.updateTimer();
                 if (Config.Baked.coldBreathEffectThreshold != -1000)
                     TemperatureBreathEffect.tickPlay(player);
                 if (Config.Baked.breathingSoundEnabled)
@@ -56,9 +62,14 @@ public final class FabricClientCallbacks {
             }
 
             if (Config.Baked.localizedBodyDamageEnabled) {
+                RenderBodyDamageGui.updateFlashingTimer();
                 if (KeyMappingRegistry.showBodyHealth.consumeClick())
                     ClientHooks.openBodyHealthScreen(player);
             }
+            if (Config.Baked.thirstEnabled)
+                RenderThirstGui.updateTimer();
+            if (Config.Baked.wetnessEnabled)
+                RenderWetnessGui.updateTimer();
 
             if (LegendarySurvivalOverhaul.curiosLoaded && player.tickCount % 10 == 0)
                 CuriosUtil.isThermometerEquipped =
