@@ -166,11 +166,8 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 ### 20. Heat effect follow-up
 
-- The user reports cold effects trigger, while Heat Stroke and heat-related thirst do not appear to trigger as expected.
-- The common temperature tick applies the heat secondary effect at the `HEAT_STROKE` state (temperature 32.5+); Heat Stroke damage additionally requires active thirst and temperature 35+. Confirm those state/config gates before changing behavior.
-- The user confirmed both warning overlays fade and trigger their critical warnings and sounds at the forced heat/cold thresholds.
-- The user confirmed the temperature commands work; whether the effects apply at a forced threshold still needs separate verification.
-- Use `/temperature set 40` and `/temperature get` in a test world to isolate threshold/effect application from ambient temperature. Confirm temperature and heat/danger/secondary toggles, remove heat/temperature immunity effects, and use a non-Peaceful difficulty when checking damage.
+- The user confirmed Heat Thirst at a forced temperature of 34 and Heat Stroke with periodic damage at 40; both clear after returning to 20.
+- Test required Survival with thirst active, dangerous heat and secondary effects enabled, no heat/temperature immunity, and a non-Peaceful LSO difficulty. Heat Thirst starts at the `HEAT_STROKE` state (32.5+); Heat Stroke damage also requires at least 35 temperature.
 
 ### 21. Equipment resistance data modifiers
 
@@ -193,6 +190,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Clarified the tropical-season config comment, which previously contradicted itself.
 - After enabling `Tropical Seasons Enabled`, the user confirmed all temperate and Wet/Dry cards appear as intended.
 - Restored the Serene Seasons out-of-season bonemeal feedback through the Fabric block-use callback. The seasonal crop check only displays its existing warning and does not cancel vanilla bonemeal behavior.
+- The first bonemeal warning test did not show a warning. Investigation found Serene Seasons config had seasonal crops enabled but `out_of_season_crop_behavior = 0` (grow slowly), for which the existing warning condition is false. The test profile is now set to behavior `1` (can't grow); retry warning test is pending.
 
 ## Release and edit notes
 
