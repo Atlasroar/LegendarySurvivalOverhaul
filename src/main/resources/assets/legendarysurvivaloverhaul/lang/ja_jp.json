@@ -46,7 +46,7 @@
 
 	"item.legendarysurvivaloverhaul.thermometer": "温度計",
 	"tooltip.legendarysurvivaloverhaul.thermometer.description": "右クリックで世界の温度を表示",
-	"tooltip.legendarysurvivaloverhaul.thermometer.bauble_description": "装備スロットに着用すると体温を表示",
+	"tooltip.legendarysurvivaloverhaul.thermometer.trinket_description": "トリンケットとして装備すると体温を表示",
 	"item.legendarysurvivaloverhaul.seasonal_calendar": "季節カレンダー",
 	"item.legendarysurvivaloverhaul.nether_chalice": "ネザーの聖杯",
 	"tooltip.legendarysurvivaloverhaul.nether_chalice.description": "溶岩を飲めるようになる",

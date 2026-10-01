@@ -25,7 +25,7 @@ public class ItemRegistry {
 	public static final RegistryObject<Item> SEASONAL_CALENDAR = ITEMS.register("seasonal_calendar", () -> new SeasonalCalendarItem(new Item.Properties()));
 
 	public static final RegistryObject<Item> NETHER_CHALICE = ITEMS.register("nether_chalice", () -> new NetherChaliceItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
-	public static final RegistryObject<Item> SPONGE = ITEMS.register("sponge", () -> new WearableCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)) {
+	public static final RegistryObject<Item> SPONGE = ITEMS.register("sponge", () -> new WearableTrinketItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)) {
 
 		@Override
 		public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
@@ -34,10 +34,10 @@ public class ItemRegistry {
 			tooltipComponents.add(Component.translatable("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".sponge.description"));
 		}
 	});
-	public static final RegistryObject<Item> HEAT_RESISTANCE_RING = ITEMS.register("heat_resistance_ring", () -> new WearableCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> COLD_RESISTANCE_RING = ITEMS.register("cold_resistance_ring", () -> new WearableCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> THERMAL_RESISTANCE_RING = ITEMS.register("thermal_resistance_ring", () -> new WearableCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
-	public static final RegistryObject<Item> FIRST_AID_SUPPLIES = ITEMS.register("first_aid_supplies", () -> new WearableCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)) {
+	public static final RegistryObject<Item> HEAT_RESISTANCE_RING = ITEMS.register("heat_resistance_ring", () -> new WearableTrinketItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> COLD_RESISTANCE_RING = ITEMS.register("cold_resistance_ring", () -> new WearableTrinketItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> THERMAL_RESISTANCE_RING = ITEMS.register("thermal_resistance_ring", () -> new WearableTrinketItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
+	public static final RegistryObject<Item> FIRST_AID_SUPPLIES = ITEMS.register("first_aid_supplies", () -> new WearableTrinketItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)) {
 
 		@Override
 		public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
@@ -79,7 +79,7 @@ public class ItemRegistry {
 	public static final RegistryObject<Item> ICE_FERN_GOLD = ITEMS.register("ice_fern_gold_leaf", () -> new Item(new Item.Properties()));
 
 	// Thirst
-	public static final RegistryObject<Item> WATER_PURIFIER = ITEMS.register("water_purifier", () -> new WearableCurioItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)) {
+	public static final RegistryObject<Item> WATER_PURIFIER = ITEMS.register("water_purifier", () -> new WearableTrinketItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE)) {
 
 		@Override
 		public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {

@@ -22,7 +22,7 @@ import sfiomn.legendarysurvivaloverhaul.api.thirst.IThirstCapability;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.IThirstUtil;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
-import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
@@ -205,11 +205,9 @@ public class ThirstUtilInternal implements IThirstUtil {
 
             if (fluidRegistryName != null && !fluidState.isEmpty()) {
 
-                if (LegendarySurvivalOverhaul.curiosLoaded) {
-                    if (CuriosUtil.isCurioItemEquipped(player, ItemRegistry.NETHER_CHALICE.get()) &&
-                            (fluidState.is(Fluids.FLOWING_LAVA) || fluidState.is(Fluids.LAVA)))
-                        return new JsonThirstBlock(Config.Baked.hydrationLava, (float) Config.Baked.saturationLava, new ArrayList<>(), new HashMap<>());
-                }
+                if (TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.NETHER_CHALICE.get()) &&
+                        (fluidState.is(Fluids.FLOWING_LAVA) || fluidState.is(Fluids.LAVA)))
+                    return new JsonThirstBlock(Config.Baked.hydrationLava, (float) Config.Baked.saturationLava, new ArrayList<>(), new HashMap<>());
 
                 List<JsonThirstBlock> jsonBlockFluidThirsts = ThirstDataManager.getBlock(fluidRegistryName);
 

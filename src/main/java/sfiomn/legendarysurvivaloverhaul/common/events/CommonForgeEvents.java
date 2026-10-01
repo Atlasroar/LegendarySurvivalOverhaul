@@ -53,7 +53,7 @@ import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.health.HealthCapability;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.PlayerSurvivalComponents;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
-import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.medsandherbs.MedsAndHerbsUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.supplementaries.SupplementariesUtil;
 import sfiomn.legendarysurvivaloverhaul.common.items.heal.BodyHealingItem;
@@ -389,7 +389,7 @@ public class CommonForgeEvents {
                 event.setResult(Event.Result.DENY);
             }
             if (event.getEffectInstance().getEffect() == MobEffectRegistry.THIRST.get() &&
-                    CuriosUtil.isCurioItemEquipped(player, ItemRegistry.WATER_PURIFIER.get())) {
+                    TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.WATER_PURIFIER.get())) {
                 event.setResult(Event.Result.DENY);
             }
         }

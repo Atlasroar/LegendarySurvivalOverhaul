@@ -25,7 +25,7 @@ import sfiomn.legendarysurvivaloverhaul.util.WorldUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThermometerItem extends Item {
+public class ThermometerItem extends WearableTrinketItem {
     public ThermometerItem(Item.Properties properties){
         super(properties);
     }
@@ -54,8 +54,8 @@ public class ThermometerItem extends Item {
 
         if (KeyMappingRegistry.showAddedDesc.isDown()) {
             text.add(Component.translatable("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".thermometer.description"));
-            if (LegendarySurvivalOverhaul.curiosLoaded)
-                text.add(Component.translatable("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".thermometer.bauble_description"));
+            if (LegendarySurvivalOverhaul.trinketsLoaded)
+                text.add(Component.translatable("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".thermometer.trinket_description"));
 
         } else {
             text.add(Component.literal(ChatFormatting.GRAY + I18n.get("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".added_desc.activate", ChatFormatting.LIGHT_PURPLE, I18n.get(KeyMappingRegistry.showAddedDesc.getTranslatedKeyMessage().getString()), ChatFormatting.GRAY)));

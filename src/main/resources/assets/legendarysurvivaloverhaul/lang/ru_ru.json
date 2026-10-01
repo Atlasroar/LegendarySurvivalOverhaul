@@ -37,7 +37,7 @@
 
 "item.legendarysurvivaloverhaul.thermometer": "Градусник",
 "tooltip.legendarysurvivaloverhaul.thermometer.description": "ПКМ для показа температуры в мире.",
-"tooltip.legendarysurvivaloverhaul.thermometer.bauble_description": "Наденьте в качестве безделушки для отображения температуры тела.",
+"tooltip.legendarysurvivaloverhaul.thermometer.trinket_description": "Наденьте как аксессуар Trinkets, чтобы отображать температуру тела.",
 "item.legendarysurvivaloverhaul.seasonal_calendar": "Сезонный календарь",
 "item.legendarysurvivaloverhaul.nether_chalice": "Незерский потир",
 "tooltip.legendarysurvivaloverhaul.nether_chalice.description": "Обеспечивает возможность пить из Лавы.",

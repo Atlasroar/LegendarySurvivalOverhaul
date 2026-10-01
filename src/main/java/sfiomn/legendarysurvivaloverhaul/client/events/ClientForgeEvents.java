@@ -35,7 +35,7 @@ import sfiomn.legendarysurvivaloverhaul.client.render.*;
 import sfiomn.legendarysurvivaloverhaul.client.screens.WarningDataPackScreen;
 import sfiomn.legendarysurvivaloverhaul.client.sounds.TemperatureBreathSound;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
-import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.config.json_old.JsonConfigRegistration;
 import sfiomn.legendarysurvivaloverhaul.client.network.FabricClientNetworkHandler;
@@ -192,8 +192,8 @@ public class ClientForgeEvents {
                 if (Config.Baked.thirstEnabled && Config.Baked.showDrinkPreview)
                     RenderThirstGui.updateTimer();
 
-                if (LegendarySurvivalOverhaul.curiosLoaded && player.tickCount % 10 == 0)
-                    CuriosUtil.isThermometerEquipped = CuriosUtil.isCurioItemEquipped(player, ItemRegistry.THERMOMETER.get());
+                if (LegendarySurvivalOverhaul.trinketsLoaded && player.tickCount % 10 == 0)
+                    TrinketsUtil.isThermometerEquipped = TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.THERMOMETER.get());
             }
         }
     }

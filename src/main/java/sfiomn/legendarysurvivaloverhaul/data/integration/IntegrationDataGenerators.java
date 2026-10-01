@@ -5,7 +5,6 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.fml.ModList;
 import sfiomn.legendarysurvivaloverhaul.data.integration.providers.*;
 
 import java.util.concurrent.CompletableFuture;
@@ -43,12 +42,6 @@ public final class IntegrationDataGenerators {
         gen.addProvider(event.includeServer(), new CreateThirstProvider(packOutput, lookupProvider, existingFileHelper));
         gen.addProvider(event.includeServer(), new CrockpotTemperatureProvider(packOutput, lookupProvider, existingFileHelper));
         gen.addProvider(event.includeServer(), new CrockpotThirstProvider(packOutput, lookupProvider, existingFileHelper));
-
-        if (ModList.get().isLoaded("curios")) {
-            gen.addProvider(event.includeServer(), new CuriosProvider(packOutput, existingFileHelper, lookupProvider));
-            CuriosBlockTagProvider blockTagProvider = gen.addProvider(event.includeServer(), new CuriosBlockTagProvider(packOutput, lookupProvider, existingFileHelper));
-            gen.addProvider(event.includeServer(), new CuriosItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter(), existingFileHelper));
-        }
 
         gen.addProvider(event.includeServer(), new DecorativeBlocksTemperatureProvider(packOutput, lookupProvider, existingFileHelper));
         gen.addProvider(event.includeServer(), new EcologicsThirstProvider(packOutput, lookupProvider, existingFileHelper));

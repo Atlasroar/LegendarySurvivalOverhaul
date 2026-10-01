@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
-import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 
 import java.util.Optional;
@@ -26,7 +26,7 @@ public class ItemUtil {
             return slot == EquipmentSlot.OFFHAND;
         }
 
-        if (CuriosUtil.isCuriosItem(stack))
+        if (TrinketsUtil.isTrinketsItem(stack))
             return false;
 
         return slot == EquipmentSlot.MAINHAND || slot == EquipmentSlot.OFFHAND;

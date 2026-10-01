@@ -11,7 +11,7 @@ import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureEnum;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.temperature.TemperatureCapability;
-import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
@@ -59,13 +59,13 @@ public class RenderTemperatureGui
 				&& !player.isCreative() && !player.isSpectator()) {
 				rand.setSeed(player.tickCount * 445L);
                 if (Objects.requireNonNull(Config.Baked.temperatureDisplayMode) == EnumUtil.temperatureDisplayMode.SYMBOL
-						&& !CuriosUtil.isThermometerEquipped) {
+						&& !TrinketsUtil.isThermometerEquipped) {
 					Minecraft.getInstance().getProfiler().push("temperature_gui");
                     drawTemperatureAsSymbol(guiGraphics, player, width, height);
 					Minecraft.getInstance().getProfiler().pop();
                 }
 
-				if (LegendarySurvivalOverhaul.curiosLoaded && CuriosUtil.isThermometerEquipped) {
+				if (LegendarySurvivalOverhaul.trinketsLoaded && TrinketsUtil.isThermometerEquipped) {
 					Minecraft.getInstance().getProfiler().push("body_temperature_gui");
 					drawBodyTemperature(guiGraphics, player, width, height);
 					Minecraft.getInstance().getProfiler().pop();

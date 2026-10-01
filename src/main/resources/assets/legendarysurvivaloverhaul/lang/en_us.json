@@ -47,7 +47,7 @@
 
 	"item.legendarysurvivaloverhaul.thermometer": "Thermometer",
 	"tooltip.legendarysurvivaloverhaul.thermometer.description": "Right click to show the world temperature",
-	"tooltip.legendarysurvivaloverhaul.thermometer.bauble_description": "Wear as a bauble to render your body temperature",
+	"tooltip.legendarysurvivaloverhaul.thermometer.trinket_description": "Equip as a trinket to render your body temperature",
 	"item.legendarysurvivaloverhaul.seasonal_calendar": "Seasonal Calendar",
 	"item.legendarysurvivaloverhaul.nether_chalice": "Nether Chalice",
 	"tooltip.legendarysurvivaloverhaul.nether_chalice.description": "Allows you to drink Lava",

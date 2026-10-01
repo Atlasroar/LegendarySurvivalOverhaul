@@ -20,6 +20,10 @@ repositories {
         url = 'https://maven.ladysnake.org/releases'
     }
     maven {
+        name = 'TerraformersMC'
+        url = 'https://maven.terraformersmc.com/'
+    }
+    maven {
         name = 'Curse Maven'
         url = 'https://www.cursemaven.com'
     }
@@ -31,6 +35,7 @@ dependencies {
 
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    modImplementation "dev.emi:trinkets:${trinkets_version}"
     modApi "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_api_port_version}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cardinal_components_version}"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cardinal_components_version}"
@@ -58,9 +63,6 @@ sourceSets.main.java {
     exclude '**/client/shaders/FocusShader.java'
     exclude '**/client/integration/sereneseasons/RenderSeasonCards.java'
     exclude '**/client/tooltips/TooltipHandler.java'
-    exclude '**/common/integration/curios/CuriosEvents.java'
-    exclude '**/common/integration/curios/CuriosModifier.java'
-    exclude '**/common/integration/curios/CurioAttributeBuilder.java'
     exclude '**/common/integration/eclipticseasons/**'
     exclude '**/common/integration/origins/**'
     exclude '**/common/integration/jei/**'
