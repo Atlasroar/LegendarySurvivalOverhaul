@@ -218,7 +218,8 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The user confirmed in-game that loot, Purity anvil behavior, world feature generation, and plant transparency appear correct. This follow-up adjusts spawn frequency and water-plant substrates after that validation.
 - Restored Purity's anvil side effect in `AnvilMenuMixin`: a canteen output with the Purity enchantment immediately converts existing normal water to purified water without mutating the input stack. The old grindstone handler had no behavior beyond comments; purified contents already persist through enchantment removal.
 - Restored the Forge debug-filter scope so position/target information is hidden only outside Creative and Spectator modes.
-- Still omitted: Meds and Herbs integration (Forge-only and declined) and Forge-only datagen execution. Supplementaries has a Fabric 1.20.1 build and its lunch-basket delegates to the selected item's normal finish-use path, which LSO already handles; no adapter was needed. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`.
+- Meds and Herbs compatibility is closed as intentionally unsupported: it is Forge-only, and the user confirmed that Fabric compatibility can be dropped. No integration or generated medkit data is included in the Fabric port.
+- Still omitted: Forge-only datagen execution. Supplementaries has a Fabric 1.20.1 build and its lunch-basket delegates to the selected item's normal finish-use path, which LSO already handles; no adapter was needed. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`.
 - Origins-specific Fabric compatibility and generated data have been removed at the user's direction; Origins is intentionally unsupported in this port.
 - The out-of-season warning is injected into Serene Seasons' client-side `SeasonalCropGrowthHandler.applyBonemeal` event. Serene Seasons' Fabric/GlitchCore callback may cancel bonemeal client-side, so a server-side warning hook did not work. The user confirmed the warning with seasonal crops enabled and `out_of_season_crop_behavior = 1` (can't grow).
 
@@ -270,7 +271,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 ### Not yet restored or not fully validated
 
 - Overflowing Bars overlap and multi-row health/body-damage placement still need validation.
-- Optional Supplementaries and Meds and Herbs event integrations.
+- Optional Supplementaries event integration (no adapter needed for its standard item finish-use path).
 - Forge datagen task execution on Fabric; the generated data files used at runtime are checked into the repository.
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
