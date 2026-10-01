@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The current public artifact is [Fabric 1.20.1 HUD test build `v1.20.1-2.4.7-fabric.2`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.2). It contains the initial Fabric survival slice, startup fixes, and restored HUD indicators including thirst. The released HUD has built and reached an integrated world in development; the user has confirmed that release looks good. The in-progress next slice restores the custom shield/broken-heart overlay. Visual feedback found it overlapping the armor row; moving it up 9 pixels was then visually confirmed to clear the armor row.
+The current public artifact is [Fabric 1.20.1 health HUD test build `v1.20.1-2.4.7-fabric.3`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.3). It contains the initial Fabric survival slice, startup fixes, restored thirst/temperature/wetness/body-damage indicators, and the shield/broken-heart overlay. The user visually confirmed that moving the shield-heart overlay up 9 pixels clears the armor row while the vanilla hearts, thirst, and temperature HUD remain correct.
 
 The port is still incomplete. In particular, the health-bar replacement, cold-hunger food overlay, several Forge event surfaces, data generation, and some optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
@@ -76,12 +76,13 @@ These fixes were published in `v1.20.1-2.4.7-fabric.1`. Development validation b
 
 These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released HUD looks good. This does not mean every Forge HUD feature has been restored.
 
-### 8. Health shield and broken-heart overlay (in progress)
+### 8. Health shield and broken-heart overlay
 
 - Ported the custom health overlay from Forge's `IGuiOverlay` entry point to the Fabric HUD callback.
 - Reads and reserves the optional shared left HUD height for its additional shield/broken-heart rows; estimates vanilla health rows from maximum health when Overflowing Bars is absent.
 - Keeps vanilla hearts in place and draws only LSO's shield/broken-heart extension, gated by the health-overhaul config and survival HUD visibility.
 - The first visual test confirmed the shield heart appeared but overlapped the armor row. The 9-pixel upward adjustment was visually confirmed to clear the armor row while leaving the vanilla hearts and thirst/temperature HUD correct. Optional Overflowing Bars placement and multi-row health/body-damage cases still need testing.
+- Published in `v1.20.1-2.4.7-fabric.3`.
 
 ## Release and edit notes
 
@@ -92,13 +93,14 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | `v1.20.1-2.4.7-fabric` | First installable Fabric compatibility/test slice. Core items and survival systems were retained; several Forge-only systems and optional integrations were omitted. |
 | `v1.20.1-2.4.7-fabric.1` | Fixes startup/config/component-registration issues found by launcher testing; uses Forge Config API Port 8.0.3. |
 | `v1.20.1-2.4.7-fabric.2` | Restores thirst, temperature, wetness, and body-damage HUD indicators. Thirst Y placement was adjusted by -8 pixels. Health-bar replacement and cold-hunger food overlay remain omitted. |
+| `v1.20.1-2.4.7-fabric.3` | Adds the LSO shield/broken-heart HUD overlay. After visual feedback, the overlay was moved up 9 pixels to clear the armor row. Includes this versioned port wiki. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.2`
-- SHA-256: `3C18655FBBBB4D3E084ADBF431FF7D2FC032E2ECA9E4E993DD0DF8B3EB329E19`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.2>
+- Tag: `v1.20.1-2.4.7-fabric.3`
+- SHA-256: `3004A22555D42795303E706E138B01E089F8BAB7E307E95D642E15C75E74F087`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.3>
 
 ## Feature and compatibility notes
 
@@ -109,11 +111,12 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Fabric player survival components and selected lifecycle/gameplay hooks.
 - Server-data JSON reload listeners and 14-dataset client synchronization.
 - Thirst, temperature, wetness, and body-damage HUD indicators.
+- LSO shield/broken-heart HUD overlay (user-verified placement above the armor row).
 - Optional Overflowing Bars shared-height integration.
 
 ### Not yet restored or not fully validated
 
-- Shield/broken-heart placement in the newly ported health overlay still needs user visual validation.
+- Overflowing Bars overlap and multi-row health/body-damage placement still need validation.
 - Cold-hunger food-bar overlay.
 - Forge-specific health/thirst screen overlay ordering and remaining GUI effects.
 - Forge event subscriber behavior not yet represented by Fabric callbacks/mixins.

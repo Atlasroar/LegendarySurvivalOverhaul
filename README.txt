@@ -28,10 +28,11 @@ Port status
 -----------
 
 The current Fabric build is an early compatibility slice, not a feature-complete
-release. The released HUD test build restores thirst, temperature, wetness, and
-body-damage indicators. The health-bar replacement, cold-hunger food overlay,
-some Forge event handlers, data generators, and selected optional integrations
-are still excluded or awaiting Fabric replacements.
+release. The released HUD test build restores thirst, temperature, wetness,
+body-damage, and LSO shield/broken-heart indicators. The full health-bar
+replacement, cold-hunger food overlay, some Forge event handlers, data
+generators, and selected optional integrations are still excluded or awaiting
+Fabric replacements.
 
 The client has been built and launched to an integrated world. Back up worlds
 before testing prereleases. See the versioned port wiki for the migration history,
