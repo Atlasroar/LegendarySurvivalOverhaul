@@ -263,7 +263,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Configured thirst exhaustion from jumping, successful block breaking, and attacking is user-validated in `.5`; attack food exhaustion also works, and Creative/Spectator do not lose hydration from those triggers.
 - Localized body damage and healing items are user-validated in `.6`; hydration consumables work. The user confirmed melon juice applies Cold for 60 seconds and glistering melon juice applies Cold II for 3 minutes, with the stronger effect replacing the weaker one and temperature behavior responding accordingly.
 - Death-respawn temperature immunity is user-validated in `.7` at the configured default 90-second duration and remains active across Nether dimension changes.
-- The user confirmed the configured F3 debug filter hides debug values when enabled. The disabled setting still needs verification.
+- The user confirmed the configured F3 debug filter both hides debug values when enabled and restores them when disabled.
 - Item tooltips for hydration, consumable effects, and equipment temperature/resistance are restored and user-verified, including the Snow and Desert armor tooltip colors and values.
 - Optional Overflowing Bars shared-height integration.
 
