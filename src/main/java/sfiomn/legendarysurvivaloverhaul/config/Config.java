@@ -99,6 +99,14 @@ public class Config
 			bake(config.getSpec());
 		});
 
+		bake(CLIENT_SPEC);
+		bake(COMMON_SPEC);
+		bake(TEMPERATURE_SPEC);
+		bake(SEASONS_SPEC);
+		bake(THIRST_SPEC);
+		bake(HEALTH_SPEC);
+		bake(BODY_DAMAGE_SPEC);
+
 		JsonConfigRegistration.init(LegendarySurvivalOverhaul.modConfigJsons.toFile());
 	}
 

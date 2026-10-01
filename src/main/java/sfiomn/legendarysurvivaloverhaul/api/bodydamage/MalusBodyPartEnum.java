@@ -2,25 +2,52 @@ package sfiomn.legendarysurvivaloverhaul.api.bodydamage;
 
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 
-import java.util.List;
-
 public enum MalusBodyPartEnum {
-    HEAD(Config.Baked.headPartEffects, Config.Baked.headPartEffectAmplifiers, Config.Baked.headPartEffectThresholds),
-    ARMS(Config.Baked.armsPartEffects, Config.Baked.armsPartEffectAmplifiers, Config.Baked.armsPartEffectThresholds),
-    BOTH_ARMS(Config.Baked.bothArmsPartEffects, Config.Baked.bothArmsPartEffectAmplifiers, Config.Baked.bothArmsPartEffectThresholds),
-    CHEST(Config.Baked.chestPartEffects, Config.Baked.chestPartEffectAmplifiers, Config.Baked.chestPartEffectThresholds),
-    LEGS(Config.Baked.legsPartEffects, Config.Baked.legsPartEffectAmplifiers, Config.Baked.legsPartEffectThresholds),
-    BOTH_LEGS(Config.Baked.bothLegsPartEffects, Config.Baked.bothLegsPartEffectAmplifiers, Config.Baked.bothLegsPartEffectThresholds),
-    FEET(Config.Baked.feetPartEffects, Config.Baked.feetPartEffectAmplifiers, Config.Baked.feetPartEffectThresholds),
-    BOTH_FEET(Config.Baked.bothFeetPartEffects, Config.Baked.bothFeetPartEffectAmplifiers, Config.Baked.bothFeetPartEffectThresholds);
+    HEAD,
+    ARMS,
+    BOTH_ARMS,
+    CHEST,
+    LEGS,
+    BOTH_LEGS,
+    FEET,
+    BOTH_FEET;
 
-    public final List<? extends String> effects;
-    public final List<? extends Integer> amplifiers;
-    public final List<? extends Double> thresholds;
+    public java.util.List<? extends String> effects() {
+        return switch (this) {
+            case HEAD -> Config.Baked.headPartEffects;
+            case ARMS -> Config.Baked.armsPartEffects;
+            case BOTH_ARMS -> Config.Baked.bothArmsPartEffects;
+            case CHEST -> Config.Baked.chestPartEffects;
+            case LEGS -> Config.Baked.legsPartEffects;
+            case BOTH_LEGS -> Config.Baked.bothLegsPartEffects;
+            case FEET -> Config.Baked.feetPartEffects;
+            case BOTH_FEET -> Config.Baked.bothFeetPartEffects;
+        };
+    }
 
-    MalusBodyPartEnum(List<? extends String> effects, List<? extends Integer> amplifiers, List<? extends Double> thresholds) {
-        this.effects = effects;
-        this.amplifiers = amplifiers;
-        this.thresholds = thresholds;
+    public java.util.List<? extends Integer> amplifiers() {
+        return switch (this) {
+            case HEAD -> Config.Baked.headPartEffectAmplifiers;
+            case ARMS -> Config.Baked.armsPartEffectAmplifiers;
+            case BOTH_ARMS -> Config.Baked.bothArmsPartEffectAmplifiers;
+            case CHEST -> Config.Baked.chestPartEffectAmplifiers;
+            case LEGS -> Config.Baked.legsPartEffectAmplifiers;
+            case BOTH_LEGS -> Config.Baked.bothLegsPartEffectAmplifiers;
+            case FEET -> Config.Baked.feetPartEffectAmplifiers;
+            case BOTH_FEET -> Config.Baked.bothFeetPartEffectAmplifiers;
+        };
+    }
+
+    public java.util.List<? extends Double> thresholds() {
+        return switch (this) {
+            case HEAD -> Config.Baked.headPartEffectThresholds;
+            case ARMS -> Config.Baked.armsPartEffectThresholds;
+            case BOTH_ARMS -> Config.Baked.bothArmsPartEffectThresholds;
+            case CHEST -> Config.Baked.chestPartEffectThresholds;
+            case LEGS -> Config.Baked.legsPartEffectThresholds;
+            case BOTH_LEGS -> Config.Baked.bothLegsPartEffectThresholds;
+            case FEET -> Config.Baked.feetPartEffectThresholds;
+            case BOTH_FEET -> Config.Baked.bothFeetPartEffectThresholds;
+        };
     }
 }

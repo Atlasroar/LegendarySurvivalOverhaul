@@ -18,6 +18,11 @@
       "sfiomn.legendarysurvivaloverhaul.common.capabilities.PlayerSurvivalComponents"
     ]
   },
+  "custom": {
+    "cardinal-components": [
+      "legendarysurvivaloverhaul:player_survival"
+    ]
+  },
   "mixins": [
     "legendarysurvivaloverhaul.mixins.json"
   ],

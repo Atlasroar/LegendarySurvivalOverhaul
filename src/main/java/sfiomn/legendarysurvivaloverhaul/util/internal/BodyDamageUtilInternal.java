@@ -68,28 +68,31 @@ public class BodyDamageUtilInternal implements IBodyDamageUtil {
     public static void initMalusConfig() {
         for (MalusBodyPartEnum malus: MalusBodyPartEnum.values()) {
             Map<Float, Pair<MobEffect, Integer>> malusEffects = new HashMap<>();
-            if (malus.effects.size() != malus.amplifiers.size() || malus.effects.size() != malus.thresholds.size()) {
+            List<? extends String> effects = malus.effects();
+            List<? extends Integer> amplifiers = malus.amplifiers();
+            List<? extends Double> thresholds = malus.thresholds();
+            if (effects.size() != amplifiers.size() || effects.size() != thresholds.size()) {
                 LegendarySurvivalOverhaul.LOGGER.debug("{} effects, amplifiers and thresholds elements number doesn't match. The last elements won't be used.", malus.name());
             }
 
-            for (int i=0; i<malus.effects.size(); i++) {
-                MobEffect malusEffect = BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(malus.effects.get(i)));
+            for (int i=0; i<effects.size(); i++) {
+                MobEffect malusEffect = BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(effects.get(i)));
                 int malusAmplifier;
                 float malusThreshold;
                 if (malusEffect == null) {
-                    LegendarySurvivalOverhaul.LOGGER.debug("Unknown effect {} for {}", malus.effects.get(i), malus.name());
+                    LegendarySurvivalOverhaul.LOGGER.debug("Unknown effect {} for {}", effects.get(i), malus.name());
                     continue;
                 }
                 try {
-                    malusAmplifier = Math.abs(malus.amplifiers.get(i));
+                    malusAmplifier = Math.abs(amplifiers.get(i));
                 } catch (IndexOutOfBoundsException e) {
-                    LegendarySurvivalOverhaul.LOGGER.debug("No amplifier defined for effect {} in {}", malus.effects.get(i), malus.name());
+                    LegendarySurvivalOverhaul.LOGGER.debug("No amplifier defined for effect {} in {}", effects.get(i), malus.name());
                     continue;
                 }
                 try {
-                    malusThreshold = (float) Mth.clamp(malus.thresholds.get(i), 0.0f, 1.0f);
+                    malusThreshold = (float) Mth.clamp(thresholds.get(i), 0.0f, 1.0f);
                 } catch (IndexOutOfBoundsException e) {
-                    LegendarySurvivalOverhaul.LOGGER.debug("No threshold defined for effect {} in {}", malus.thresholds.get(i), malus.name());
+                    LegendarySurvivalOverhaul.LOGGER.debug("No threshold defined for effect {} in {}", thresholds.get(i), malus.name());
                     continue;
                 }
                 malusEffects.put(malusThreshold, Pair.of(malusEffect, malusAmplifier));

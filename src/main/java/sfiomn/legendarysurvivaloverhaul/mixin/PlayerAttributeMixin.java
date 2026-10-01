@@ -13,6 +13,7 @@ public abstract class PlayerAttributeMixin {
     @Inject(method = "createAttributes", at = @At("RETURN"))
     private static void legendarysurvivaloverhaul$addAttributes(
             CallbackInfoReturnable<AttributeSupplier.Builder> callback) {
+        AttributeRegistry.register();
         AttributeSupplier.Builder attributes = callback.getReturnValue();
         attributes
                 .add(AttributeRegistry.HEATING_TEMPERATURE.get())
