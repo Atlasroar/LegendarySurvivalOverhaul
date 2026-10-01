@@ -204,8 +204,8 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Adapted Overflowing Bars' health renderer and imported its icon sheet for LSO's health-overhaul HUD when Overflowing Bars itself is absent. If the optional mod is loaded, its own health rendering remains authoritative; the existing ObjectShare spacing integration is retained.
 - Used Puzzles Lib's per-element rendering hooks as a design reference. Its Fabric mixin does not expose hooks for the combined health/armor/food/air status-bar pass, so LSO uses local anchors rather than adding Puzzles Lib as a runtime dependency.
 - The user confirmed vanilla health rendering at 40 health, including extra rows and vanilla effect styles; armor toughness also does not overlap the armor bar. They reported that LSO shield/broken hearts still conflict with the armor row, especially after temporary extra health is lost.
-- The shield/broken-heart display now reserves its own row and shifts vanilla armor icons upward according to the number of active LSO shield/broken-heart rows. It uses the actual capability values each render frame so armor spacing follows shield depletion and injury recovery rather than relying on max health alone.
-- The correction builds successfully but needs another in-game check at 20 and 40 health, with shield active/depleted and with broken hearts remaining after extra health is lost.
+- The first spacing correction shifted both the armor row and LSO hearts into the same row. The latest correction anchors LSO hearts at the vanilla armor-row position while moving armor above them; the armor shift is derived from the same broken/shield heart count and append setting as the renderer.
+- The latest correction builds successfully but needs another in-game check at 20 and 40 health, with shield active/depleted and with broken hearts remaining after extra health is lost.
 - Third-party attribution, Overflowing Bars' MPL-2.0 text, and the separately authorized asset notice are included under `src/main/resources/META-INF/licenses/`.
 
 ## Release and edit notes

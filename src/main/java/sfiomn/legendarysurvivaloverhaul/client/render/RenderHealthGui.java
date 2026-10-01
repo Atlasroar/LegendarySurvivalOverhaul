@@ -66,7 +66,7 @@ public class RenderHealthGui
 			return;
 
 		int left = width / 2 - 91; // Same x offset as the health bar
-		int top = height - leftHeight + HEALTH_BAR_VERTICAL_OFFSET - 10;
+		int top = height - leftHeight + HEALTH_BAR_VERTICAL_OFFSET;
 
 		int playerHearts = 0;
 
@@ -102,9 +102,15 @@ public class RenderHealthGui
 		if (HEALTH_CAP == null || player.tickCount % 20 == 0)
 			HEALTH_CAP = CapabilityUtil.getHealthCapability(player);
 
-		int additionalHearts = HealthUtil.getEffectiveBrokenHearts(player)
-				+ Mth.ceil(HEALTH_CAP.getShieldHealth() / 2.0F);
-		return additionalHearts > 0 ? Mth.ceil(additionalHearts / 10.0F) : 0;
+		int additionalHearts = Mth.ceil(HEALTH_CAP.getShieldHealth() / 2.0F)
+				+ HealthUtil.getEffectiveBrokenHearts(player);
+		int precedingHearts = 0;
+		if (Config.Baked.appendBrokenShieldHeartsToHealthBar) {
+			precedingHearts = Mth.ceil(player.getMaxHealth() / 2.0F) % 10;
+		}
+
+		int totalHearts = additionalHearts + precedingHearts;
+		return totalHearts > 0 ? Mth.ceil(totalHearts / 10.0F) : 0;
 	}
 
 	public static void renderHearts(GuiGraphics gui, int left, int top, int rowHeight, int playerHearts, int brokenHearts, int health, float shieldHealth, int healthBlinkTimer) {
