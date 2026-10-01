@@ -104,13 +104,14 @@ public abstract class AbstractThermalBlockEntity extends BaseContainerBlockEntit
         }
 
 
-        if (entity.tickCount > 20) {
+        if (++entity.tickCount >= 20) {
             entity.tickCount = 0;
 
             boolean initiallyLit = entity.isLit();
             boolean needRefresh = false;
             if (entity.isLit()) {
                 entity.consumeFuel();
+                entity.setChanged();
             }
 
             if (!entity.isLit() && !level.isClientSide) {
@@ -131,11 +132,10 @@ public abstract class AbstractThermalBlockEntity extends BaseContainerBlockEntit
             }
         }
 
-        entity.tickCount++;
     }
 
     private void consumeFuel() {
-        this.fuelTime -= 20;
+        this.fuelTime = Math.max(0, this.fuelTime - 20);
     }
 
     public void refillFuel() {
@@ -146,6 +146,7 @@ public abstract class AbstractThermalBlockEntity extends BaseContainerBlockEntit
                     this.fuelTime = fuelValue;
                     this.fuelDuration = fuelValue;
                     getItem(i).shrink(1);
+                    this.setChanged();
                     return;
                 }
             }
@@ -228,7 +229,11 @@ public abstract class AbstractThermalBlockEntity extends BaseContainerBlockEntit
     @NotNull
     @Override
     public ItemStack removeItem(int slot, int amount) {
-        return ContainerHelper.removeItem(this.items, slot, amount);
+        ItemStack itemStack = ContainerHelper.removeItem(this.items, slot, amount);
+        if (!itemStack.isEmpty()) {
+            this.setChanged();
+        }
+        return itemStack;
     }
 
     @NotNull
@@ -243,6 +248,7 @@ public abstract class AbstractThermalBlockEntity extends BaseContainerBlockEntit
         if (stack.getCount() > this.getMaxStackSize()) {
             stack.setCount(this.getMaxStackSize());
         }
+        this.setChanged();
     }
 
     @Override
@@ -253,6 +259,7 @@ public abstract class AbstractThermalBlockEntity extends BaseContainerBlockEntit
     @Override
     public void clearContent() {
         this.items.clear();
+        this.setChanged();
     }
 
     @Override

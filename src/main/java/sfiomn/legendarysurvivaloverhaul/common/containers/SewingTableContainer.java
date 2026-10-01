@@ -34,10 +34,12 @@ public class SewingTableContainer extends ItemCombinerMenu {
     public static final int RESULT_SLOT = 2;
     @Nullable
     private SewingRecipe selectedRecipe;
+    private boolean coatApplicationPending;
 
     //  Constructor specified in registry
     public SewingTableContainer(int windowId, Inventory playerInventory, FriendlyByteBuf data) {
-        this(windowId, playerInventory, ContainerLevelAccess.NULL);
+        this(windowId, playerInventory, ContainerLevelAccess.create(
+                playerInventory.player.level(), data.readBlockPos()));
     }
 
     //  Constructor specified in Sewing Table block
@@ -57,10 +59,13 @@ public class SewingTableContainer extends ItemCombinerMenu {
     public void createResult() {
         SimpleContainer simpleContainerInputSlots = new SimpleContainer(this.inputSlots.getContainerSize());
         for (int i=0; i<this.inputSlots.getContainerSize(); i++) {
-            simpleContainerInputSlots.addItem(this.inputSlots.getItem(i));
+            simpleContainerInputSlots.setItem(i, this.inputSlots.getItem(i).copy());
         }
         List<SewingRecipe> sewingRecipes = this.player.level().getRecipeManager().getRecipesFor(SewingRecipe.Type.INSTANCE, simpleContainerInputSlots, this.player.level());
         ItemStack itemStack = ItemStack.EMPTY;
+        this.selectedRecipe = null;
+        this.coatApplicationPending = false;
+        this.resultSlots.setRecipeUsed(null);
 
         //  Check if we should proceed to a coat application
         if (!isItemArmor(inputSlots.getItem(INPUT_SLOT)) || !isItemCoat(inputSlots.getItem(ADDITIONAL_SLOT))) {
@@ -84,15 +89,7 @@ public class SewingTableContainer extends ItemCombinerMenu {
                     itemStack = this.inputSlots.getItem(INPUT_SLOT).copy();
                     CoatItem coatItem = (CoatItem) inputSlots.getItem(ADDITIONAL_SLOT).getItem();
                     TemperatureUtil.setArmorCoatTag(itemStack, coatItem.coat.id());
-                    if (player instanceof ServerPlayer serverPlayer) {
-                        Advancement sewCoatAdvancement = serverPlayer.server.getAdvancements().getAdvancement(
-                                new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "main/sew_a_coat"));
-                        if (sewCoatAdvancement != null) {
-                            for (String criteria: serverPlayer.getAdvancements().getOrStartProgress(sewCoatAdvancement).getRemainingCriteria()) {
-                                serverPlayer.getAdvancements().award(sewCoatAdvancement, criteria);
-                            }
-                        }
-                    }
+                    this.coatApplicationPending = true;
                 }
             }
         }
@@ -113,11 +110,25 @@ public class SewingTableContainer extends ItemCombinerMenu {
     protected void onTake(Player player, ItemStack itemStack) {
         itemStack.onCraftedBy(player.level(), player, itemStack.getCount());
         this.resultSlots.awardUsedRecipes(player, Collections.singletonList(itemStack));
+        if (this.coatApplicationPending && player instanceof ServerPlayer serverPlayer) {
+            awardCoatAdvancement(serverPlayer);
+        }
+        this.coatApplicationPending = false;
 
         this.shrinkStackInSlot(INPUT_SLOT);
         this.shrinkStackInSlot(ADDITIONAL_SLOT);
 
         this.player.level().playSound((Player) null, player.blockPosition(), SoundRegistry.SEWING_TABLE.get(), SoundSource.BLOCKS);
+    }
+
+    private static void awardCoatAdvancement(ServerPlayer player) {
+        Advancement advancement = player.server.getAdvancements().getAdvancement(
+                new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "main/sew_a_coat"));
+        if (advancement != null) {
+            for (String criterion : player.getAdvancements().getOrStartProgress(advancement).getRemainingCriteria()) {
+                player.getAdvancements().award(advancement, criterion);
+            }
+        }
     }
 
     @Override

@@ -223,6 +223,28 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Origins-specific Fabric compatibility and generated data have been removed at the user's direction; Origins is intentionally unsupported in this port.
 - The out-of-season warning is injected into Serene Seasons' client-side `SeasonalCropGrowthHandler.applyBonemeal` event. Serene Seasons' Fabric/GlitchCore callback may cancel bonemeal client-side, so a server-side warning hook did not work. The user confirmed the warning with seasonal crops enabled and `out_of_season_crop_behavior = 1` (can't grow).
 
+## Current next-work plan after `.12`
+
+### Closed or already verified
+
+- Origins and Meds and Herbs are intentionally unsupported; no Fabric adapter work remains for either.
+- Supplementaries' ordinary lunch-basket finish-use flow is covered by LSO's existing item-finish hook, so no Supplementaries-specific adapter is planned.
+- Temperature consumables, tonic recovery over time, the F3 filter in both states, and death-respawn immunity across dimension changes are user-verified.
+- Vanilla heater and cooler fuel data is present in the generated resources. The listener must retain vanilla entries as well as optional-mod entries.
+
+### Active slice: heater, cooler, and sewing table
+
+1. Source-audit fixes are implemented: sewing previews preserve inputs, the sew-a-coat advancement is awarded only when its result is taken, the duplicate-coat warning checks for an actual coat, and thermal fuel timing/persistence is corrected.
+2. The user confirmed the heater and cooler work as expected in-game. Heater multiblock drops and fuel persistence remain to be checked.
+3. The sewing interaction failure was traced to registering an `ExtendedScreenHandlerType` but opening it through `SimpleMenuProvider`. It now opens through `ExtendedScreenHandlerFactory` and sends the table position to the client. The user confirmed the table now opens, both the warm/cold string recipes craft correctly, and applying a crafted coat item (e.g. `heating_coat_1`) to armor in the sewing table works as expected. The static per-item resistance line shown in item tooltips (e.g. Desert Cap's "+1.5 Heat Resistance") is the item's own intrinsic resistance value and is intentionally separate from the coat's runtime attribute bonus; this matches the original design, not a regression.
+
+### Remaining port-wide validation
+
+- Validate Overflowing Bars overlap and multi-row health/body-damage placement, plus overlap with other third-party HUDs.
+- Exercise multiplayer and dedicated-server behavior beyond the networking paths already tested in an integrated world.
+- Continue checking remaining Forge event edge cases where Fabric behavior has not yet been specifically verified.
+- Forge datagen task execution remains omitted; checked-in generated runtime resources are used by the Fabric build, so restoring that developer workflow is not a gameplay prerequisite.
+
 ## Release and edit notes
 
 All current artifacts are prereleases for testing, not claims of feature parity with Forge. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
@@ -270,13 +292,13 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 
 ### Not yet restored or not fully validated
 
+- Heater multiblock drop behavior (breaking the base vs. top block) and thermal fuel persistence across save/reload.
 - Overflowing Bars overlap and multi-row health/body-damage placement still need validation.
-- Optional Supplementaries event integration (no adapter needed for its standard item finish-use path).
-- Forge datagen task execution on Fabric; the generated data files used at runtime are checked into the repository.
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
-- Remaining Forge event edge cases and selected optional integrations.
-- Healing recovery over time is user-validated: a tonic applied Recovery II and gradually restored player health as expected.
+- Remaining Forge event edge cases where behavior has not yet been specifically verified.
+
+Forge datagen execution remains omitted as a developer workflow; generated resources used at runtime are checked into the repository. Origins and Meds and Herbs are intentionally unsupported, and Supplementaries requires no special adapter for its standard item finish-use path.
 
 Do not describe excluded features as supported. Check `build.gradle` source exclusions and references from client/common initializers before restoring a class; removing an exclusion alone is not a port.
 
