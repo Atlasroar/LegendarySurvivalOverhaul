@@ -192,6 +192,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The first Wet/Dry card test used `Tropical Seasons Enabled = false`, which selects normal seasons rather than Wet/Dry cards. The test profile option was enabled for the follow-up.
 - Clarified the tropical-season config comment, which previously contradicted itself.
 - After enabling `Tropical Seasons Enabled`, the user confirmed all temperate and Wet/Dry cards appear as intended.
+- Restored the Serene Seasons out-of-season bonemeal feedback through the Fabric block-use callback. The seasonal crop check only displays its existing warning and does not cancel vanilla bonemeal behavior.
 
 ## Release and edit notes
 

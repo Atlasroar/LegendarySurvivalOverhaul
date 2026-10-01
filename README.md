@@ -61,6 +61,7 @@ Current highlights:
 - Equipment item-data modifiers for temperature resistance and localized body-part resistance are restored for vanilla equipment and LSO Trinkets; the user confirmed they work as expected in-game.
 - Heat-stroke and frostbite warning overlays and sounds are restored and verified in-game. Heat Stroke and heat-related thirst gameplay effects remain a separate investigation.
 - Optional Serene Seasons season cards are restored on Fabric; the user verified temperate Spring/Summer/Autumn/Winter cards and tropical Wet/Dry cards in-game.
+- Serene Seasons now also displays its out-of-season bonemeal warning on Fabric.
 - Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.
