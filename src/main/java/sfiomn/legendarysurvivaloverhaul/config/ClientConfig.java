@@ -175,8 +175,8 @@ public class ClientConfig
 
 		builder.push("health-overhaul");
 		appendBrokenShieldHeartsToHealthBar = builder
-				.comment(" If enabled, will try to append the broken and shield hearts at the end of the Health Bar.",
-						" A compat is made with overflowing-bars mod.")
+				.comment(" If enabled, renders broken hearts in the unused health slots.",
+						" Shield hearts use a separate row and move the armor row when present.")
 				.define("Append Broken/Shield Hearts To Health Bar", true);
 		builder.pop();
 	}

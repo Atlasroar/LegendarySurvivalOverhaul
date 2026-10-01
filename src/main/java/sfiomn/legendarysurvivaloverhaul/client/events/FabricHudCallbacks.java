@@ -1,6 +1,5 @@
 package sfiomn.legendarysurvivaloverhaul.client.events;
 
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
@@ -17,11 +16,7 @@ public final class FabricHudCallbacks {
     private FabricHudCallbacks() {
     }
 
-    public static void register() {
-        HudRenderCallback.EVENT.register(FabricHudCallbacks::render);
-    }
-
-    private static void render(GuiGraphics guiGraphics, float tickDelta) {
+    public static void renderAfterStatusBars(GuiGraphics guiGraphics) {
         Minecraft client = Minecraft.getInstance();
         Player player = client.player;
         if (player == null)
@@ -37,6 +32,14 @@ public final class FabricHudCallbacks {
                 client.getWindow().getGuiScaledHeight());
         RenderBodyDamageGui.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
                 client.getWindow().getGuiScaledHeight());
+    }
+
+    public static void renderAfterGui(GuiGraphics guiGraphics) {
+        Minecraft client = Minecraft.getInstance();
+        Player player = client.player;
+        if (player == null)
+            return;
+
         RenderTemperatureGui.renderColdHungerOverlay(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
                 client.getWindow().getGuiScaledHeight());
         RenderTemperatureOverlay.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),

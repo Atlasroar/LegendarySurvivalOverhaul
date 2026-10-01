@@ -16,7 +16,8 @@
     "ItemStackTooltipMixin",
     "DebugScreenOverlayMixin",
     "PostChainAccessor",
-    "GameRendererAccessor"
+    "GameRendererAccessor",
+    "GuiHudLayersMixin"
   ],
   "injectors": {
     "defaultRequire": 1

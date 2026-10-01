@@ -38,11 +38,11 @@ Damage can affect specific body parts and cause secondary effects. Treat injurie
 
 ![Broken hearts](https://cdn.modrinth.com/data/cached_images/1d2c85437c1d9fa0e42882bbfb838e0469c7ad65.png)
 
-The health systems include additional, broken, resilient, permanent, and shield hearts. The current Fabric prerelease includes the shield/broken-heart HUD overlay; the full vanilla health-bar replacement is still being ported.
+The health systems include additional, broken, resilient, permanent, and shield hearts. The current Fabric HUD rewrite adds the Overflowing Bars-based health-bar rendering foundation; the user confirmed vanilla health layers and effects work at 40 health. Broken hearts are now drawn in the health row's lost-health slots, while shield hearts use separate alternating yellow/orange rows that move armor upward. This layout update awaits in-game verification.
 
 ## Current Fabric release
 
-The latest prerelease is [**v1.20.1-2.4.7-fabric.8**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.8), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
+The latest prerelease is [**v1.20.1-2.4.7-fabric.9**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.9), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
 
 Current highlights:
 
@@ -61,7 +61,7 @@ Current highlights:
 - Equipment item-data modifiers for temperature resistance and localized body-part resistance are restored for vanilla equipment and LSO Trinkets; the user confirmed they work as expected in-game.
 - Heat-stroke and frostbite warning overlays/sounds and Heat Stroke/heat-driven thirst effects are restored and verified in-game at forced thresholds.
 - Optional Serene Seasons season cards are restored on Fabric; the user verified temperate Spring/Summer/Autumn/Winter cards and tropical Wet/Dry cards in-game.
-- Item tooltips for hydration and consumable effects are user-verified, including Rotten Flesh and all Refreshing enchantment levels tested. Temperature tooltip support works for tested items except the Snow and Desert armor sets; their missing data-driven resistance lines are being addressed.
+- Item tooltips are user-verified for hydration and consumable effects, including Rotten Flesh and Refreshing enchantment levels I-III, and for temperature modifiers with appropriate colors and values on Snow and Desert armor.
 - Serene Seasons' out-of-season bonemeal warning remains unverified after multiple attempts and is deferred as a low-priority issue.
 - Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required.
 - Datapack-driven survival data loading and synchronization.
