@@ -57,7 +57,8 @@ Current highlights:
 - Vulnerability and Hard Falling damage adjustments have been verified in-game.
 - Configured player-health and body-part recovery after sleeping has been verified in-game.
 - The configurable F3 coordinate/debug-information filter is restored on Fabric; the user confirmed F3 debug values are hidden when enabled.
-- Low-hydration vision blur is restored using the vanilla post-processing effect; in-game verification is pending.
+- Low-hydration vision blur is restored using the vanilla post-processing effect and has been verified in-game.
+- Heat Stroke and heat-related thirst behavior are under investigation after the user reported they do not trigger as expected; the full-screen heat/cold overlay remains unported.
 - Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.

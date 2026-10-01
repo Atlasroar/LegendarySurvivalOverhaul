@@ -162,7 +162,14 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - Restored the client option that gradually applies the vanilla `blobs2` post effect as hydration falls below the configured threshold, and clears LSO's effect when hydration recovers or the player enters Creative/Spectator.
 - The Fabric implementation does not replace another active post effect.
-- Java 17 build and in-game verification are pending.
+- Java 17 build succeeded. The user confirmed the effect behaves as intended in-game.
+
+### 20. Heat effect follow-up
+
+- The user reports cold effects trigger, while Heat Stroke and heat-related thirst do not appear to trigger as expected.
+- The common temperature tick applies the heat secondary effect at the `HEAT_STROKE` state (temperature 32.5+); Heat Stroke damage additionally requires active thirst and temperature 35+. Confirm those state/config gates before changing behavior.
+- The Forge full-screen heat/cold overlay and its warning sounds remain excluded from Fabric; do not treat their absence as evidence that the common temperature effects failed.
+- Use `/temperature set 40` and `/temperature get` in a test world to isolate threshold/effect application from ambient temperature. Confirm temperature and heat/danger/secondary toggles, remove heat/temperature immunity effects, and use a non-Peaceful difficulty when checking damage. In-game follow-up is pending.
 
 ## Release and edit notes
 
