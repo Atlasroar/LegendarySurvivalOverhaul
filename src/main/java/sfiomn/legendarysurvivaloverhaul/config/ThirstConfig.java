@@ -23,11 +23,6 @@ public class ThirstConfig
 	public final ForgeConfigSpec.DoubleValue saturationLava;
 	public final ForgeConfigSpec.BooleanValue glassBottleLootAfterDrink;
 
-	// Integration
-	public final ForgeConfigSpec.IntValue hydrationLavaBlazeborn;
-	public final ForgeConfigSpec.DoubleValue saturationLavaBlazeborn;
-	public final ForgeConfigSpec.DoubleValue extraThirstExhaustionShulk;
-	public final ForgeConfigSpec.DoubleValue extraThirstExhaustionPhantom;
 	public final ForgeConfigSpec.BooleanValue thirstEnabledIfVampire;
 
 	ThirstConfig(ForgeConfigSpec.Builder builder)
@@ -100,34 +95,6 @@ public class ThirstConfig
 		glassBottleLootAfterDrink = builder
 				.comment(" Whether the player retrieves a glass bottle after drinking a juice.")
 				.define("Glass Bottle Loot After Drinking A Juice", true);
-		builder.pop();
-
-		builder.push("integration");
-		builder.push("origins");
-
-		builder.comment(" Temperature won't increase while on fire",
-						" Immune to wetness",
-						" Can drink lava")
-				.push("blazeborn");
-		hydrationLavaBlazeborn = builder
-				.comment(" Amount of hydration recovered when drinking from lava.")
-				.defineInRange("Lava Hydration For Blazeborn", 3, 0, 20);
-		saturationLavaBlazeborn = builder
-				.comment(" Amount of saturation recovered when drinking from lava.")
-				.defineInRange("Lava Saturation For Blazeborn", 1.0, 0, 20);
-		builder.pop();
-
-		builder.comment(" Thirst depletes slightly faster").push("shulk");
-		extraThirstExhaustionShulk = builder
-				.comment(" Amount of thirst exhaustion added every 20 ticks.")
-				.defineInRange("Extra Thirst Exhaustion For Shulk", 0.1, 0, 1000);
-		builder.pop();
-
-		builder.comment(" Thirst depletes slightly faster").push("phantom");
-		extraThirstExhaustionPhantom = builder
-				.comment(" Amount of thirst exhaustion added every 20 ticks.")
-				.defineInRange("Extra Thirst Exhaustion For Phantom", 0.1, 0, 1000);
-		builder.pop();
 		builder.pop();
 
 		builder.push("vampirism");

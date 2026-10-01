@@ -18,7 +18,6 @@ import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureDimensionLis
 import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureFuelItemListener;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureItemListener;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureMountListener;
-import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureOriginListener;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.ThirstBlockListener;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.ThirstConsumableListener;
 
@@ -46,7 +45,6 @@ public final class FabricDataSyncHandler {
         TemperatureFuelItemListener.sendDataToClient(player);
         TemperatureItemListener.sendDataToClient(player);
         TemperatureMountListener.sendDataToClient(player);
-        TemperatureOriginListener.sendDataToClient(player);
         BodyDamageHealingConsumableListener.sendDataToClient(player);
         BodyPartsDamageSourceListener.sendDataToClient(player);
         BodyPartResistanceItemListener.sendDataToClient(player);

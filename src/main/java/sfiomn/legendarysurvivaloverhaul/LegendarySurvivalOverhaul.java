@@ -13,7 +13,6 @@ import sfiomn.legendarysurvivaloverhaul.api.health.HealthUtil;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
 import sfiomn.legendarysurvivaloverhaul.api.wetness.WetnessUtil;
-import sfiomn.legendarysurvivaloverhaul.common.integration.jsonConfig.JsonIntegrationConfigRegistration;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.ModCapabilities;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.*;
 import sfiomn.legendarysurvivaloverhaul.common.events.CanteenInteractionHandler;
@@ -43,7 +42,6 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 	public static boolean surviveLoaded;
 	public static boolean trinketsLoaded;
 	public static boolean vampirismLoaded;
-	public static boolean originsLoaded;
 	public static boolean mutantMonstersLoaded;
 	public static boolean supplementariesLoaded;
 	public static boolean artifactsLoaded;
@@ -81,7 +79,6 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		FabricLootHooks.register();
 		FabricSurvivalCallbacks.register();
 		FabricWorldGenerationHooks.register();
-		registerIntegrations();
 
 		BodyDamageUtilInternal.initMalusConfig();
 		BodyDamageUtilInternal.initLimbEffects();
@@ -123,7 +120,6 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		TemperatureFuelItemListener temperatureFuelItems = new TemperatureFuelItemListener();
 		TemperatureDimensionListener temperatureDimensions = new TemperatureDimensionListener();
 		TemperatureMountListener temperatureMounts = new TemperatureMountListener();
-		TemperatureOriginListener temperatureOrigins = new TemperatureOriginListener();
 		ThirstConsumableListener thirstConsumables = new ThirstConsumableListener();
 		ThirstBlockListener thirstBlocks = new ThirstBlockListener();
 		BodyPartsDamageSourceListener bodyPartsDamageSources = new BodyPartsDamageSourceListener();
@@ -138,7 +134,6 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		TemperatureDataManager.internalFuelItem = temperatureFuelItems;
 		TemperatureDataManager.internalDimension = temperatureDimensions;
 		TemperatureDataManager.internalMount = temperatureMounts;
-		TemperatureDataManager.internalOrigin = temperatureOrigins;
 		ThirstDataManager.internalConsumable = thirstConsumables;
 		ThirstDataManager.internalBlock = thirstBlocks;
 		BodyDamageDataManager.internalBodyPartsDamageSource = bodyPartsDamageSources;
@@ -153,7 +148,6 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		FabricReloadListener.register(id("temperature/fuel_items"), temperatureFuelItems);
 		FabricReloadListener.register(id("temperature/dimensions"), temperatureDimensions);
 		FabricReloadListener.register(id("temperature/mounts"), temperatureMounts);
-		FabricReloadListener.register(id("temperature/origins"), temperatureOrigins);
 		FabricReloadListener.register(id("thirst/consumables"), thirstConsumables);
 		FabricReloadListener.register(id("thirst/blocks"), thirstBlocks);
 		FabricReloadListener.register(id("body_damage/damage_sources"), bodyPartsDamageSources);
@@ -165,8 +159,4 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		return new ResourceLocation(MOD_ID, path);
 	}
 
-	private static void registerIntegrations()
-	{
-		JsonIntegrationConfigRegistration.init(modIntegrationConfigJsons.toFile());
-	}
 }

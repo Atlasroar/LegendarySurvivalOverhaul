@@ -303,10 +303,6 @@ public class Config
 		public static int hydrationLava;
 		public static double saturationLava;
 		public static boolean glassBottleLootAfterDrink;
-		public static int hydrationLavaBlazeborn;
-		public static double saturationLavaBlazeborn;
-		public static double extraThirstExhaustionShulk;
-		public static double extraThirstExhaustionPhantom;
 		public static boolean thirstEnabledIfVampire;
 
 		// Health Overhaul
@@ -597,10 +593,6 @@ public class Config
 				hydrationLava = THIRST.hydrationLava.get();
 				saturationLava = THIRST.saturationLava.get();
 				glassBottleLootAfterDrink = THIRST.glassBottleLootAfterDrink.get();
-				hydrationLavaBlazeborn = THIRST.hydrationLavaBlazeborn.get();
-				saturationLavaBlazeborn = THIRST.saturationLavaBlazeborn.get();
-				extraThirstExhaustionShulk = THIRST.extraThirstExhaustionShulk.get();
-				extraThirstExhaustionPhantom = THIRST.extraThirstExhaustionPhantom.get();
 				thirstEnabledIfVampire = THIRST.thirstEnabledIfVampire.get();
 			}
 			catch (Exception e)
