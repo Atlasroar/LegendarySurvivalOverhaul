@@ -94,7 +94,10 @@ public class RenderHealthGui
 	}
 
 	public static void renderHeart(GuiGraphics gui, HeartType heartType, int x, int y, int yTexture, boolean halfIcon) {
+		gui.pose().pushPose();
+		gui.pose().translate(0.0F, 0.0F, 0.04F);
 		gui.blit(heartType.location, x, y, heartType.getX(halfIcon), yTexture, 9, 9);
+		gui.pose().popPose();
 	}
 
 	private enum HeartType {
