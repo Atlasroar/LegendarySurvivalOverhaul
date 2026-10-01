@@ -18,7 +18,8 @@
     "DebugScreenOverlayMixin",
     "PostChainAccessor",
     "GameRendererAccessor",
-    "GuiHudLayersMixin"
+    "GuiHudLayersMixin",
+    "SereneSeasonsBonemealMixin"
   ],
   "injectors": {
     "defaultRequire": 1

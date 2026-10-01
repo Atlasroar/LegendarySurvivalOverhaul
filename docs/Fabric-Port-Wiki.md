@@ -189,7 +189,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The first Wet/Dry card test used `Tropical Seasons Enabled = false`, which selects normal seasons rather than Wet/Dry cards. The test profile option was enabled for the follow-up.
 - Clarified the tropical-season config comment, which previously contradicted itself.
 - After enabling `Tropical Seasons Enabled`, the user confirmed all temperate and Wet/Dry cards appear as intended.
-- The out-of-season bonemeal warning uses Serene Seasons' full namespaced crop IDs and is checked in LSO's server-side Fabric block-use callback. This avoids relying on the BoneMealItem mixin path; the warning still needs in-game verification with seasonal crops enabled and `out_of_season_crop_behavior = 1` (can't grow).
+- The warning is injected into Serene Seasons' own client-side `SeasonalCropGrowthHandler.applyBonemeal` event. Its Fabric/GlitchCore callback can cancel the interaction client-side, so a server-side warning is never sent for blocked crops. Crop fertility uses Serene Seasons' full namespaced IDs. In-game verification is still needed with seasonal crops enabled and `out_of_season_crop_behavior = 1` (can't grow).
 
 ### 24. Item tooltips
 
