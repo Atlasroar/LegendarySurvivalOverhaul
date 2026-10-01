@@ -3,8 +3,11 @@ package sfiomn.legendarysurvivaloverhaul.common.capabilities;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.Level;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyDamageUtil;
 import sfiomn.legendarysurvivaloverhaul.api.health.HealthUtil;
@@ -16,6 +19,7 @@ import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapabil
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessCapability;
 import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
+import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 
 public class ModCapabilities
@@ -26,10 +30,34 @@ public class ModCapabilities
 				.forEach(player -> onPlayerTick(player, TickPhase.START)));
 		ServerTickEvents.END_SERVER_TICK.register(server -> server.getPlayerList().getPlayers()
 				.forEach(player -> onPlayerTick(player, TickPhase.END)));
-		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> syncPlayerState(handler.player));
+		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+			initializePlayer(handler.player);
+			syncPlayerState(handler.player);
+		});
 		ServerPlayerEvents.COPY_FROM.register(ModCapabilities::copyPlayerState);
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, player, alive) -> syncPlayerState(player));
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> syncPlayerState(player));
+		ServerWorldEvents.LOAD.register((server, world) -> {
+			if (world.dimension() == Level.OVERWORLD)
+				world.getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION)
+						.set(Config.Baked.naturalRegenerationEnabled, server);
+		});
+	}
+
+	private static void initializePlayer(net.minecraft.server.level.ServerPlayer player) {
+		PlayerSurvivalComponent survival = PlayerSurvivalComponents.PLAYER_SURVIVAL.get(player);
+		if (Config.Baked.temperatureImmunityOnFirstSpawnEnabled && Config.Baked.temperatureEnabled
+				&& !survival.tempImmuneOnSpawn()) {
+			survival.setTempImmuneOnSpawn(true);
+			player.addEffect(new MobEffectInstance(MobEffectRegistry.TEMPERATURE_IMMUNITY.get(),
+					Config.Baked.temperatureImmunityOnFirstSpawnTime, 0, false, false, true));
+		}
+
+		if (Config.Baked.healthOverhaulEnabled)
+			HealthUtil.initializeHealthAttributes(player);
+
+		HealthUtil.updatePlayerMaxHealthAttribute(player);
+		BodyDamageUtil.updatePlayerBrokenHeartAttribute(player);
 	}
 
 	public static void onPlayerTick(Player player, TickPhase phase)
