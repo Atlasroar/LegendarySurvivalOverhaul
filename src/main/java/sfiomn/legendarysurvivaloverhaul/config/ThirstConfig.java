@@ -103,6 +103,5 @@ public class ThirstConfig
 						" If disabled, the thirst system will be disabled for vampires.")
 				.define("Thirst Enabled If Vampire", false);
 		builder.pop();
-		builder.pop();
 	}
 }
