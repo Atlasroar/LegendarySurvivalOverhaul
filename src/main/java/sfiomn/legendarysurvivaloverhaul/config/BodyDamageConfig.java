@@ -120,7 +120,7 @@ public class BodyDamageConfig
 				.define("Passive Limb Regeneration On Full Health", true);
 		passiveLimbRegenerationEffects = builder
 				.comment(" The limbs will be healed when the player is under one of the mentioned effect, the most damaged limb first.")
-				.defineListAllowEmpty("Passive Limb Regeneration On Effects", List.of("minecraft:regeneration", "farmersdelight:comfort"), Config::validateEffectName);
+				.defineList("Passive Limb Regeneration On Effects", List.of("minecraft:regeneration", "farmersdelight:comfort"), Config::validateEffectName);
 		passiveLimbRegenerationAmplificationEnabled = builder
 				.comment(" Whether the amplification of the effect increase the limb regeneration speed.",
 						" The speed increase follows the same logic as the Regeneration Effect Amplification :",
@@ -175,7 +175,7 @@ public class BodyDamageConfig
 				.define("First Aid Supplies Exhausts Food", true);
 		firstAidSuppliesBoostedOnEffects = builder
 				.comment(" The First Aid Supplies will heal limbs faster when the player is under one of the mentioned effect.")
-				.defineListAllowEmpty("First Aid Supplies Boosted On Effects", List.of("minecraft:regeneration", "farmersdelight:comfort"), Config::validateEffectName);
+				.defineList("First Aid Supplies Boosted On Effects", List.of("minecraft:regeneration", "farmersdelight:comfort"), Config::validateEffectName);
 		firstAidSuppliesBoostedTickTimerMultiplier = builder
 				.comment(" How much the First Aid Supplies tick timer is multiplied when boosted. ",
 						" A value of 1 would deactivate the speed boost. 0.5 makes the heal twice faster.")
@@ -239,47 +239,47 @@ public class BodyDamageConfig
 				.push("head");
 		headPartEffects = builder
 				.comment(" The list of effects that will be triggered when the head is damaged by the percentage of remaining head health defined in the thresholds.")
-				.defineListAllowEmpty("Head Part Effects", List.of(LegendarySurvivalOverhaul.MOD_ID + ":headache"), Config::validateEffectName);
+				.defineList("Head Part Effects", List.of(LegendarySurvivalOverhaul.MOD_ID + ":headache"), Config::validateEffectName);
 		headPartEffectAmplifiers = builder
 				.comment(" The list of amplifiers the effect will have.",
 						" 0 means the basic effect, 1 means the effect is amplified once.")
-				.defineListAllowEmpty("Head Part Effect Amplifiers", List.of(0), Config::validatePositiveInt);
+				.defineList("Head Part Effect Amplifiers", List.of(0), Config::validatePositiveInt);
 		headPartEffectThresholds = builder
 				.comment(" The list of thresholds for which each effect will be triggered. A threshold is a percentage of remaining head health.",
 						" 0 means the head is fully damaged.")
-				.defineListAllowEmpty("Head Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
+				.defineList("Head Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
 		builder.pop();
 		builder.push("arms");
-		armsPartEffects = builder.defineListAllowEmpty("Arms Part Effects", List.of("minecraft:mining_fatigue"), Config::validateEffectName);
-		armsPartEffectAmplifiers = builder.defineListAllowEmpty("Arms Part Effect Amplifiers", List.of(0), Config::validatePositiveInt);
-		armsPartEffectThresholds = builder.defineListAllowEmpty("Arms Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
+		armsPartEffects = builder.defineList("Arms Part Effects", List.of("minecraft:mining_fatigue"), Config::validateEffectName);
+		armsPartEffectAmplifiers = builder.defineList("Arms Part Effect Amplifiers", List.of(0), Config::validatePositiveInt);
+		armsPartEffectThresholds = builder.defineList("Arms Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
 		bothArmsPartEffects = builder
 				.comment(" These effects will be triggered when both arms reach the thresholds.",
 						" If a same effect is used with a higher amplifier, the higher prevails (normal Minecraft behaviour).")
-				.defineListAllowEmpty("Both Arms Part Effects", List.of("minecraft:weakness"), Config::validateEffectName);
-		bothArmsPartEffectAmplifiers = builder.defineListAllowEmpty("Both Arms Part Effect Amplifiers", List.of(0), Config::validatePositiveInt);
-		bothArmsPartEffectThresholds = builder.defineListAllowEmpty("Both Arms Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
+				.defineList("Both Arms Part Effects", List.of("minecraft:weakness"), Config::validateEffectName);
+		bothArmsPartEffectAmplifiers = builder.defineList("Both Arms Part Effect Amplifiers", List.of(0), Config::validatePositiveInt);
+		bothArmsPartEffectThresholds = builder.defineList("Both Arms Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
 		builder.pop();
 		builder.push("chest");
-		chestPartEffects = builder.defineListAllowEmpty("Chest Part Effects", List.of(LegendarySurvivalOverhaul.MOD_ID + ":vulnerability"), Config::validateEffectName);
-		chestPartEffectAmplifiers = builder.defineListAllowEmpty("Chest Part Effect Amplifier", List.of(0), Config::validatePositiveInt);
-		chestPartEffectThresholds = builder.defineListAllowEmpty("Chest Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
+		chestPartEffects = builder.defineList("Chest Part Effects", List.of(LegendarySurvivalOverhaul.MOD_ID + ":vulnerability"), Config::validateEffectName);
+		chestPartEffectAmplifiers = builder.defineList("Chest Part Effect Amplifier", List.of(0), Config::validatePositiveInt);
+		chestPartEffectThresholds = builder.defineList("Chest Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
 		builder.pop();
 		builder.push("legs");
-		legsPartEffects = builder.defineListAllowEmpty("Legs Part Effects", List.of(LegendarySurvivalOverhaul.MOD_ID + ":hard_falling"), Config::validateEffectName);
-		legsPartEffectAmplifiers = builder.defineListAllowEmpty("Legs Part Effect Amplifiers", List.of(0), Config::validatePositiveInt);
-		legsPartEffectThresholds = builder.defineListAllowEmpty("Legs Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
-		bothLegsPartEffects = builder.defineListAllowEmpty("Both Legs Part Effects", List.of(LegendarySurvivalOverhaul.MOD_ID + ":hard_falling"), Config::validateEffectName);
-		bothLegsPartEffectAmplifiers = builder.defineListAllowEmpty("Both Legs Part Effect Amplifiers", List.of(1), Config::validatePositiveInt);
-		bothLegsPartEffectThresholds = builder.defineListAllowEmpty("Both Legs Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
+		legsPartEffects = builder.defineList("Legs Part Effects", List.of(LegendarySurvivalOverhaul.MOD_ID + ":hard_falling"), Config::validateEffectName);
+		legsPartEffectAmplifiers = builder.defineList("Legs Part Effect Amplifiers", List.of(0), Config::validatePositiveInt);
+		legsPartEffectThresholds = builder.defineList("Legs Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
+		bothLegsPartEffects = builder.defineList("Both Legs Part Effects", List.of(LegendarySurvivalOverhaul.MOD_ID + ":hard_falling"), Config::validateEffectName);
+		bothLegsPartEffectAmplifiers = builder.defineList("Both Legs Part Effect Amplifiers", List.of(1), Config::validatePositiveInt);
+		bothLegsPartEffectThresholds = builder.defineList("Both Legs Part Effect Thresholds", List.of(0.2), Config::validatePercentDouble);
 		builder.pop();
 		builder.push("feet");
-		feetPartEffects = builder.defineListAllowEmpty("Feet Part Effects", Collections.singletonList("minecraft:slowness"), Config::validateEffectName);
-		feetPartEffectAmplifiers = builder.defineListAllowEmpty("Feet Part Effect Amplifiers", Collections.singletonList(0), Config::validatePositiveInt);
-		feetPartEffectThresholds = builder.defineListAllowEmpty("Feet Part Effect Thresholds", Collections.singletonList(0.2), Config::validatePercentDouble);
-		bothFeetPartEffects = builder.defineListAllowEmpty("Both Feet Part Effects", Collections.singletonList("minecraft:slowness"), Config::validateEffectName);
-		bothFeetPartEffectAmplifiers = builder.defineListAllowEmpty("Both Feet Part Effect Amplifiers", Collections.singletonList(1), Config::validatePositiveInt);
-		bothFeetPartEffectThresholds = builder.defineListAllowEmpty("Both Feet Part Effect Thresholds", Collections.singletonList(0.2), Config::validatePercentDouble);
+		feetPartEffects = builder.defineList("Feet Part Effects", Collections.singletonList("minecraft:slowness"), Config::validateEffectName);
+		feetPartEffectAmplifiers = builder.defineList("Feet Part Effect Amplifiers", Collections.singletonList(0), Config::validatePositiveInt);
+		feetPartEffectThresholds = builder.defineList("Feet Part Effect Thresholds", Collections.singletonList(0.2), Config::validatePercentDouble);
+		bothFeetPartEffects = builder.defineList("Both Feet Part Effects", Collections.singletonList("minecraft:slowness"), Config::validateEffectName);
+		bothFeetPartEffectAmplifiers = builder.defineList("Both Feet Part Effect Amplifiers", Collections.singletonList(1), Config::validatePositiveInt);
+		bothFeetPartEffectThresholds = builder.defineList("Both Feet Part Effect Thresholds", Collections.singletonList(0.2), Config::validatePercentDouble);
 		builder.pop();
 		builder.pop();
 

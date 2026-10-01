@@ -14,7 +14,6 @@ import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyDamageUtil;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyPartEnum;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonHealingConsumable;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.BodyDamageDataManager;
-import sfiomn.legendarysurvivaloverhaul.common.integration.supplementaries.SupplementariesUtil;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.SoundRegistry;
 
@@ -61,12 +60,6 @@ public class BodyPartHealingTimeMessage
         boolean shouldApplyEffect = nbt.getBoolean("applyEffect");
 
         ItemStack usedItemStack = player.getItemInHand(hand);
-        if (LegendarySurvivalOverhaul.supplementariesLoaded) {
-            ItemStack itemStackInBasket = SupplementariesUtil.getSelectedItemInLunchBasket(player.getItemInHand(hand));
-            if (itemStackInBasket != ItemStack.EMPTY)
-                usedItemStack = itemStackInBasket;
-        }
-
         ResourceLocation itemStackRegistryName = new ResourceLocation(healingItem);
         JsonHealingConsumable jhc = BodyDamageDataManager.getHealingItem(itemStackRegistryName);
 

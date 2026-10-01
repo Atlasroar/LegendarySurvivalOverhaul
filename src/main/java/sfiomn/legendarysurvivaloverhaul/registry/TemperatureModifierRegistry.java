@@ -2,7 +2,7 @@ package sfiomn.legendarysurvivaloverhaul.registry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryKey;
+import net.minecraft.resources.ResourceKey;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.AttributeModifierBase;
@@ -55,7 +55,7 @@ public class TemperatureModifierRegistry
 	}
 
 	private static <T> Registry<T> createRegistry(ResourceLocation identifier) {
-		RegistryKey<Registry<T>> key = RegistryKey.createRegistryKey(identifier);
+		ResourceKey<Registry<T>> key = ResourceKey.createRegistryKey(identifier);
 		return FabricRegistryBuilder.<T>createSimple(key).buildAndRegister();
 	}
 }

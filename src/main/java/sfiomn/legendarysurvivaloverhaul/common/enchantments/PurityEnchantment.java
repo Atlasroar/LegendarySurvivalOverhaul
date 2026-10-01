@@ -34,18 +34,7 @@ public class PurityEnchantment extends Enchantment {
     }
     
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        // Purity cannot be obtained from enchanting table
-        return false;
-    }
-    
-    @Override
     public boolean isTreasureOnly() {
-        return true;
-    }
-    
-    @Override
-    public boolean isAllowedOnBooks() {
         return true;
     }
 }

@@ -6,8 +6,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
@@ -16,7 +14,6 @@ import sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneS
 
 public class SeasonalCalendarSeasonTypeProperty implements ClampedItemPropertyFunction {
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public float unclampedCall(@NotNull ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity entity, int i)
     {
@@ -45,8 +42,6 @@ public class SeasonalCalendarSeasonTypeProperty implements ClampedItemPropertyFu
                     SereneSeasonsUtil.SeasonType seasonType = SereneSeasonsUtil.getSeasonType(level.getBiome(holder.blockPosition()));
                     d0 = seasonType.propertyValue;
 
-                } else if (LegendarySurvivalOverhaul.eclipticSeasonsLoaded) {
-                    d0 = 0.3f;
                 }
 
                 return d0;

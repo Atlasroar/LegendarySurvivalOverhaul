@@ -65,6 +65,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		modIntegrationConfigJsons = modConfigJsons.resolve("integration");
 		sereneSeasonsLoaded = FabricLoader.getInstance().isModLoaded("sereneseasons");
 		betterDaysLoaded = FabricLoader.getInstance().isModLoaded("betterdays");
+		overflowingbarsLoaded = FabricLoader.getInstance().isModLoaded("overflowingbars");
 
 		Config.register();
 		FabricServerNetworkHandler.register();

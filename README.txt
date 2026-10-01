@@ -20,3 +20,12 @@ Run a development client
 Run `gradlew runClient` on Windows or `./gradlew runClient` on macOS/Linux.
 
 Configuration files are stored in `config/legendarysurvivaloverhaul`.
+
+Port status
+-----------
+
+The current Fabric build is an early compatibility slice, not a feature-complete
+release. Forge-only HUD overlays, data generators, several Forge event handlers,
+and some optional integrations are still excluded or awaiting Fabric replacements.
+Runtime behavior has not yet been validated in a Minecraft client or server, so
+back up worlds before testing.

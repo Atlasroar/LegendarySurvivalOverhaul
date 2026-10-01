@@ -52,7 +52,7 @@ public class ThermometerItem extends Item {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
         List<MutableComponent> text = new ArrayList<>();
 
-        if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), KeyMappingRegistry.showAddedDesc.getKey().getValue())) {
+        if (KeyMappingRegistry.showAddedDesc.isDown()) {
             text.add(Component.translatable("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".thermometer.description"));
             if (LegendarySurvivalOverhaul.curiosLoaded)
                 text.add(Component.translatable("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".thermometer.bauble_description"));

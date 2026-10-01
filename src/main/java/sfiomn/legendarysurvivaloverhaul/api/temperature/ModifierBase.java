@@ -99,7 +99,7 @@ public abstract class ModifierBase {
 		return Mth.lerp(WorldUtil.getUndergroundEffectAtPos(level, pos), temperature, undergroundTemperature);
 	}
 
-	protected float getHumidityForBiome(Biome biome)
+	protected float getHumidityForBiome(Level level, Biome biome)
 	{
 		// Get the biome's humidity
 		// Dry biomes have humidity below 0.2
@@ -111,7 +111,7 @@ public abstract class ModifierBase {
 			return biomeInfo.isDry ? 0.1f : 0.5f;
 		}
 
-		return biome.getModifiedClimateSettings().downfall();
+		return biome.hasPrecipitation() ? 0.5f : 0.1f;
 	}
 
 	// Clamp and normalize the temperature

@@ -22,16 +22,18 @@ import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.api.block.ThermalTypeEnum;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureFuelItem;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.TemperatureDataManager;
 import sfiomn.legendarysurvivaloverhaul.common.blocks.ThermalBlock;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractThermalBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible {
+public abstract class AbstractThermalBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer, StackedContentsCompatible, ExtendedScreenHandlerFactory {
     protected NonNullList<ItemStack> items;
     protected final ContainerData dataAccess;
     private int fuelTime;
@@ -75,6 +77,10 @@ public abstract class AbstractThermalBlockEntity extends BaseContainerBlockEntit
     @Override
     public abstract @NotNull AbstractContainerMenu createMenu(int id, @NotNull Inventory inventory);
 
+    @Override
+    public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buffer) {
+        buffer.writeBlockPos(this.worldPosition);
+    }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, AbstractThermalBlockEntity entity) {
         if (level == null) {
@@ -213,19 +219,19 @@ public abstract class AbstractThermalBlockEntity extends BaseContainerBlockEntit
         return true;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ItemStack getItem(int slot) {
         return this.items.get(slot);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ItemStack removeItem(int slot, int amount) {
         return ContainerHelper.removeItem(this.items, slot, amount);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public ItemStack removeItemNoUpdate(int slot) {
         return ContainerHelper.takeItem(this.items, slot);

@@ -8,14 +8,9 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.registries.RegistryObject;
 import sfiomn.legendarysurvivaloverhaul.api.block.ThermalTypeEnum;
 import sfiomn.legendarysurvivaloverhaul.common.blockentities.AbstractThermalBlockEntity;
+import sfiomn.legendarysurvivaloverhaul.registry.RegistryObject;
 
 public abstract class AbstractThermalContainer extends AbstractContainerMenu {
 
@@ -34,21 +29,17 @@ public abstract class AbstractThermalContainer extends AbstractContainerMenu {
 
         layoutPlayerInventorySlots(playerInventory, 8, 84);
 
-        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(iItemHandler -> {
-            addSlot(addThermalSlot(iItemHandler, 0, 14, 32));
-            addSlot(addThermalSlot(iItemHandler, 1, 34, 32));
-            addSlot(addThermalSlot(iItemHandler, 2, 14, 52));
-            addSlot(addThermalSlot(iItemHandler, 3, 34, 52));
-        });
+        for (int slot = 0; slot < AbstractThermalBlockEntity.SLOT_COUNT; slot++)
+            addSlot(addThermalSlot(slot, 14 + slot % 2 * 20, 32 + slot / 2 * 20));
 
         addDataSlots(dataAccess);
     }
 
-    private SlotItemHandler addThermalSlot(IItemHandler ih, int index, int posX, int posY) {
-        return new SlotItemHandler(ih, index, posX, posY) {
+    private Slot addThermalSlot(int index, int posX, int posY) {
+        return new Slot(this.blockEntity, index, posX, posY) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return ih.isItemValid(index, stack);
+                return blockEntity.canPlaceItem(index, stack);
             }
         };
     }
@@ -57,12 +48,10 @@ public abstract class AbstractThermalContainer extends AbstractContainerMenu {
         return this.thermalType;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public boolean isPowered() {
         return this.blockEntity.isPowered();
     }
 
-    @OnlyIn(Dist.CLIENT)
     public float getFuelTimeScale() {
         if (this.dataAccess.get(1) != 0) {
             return (float) this.dataAccess.get(0) / this.dataAccess.get(1);

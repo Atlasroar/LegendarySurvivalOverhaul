@@ -14,7 +14,9 @@ import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
 import sfiomn.legendarysurvivaloverhaul.common.items.CoatItem;
 import sfiomn.legendarysurvivaloverhaul.common.recipe.SewingRecipe;
@@ -22,13 +24,9 @@ import sfiomn.legendarysurvivaloverhaul.registry.BlockRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.ContainerRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.SoundRegistry;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import static sfiomn.legendarysurvivaloverhaul.common.integration.mutantmonsters.MutantMonstersUtil.isMutantMonstersArmor;
-import static sfiomn.legendarysurvivaloverhaul.data.providers.ModAdvancementProvider.SEW_A_COAT_ADVANCEMENT;
 
 public class SewingTableContainer extends ItemCombinerMenu {
     public static final int INPUT_SLOT = 0;
@@ -87,7 +85,8 @@ public class SewingTableContainer extends ItemCombinerMenu {
                     CoatItem coatItem = (CoatItem) inputSlots.getItem(ADDITIONAL_SLOT).getItem();
                     TemperatureUtil.setArmorCoatTag(itemStack, coatItem.coat.id());
                     if (player instanceof ServerPlayer serverPlayer) {
-                        Advancement sewCoatAdvancement = serverPlayer.server.getAdvancements().getAdvancement(new ResourceLocation(SEW_A_COAT_ADVANCEMENT));
+                        Advancement sewCoatAdvancement = serverPlayer.server.getAdvancements().getAdvancement(
+                                new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "main/sew_a_coat"));
                         if (sewCoatAdvancement != null) {
                             for (String criteria: serverPlayer.getAdvancements().getOrStartProgress(sewCoatAdvancement).getRemainingCriteria()) {
                                 serverPlayer.getAdvancements().award(sewCoatAdvancement, criteria);
@@ -127,7 +126,7 @@ public class SewingTableContainer extends ItemCombinerMenu {
     }
 
     public static boolean isItemArmor(ItemStack itemStack) {
-        return itemStack.getItem() instanceof ArmorItem || isMutantMonstersArmor(itemStack.getItem());
+        return itemStack.getItem() instanceof ArmorItem;
     }
 
     public static boolean isItemCoat(ItemStack itemStack) {

@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistry;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
@@ -84,7 +85,7 @@ public class MobEffectRegistry {
 
 	private static void addBrewingRecipe(Potion potionInput, Item ingredient, Potion potionResult)
 	{
-		FabricBrewingRecipeRegistry.registerPotionRecipe(potionInput, ingredient, potionResult);
+		FabricBrewingRecipeRegistry.registerPotionRecipe(potionInput, Ingredient.of(ingredient), potionResult);
 	}
 	
 	public static void register(){

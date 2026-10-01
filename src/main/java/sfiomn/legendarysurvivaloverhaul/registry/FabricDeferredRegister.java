@@ -30,13 +30,13 @@ public final class FabricDeferredRegister<T>
 		return registry;
 	}
 
-	public RegistryObject<T> register(String path, Supplier<? extends T> supplier)
+	public <R extends T> RegistryObject<R> register(String path, Supplier<? extends R> supplier)
 	{
 		if (registered)
 			throw new IllegalStateException("Cannot add registrations after registry bootstrap");
 
-		RegistryObject<T> object = new RegistryObject<>();
-		if (pending.putIfAbsent(path, new PendingRegistration<>(object, supplier)) != null)
+		RegistryObject<R> object = new RegistryObject<>();
+		if (pending.putIfAbsent(path, new TypedPendingRegistration<>(object, supplier)) != null)
 			throw new IllegalStateException("Duplicate registration: " + path);
 		return object;
 	}
@@ -47,14 +47,23 @@ public final class FabricDeferredRegister<T>
 			return;
 
 		registered = true;
-		pending.forEach((path, registration) -> {
-			T value = Objects.requireNonNull(registration.supplier().get(), "Registry supplier returned null: " + path);
-			Registry.register(registry, new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, path), value);
-			registration.object().bind(value);
-		});
+		pending.forEach((path, registration) -> registration.register(registry,
+				new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, path), path));
 	}
 
-	private record PendingRegistration<T>(RegistryObject<T> object, Supplier<? extends T> supplier)
+	private interface PendingRegistration<T>
 	{
+		void register(Registry<T> registry, ResourceLocation id, String path);
+	}
+
+	private record TypedPendingRegistration<T, R extends T>(RegistryObject<R> object, Supplier<? extends R> supplier) implements PendingRegistration<T>
+	{
+		@Override
+		public void register(Registry<T> registry, ResourceLocation id, String path)
+		{
+			R value = Objects.requireNonNull(supplier.get(), "Registry supplier returned null: " + path);
+			Registry.register(registry, id, value);
+			object.bind(value);
+		}
 	}
 }

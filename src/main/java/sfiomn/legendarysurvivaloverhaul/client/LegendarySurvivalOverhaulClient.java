@@ -48,7 +48,7 @@ public final class LegendarySurvivalOverhaulClient implements ClientModInitializ
 		ItemProperties.register(ItemRegistry.THERMOMETER.get(), id("temperature"), new ThermometerProperty());
 		ItemProperties.register(ItemRegistry.CANTEEN.get(), id("thirstenum"), new CanteenProperty());
 		ItemProperties.register(ItemRegistry.LARGE_CANTEEN.get(), id("thirstenum"), new CanteenProperty());
-		if (LegendarySurvivalOverhaul.sereneSeasonsLoaded || LegendarySurvivalOverhaul.eclipticSeasonsLoaded) {
+		if (LegendarySurvivalOverhaul.sereneSeasonsLoaded) {
 			ItemProperties.register(ItemRegistry.SEASONAL_CALENDAR.get(), id("time"), new SeasonalCalendarTimeProperty());
 			ItemProperties.register(ItemRegistry.SEASONAL_CALENDAR.get(), id("seasontype"), new SeasonalCalendarSeasonTypeProperty());
 		}

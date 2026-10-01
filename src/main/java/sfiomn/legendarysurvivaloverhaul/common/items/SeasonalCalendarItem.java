@@ -8,7 +8,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
-import sfiomn.legendarysurvivaloverhaul.common.integration.eclipticseasons.EclipticSeasonsUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneSeasonsUtil;
 
 
@@ -22,8 +21,6 @@ public class SeasonalCalendarItem extends Item {
         if (level.isClientSide()) {
             if (LegendarySurvivalOverhaul.sereneSeasonsLoaded)
                 player.displayClientMessage(SereneSeasonsUtil.seasonTooltip(player.blockPosition(), player.level()), true);
-            else if (LegendarySurvivalOverhaul.eclipticSeasonsLoaded)
-                player.displayClientMessage(EclipticSeasonsUtil.seasonTooltip(player.level()), true);
             else
                 player.displayClientMessage(Component.translatable("message.legendarysurvivaloverhaul.no_season_loaded"), true);
         }

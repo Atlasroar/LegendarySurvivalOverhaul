@@ -20,7 +20,12 @@ public class RecipeRegistry {
 
     public static final FabricDeferredRegister<RecipeType<?>> RECIPE_TYPE = FabricDeferredRegister.create(BuiltInRegistries.RECIPE_TYPE);
 
-    public static final RegistryObject<RecipeType<SewingRecipe>> SEWING_RECIPE = RECIPE_TYPE.register("sewing", () -> RecipeType.simple(SewingRecipe.Type.ID));
+    public static final RegistryObject<RecipeType<SewingRecipe>> SEWING_RECIPE = RECIPE_TYPE.register("sewing", () -> new RecipeType<>() {
+        @Override
+        public String toString() {
+            return SewingRecipe.Type.ID.toString();
+        }
+    });
 
     public static void register() {
         RECIPE_SERIALIZERS.registerAll();

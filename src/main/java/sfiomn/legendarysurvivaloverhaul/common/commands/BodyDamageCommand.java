@@ -2,14 +2,16 @@ package sfiomn.legendarysurvivaloverhaul.common.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.FloatArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.server.command.EnumArgument;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyPartEnum;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.bodydamage.BodyDamageCapability;
@@ -24,25 +26,34 @@ public class BodyDamageCommand extends CommandBase
 				.requires((p_198521_0_) -> p_198521_0_.hasPermission(2))
 				.then(Commands.argument("target", EntityArgument.entities())
 				.then(Commands.literal("set")
-					.then(Commands.argument("BodyPart", EnumArgument.enumArgument(BodyPartEnum.class))
+					.then(Commands.argument("BodyPart", StringArgumentType.word())
 						.then(Commands.argument("Health", FloatArgumentType.floatArg(0))
-							.executes(src -> new BodyDamageCommand().set(src.getSource(), EntityArgument.getEntities(src, "target"), src.getArgument("BodyPart", BodyPartEnum.class), FloatArgumentType.getFloat(src, "Health")))))
+							.executes(src -> new BodyDamageCommand().set(src.getSource(), EntityArgument.getEntities(src, "target"), getBodyPart(src), FloatArgumentType.getFloat(src, "Health")))))
 					.then(Commands.literal("ALL")
 							.then(Commands.argument("Health", FloatArgumentType.floatArg(0))
 							.executes(src -> new BodyDamageCommand().setAll(src.getSource(), EntityArgument.getEntities(src, "target"), FloatArgumentType.getFloat(src, "Health"))))))
 				.then(Commands.literal("heal")
-						.then(Commands.argument("BodyPart", EnumArgument.enumArgument(BodyPartEnum.class))
+						.then(Commands.argument("BodyPart", StringArgumentType.word())
 								.then(Commands.argument("Health", FloatArgumentType.floatArg(0))
-										.executes(src -> new BodyDamageCommand().heal(src.getSource(), EntityArgument.getEntities(src, "target"), src.getArgument("BodyPart", BodyPartEnum.class), FloatArgumentType.getFloat(src, "Health")))))
+										.executes(src -> new BodyDamageCommand().heal(src.getSource(), EntityArgument.getEntities(src, "target"), getBodyPart(src), FloatArgumentType.getFloat(src, "Health")))))
 						.then(Commands.literal("ALL")
 								.then(Commands.argument("Health", FloatArgumentType.floatArg(0))
 										.executes(src -> new BodyDamageCommand().healAll(src.getSource(), EntityArgument.getEntities(src, "target"), FloatArgumentType.getFloat(src, "Health"))))))
 				.then(Commands.literal("get")
-						.then(Commands.argument("BodyPart", EnumArgument.enumArgument(BodyPartEnum.class))
-								.executes(src -> new BodyDamageCommand().get(src.getSource(), EntityArgument.getEntities(src, "target"), src.getArgument("BodyPart", BodyPartEnum.class))))
+						.then(Commands.argument("BodyPart", StringArgumentType.word())
+								.executes(src -> new BodyDamageCommand().get(src.getSource(), EntityArgument.getEntities(src, "target"), getBodyPart(src))))
 						.then(Commands.literal("ALL")
 								.executes(src -> new BodyDamageCommand().getAll(src.getSource(), EntityArgument.getEntities(src, "target")))))
 				));
+	}
+
+	private static BodyPartEnum getBodyPart(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+		String name = StringArgumentType.getString(context, "BodyPart");
+		try {
+			return BodyPartEnum.valueOf(name.toUpperCase(java.util.Locale.ROOT));
+		} catch (IllegalArgumentException exception) {
+			throw new SimpleCommandExceptionType(Component.literal("Unknown body part: " + name)).create();
+		}
 	}
 
 	public int get(CommandSourceStack source, Collection<? extends Entity> entities, BodyPartEnum bodyPart) {

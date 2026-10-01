@@ -14,7 +14,7 @@ import java.util.List;
 public class CreativeTabRegistry {
     public static final FabricDeferredRegister<CreativeModeTab> ITEM_GROUPS = FabricDeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB);
 
-    public static final RegistryObject<CreativeModeTab> LEGENDARY_CREATURES_TAB = ITEM_GROUPS.register("legendary_creatures", () -> CreativeModeTab.builder()
+    public static final RegistryObject<CreativeModeTab> LEGENDARY_CREATURES_TAB = ITEM_GROUPS.register("legendary_creatures", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .icon(() -> ItemRegistry.THERMOMETER.get().getDefaultInstance())
             .displayItems((parameters, list) ->
             {

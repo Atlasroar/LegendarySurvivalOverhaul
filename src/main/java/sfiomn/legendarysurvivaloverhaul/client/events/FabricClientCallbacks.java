@@ -19,13 +19,6 @@ import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonThirstBlock;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
 import sfiomn.legendarysurvivaloverhaul.client.ClientHooks;
 import sfiomn.legendarysurvivaloverhaul.client.effects.TemperatureBreathEffect;
-import sfiomn.legendarysurvivaloverhaul.client.integration.sereneseasons.RenderSeasonCards;
-import sfiomn.legendarysurvivaloverhaul.client.render.RenderBlurOverlay;
-import sfiomn.legendarysurvivaloverhaul.client.render.RenderBodyDamageGui;
-import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureGui;
-import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureOverlay;
-import sfiomn.legendarysurvivaloverhaul.client.render.RenderThirstGui;
-import sfiomn.legendarysurvivaloverhaul.client.render.RenderWetnessGui;
 import sfiomn.legendarysurvivaloverhaul.client.screens.WarningDataPackScreen;
 import sfiomn.legendarysurvivaloverhaul.client.sounds.TemperatureBreathSound;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
@@ -56,31 +49,16 @@ public final class FabricClientCallbacks {
         Player player = client.player;
         if (!client.isPaused() && player != null) {
             if (Config.Baked.temperatureEnabled) {
-                RenderTemperatureGui.updateTimer();
-                RenderTemperatureOverlay.updateTemperatureEffect(player);
                 if (Config.Baked.coldBreathEffectThreshold != -1000)
                     TemperatureBreathEffect.tickPlay(player);
                 if (Config.Baked.breathingSoundEnabled)
                     TemperatureBreathSound.tickPlay(player);
             }
 
-            if (Config.Baked.wetnessEnabled)
-                RenderWetnessGui.updateTimer();
-
-            if (shouldApplyThirst(player) && Config.Baked.lowHydrationEffect)
-                RenderBlurOverlay.updateBlurIntensity(player);
-
-            if (LegendarySurvivalOverhaul.sereneSeasonsLoaded && Config.Baked.ssSeasonCardsEnabled)
-                RenderSeasonCards.updateSeasonCardFading(player);
-
             if (Config.Baked.localizedBodyDamageEnabled) {
-                RenderBodyDamageGui.updateFlashingTimer();
                 if (KeyMappingRegistry.showBodyHealth.consumeClick())
                     ClientHooks.openBodyHealthScreen(player);
             }
-
-            if (Config.Baked.thirstEnabled && Config.Baked.showDrinkPreview)
-                RenderThirstGui.updateTimer();
 
             if (LegendarySurvivalOverhaul.curiosLoaded && player.tickCount % 10 == 0)
                 CuriosUtil.isThermometerEquipped =

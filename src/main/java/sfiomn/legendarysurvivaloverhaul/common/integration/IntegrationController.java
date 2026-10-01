@@ -1,6 +1,6 @@
 package sfiomn.legendarysurvivaloverhaul.common.integration;
 
-import net.minecraftforge.fml.ModList;
+import net.fabricmc.loader.api.FabricLoader;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.block.ThermalTypeEnum;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyPartEnum;
@@ -21,7 +21,7 @@ public final class IntegrationController
 {
 	public static void initIntegration()
 	{
-		ModList mods = ModList.get();
+		FabricModList mods = new FabricModList();
 		
 		if (mods.isLoaded("create"))
 			initCreate();
@@ -96,6 +96,12 @@ public final class IntegrationController
 			initLegendaryAdditions();
 		if (mods.isLoaded("hardcore_torches"))
 			initHardcoreTorches();
+	}
+
+	private static final class FabricModList {
+		private boolean isLoaded(String modId) {
+			return FabricLoader.getInstance().isModLoaded(modId);
+		}
 	}
 
 	private static void initCreate()

@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.api.block.ThermalTypeEnum;
 import sfiomn.legendarysurvivaloverhaul.common.blockentities.AbstractThermalBlockEntity;
@@ -91,9 +90,9 @@ public class ThermalBlock extends BaseEntityBlock implements EntityBlock
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 
 		if (blockEntity instanceof HeaterBlockEntity be && player instanceof ServerPlayer) {
-            NetworkHooks.openScreen((ServerPlayer) player, be, pos);
+			player.openMenu(be);
 		} else if (blockEntity instanceof CoolerBlockEntity be && player instanceof ServerPlayer) {
-            NetworkHooks.openScreen((ServerPlayer) player, be, pos);
+			player.openMenu(be);
 		} else {
 			throw new IllegalStateException("Tile entity container is missing!");
 		}

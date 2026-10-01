@@ -34,7 +34,7 @@ public class CoatItem extends Item {
 
         MutableComponent text;
 
-        if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), KeyMappingRegistry.showAddedDesc.getKey().getValue())) {
+        if (KeyMappingRegistry.showAddedDesc.isDown()) {
             if (this.coat != null) {
                 MutableComponent effectComponent = Component.translatable("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".coat_item." + this.coat.type() + ".effect").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(6466303)));
                 MutableComponent temperatureComponent = Component.literal(" " + this.coat.modifier());

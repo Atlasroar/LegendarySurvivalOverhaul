@@ -42,6 +42,45 @@ dependencies {
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
+sourceSets.main.java {
+    exclude 'sfiomn/legendarysurvivaloverhaul/data/DataGenerators.java'
+    exclude 'sfiomn/legendarysurvivaloverhaul/data/integration/**'
+    exclude 'sfiomn/legendarysurvivaloverhaul/data/loot/**'
+    exclude 'sfiomn/legendarysurvivaloverhaul/data/providers/**'
+    exclude 'sfiomn/legendarysurvivaloverhaul/data/recipes/**'
+    exclude '**/api/data/providers/**'
+    exclude '**/common/events/CommonForgeEvents.java'
+    exclude '**/common/events/CommonModBusEvents.java'
+    exclude '**/client/events/ClientForgeEvents.java'
+    exclude '**/client/render/RenderBodyDamageGui.java'
+    exclude '**/client/render/RenderHealthGui.java'
+    exclude '**/client/render/RenderTemperatureGui.java'
+    exclude '**/client/render/RenderTemperatureOverlay.java'
+    exclude '**/client/render/RenderThirstGui.java'
+    exclude '**/client/render/RenderWetnessGui.java'
+    exclude '**/client/render/RenderTooltipFrame.java'
+    exclude '**/client/render/RenderBlurOverlay.java'
+    exclude '**/client/shaders/FocusShader.java'
+    exclude '**/client/integration/sereneseasons/RenderSeasonCards.java'
+    exclude '**/client/tooltips/TooltipHandler.java'
+    exclude '**/common/integration/curios/CuriosEvents.java'
+    exclude '**/common/integration/curios/CuriosModifier.java'
+    exclude '**/common/integration/curios/CurioAttributeBuilder.java'
+    exclude '**/common/integration/eclipticseasons/**'
+    exclude '**/common/integration/origins/**'
+    exclude '**/common/integration/jei/**'
+    exclude '**/common/integration/crayfish/CrayfishFurnitureUtil.java'
+    exclude '**/common/integration/mutantmonsters/**'
+    exclude '**/common/integration/supplementaries/SupplementariesUtil.java'
+    exclude '**/common/integration/vampirism/**'
+    exclude '**/common/integration/terrafirmacraft/TerraFirmaCraftHeatItemModifier.java'
+    exclude '**/common/integration/terrafirmacraft/TerraFirmaCraftModifier.java'
+    exclude '**/common/listeners/EnchantmentListener.java'
+    exclude '**/common/level/gen/ModBiomeModifiers.java'
+    exclude '**/registry/LootModifierRegistry.java'
+    exclude '**/common/loot_modifiers/**'
+}
+
 processResources {
     inputs.property 'version', project.version
     inputs.property 'minecraft_version', minecraft_version

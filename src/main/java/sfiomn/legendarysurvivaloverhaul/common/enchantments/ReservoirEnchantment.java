@@ -33,13 +33,4 @@ public class ReservoirEnchantment extends Enchantment {
         return stack.getItem() instanceof CanteenItem;
     }
     
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        return stack.getItem() instanceof CanteenItem;
-    }
-    
-    @Override
-    public boolean isAllowedOnBooks() {
-        return true;
-    }
 }

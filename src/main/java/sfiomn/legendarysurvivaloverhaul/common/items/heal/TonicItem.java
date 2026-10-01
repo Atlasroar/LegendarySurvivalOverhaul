@@ -10,7 +10,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class TonicItem extends BodyHealingItem {
