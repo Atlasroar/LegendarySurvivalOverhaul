@@ -10,7 +10,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonBodyPartResistance;
@@ -47,8 +46,8 @@ public class BodyPartResistanceItemListener extends SimpleJsonResourceReloadList
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} body part resistance items", BODY_PART_RESISTANCE_ITEMS.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncBodyPartResistanceItemsPacket.sendTo(packetTarget, BODY_PART_RESISTANCE_ITEMS);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncBodyPartResistanceItemsPacket.sendTo(player, BODY_PART_RESISTANCE_ITEMS);
     }
 
     public static void acceptServerBodyPartResistanceItems(Map<ResourceLocation, JsonBodyPartResistance> temperatureItems) {

@@ -4,17 +4,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonBodyPartResistance;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.BodyPartResistanceItemListener;
-import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class SyncBodyPartResistanceItemsPacket
 {
@@ -53,29 +47,13 @@ public class SyncBodyPartResistanceItemsPacket
 		return new SyncBodyPartResistanceItemsPacket(bodyPartResistanceItems);
 	}
 	
-	public static void handle(SyncBodyPartResistanceItemsPacket message, Supplier<NetworkEvent.Context> supplier)
-	{
-		final NetworkEvent.Context context = supplier.get();
-		context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> syncBodyPartResistanceItems(message.bodyPartResistanceItems)));
-		
-		supplier.get().setPacketHandled(true);
+	public void applyToClient() {
+		BodyPartResistanceItemListener.acceptServerBodyPartResistanceItems(bodyPartResistanceItems);
 	}
 
-	public static DistExecutor.SafeRunnable syncBodyPartResistanceItems(Map<ResourceLocation, JsonBodyPartResistance> bodyPartResistanceItems)
-	{
-		return new DistExecutor.SafeRunnable()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void run()
-			{
-				BodyPartResistanceItemListener.acceptServerBodyPartResistanceItems(bodyPartResistanceItems);
-			}
-		};
-	}
-
-	public static void sendTo(PacketDistributor.PacketTarget packetDistributor, Map<ResourceLocation, JsonBodyPartResistance> bodyPartResistanceItems) {
-		NetworkHandler.INSTANCE.send(packetDistributor, new SyncBodyPartResistanceItemsPacket(bodyPartResistanceItems));
+	public static void sendTo(net.minecraft.server.level.ServerPlayer player, Map<ResourceLocation, JsonBodyPartResistance> bodyPartResistanceItems) {
+		sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler.send(
+				player, "body_part_resistance_items",
+				new SyncBodyPartResistanceItemsPacket(bodyPartResistanceItems), SyncBodyPartResistanceItemsPacket::encode);
 	}
 }

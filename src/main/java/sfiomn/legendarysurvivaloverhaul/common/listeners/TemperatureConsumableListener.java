@@ -10,7 +10,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureConsumable;
@@ -48,8 +47,8 @@ public class TemperatureConsumableListener extends SimpleJsonResourceReloadListe
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} temperature consumables", TEMPERATURE_CONSUMABLES.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncTemperatureConsumablesPacket.sendTo(packetTarget, TEMPERATURE_CONSUMABLES);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncTemperatureConsumablesPacket.sendTo(player, TEMPERATURE_CONSUMABLES);
     }
 
     public static void acceptServerTemperatureConsumables(Map<ResourceLocation, List<JsonTemperatureConsumable>> temperatureConsumables) {

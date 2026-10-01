@@ -5,19 +5,13 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonThirstConsumable;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.ThirstConsumableListener;
-import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class SyncThirstConsumablesPacket
 {
@@ -62,29 +56,13 @@ public class SyncThirstConsumablesPacket
 		return new SyncThirstConsumablesPacket(thirstConsumables);
 	}
 	
-	public static void handle(SyncThirstConsumablesPacket message, Supplier<NetworkEvent.Context> supplier)
-	{
-		final NetworkEvent.Context context = supplier.get();
-		context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> syncThirstConsumables(message.thirstConsumables)));
-		
-		supplier.get().setPacketHandled(true);
-	}
-	
-	public static DistExecutor.SafeRunnable syncThirstConsumables(Map<ResourceLocation, List<JsonThirstConsumable>> thirstBlocks)
-	{
-		return new DistExecutor.SafeRunnable()
-		{
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public void run()
-			{
-				ThirstConsumableListener.acceptServerThirstConsumables(thirstBlocks);
-			}
-		};
+	public void applyToClient() {
+		ThirstConsumableListener.acceptServerThirstConsumables(thirstConsumables);
 	}
 
-	public static void sendTo(PacketDistributor.PacketTarget packetDistributor, Map<ResourceLocation, List<JsonThirstConsumable>> thirstConsumables) {
-		NetworkHandler.INSTANCE.send(packetDistributor, new SyncThirstConsumablesPacket(thirstConsumables));
+	public static void sendTo(net.minecraft.server.level.ServerPlayer player, Map<ResourceLocation, List<JsonThirstConsumable>> thirstConsumables) {
+		sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler.send(
+				player, "thirst_consumables",
+				new SyncThirstConsumablesPacket(thirstConsumables), SyncThirstConsumablesPacket::encode);
 	}
 }

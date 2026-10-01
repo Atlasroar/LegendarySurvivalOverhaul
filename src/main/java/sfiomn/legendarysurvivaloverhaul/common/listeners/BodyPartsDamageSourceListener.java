@@ -10,7 +10,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonBodyPartsDamageSource;
@@ -47,8 +46,8 @@ public class BodyPartsDamageSourceListener extends SimpleJsonResourceReloadListe
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} body parts damage sources", DAMAGE_SOURCES.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncBodyPartsDamageSourcesPacket.sendTo(packetTarget, DAMAGE_SOURCES);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncBodyPartsDamageSourcesPacket.sendTo(player, DAMAGE_SOURCES);
     }
 
     public static void acceptServerDamageSources(Map<ResourceLocation, JsonBodyPartsDamageSource> damageSources) {

@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +21,7 @@ import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessCapab
 import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
+import sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 
 public class ModCapabilities
@@ -33,6 +35,7 @@ public class ModCapabilities
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			initializePlayer(handler.player);
 			syncPlayerState(handler.player);
+			FabricDataSyncHandler.syncAll(handler.player);
 		});
 		ServerPlayerEvents.COPY_FROM.register(ModCapabilities::copyPlayerState);
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, player, alive) -> syncPlayerState(player));
@@ -41,6 +44,10 @@ public class ModCapabilities
 			if (world.dimension() == Level.OVERWORLD)
 				world.getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION)
 						.set(Config.Baked.naturalRegenerationEnabled, server);
+		});
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> {
+			if (success)
+				server.getPlayerList().getPlayers().forEach(FabricDataSyncHandler::syncAll);
 		});
 	}
 

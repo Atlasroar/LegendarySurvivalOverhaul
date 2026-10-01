@@ -10,7 +10,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureBlock;
@@ -48,8 +47,8 @@ public class TemperatureBlockListener extends SimpleJsonResourceReloadListener i
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} temperature blocks", TEMPERATURE_BLOCKS.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncTemperatureBlocksPacket.sendTo(packetTarget, TEMPERATURE_BLOCKS);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncTemperatureBlocksPacket.sendTo(player, TEMPERATURE_BLOCKS);
     }
 
     public static void acceptServerTemperatureBlocks(Map<ResourceLocation, List<JsonTemperatureBlock>> temperatureBlocks) {

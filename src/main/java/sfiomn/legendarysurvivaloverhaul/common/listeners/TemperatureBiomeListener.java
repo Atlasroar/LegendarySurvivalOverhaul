@@ -10,7 +10,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureBiomeOverride;
@@ -47,8 +46,8 @@ public class TemperatureBiomeListener extends SimpleJsonResourceReloadListener i
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} temperature biomes", TEMPERATURE_BIOMES.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncTemperatureBiomesPacket.sendTo(packetTarget, TEMPERATURE_BIOMES);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncTemperatureBiomesPacket.sendTo(player, TEMPERATURE_BIOMES);
     }
 
     public static void acceptServerTemperatureBiomes(Map<ResourceLocation, JsonTemperatureBiomeOverride> temperatureBiomes) {

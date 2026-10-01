@@ -5,21 +5,15 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureConsumable;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureConsumableBlock;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureConsumableBlockListener;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureConsumableListener;
-import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class SyncTemperatureConsumableBlocksPacket
 {
@@ -64,29 +58,13 @@ public class SyncTemperatureConsumableBlocksPacket
 		return new SyncTemperatureConsumableBlocksPacket(temperatureConsumables);
 	}
 	
-	public static void handle(SyncTemperatureConsumableBlocksPacket message, Supplier<NetworkEvent.Context> supplier)
-	{
-		final NetworkEvent.Context context = supplier.get();
-		context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> syncTemperatureConsumableBlocks(message.temperatureConsumableBlocks)));
-		
-		supplier.get().setPacketHandled(true);
+	public void applyToClient() {
+		TemperatureConsumableBlockListener.acceptServerTemperatureConsumableBlocks(temperatureConsumableBlocks);
 	}
 
-	public static DistExecutor.SafeRunnable syncTemperatureConsumableBlocks(Map<ResourceLocation, List<JsonTemperatureConsumableBlock>> temperatureConsumableBlocks)
-	{
-		return new DistExecutor.SafeRunnable()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void run()
-			{
-				TemperatureConsumableBlockListener.acceptServerTemperatureConsumableBlocks(temperatureConsumableBlocks);
-			}
-		};
-	}
-
-	public static void sendTo(PacketDistributor.PacketTarget packetDistributor, Map<ResourceLocation, List<JsonTemperatureConsumableBlock>> temperatureConsumableBlocks) {
-		NetworkHandler.INSTANCE.send(packetDistributor, new SyncTemperatureConsumableBlocksPacket(temperatureConsumableBlocks));
+	public static void sendTo(net.minecraft.server.level.ServerPlayer player, Map<ResourceLocation, List<JsonTemperatureConsumableBlock>> temperatureConsumableBlocks) {
+		sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler.send(
+				player, "temperature_consumable_blocks",
+				new SyncTemperatureConsumableBlocksPacket(temperatureConsumableBlocks), SyncTemperatureConsumableBlocksPacket::encode);
 	}
 }

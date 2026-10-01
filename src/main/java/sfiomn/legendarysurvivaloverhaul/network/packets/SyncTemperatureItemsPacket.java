@@ -4,17 +4,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureResistance;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureItemListener;
-import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class SyncTemperatureItemsPacket
 {
@@ -53,29 +47,13 @@ public class SyncTemperatureItemsPacket
 		return new SyncTemperatureItemsPacket(temperatureItems);
 	}
 	
-	public static void handle(SyncTemperatureItemsPacket message, Supplier<NetworkEvent.Context> supplier)
-	{
-		final NetworkEvent.Context context = supplier.get();
-		context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> syncTemperatureItems(message.temperatureItems)));
-		
-		supplier.get().setPacketHandled(true);
+	public void applyToClient() {
+		TemperatureItemListener.acceptServerTemperatureItems(temperatureItems);
 	}
 
-	public static DistExecutor.SafeRunnable syncTemperatureItems(Map<ResourceLocation, JsonTemperatureResistance> temperatureItems)
-	{
-		return new DistExecutor.SafeRunnable()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void run()
-			{
-				TemperatureItemListener.acceptServerTemperatureItems(temperatureItems);
-			}
-		};
-	}
-
-	public static void sendTo(PacketDistributor.PacketTarget packetDistributor, Map<ResourceLocation, JsonTemperatureResistance> temperatureItems) {
-		NetworkHandler.INSTANCE.send(packetDistributor, new SyncTemperatureItemsPacket(temperatureItems));
+	public static void sendTo(net.minecraft.server.level.ServerPlayer player, Map<ResourceLocation, JsonTemperatureResistance> temperatureItems) {
+		sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler.send(
+				player, "temperature_items",
+				new SyncTemperatureItemsPacket(temperatureItems), SyncTemperatureItemsPacket::encode);
 	}
 }

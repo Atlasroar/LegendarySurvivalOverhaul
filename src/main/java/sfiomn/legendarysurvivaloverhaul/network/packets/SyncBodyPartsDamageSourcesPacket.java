@@ -4,17 +4,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonBodyPartsDamageSource;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.BodyPartsDamageSourceListener;
-import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class SyncBodyPartsDamageSourcesPacket
 {
@@ -53,29 +47,13 @@ public class SyncBodyPartsDamageSourcesPacket
 		return new SyncBodyPartsDamageSourcesPacket(damageSources);
 	}
 	
-	public static void handle(SyncBodyPartsDamageSourcesPacket message, Supplier<NetworkEvent.Context> supplier)
-	{
-		final NetworkEvent.Context context = supplier.get();
-		context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> syncTemperatureItems(message.damageSources)));
-		
-		supplier.get().setPacketHandled(true);
+	public void applyToClient() {
+		BodyPartsDamageSourceListener.acceptServerDamageSources(damageSources);
 	}
 
-	public static DistExecutor.SafeRunnable syncTemperatureItems(Map<ResourceLocation, JsonBodyPartsDamageSource> damageSources)
-	{
-		return new DistExecutor.SafeRunnable()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void run()
-			{
-				BodyPartsDamageSourceListener.acceptServerDamageSources(damageSources);
-			}
-		};
-	}
-
-	public static void sendTo(PacketDistributor.PacketTarget packetDistributor, Map<ResourceLocation, JsonBodyPartsDamageSource> damageSources) {
-		NetworkHandler.INSTANCE.send(packetDistributor, new SyncBodyPartsDamageSourcesPacket(damageSources));
+	public static void sendTo(net.minecraft.server.level.ServerPlayer player, Map<ResourceLocation, JsonBodyPartsDamageSource> damageSources) {
+		sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler.send(
+				player, "body_parts_damage_sources",
+				new SyncBodyPartsDamageSourcesPacket(damageSources), SyncBodyPartsDamageSourcesPacket::encode);
 	}
 }

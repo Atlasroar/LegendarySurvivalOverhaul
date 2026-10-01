@@ -10,7 +10,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureDimension;
@@ -47,8 +46,8 @@ public class TemperatureDimensionListener extends SimpleJsonResourceReloadListen
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} temperature dimensions", TEMPERATURE_DIMENSIONS.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncTemperatureDimensionsPacket.sendTo(packetTarget, TEMPERATURE_DIMENSIONS);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncTemperatureDimensionsPacket.sendTo(player, TEMPERATURE_DIMENSIONS);
     }
 
     public static void acceptServerTemperatureDimensions(Map<ResourceLocation, JsonTemperatureDimension> temperatureDimensions) {

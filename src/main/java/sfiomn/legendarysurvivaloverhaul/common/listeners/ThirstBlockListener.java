@@ -12,7 +12,6 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonThirstBlock;
@@ -49,8 +48,8 @@ public class ThirstBlockListener extends SimpleJsonResourceReloadListener implem
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} thirst blocks", THIRST_BLOCKS.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncThirstBlocksPacket.sendTo(packetTarget, THIRST_BLOCKS);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncThirstBlocksPacket.sendTo(player, THIRST_BLOCKS);
     }
 
     public static void acceptServerThirstBlocks(Map<ResourceLocation, List<JsonThirstBlock>> thirstBlocks) {

@@ -10,7 +10,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.PacketDistributor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
@@ -48,8 +47,8 @@ public class ThirstConsumableListener extends SimpleJsonResourceReloadListener i
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} thirst consumables", THIRST_CONSUMABLES.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncThirstConsumablesPacket.sendTo(packetTarget, THIRST_CONSUMABLES);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncThirstConsumablesPacket.sendTo(player, THIRST_CONSUMABLES);
     }
 
     public static void acceptServerThirstConsumables(Map<ResourceLocation, List<JsonThirstConsumable>> thirstConsumables) {

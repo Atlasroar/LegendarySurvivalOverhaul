@@ -25,7 +25,6 @@ import net.minecraft.world.level.storage.PrimaryLevelData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
-import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.level.BlockEvent;
@@ -36,7 +35,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.ModDamageTypes;
@@ -431,28 +429,6 @@ public class CommonForgeEvents {
                 primaryLevelData.getGameRules().getRule(GameRules.RULE_NATURAL_REGENERATION).set(Config.Baked.naturalRegenerationEnabled, event.getLevel().getServer());
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void onDataPackSyncEvent(OnDatapackSyncEvent event) {
-        final ServerPlayer player = event.getPlayer();
-        final PacketDistributor.PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
-
-        ThirstBlockListener.sendDataToClient(target);
-        ThirstConsumableListener.sendDataToClient(target);
-
-        TemperatureBiomeListener.sendDataToClient(target);
-        TemperatureBlockListener.sendDataToClient(target);
-        TemperatureConsumableListener.sendDataToClient(target);
-        TemperatureDimensionListener.sendDataToClient(target);
-        TemperatureFuelItemListener.sendDataToClient(target);
-        TemperatureItemListener.sendDataToClient(target);
-        TemperatureMountListener.sendDataToClient(target);
-        TemperatureOriginListener.sendDataToClient(target);
-
-        BodyDamageHealingConsumableListener.sendDataToClient(target);
-        BodyPartsDamageSourceListener.sendDataToClient(target);
-        BodyPartResistanceItemListener.sendDataToClient(target);
     }
 
     private static boolean shouldApplyThirst(Player player)
