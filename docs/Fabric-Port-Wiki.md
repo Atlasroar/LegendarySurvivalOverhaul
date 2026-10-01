@@ -188,7 +188,9 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - Restored the optional season-card overlay with its existing dimension delay, normal/tropical season detection, fade timing, and configured screen offsets.
 - Registered card updates and rendering through Fabric client tick, connection, and HUD callbacks. The integration remains optional and requires Serene Seasons.
-- Java 17 build succeeded; in-game verification is pending.
+- The user confirmed temperate season cards appear after enabling `Season Cards Enabled`.
+- The wet/dry cards did not appear in the user's tests of Plains, Birch Forest, Jungle, Desert, and Bamboo Jungle. The test profile had `Tropical Seasons Enabled = false`, which selects normal seasons rather than wet/dry cards. This option is now enabled in the test profile; wet/dry behavior needs re-testing.
+- Clarified the tropical-season config comment, which previously contradicted itself.
 
 ## Release and edit notes
 
