@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The current public artifact is [Fabric 1.20.1 health HUD test build `v1.20.1-2.4.7-fabric.3`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.3). It contains the initial Fabric survival slice, startup fixes, restored thirst/temperature/wetness/body-damage indicators, and the shield/broken-heart overlay. The user visually confirmed that moving the shield-heart overlay up 9 pixels clears the armor row while the vanilla hearts, thirst, and temperature HUD remain correct.
+The current public artifact is [Fabric 1.20.1 HUD test build `v1.20.1-2.4.7-fabric.4`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.4). It contains the initial Fabric survival slice, startup fixes, restored thirst/temperature/wetness/body-damage indicators, the shield/broken-heart overlay, and the cold-hunger food overlay. The user visually confirmed the shield-heart row clears the armor row and that the cold icons and thirst placement now look correct.
 
 The port is still incomplete. In particular, the health-bar replacement, several Forge event surfaces, data generation, and some optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
@@ -90,7 +90,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The first visual test did not show the cold icons even though the client log confirmed that the Cold Food effect was applied. The callback now explicitly enables blending, resets tint, disables depth testing while replacing the vanilla row, and restores depth testing afterward.
 - The user confirmed the cold icons now appear and the thirst bar looks correctly placed after another 3-pixel upward adjustment (fixed offset -11 pixels, with the configured Y offset still additive).
 - The user also reported that `/effect` durations, including infinite duration, are cleared after about two seconds. This matches LSO's existing temperature-state logic: `TemperatureCapability.applySecondaryEffects` removes Cold Hunger when the player is no longer in dangerous cold. It is not a duration countdown bug; the effect is intentionally owned by the temperature state. Validate sustained behavior in an environment that keeps the player at frostbite temperature.
-- The Java 17 build and integrated-client launch both succeed. This work is ready for the next test prerelease.
+- The Java 17 build and integrated-client launch both succeed. Published in `v1.20.1-2.4.7-fabric.4`; the artifact SHA-256 is `A71866493A8DD35D079E7DC780E7CA82B3D7EF35E95DBDDCDE902827DF2D854D`.
 
 ## Release and edit notes
 
@@ -107,9 +107,9 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.3`
-- SHA-256: `3004A22555D42795303E706E138B01E089F8BAB7E307E95D642E15C75E74F087`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.3>
+- Tag: `v1.20.1-2.4.7-fabric.4`
+- SHA-256: `A71866493A8DD35D079E7DC780E7CA82B3D7EF35E95DBDDCDE902827DF2D854D`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.4>
 
 ## Feature and compatibility notes
 
@@ -121,7 +121,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Server-data JSON reload listeners and 14-dataset client synchronization.
 - Thirst, temperature, wetness, and body-damage HUD indicators.
 - LSO shield/broken-heart HUD overlay (user-verified placement above the armor row).
-- Cold-hunger food-bar overlay is visually confirmed in the current development changes. Its active duration is managed by the temperature system, not by command duration overrides.
+- Cold-hunger food-bar overlay is visually confirmed in `.4`. Its active duration is managed by the temperature system, not by command duration overrides.
 - Optional Overflowing Bars shared-height integration.
 
 ### Not yet restored or not fully validated
