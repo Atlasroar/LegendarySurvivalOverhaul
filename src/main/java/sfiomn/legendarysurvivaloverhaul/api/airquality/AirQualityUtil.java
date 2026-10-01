@@ -1,6 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.api.airquality;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,13 +36,24 @@ public final class AirQualityUtil {
 
     public static AirQualityLevel getAirQualityAtLocation(LivingEntity entity) {
         if (!Config.Baked.airQualityEnabled) return AirQualityLevel.GREEN;
-        CachedResult cached = CACHE.get(entity);
+        Vec3 location = entity.getEyePosition();
+        BlockPos eyePosition = BlockPos.containing(location);
+        ResourceLocation dimension = entity.level().dimension().location();
         long gameTime = entity.level().getGameTime();
-        if (cached != null && gameTime - cached.computedAtTick < CACHE_DURATION_TICKS) {
-            return cached.level;
+        synchronized (CACHE) {
+            CachedResult cached = CACHE.get(entity);
+            if (cached != null
+                    && cached.dimension.equals(dimension)
+                    && cached.blockPosition.equals(eyePosition)
+                    && gameTime >= cached.computedAtTick
+                    && gameTime - cached.computedAtTick < CACHE_DURATION_TICKS) {
+                return cached.level;
+            }
         }
-        AirQualityLevel level = computeAirQualityAtLocation(entity.level(), entity.getEyePosition());
-        CACHE.put(entity, new CachedResult(level, gameTime));
+        AirQualityLevel level = computeAirQualityAtLocation(entity.level(), location);
+        synchronized (CACHE) {
+            CACHE.put(entity, new CachedResult(level, dimension, eyePosition, gameTime));
+        }
         return level;
     }
 
@@ -110,6 +122,7 @@ public final class AirQualityUtil {
         return ItemStack.EMPTY;
     }
 
-    private record CachedResult(AirQualityLevel level, long computedAtTick) {
+    private record CachedResult(AirQualityLevel level, ResourceLocation dimension, BlockPos blockPosition,
+                                long computedAtTick) {
     }
 }
