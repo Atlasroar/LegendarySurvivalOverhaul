@@ -120,6 +120,13 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Dimension-change behavior, including returning alive from the End, is explicitly deferred to a later focused test plan once more features are working as intended.
 - Merged and published in `v1.20.1-2.4.7-fabric.7`.
 
+### 13. Mob-effect interception
+
+- Replaced the excluded Forge effect-applicable handler with a mixin on `LivingEntity.addEffect`.
+- When the health overhaul and absorption override are enabled, Absorption is converted to two shield-health points and the vanilla effect is denied. This mirrors the existing Forge behavior.
+- Blocks the LSO Thirst effect while the player has the Water Purifier in a slot recognized by the current Fabric Curios compatibility helper (main or off hand).
+- Java 17 build and Modrinth-profile testing are pending for this development/PR slice.
+
 ## Release and edit notes
 
 All current artifacts are prereleases for testing, not claims of feature parity with Forge. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.

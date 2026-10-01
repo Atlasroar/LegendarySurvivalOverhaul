@@ -6,7 +6,8 @@
     "PlayerAttributeMixin",
     "PlayerJumpMixin",
     "ItemStackConsumableMixin",
-    "PlayerDamageMixin"
+    "PlayerDamageMixin",
+    "LivingEntityEffectMixin"
   ],
   "injectors": {
     "defaultRequire": 1

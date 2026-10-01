@@ -53,6 +53,7 @@ Current highlights:
 - Configured thirst exhaustion from jumping, mining, and attacking, validated in-game.
 - Consumable hydration, localized body damage, and healing items are validated in-game; other consumable effects remain under test.
 - Configured temperature immunity after death is validated for its 90-second default duration.
+- Absorption-to-shield conversion and Water Purifier effect blocking are being ported on the development branch.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.
 
