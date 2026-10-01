@@ -218,8 +218,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The user confirmed in-game that loot, Purity anvil behavior, world feature generation, and plant transparency appear correct. This follow-up adjusts spawn frequency and water-plant substrates after that validation.
 - Restored Purity's anvil side effect in `AnvilMenuMixin`: a canteen output with the Purity enchantment immediately converts existing normal water to purified water without mutating the input stack. The old grindstone handler had no behavior beyond comments; purified contents already persist through enchantment removal.
 - Restored the Forge debug-filter scope so position/target information is hidden only outside Creative and Spectator modes.
-- Ported the optional Meds and Herbs interaction hooks without linking to its classes: morphine syringes now apply LSO's configured painkiller/addiction effects and are blocked with the existing warning while addicted. Packaged healing-consumable datapack entries provide the original novice/advanced/expert medkit limb-healing values when Meds and Herbs is installed.
-- Still omitted: the optional Supplementaries lunch-basket delegation, the repeatedly unverified/deferred Serene Seasons bonemeal warning, and Forge-only datagen execution. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`; these follow-up changes are not yet included in a published build.
+- Still omitted: optional Supplementaries lunch-basket and Meds and Herbs interactions, the repeatedly unverified/deferred Serene Seasons bonemeal warning, and Forge-only datagen execution. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`; these audit fixes are not yet included in a published build.
 
 ## Release and edit notes
 
