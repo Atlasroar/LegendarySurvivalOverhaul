@@ -38,7 +38,10 @@ public class ModCapabilities
 			FabricDataSyncHandler.syncAll(handler.player);
 		});
 		ServerPlayerEvents.COPY_FROM.register(ModCapabilities::copyPlayerState);
-		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, player, alive) -> syncPlayerState(player));
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, player, alive) -> {
+			applyTemperatureImmunityOnDeathRespawn(player, alive);
+			syncPlayerState(player);
+		});
 		ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> syncPlayerState(player));
 		ServerWorldEvents.LOAD.register((server, world) -> {
 			if (world.dimension() == Level.OVERWORLD)
@@ -65,6 +68,15 @@ public class ModCapabilities
 
 		HealthUtil.updatePlayerMaxHealthAttribute(player);
 		BodyDamageUtil.updatePlayerBrokenHeartAttribute(player);
+	}
+
+	private static void applyTemperatureImmunityOnDeathRespawn(
+			net.minecraft.server.level.ServerPlayer player, boolean oldPlayerAlive) {
+		if (!oldPlayerAlive && Config.Baked.temperatureImmunityOnDeathEnabled
+				&& Config.Baked.temperatureEnabled) {
+			player.addEffect(new MobEffectInstance(MobEffectRegistry.TEMPERATURE_IMMUNITY.get(),
+					Config.Baked.temperatureImmunityOnDeathTime, 0, false, false, true));
+		}
 	}
 
 	public static void onPlayerTick(Player player, TickPhase phase)

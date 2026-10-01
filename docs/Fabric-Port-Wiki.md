@@ -112,6 +112,12 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The user confirmed the corrected client launches, localized body damage occurs, and healing items work. Hydration consumables had also been confirmed working; temperature-consumable behavior has not yet been separately confirmed.
 - Published in `v1.20.1-2.4.7-fabric.6`; artifact SHA-256: `BF47CCB6953612AC0BE0BAA1FE8DEB9EBE0B25BF0D27235D1DC9FF1DF3885B34`.
 
+### 12. Temperature immunity after death
+
+- Ported the Forge player-respawn temperature-immunity behavior to Fabric's `ServerPlayerEvents.AFTER_RESPAWN`.
+- Grants the configured immunity only when the old player is dead (a death respawn), and only when temperature and the feature are enabled. Returning alive from the End does not grant the effect.
+- Java 17 build and in-game validation are pending. This is the next PR/release slice; do not consider it released until the user verifies death-respawn behavior in the Modrinth profile.
+
 ## Release and edit notes
 
 All current artifacts are prereleases for testing, not claims of feature parity with Forge. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
@@ -156,7 +162,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Forge datagen providers and selected optional-mod integrations.
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
-- Several remaining excluded Forge event behaviors, including damage adjustments, sleep recovery, effect interception, and temperature-on-death handling.
+- Several remaining excluded Forge event behaviors, including damage adjustments, sleep recovery, and effect interception.
 - Temperature-consumable behavior and healing recovery over time need further in-game validation.
 
 Do not describe excluded features as supported. Check `build.gradle` source exclusions and references from client/common initializers before restoring a class; removing an exclusion alone is not a port.
