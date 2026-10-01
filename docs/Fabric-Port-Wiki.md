@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.8`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.8). It includes the earlier survival port slices plus Trinkets support, shield-health handling, First Aid Supplies updates, and the verified Vulnerability and Hard Falling effects.
+The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.9`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.9). It includes the verified tooltip restoration and previous Fabric port slices.
 
 The port is still incomplete. In particular, the health-bar replacement, some Forge event surfaces, data generation, and selected optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
@@ -195,8 +195,16 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - Re-enabled the shared tooltip handler on Fabric through `ItemTooltipCallback`, restoring LSO temperature attribute coloring, merged hand modifier sections, armor coat text, temperature consumable effects, body-healing details, shade details, and hydration-consumable effect text.
 - Restored the hydration/saturation tooltip image through a client-only `ItemStack.getTooltipImage` mixin, while preserving any tooltip image already supplied by the item. When an existing image takes precedence, hydration and saturation are displayed as text instead.
-- The user confirmed hydration tooltips for apples and melon, Rotten Flesh's thirst effect and values, and the displayed values for Refreshing enchantment levels I-III. Temperature tooltips work for tested temperature-related items except the Snow and Desert armor sets.
-- Added rendering of the armor's configured temperature, heat-resistance, cold-resistance, and thermal-resistance values using localized attribute labels. This follow-up fix still needs in-game verification.
+- The user confirmed hydration tooltips for apples and melon, Rotten Flesh's thirst effect and values, and the displayed values for Refreshing enchantment levels I-III. Temperature tooltips work for tested temperature-related items.
+- Added rendering of the armor's configured temperature, heat-resistance, cold-resistance, and thermal-resistance values using localized attribute labels. The user confirmed Snow and Desert armor show the correct tooltip values and colors.
+
+### 25. HUD layer rewrite foundation (unreleased)
+
+- Replaced the single Fabric `HudRenderCallback` with mixin anchors after vanilla's combined status-bar pass and at the end of `Gui.render`, separating bars from screen-wide overlays/cards.
+- Adapted Overflowing Bars' health renderer and imported its icon sheet for LSO's health-overhaul HUD when Overflowing Bars itself is absent. If the optional mod is loaded, its own health rendering remains authoritative; the existing ObjectShare spacing integration is retained.
+- Used Puzzles Lib's per-element rendering hooks as a design reference. Its Fabric mixin does not expose hooks for the combined health/armor/food/air status-bar pass, so LSO uses local anchors rather than adding Puzzles Lib as a runtime dependency.
+- The implementation is build-verified but has not been visually tested. Validate default hearts, health above 20, absorption, regeneration, poison/wither/frozen states, LSO shield/broken hearts, hunger/thirst alignment, and the optional Overflowing Bars combination before release.
+- Third-party attribution, Overflowing Bars' MPL-2.0 text, and the separately authorized asset notice are included under `src/main/resources/META-INF/licenses/`.
 
 ## Release and edit notes
 
@@ -213,13 +221,14 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | `v1.20.1-2.4.7-fabric.6` | Adds generic consumable finish effects and restores player body-part damage by injecting at `Player.actuallyHurt`. In-game tests confirmed body damage, healing items, hydration consumables, and successful client launch. |
 | `v1.20.1-2.4.7-fabric.7` | Restores configured temperature immunity after death. User verified the default 90-second duration. Dimension-change testing is deferred to a later test plan. |
 | `v1.20.1-2.4.7-fabric.8` | Adds Trinkets integration, Absorption-to-shield conversion, shield-first player damage processing, First Aid Supplies detection updates, and Vulnerability/Hard Falling damage behavior. Golden Apple shield conversion, First Aid healing, Vulnerability, and Hard Falling were verified in-game. |
+| `v1.20.1-2.4.7-fabric.9` | Restores item tooltip details for hydration/saturation, temperature/resistance modifiers, body healing, shade, and consumable effects. User verified hydration, Rotten Flesh and Refreshing Canteen tooltips, and the correct colors/values for Snow and Desert armor. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.8`
-- SHA-256: `AD6B1C7E40CD1D02895CEFA23905E84DE5A0EC1AE720479CD4DA72F587E22332`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.8>
+- Tag: `v1.20.1-2.4.7-fabric.9`
+- SHA-256: `370F1301EE95B4BF47C156AC500695F2B14484FA2C2DF277E43BC2E2A0D64E0F`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.9>
 
 ## Feature and compatibility notes
 
@@ -236,6 +245,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Localized body damage and healing items are user-validated in `.6`; hydration consumables work. Temperature-consumable behavior still needs separate validation.
 - Death-respawn temperature immunity is user-validated in `.7` at the configured default 90-second duration. Dimension-change testing is intentionally deferred.
 - The user confirmed the configured F3 debug filter hides debug values when enabled; disabling the option still needs verification.
+- Item tooltips for hydration, consumable effects, and equipment temperature/resistance are restored and user-verified, including the Snow and Desert armor tooltip colors and values.
 - Optional Overflowing Bars shared-height integration.
 
 ### Not yet restored or not fully validated

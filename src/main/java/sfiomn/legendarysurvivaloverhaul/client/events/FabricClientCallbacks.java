@@ -66,7 +66,6 @@ public final class FabricClientCallbacks {
                 RenderBlurOverlay.stop();
             }
         });
-        FabricHudCallbacks.register();
     }
 
     private static void onEndClientTick(Minecraft client) {

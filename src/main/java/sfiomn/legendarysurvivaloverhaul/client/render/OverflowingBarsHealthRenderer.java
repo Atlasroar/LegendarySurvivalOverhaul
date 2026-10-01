@@ -1,0 +1,204 @@
+// Adapted from Overflowing Bars by @heyitsfuzs, licensed under MPL-2.0.
+// The local adaptation removes library configuration dependencies and uses LSO's HUD resources.
+package sfiomn.legendarysurvivaloverhaul.client.render;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.Util;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
+
+public final class OverflowingBarsHealthRenderer {
+    private static final ResourceLocation GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
+    private static final ResourceLocation OVERFLOWING_ICONS_LOCATION = new ResourceLocation(
+            LegendarySurvivalOverhaul.MOD_ID, "textures/gui/overflowingbars_icons.png");
+    public static final OverflowingBarsHealthRenderer INSTANCE = new OverflowingBarsHealthRenderer();
+
+    private final RandomSource random = RandomSource.create();
+    private int tickCount;
+    private int lastHealth;
+    private int displayHealth;
+    private long lastHealthTime;
+    private long healthBlinkTime;
+
+    public void onStartTick() {
+        this.tickCount++;
+    }
+
+    private OverflowingBarsHealthRenderer() {
+    }
+
+    public void renderPlayerHealth(GuiGraphics guiGraphics, int posX, int posY, Player player,
+                                   ProfilerFiller profiler) {
+        profiler.push("health");
+        resetRenderState();
+        RenderSystem.enableBlend();
+        int currentHealth = Mth.ceil(player.getHealth());
+        boolean blink = this.healthBlinkTime > (long) this.tickCount && (this.healthBlinkTime - (long) this.tickCount) / 3L % 2L == 1L;
+        long millis = Util.getMillis();
+        if (currentHealth < this.lastHealth && player.invulnerableTime > 0) {
+            this.lastHealthTime = millis;
+            this.healthBlinkTime = this.tickCount + 20;
+        } else if (currentHealth > this.lastHealth && player.invulnerableTime > 0) {
+            this.lastHealthTime = millis;
+            this.healthBlinkTime = this.tickCount + 10;
+        }
+
+        if (millis - this.lastHealthTime > 1000L) {
+            this.displayHealth = currentHealth;
+            this.lastHealthTime = millis;
+        }
+
+        this.lastHealth = currentHealth;
+        int displayHealth = this.displayHealth;
+        this.random.setSeed(this.tickCount * 312871);
+        float maxHealth = Math.max((float) player.getAttributeValue(Attributes.MAX_HEALTH), (float) Math.max(displayHealth, currentHealth));
+        int currentAbsorption = Mth.ceil(player.getAbsorptionAmount());
+        int heartOffsetByRegen = -1;
+        if (player.hasEffect(MobEffects.REGENERATION)) {
+            heartOffsetByRegen = this.tickCount % Mth.ceil(Math.min(20.0F, maxHealth) + 5.0F);
+        }
+        this.renderHearts(guiGraphics, player, posX, posY, heartOffsetByRegen, maxHealth, currentHealth,
+                displayHealth, currentAbsorption, blink);
+        RenderSystem.disableBlend();
+        profiler.pop();
+    }
+
+    private void renderHearts(GuiGraphics guiGraphics, Player player, int posX, int posY, int heartOffsetByRegen, float maxHealth, int currentHealth, int displayHealth, int currentAbsorptionHealth, boolean blink) {
+        boolean hardcore = player.level().getLevelData().isHardcore();
+        int normalHearts = Math.min(10, Mth.ceil((double) maxHealth / 2.0));
+        int maxAbsorptionHearts = 20 - normalHearts;
+        int absorptionHearts = Math.min(20 - normalHearts, Mth.ceil((double) currentAbsorptionHealth / 2.0));
+
+        for (int currentHeart = 0; currentHeart < normalHearts + absorptionHearts; ++currentHeart) {
+
+            int currentPosX = posX + (currentHeart % 10) * 8;
+            int currentPosY = posY - (currentHeart / 10) * 10;
+
+            if (currentHealth + currentAbsorptionHealth <= 4) {
+                currentPosY += this.random.nextInt(2);
+            }
+
+            if (currentHeart < normalHearts && heartOffsetByRegen == currentHeart) {
+                currentPosY -= 2;
+            }
+
+            guiGraphics.pose().pushPose();
+
+            // renders the black heart outline and background (only visible for half hearts)
+            this.renderHeart(guiGraphics, HeartType.CONTAINER, currentPosX, currentPosY, blink, false, hardcore);
+            // then the first call to renderHeart renders the heart from the layer below in case the current layer heart is just half a heart
+            // the second call renders the actual heart from the current layer
+            if (currentHeart >= normalHearts) {
+                int currentAbsorption = currentHeart * 2 - normalHearts * 2;
+                if (currentAbsorption < currentAbsorptionHealth) {
+                    int maxAbsorptionHealth = maxAbsorptionHearts * 2;
+                    boolean halfHeart = currentAbsorption + 1 == currentAbsorptionHealth % maxAbsorptionHealth;
+                    boolean orange = currentAbsorptionHealth > maxAbsorptionHealth && currentAbsorption + 1 <= (currentAbsorptionHealth - 1) % maxAbsorptionHealth + 1;
+                    if (halfHeart && orange) {
+                        this.renderHeart(guiGraphics, HeartType.forPlayer(player, true, false), currentPosX, currentPosY, false, false, hardcore);
+                    }
+                    this.renderHeart(guiGraphics, HeartType.forPlayer(player, true, orange), currentPosX, currentPosY, false, halfHeart, hardcore);
+                }
+            }
+
+            if (blink && currentHeart * 2 < Math.min(20, displayHealth)) {
+                boolean halfHeart = currentHeart * 2 + 1 == (displayHealth - 1) % 20 + 1;
+                boolean orange = displayHealth > 20 && currentHeart * 2 + 1 <= (displayHealth - 1) % 20 + 1;
+                if (halfHeart && orange) {
+                    this.renderHeart(guiGraphics, HeartType.forPlayer(player, false, false), currentPosX, currentPosY, true, false, hardcore);
+                }
+                this.renderHeart(guiGraphics, HeartType.forPlayer(player, false, orange), currentPosX, currentPosY,
+                        true, halfHeart, hardcore);
+            }
+
+            if (currentHeart * 2 < Math.min(20, currentHealth)) {
+                boolean halfHeart = currentHeart * 2 + 1 == (currentHealth - 1) % 20 + 1;
+                boolean orange = currentHealth > 20 && currentHeart * 2 + 1 <= (currentHealth - 1) % 20 + 1;
+                if (halfHeart && orange) {
+                    this.renderHeart(guiGraphics, HeartType.forPlayer(player, false, false), currentPosX, currentPosY, false, false, hardcore);
+                }
+                this.renderHeart(guiGraphics, HeartType.forPlayer(player, false, orange), currentPosX, currentPosY,
+                        false, halfHeart, hardcore);
+            }
+
+            guiGraphics.pose().popPose();
+        }
+    }
+
+    private void renderHeart(GuiGraphics guiGraphics, HeartType heartType, int posX, int posY, boolean blink, boolean halfHeart, boolean hardcore) {
+        // same offset as font shadow to avoid issues with optimization mods batching drawn layers together
+        guiGraphics.pose().translate(0.0F, 0.0F, 0.03F);
+        guiGraphics.blit(heartType.textureSheet, posX, posY, heartType.getX(halfHeart, blink), heartType.getY(hardcore), 9, 9);
+    }
+
+    enum HeartType {
+        CONTAINER(0, false),
+        NORMAL(2, true),
+        POISONED(4, true),
+        WITHERED(6, true),
+        ABSORBING(8, false),
+        FROZEN(9, false),
+        ORANGE(0, 3, 4, OVERFLOWING_ICONS_LOCATION, true);
+
+        private final int textureIndexX;
+        private final int textureIndexY;
+        private final int hardcoreIndexY;
+        public final ResourceLocation textureSheet;
+        private final boolean canBlink;
+
+        HeartType(int textureIndexX, boolean blink) {
+            this(textureIndexX, 0, 5, GUI_ICONS_LOCATION, blink);
+        }
+
+        HeartType(int textureIndexX, int textureIndexY, int hardcoreIndexY, ResourceLocation textureSheet, boolean blink) {
+            this.textureIndexX = textureIndexX;
+            this.textureIndexY = textureIndexY;
+            this.hardcoreIndexY = hardcoreIndexY;
+            this.textureSheet = textureSheet;
+            this.canBlink = blink;
+        }
+
+        public int getX(boolean halfHeart, boolean blink) {
+            int i;
+            if (this == CONTAINER) {
+                i = blink ? 1 : 0;
+            } else {
+                int j = halfHeart ? 1 : 0;
+                int k = this.canBlink && blink ? 2 : 0;
+                i = j + k;
+            }
+
+            return (this == ORANGE ? 0 : 16) + (this.textureIndexX * 2 + i) * 9;
+        }
+
+        public int getY(boolean hardcore) {
+            return (hardcore ? this.hardcoreIndexY : this.textureIndexY) * 9;
+        }
+
+        public static HeartType forPlayer(Player player, boolean absorbing, boolean orange) {
+            if (player.hasEffect(MobEffects.WITHER)) {
+                return WITHERED;
+            } else if (player.hasEffect(MobEffects.POISON)) {
+                return POISONED;
+            } else if (player.isFullyFrozen()) {
+                return FROZEN;
+            } else {
+                if (orange)
+                    return ORANGE;
+                return absorbing ? ABSORBING : NORMAL;
+            }
+        }
+    }
+
+    private static void resetRenderState() {
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.defaultBlendFunc();
+    }
+}

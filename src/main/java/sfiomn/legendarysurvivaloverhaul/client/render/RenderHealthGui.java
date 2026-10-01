@@ -39,7 +39,8 @@ public class RenderHealthGui
 				&& !player.isCreative() && !player.isSpectator()) {
 			rand.setSeed(player.tickCount * 445L);
 			Minecraft.getInstance().getProfiler().push("health");
-			int vanillaHealthRows = Mth.ceil(player.getMaxHealth() / 20.0F);
+			int vanillaHealthRows = LegendarySurvivalOverhaul.overflowingbarsLoaded
+					? Mth.ceil(player.getMaxHealth() / 20.0F) : 1;
 			drawHealthBar(guiGraphics, player, width, height,
 					OverflowingBarsUtil.leftHeight(39 + vanillaHealthRows * 10));
 			Minecraft.getInstance().getProfiler().pop();

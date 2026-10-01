@@ -10,6 +10,7 @@ import sfiomn.legendarysurvivaloverhaul.client.itemproperties.CanteenProperty;
 import sfiomn.legendarysurvivaloverhaul.client.itemproperties.SeasonalCalendarSeasonTypeProperty;
 import sfiomn.legendarysurvivaloverhaul.client.itemproperties.SeasonalCalendarTimeProperty;
 import sfiomn.legendarysurvivaloverhaul.client.itemproperties.ThermometerProperty;
+import sfiomn.legendarysurvivaloverhaul.client.render.OverflowingBarsHealthRenderer;
 import sfiomn.legendarysurvivaloverhaul.client.events.ClientModBusEvents;
 import sfiomn.legendarysurvivaloverhaul.client.events.FabricClientCallbacks;
 import sfiomn.legendarysurvivaloverhaul.client.network.FabricDataSyncReceiver;
@@ -33,6 +34,7 @@ public final class LegendarySurvivalOverhaulClient implements ClientModInitializ
 		FabricDataSyncReceiver.register();
 		KeyMappingRegistry.register();
 		ClientTickEvents.START_CLIENT_TICK.register(client -> {
+			OverflowingBarsHealthRenderer.INSTANCE.onStartTick();
 			if (client.player != null)
 				ModCapabilities.onPlayerTick(client.player, TickPhase.START);
 		});
