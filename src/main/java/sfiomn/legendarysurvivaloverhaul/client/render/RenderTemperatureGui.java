@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureEnum;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
@@ -53,17 +52,11 @@ public class RenderTemperatureGui
 	private static int flashCounter = -1;
 	private static boolean shakeSide = false;
 	
-	public static IGuiOverlay TEMPERATURE_GUI = (forgeGui, guiGraphics, partialTicks, width, height) -> {
+	public static void render(GuiGraphics guiGraphics, Player player, int width, int height) {
 		if (Config.Baked.temperatureEnabled
 				&& !Minecraft.getInstance().options.hideGui
-				&& forgeGui.shouldDrawSurvivalElements()) {
-			Player player = forgeGui.getMinecraft().player;
-
-			if (player != null) {
+				&& !player.isCreative() && !player.isSpectator()) {
 				rand.setSeed(player.tickCount * 445L);
-
-				forgeGui.setupOverlayRenderState(true, false);
-
                 if (Objects.requireNonNull(Config.Baked.temperatureDisplayMode) == EnumUtil.temperatureDisplayMode.SYMBOL
 						&& !CuriosUtil.isThermometerEquipped) {
 					Minecraft.getInstance().getProfiler().push("temperature_gui");
@@ -76,26 +69,8 @@ public class RenderTemperatureGui
 					drawBodyTemperature(guiGraphics, player, width, height);
 					Minecraft.getInstance().getProfiler().pop();
 				}
-			}
 		}
-	};
-
-	public static IGuiOverlay FOOD_BAR_COLD_EFFECT_GUI = (forgeGui, guiGraphics, partialTicks, width, height) -> {
-		if (!Minecraft.getInstance().options.hideGui
-				&& forgeGui.shouldDrawSurvivalElements()) {
-			Player player = forgeGui.getMinecraft().player;
-
-			if (player != null && player.hasEffect(MobEffectRegistry.COLD_HUNGER.get())) {
-				forgeGui.setupOverlayRenderState(true, false);
-
-				Minecraft.getInstance().getProfiler().push("temperature_gui");
-				drawFoodBarColdEffect(guiGraphics, player, width, height);
-				Minecraft.getInstance().getProfiler().pop();
-
-				forgeGui.rightHeight += 10;
-			}
-		}
-	};
+	}
 	
 	public static void drawTemperatureAsSymbol(GuiGraphics gui, Player player, int width, int height) {
 

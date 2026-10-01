@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessCapability;
 import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
@@ -30,23 +29,16 @@ public class RenderWetnessGui
 	private static WetnessIcon lastWetnessIcon;
 	private static int flashCounter = -1;
 	
-	public static IGuiOverlay WETNESS_GUI = (forgeGui, guiGraphics, partialTicks, width, height) -> {
+	public static void render(GuiGraphics guiGraphics, Player player, int width, int height) {
 		if (Config.Baked.wetnessEnabled
 				&& !Minecraft.getInstance().options.hideGui
-				&& forgeGui.shouldDrawSurvivalElements()) {
-			Player player = forgeGui.getMinecraft().player;
-
-			if (player != null) {
+				&& !player.isCreative() && !player.isSpectator()) {
 				rand.setSeed(player.tickCount * 445L);
-
-				forgeGui.setupOverlayRenderState(true, false);
-
 				Minecraft.getInstance().getProfiler().push("wetness_gui");
 				drawWetness(guiGraphics, player, width, height);
 				Minecraft.getInstance().getProfiler().pop();
-			}
 		}
-	};
+	}
 	
 	public static void drawWetness(GuiGraphics gui, Player player, int width, int height)
 	{
