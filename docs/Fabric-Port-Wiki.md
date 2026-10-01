@@ -17,7 +17,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 The current public artifact is [Fabric 1.20.1 health HUD test build `v1.20.1-2.4.7-fabric.3`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.3). It contains the initial Fabric survival slice, startup fixes, restored thirst/temperature/wetness/body-damage indicators, and the shield/broken-heart overlay. The user visually confirmed that moving the shield-heart overlay up 9 pixels clears the armor row while the vanilla hearts, thirst, and temperature HUD remain correct.
 
-The port is still incomplete. In particular, the health-bar replacement, cold-hunger food overlay, several Forge event surfaces, data generation, and some optional integrations still need Fabric replacements or an explicit decision to remain omitted.
+The port is still incomplete. In particular, the health-bar replacement, several Forge event surfaces, data generation, and some optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
 ## Step-by-step port history
 
@@ -84,6 +84,14 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The first visual test confirmed the shield heart appeared but overlapped the armor row. The 9-pixel upward adjustment was visually confirmed to clear the armor row while leaving the vanilla hearts and thirst/temperature HUD correct. Optional Overflowing Bars placement and multi-row health/body-damage cases still need testing.
 - Published in `v1.20.1-2.4.7-fabric.3`.
 
+### 9. Cold-hunger food overlay
+
+- Connected the existing LSO cold-hunger replacement food textures to Fabric's HUD callback, gated by temperature configuration, survival HUD visibility, and the cold-hunger effect.
+- The first visual test did not show the cold icons even though the client log confirmed that the Cold Food effect was applied. The callback now explicitly enables blending, resets tint, disables depth testing while replacing the vanilla row, and restores depth testing afterward.
+- The user confirmed the cold icons now appear and the thirst bar looks correctly placed after another 3-pixel upward adjustment (fixed offset -11 pixels, with the configured Y offset still additive).
+- The user also reported that `/effect` durations, including infinite duration, are cleared after about two seconds. This matches LSO's existing temperature-state logic: `TemperatureCapability.applySecondaryEffects` removes Cold Hunger when the player is no longer in dangerous cold. It is not a duration countdown bug; the effect is intentionally owned by the temperature state. Validate sustained behavior in an environment that keeps the player at frostbite temperature.
+- The Java 17 build and integrated-client launch both succeed. This work is ready for the next test prerelease.
+
 ## Release and edit notes
 
 All current artifacts are prereleases for testing, not claims of feature parity with Forge. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
@@ -92,8 +100,9 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | --- | --- |
 | `v1.20.1-2.4.7-fabric` | First installable Fabric compatibility/test slice. Core items and survival systems were retained; several Forge-only systems and optional integrations were omitted. |
 | `v1.20.1-2.4.7-fabric.1` | Fixes startup/config/component-registration issues found by launcher testing; uses Forge Config API Port 8.0.3. |
-| `v1.20.1-2.4.7-fabric.2` | Restores thirst, temperature, wetness, and body-damage HUD indicators. Thirst Y placement was adjusted by -8 pixels. Health-bar replacement and cold-hunger food overlay remain omitted. |
+| `v1.20.1-2.4.7-fabric.2` | Restores thirst, temperature, wetness, and body-damage HUD indicators. The initial thirst Y placement was adjusted by -8 pixels. |
 | `v1.20.1-2.4.7-fabric.3` | Adds the LSO shield/broken-heart HUD overlay. After visual feedback, the overlay was moved up 9 pixels to clear the armor row. Includes this versioned port wiki. |
+| `v1.20.1-2.4.7-fabric.4` | Adds the cold-hunger food overlay, moves the thirst row up another 3 pixels, and records user visual validation. Cold Hunger remains governed by temperature state and is removed when dangerous cold ends. |
 
 ### Latest released artifact
 
@@ -112,12 +121,12 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Server-data JSON reload listeners and 14-dataset client synchronization.
 - Thirst, temperature, wetness, and body-damage HUD indicators.
 - LSO shield/broken-heart HUD overlay (user-verified placement above the armor row).
+- Cold-hunger food-bar overlay is visually confirmed in the current development changes. Its active duration is managed by the temperature system, not by command duration overrides.
 - Optional Overflowing Bars shared-height integration.
 
 ### Not yet restored or not fully validated
 
 - Overflowing Bars overlap and multi-row health/body-damage placement still need validation.
-- Cold-hunger food-bar overlay.
 - Forge-specific health/thirst screen overlay ordering and remaining GUI effects.
 - Forge event subscriber behavior not yet represented by Fabric callbacks/mixins.
 - Forge datagen providers and selected optional-mod integrations.

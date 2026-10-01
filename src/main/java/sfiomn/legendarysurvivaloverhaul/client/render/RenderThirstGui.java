@@ -35,7 +35,7 @@ public class RenderThirstGui
 	private static final int HYDRATION_TEXTURE_WIDTH = 9;
 	private static final int HYDRATION_TEXTURE_HEIGHT = 9;
 	private static final int EXHAUSTION_BAR_WIDTH = 81;
-	private static final int HYDRATION_BAR_VERTICAL_OFFSET = -8;
+	private static final int HYDRATION_BAR_VERTICAL_OFFSET = -11;
 
 	@Nullable
 	private static Item heldItemOnPreview;

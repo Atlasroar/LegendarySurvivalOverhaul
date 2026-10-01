@@ -52,7 +52,9 @@ Current highlights:
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.
 
-The Fabric port is ongoing. The complete health-bar replacement, cold-hunger food overlay, some Forge event behavior, data generators, and selected optional integrations are not yet included. See the [port wiki](docs/Fabric-Port-Wiki.md) for the migration history, known gaps, dependencies, and release-by-release notes.
+The Fabric port is ongoing. The complete health-bar replacement, some Forge event behavior, data generators, and selected optional integrations are not yet included. See the [port wiki](docs/Fabric-Port-Wiki.md) for the migration history, known gaps, dependencies, and release-by-release notes.
+
+The current unreleased development changes include a cold-hunger food overlay and a further 3-pixel upward adjustment to the thirst bar; both are visually confirmed. Cold Hunger is a temperature-managed secondary effect: LSO applies it during dangerous cold and clears it when the player is no longer in that condition, so manually granting it with `/effect` outside dangerous cold will not keep it active for the requested duration.
 
 ## Installation
 

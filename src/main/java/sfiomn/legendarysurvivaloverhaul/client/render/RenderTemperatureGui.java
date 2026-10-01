@@ -1,5 +1,6 @@
 package sfiomn.legendarysurvivaloverhaul.client.render;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -233,6 +234,22 @@ public class RenderTemperatureGui
 				BODY_TEMPERATURE_ICON_TEXTURE_POS_Y + 17 - thermometerActualHeight,
 				BODY_TEMPERATURE_ICON_TEXTURE_WIDTH,
 				thermometerActualHeight + 5);
+	}
+
+	public static void renderColdHungerOverlay(GuiGraphics gui, Player player, int width, int height) {
+		if (Config.Baked.temperatureEnabled
+				&& !Minecraft.getInstance().options.hideGui
+				&& !player.isCreative() && !player.isSpectator()
+				&& player.hasEffect(MobEffectRegistry.COLD_HUNGER.get())) {
+			Minecraft.getInstance().getProfiler().push("cold_hunger_food_gui");
+			RenderSystem.enableBlend();
+			RenderSystem.defaultBlendFunc();
+			RenderSystem.disableDepthTest();
+			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+			drawFoodBarColdEffect(gui, player, width, height);
+			RenderSystem.enableDepthTest();
+			Minecraft.getInstance().getProfiler().pop();
+		}
 	}
 
 	public static void drawFoodBarColdEffect(GuiGraphics gui, Player player, int width, int height) {

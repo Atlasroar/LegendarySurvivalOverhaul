@@ -35,5 +35,7 @@ public final class FabricHudCallbacks {
                 client.getWindow().getGuiScaledHeight());
         RenderBodyDamageGui.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
                 client.getWindow().getGuiScaledHeight());
+        RenderTemperatureGui.renderColdHungerOverlay(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
+                client.getWindow().getGuiScaledHeight());
     }
 }
