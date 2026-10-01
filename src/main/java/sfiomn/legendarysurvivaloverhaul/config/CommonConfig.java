@@ -19,6 +19,15 @@ public class CommonConfig
 	public final ForgeConfigSpec.DoubleValue sprintingFoodExhaustion;
 	public final ForgeConfigSpec.DoubleValue onAttackFoodExhaustion;
 
+	// Air Quality
+	public final ForgeConfigSpec.BooleanValue airQualityEnabled;
+	public final ForgeConfigSpec.BooleanValue enableSignalTorches;
+	public final ForgeConfigSpec.IntValue drownedChoking;
+	public final ForgeConfigSpec.DoubleValue yellowAirProviderRadius;
+	public final ForgeConfigSpec.DoubleValue blueAirProviderRadius;
+	public final ForgeConfigSpec.DoubleValue redAirProviderRadius;
+	public final ForgeConfigSpec.DoubleValue greenAirProviderRadius;
+
 	CommonConfig(ForgeConfigSpec.Builder builder)
 	{
 		builder.comment(new String[]{
@@ -66,6 +75,28 @@ public class CommonConfig
 		onAttackFoodExhaustion = builder
 				.comment(" Food exhausted on every attack in addition to the minecraft attack food exhaustion.")
 				.defineInRange("On Attack Food Exhaustion", 0.1d, 0, 1000.0D);
+		builder.pop();
+
+		builder.comment(" Options related to the air quality system (safety lanterns, signal torches, air bladders, respirator).").push("air_quality");
+		airQualityEnabled = builder
+				.comment(" If enabled, air quality affects breathing: bad air drains the air supply even outside of liquids, good air refills it.")
+				.define("Air Quality Enabled", true);
+		enableSignalTorches = builder
+				.comment(" If enabled, right-clicking a normal torch with an empty main hand turns it into a (cosmetic) Signal Torch and back.")
+				.define("Enable Signal Torches", true);
+		drownedChoking = builder
+				.comment(" Air supply removed by a Drowned's melee attack. Set to 0 to disable.")
+				.defineInRange("Drowned Choking", 100, 0, 72000);
+		builder.push("air_provider_ranges");
+		yellowAirProviderRadius = builder.comment(" Radius in blocks for providers in the yellow air tag.")
+				.defineInRange("Yellow Air Provider Radius", 6.0D, 1.0D, 32.0D);
+		blueAirProviderRadius = builder.comment(" Radius in blocks for providers in the blue air tag.")
+				.defineInRange("Blue Air Provider Radius", 6.0D, 1.0D, 32.0D);
+		redAirProviderRadius = builder.comment(" Radius in blocks for providers in the red air tag.")
+				.defineInRange("Red Air Provider Radius", 3.0D, 1.0D, 32.0D);
+		greenAirProviderRadius = builder.comment(" Radius in blocks for providers in the green air tag.")
+				.defineInRange("Green Air Provider Radius", 9.0D, 1.0D, 32.0D);
+		builder.pop();
 		builder.pop();
 	}
 }

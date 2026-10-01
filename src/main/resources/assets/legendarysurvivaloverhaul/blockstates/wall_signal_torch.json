@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "legendarysurvivaloverhaul:block/wall_signal_torch"
+    },
+    "facing=north": {
+      "model": "legendarysurvivaloverhaul:block/wall_signal_torch",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "legendarysurvivaloverhaul:block/wall_signal_torch",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "legendarysurvivaloverhaul:block/wall_signal_torch",
+      "y": 180
+    }
+  }
+}

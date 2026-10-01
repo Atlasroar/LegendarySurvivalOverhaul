@@ -22,7 +22,10 @@ public final class ClientModBusEvents {
                 BlockRegistry.ICE_FERN_GOLD.get(),
                 BlockRegistry.SUN_FERN_CROP.get(),
                 BlockRegistry.SUN_FERN_GOLD.get(),
-                BlockRegistry.WATER_PLANT_CROP.get());
+                BlockRegistry.WATER_PLANT_CROP.get(),
+                BlockRegistry.SAFETY_LANTERN.get(),
+                BlockRegistry.SIGNAL_TORCH.get(),
+                BlockRegistry.WALL_SIGNAL_TORCH.get());
 
         TooltipHandler.register();
         TooltipComponentCallback.EVENT.register(data ->

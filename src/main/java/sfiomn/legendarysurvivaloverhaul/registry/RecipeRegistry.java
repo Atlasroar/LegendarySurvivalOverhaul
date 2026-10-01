@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import sfiomn.legendarysurvivaloverhaul.common.recipe.PurificationBlastingRecipe;
 import sfiomn.legendarysurvivaloverhaul.common.recipe.PurificationSmeltingRecipe;
 import sfiomn.legendarysurvivaloverhaul.common.recipe.RemoveCoatRecipe;
+import sfiomn.legendarysurvivaloverhaul.common.recipe.ReinforcedAirBladderRecipe;
 import sfiomn.legendarysurvivaloverhaul.common.recipe.SewingRecipe;
 
 public class RecipeRegistry {
@@ -17,6 +18,7 @@ public class RecipeRegistry {
     public static final RegistryObject<RecipeSerializer<PurificationSmeltingRecipe>> PURIFICATION_SMELTING_SERIALIZER = RECIPE_SERIALIZERS.register("purification_smelting", () -> PurificationSmeltingRecipe.Serializer.INSTANCE);
     public static final RegistryObject<RecipeSerializer<PurificationBlastingRecipe>> PURIFICATION_BLASTING_SERIALIZER = RECIPE_SERIALIZERS.register("purification_blasting", () -> PurificationBlastingRecipe.Serializer.INSTANCE);
     public static final RegistryObject<RecipeSerializer<RemoveCoatRecipe>> REMOVE_COAT_SERIALIZER = RECIPE_SERIALIZERS.register("remove_coat", () -> new SimpleCraftingRecipeSerializer<>(RemoveCoatRecipe::new));
+    public static final RegistryObject<RecipeSerializer<ReinforcedAirBladderRecipe>> REINFORCED_AIR_BLADDER_SERIALIZER = RECIPE_SERIALIZERS.register("reinforced_air_bladder", () -> new SimpleCraftingRecipeSerializer<>(ReinforcedAirBladderRecipe::new));
 
     public static final FabricDeferredRegister<RecipeType<?>> RECIPE_TYPE = FabricDeferredRegister.create(BuiltInRegistries.RECIPE_TYPE);
 

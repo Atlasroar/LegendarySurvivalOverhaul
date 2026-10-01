@@ -14,3 +14,14 @@ adapted from Overflowing Bars' `icons.png`. Its original notice is included as
 The asset is kept separate from LSO's existing overlay sheet.
 
 Upstream source: https://github.com/Fuzss/OverflowingBars/tree/1.20.1
+
+## Thin Air
+
+The air-quality subsystem is adapted from Thin Air by Petra and licensed under
+the MIT License; the full license text is included as `thinair-MIT.txt`.
+
+Thin Air assets are separately All Rights Reserved. Their use in this project
+was expressly authorized by the asset rights holder; see
+`thinair-assets-notice.txt`.
+
+Upstream source: https://github.com/Fuzss/thinair

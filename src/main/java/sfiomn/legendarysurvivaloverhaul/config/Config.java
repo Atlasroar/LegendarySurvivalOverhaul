@@ -176,6 +176,15 @@ public class Config
 		public static double sprintingFoodExhaustion;
 		public static double onAttackFoodExhaustion;
 
+		// Air Quality
+		public static boolean airQualityEnabled;
+		public static boolean enableSignalTorches;
+		public static int drownedChoking;
+		public static double yellowAirProviderRadius;
+		public static double blueAirProviderRadius;
+		public static double redAirProviderRadius;
+		public static double greenAirProviderRadius;
+
 		// Temperature
 		public static boolean temperatureEnabled;
 		public static int tempTickTime;
@@ -452,6 +461,13 @@ public class Config
 				baseFoodExhaustion = COMMON.baseFoodExhaustion.get();
 				sprintingFoodExhaustion = COMMON.sprintingFoodExhaustion.get();
 				onAttackFoodExhaustion = COMMON.onAttackFoodExhaustion.get();
+				airQualityEnabled = COMMON.airQualityEnabled.get();
+				enableSignalTorches = COMMON.enableSignalTorches.get();
+				drownedChoking = COMMON.drownedChoking.get();
+				yellowAirProviderRadius = COMMON.yellowAirProviderRadius.get();
+				blueAirProviderRadius = COMMON.blueAirProviderRadius.get();
+				redAirProviderRadius = COMMON.redAirProviderRadius.get();
+				greenAirProviderRadius = COMMON.greenAirProviderRadius.get();
 			}
 			catch (Exception e)
 			{

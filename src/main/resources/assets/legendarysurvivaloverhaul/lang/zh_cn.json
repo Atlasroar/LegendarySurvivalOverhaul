@@ -260,5 +260,10 @@
 	"message.legendarysurvivaloverhaul.sereneseasons.no_season_dimension": "这个维度没有季节",
 	"message.legendarysurvivaloverhaul.sereneseasons.no_serene_season_loaded": "静谧四季Mod未安装",
 	"message.legendarysurvivaloverhaul.heart_container.additional_health_full": "你已达到最大生命值",
-	"message.legendarysurvivaloverhaul.filled_map.destination": "Destination at XZ: %s / %s"
+	"message.legendarysurvivaloverhaul.filled_map.destination": "Destination at XZ: %s / %s",
+	"item.legendarysurvivaloverhaul.respirator": "呼吸器",
+	"item.legendarysurvivaloverhaul.air_bladder": "空气囊",
+	"item.legendarysurvivaloverhaul.reinforced_air_bladder": "强化空气囊",
+	"item.legendarysurvivaloverhaul.soulfire_bottle": "瓶中魂火瓶",
+	"block.legendarysurvivaloverhaul.safety_lantern": "安全指示灯"
 }

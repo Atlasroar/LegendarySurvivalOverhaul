@@ -1,0 +1,10 @@
+{
+  "base_quality": "yellow",
+  "bounded_qualities": [
+    {
+      "quality": "green",
+      "min": 0,
+      "max": 256
+    }
+  ]
+}

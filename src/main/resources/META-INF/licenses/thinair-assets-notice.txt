@@ -1,0 +1,10 @@
+Thin Air assets notice
+
+The textures and related assets under assets/legendarysurvivaloverhaul that
+were adapted from Thin Air are Copyright (c) 2024 @heyitsfuzs and are
+otherwise All Rights Reserved under the upstream asset license.
+
+Reuse and adaptation of these assets in Legendary Survival Overhaul was
+expressly authorized by the asset rights holder for this project.
+
+Upstream project: https://github.com/Fuzss/thinair

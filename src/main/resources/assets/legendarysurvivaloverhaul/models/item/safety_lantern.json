@@ -1,0 +1,28 @@
+{
+  "overrides": [
+    {
+      "model": "legendarysurvivaloverhaul:item/lantern_green",
+      "predicate": {
+        "legendarysurvivaloverhaul:air_quality_level": 0.0
+      }
+    },
+    {
+      "model": "legendarysurvivaloverhaul:item/lantern_blue",
+      "predicate": {
+        "legendarysurvivaloverhaul:air_quality_level": 0.1
+      }
+    },
+    {
+      "model": "legendarysurvivaloverhaul:item/lantern_yellow",
+      "predicate": {
+        "legendarysurvivaloverhaul:air_quality_level": 0.2
+      }
+    },
+    {
+      "model": "legendarysurvivaloverhaul:item/lantern_red",
+      "predicate": {
+        "legendarysurvivaloverhaul:air_quality_level": 0.3
+      }
+    }
+  ]
+}
