@@ -11,8 +11,7 @@
     "PlayerDamageMixin",
     "LivingEntityEffectMixin",
     "LivingEntityDamageMixin",
-    "ServerLevelSleepMixin",
-    "BoneMealItemMixin"
+    "ServerLevelSleepMixin"
   ],
   "client": [
     "ItemStackTooltipMixin",
