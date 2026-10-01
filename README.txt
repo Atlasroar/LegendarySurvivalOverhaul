@@ -8,6 +8,9 @@ The mod targets Java 17, as required for Minecraft 1.20.1. The current Gradle
 wrapper uses Gradle 8.12 and Fabric Loom 1.10.5, so the build can run on JDK 17
 as well.
 
+Forge Config API Port (Fabric, Minecraft 1.20.1) is a required runtime mod for
+the configuration screens and settings. The build uses version 8.0.3.
+
 Build the mod
 -------------
 
