@@ -112,6 +112,14 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The user confirmed the corrected client launches, localized body damage occurs, and healing items work. Hydration consumables had also been confirmed working; temperature-consumable behavior has not yet been separately confirmed.
 - Published in `v1.20.1-2.4.7-fabric.6`; artifact SHA-256: `BF47CCB6953612AC0BE0BAA1FE8DEB9EBE0B25BF0D27235D1DC9FF1DF3885B34`.
 
+### 12. Temperature immunity after death
+
+- Ported the Forge player-respawn temperature-immunity behavior to Fabric's `ServerPlayerEvents.AFTER_RESPAWN`.
+- Grants the configured immunity only when the old player is dead (a death respawn), and only when temperature and the feature are enabled.
+- The Java 17 build succeeds. The user confirmed in-game that a death respawn grants Temperature Immunity for the configured 90 seconds.
+- Dimension-change behavior, including returning alive from the End, is explicitly deferred to a later focused test plan once more features are working as intended.
+- Merged and published in `v1.20.1-2.4.7-fabric.7`.
+
 ## Release and edit notes
 
 All current artifacts are prereleases for testing, not claims of feature parity with Forge. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
@@ -125,13 +133,14 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | `v1.20.1-2.4.7-fabric.4` | Adds the cold-hunger food overlay, moves the thirst row up another 3 pixels, and records user visual validation. Cold Hunger remains governed by temperature state and is removed when dangerous cold ends. |
 | `v1.20.1-2.4.7-fabric.5` | Ports configured thirst exhaustion for jumping, successful block breaks, and attacks; attacks also apply food exhaustion. In-game tests confirmed all three thirst triggers, attack food exhaustion, and hydration preservation in Creative/Spectator. |
 | `v1.20.1-2.4.7-fabric.6` | Adds generic consumable finish effects and restores player body-part damage by injecting at `Player.actuallyHurt`. In-game tests confirmed body damage, healing items, hydration consumables, and successful client launch. |
+| `v1.20.1-2.4.7-fabric.7` | Restores configured temperature immunity after death. User verified the default 90-second duration. Dimension-change testing is deferred to a later test plan. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.6`
-- SHA-256: `BF47CCB6953612AC0BE0BAA1FE8DEB9EBE0B25BF0D27235D1DC9FF1DF3885B34`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.6>
+- Tag: `v1.20.1-2.4.7-fabric.7`
+- SHA-256: `516766ED63BCC14E4D05C7EE3C42C84AF75668693A9CF5D84E14BB0FC498D8AD`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.7>
 
 ## Feature and compatibility notes
 
@@ -146,6 +155,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Cold-hunger food-bar overlay is visually confirmed in `.4`. Its active duration is managed by the temperature system, not by command duration overrides.
 - Configured thirst exhaustion from jumping, successful block breaking, and attacking is user-validated in `.5`; attack food exhaustion also works, and Creative/Spectator do not lose hydration from those triggers.
 - Localized body damage and healing items are user-validated in `.6`; hydration consumables work. Temperature-consumable behavior still needs separate validation.
+- Death-respawn temperature immunity is user-validated in `.7` at the configured default 90-second duration. Dimension-change testing is intentionally deferred.
 - Optional Overflowing Bars shared-height integration.
 
 ### Not yet restored or not fully validated
@@ -156,7 +166,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Forge datagen providers and selected optional-mod integrations.
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
-- Several remaining excluded Forge event behaviors, including damage adjustments, sleep recovery, effect interception, and temperature-on-death handling.
+- Several remaining excluded Forge event behaviors, including damage adjustments, sleep recovery, and effect interception.
 - Temperature-consumable behavior and healing recovery over time need further in-game validation.
 
 Do not describe excluded features as supported. Check `build.gradle` source exclusions and references from client/common initializers before restoring a class; removing an exclusion alone is not a port.
