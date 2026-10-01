@@ -168,7 +168,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - The user reports cold effects trigger, while Heat Stroke and heat-related thirst do not appear to trigger as expected.
 - The common temperature tick applies the heat secondary effect at the `HEAT_STROKE` state (temperature 32.5+); Heat Stroke damage additionally requires active thirst and temperature 35+. Confirm those state/config gates before changing behavior.
-- The full-screen heat/cold warning overlays and warning sounds have now been wired to Fabric's client tick and HUD callbacks. In-game verification is pending.
+- The user confirmed both warning overlays fade and trigger their critical warnings and sounds at the forced heat/cold thresholds.
 - The user confirmed the temperature commands work; whether the effects apply at a forced threshold still needs separate verification.
 - Use `/temperature set 40` and `/temperature get` in a test world to isolate threshold/effect application from ambient temperature. Confirm temperature and heat/danger/secondary toggles, remove heat/temperature immunity effects, and use a non-Peaceful difficulty when checking damage.
 
@@ -182,7 +182,13 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 ### 22. Temperature warning overlays
 
 - Restored the Forge heat-stroke and frostbite full-screen texture overlays, gradual fades, early/critical warning sounds, immunity checks, and client configuration gates on Fabric.
-- The implementation uses Fabric's client tick and HUD callbacks; Java 17 build and in-game verification are pending.
+- The implementation uses Fabric's client tick and HUD callbacks. Java 17 build succeeded, and the user confirmed the configured overlays, fade transitions, and sounds produce the expected results at forced temperature thresholds.
+
+### 23. Serene Seasons season cards
+
+- Restored the optional season-card overlay with its existing dimension delay, normal/tropical season detection, fade timing, and configured screen offsets.
+- Registered card updates and rendering through Fabric client tick, connection, and HUD callbacks. The integration remains optional and requires Serene Seasons.
+- Java 17 build succeeded; in-game verification is pending.
 
 ## Release and edit notes
 

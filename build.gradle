@@ -59,7 +59,6 @@ sourceSets.main.java {
     exclude '**/client/events/ClientForgeEvents.java'
     exclude '**/client/render/RenderTooltipFrame.java'
     exclude '**/client/shaders/FocusShader.java'
-    exclude '**/client/integration/sereneseasons/RenderSeasonCards.java'
     exclude '**/client/tooltips/TooltipHandler.java'
     exclude '**/common/integration/eclipticseasons/**'
     exclude '**/common/integration/origins/**'

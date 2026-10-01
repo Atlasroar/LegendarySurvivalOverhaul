@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
+import sfiomn.legendarysurvivaloverhaul.client.integration.sereneseasons.RenderSeasonCards;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderBodyDamageGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderHealthGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureGui;
@@ -39,6 +40,8 @@ public final class FabricHudCallbacks {
         RenderTemperatureGui.renderColdHungerOverlay(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
                 client.getWindow().getGuiScaledHeight());
         RenderTemperatureOverlay.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
+                client.getWindow().getGuiScaledHeight());
+        RenderSeasonCards.render(guiGraphics, client.getWindow().getGuiScaledWidth(),
                 client.getWindow().getGuiScaledHeight());
     }
 }
