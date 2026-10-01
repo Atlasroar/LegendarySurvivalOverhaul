@@ -3,19 +3,23 @@ package sfiomn.legendarysurvivaloverhaul.client.render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.client.renderer.PostChain;
+import net.minecraft.client.renderer.PostPass;
+import net.minecraft.client.renderer.EffectInstance;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import sfiomn.legendarysurvivaloverhaul.client.shaders.FocusShader;
+import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
+import sfiomn.legendarysurvivaloverhaul.mixin.GameRendererAccessor;
+import sfiomn.legendarysurvivaloverhaul.mixin.PostChainAccessor;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 
-import javax.annotation.Nullable;
+import java.io.IOException;
+import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
 public class RenderBlurOverlay {
 
-    private static FocusShader focusShader;
+    private static final ResourceLocation BLUR_SHADER = new ResourceLocation("shaders/post/blobs2.json");
     private static final float DEFAULT_SHADER_INTENSITY = 0;
     private static final float MAX_SHADER_INTENSITY = 4;
     private static final float SHADER_INTENSITY_STEP = 0.05f;
@@ -26,17 +30,43 @@ public class RenderBlurOverlay {
     private static boolean hasShownBlurWarning = false;
 
     public static void render(Player player) {
-        if (focusShader != null && (player.isSpectator() || player.isCreative() || shaderIntensity == 0)) {
-            focusShader.stopRender();
-            focusShader = null;
-        } else if (shaderIntensity > 0 && !(Minecraft.getInstance().screen instanceof DeathScreen)) {
-            if (focusShader == null)
-                focusShader = new FocusShader();
-            focusShader.render(shaderIntensity);
+        if (player.isSpectator() || player.isCreative() || shaderIntensity == 0
+                || Minecraft.getInstance().screen instanceof DeathScreen) {
+            stop();
+            return;
         }
+
+        var gameRenderer = Minecraft.getInstance().gameRenderer;
+        PostChain currentEffect = gameRenderer.currentEffect();
+        if (currentEffect == null) {
+            try {
+                ((GameRendererAccessor) gameRenderer).legendarysurvivaloverhaul$loadEffect(BLUR_SHADER);
+                currentEffect = gameRenderer.currentEffect();
+            } catch (IOException exception) {
+                LegendarySurvivalOverhaul.LOGGER.error("Unable to load the low-hydration blur shader", exception);
+                return;
+            }
+        }
+
+        if (currentEffect == null || !BLUR_SHADER.toString().equals(currentEffect.getName()))
+            return;
+
+        List<PostPass> passes = ((PostChainAccessor) currentEffect).legendarysurvivaloverhaul$getPasses();
+        if (passes.isEmpty())
+            return;
+        EffectInstance effect = passes.get(0).getEffect();
+        var radius = effect.getUniform("Radius");
+        if (radius != null)
+            radius.set(shaderIntensity);
     }
 
-    public static void updateBlurIntensity(@Nullable Player player) {
+    public static void stop() {
+        PostChain currentEffect = Minecraft.getInstance().gameRenderer.currentEffect();
+        if (currentEffect != null && BLUR_SHADER.toString().equals(currentEffect.getName()))
+            Minecraft.getInstance().gameRenderer.shutdownEffect();
+    }
+
+    public static void updateBlurIntensity(Player player) {
         float targetShaderIntensity = DEFAULT_SHADER_INTENSITY;
         if (player != null && player.isAlive() && !player.isCreative() && !player.isSpectator()) {
 

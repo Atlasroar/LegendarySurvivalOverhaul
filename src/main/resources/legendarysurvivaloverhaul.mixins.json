@@ -12,7 +12,9 @@
     "ServerLevelSleepMixin"
   ],
   "client": [
-    "DebugScreenOverlayMixin"
+    "DebugScreenOverlayMixin",
+    "PostChainAccessor",
+    "GameRendererAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

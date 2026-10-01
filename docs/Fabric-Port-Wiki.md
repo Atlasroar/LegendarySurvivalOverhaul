@@ -158,6 +158,12 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Restored the `Hide Info From Debug` client option for F3: coordinates are replaced by the compass hint, block/facing details are removed, and targeted information is reduced to its label.
 - Java 17 build succeeded. The user confirmed the debug values are hidden when the option is enabled; testing the disabled setting remains useful.
 
+### 19. Low-hydration vision blur
+
+- Restored the client option that gradually applies the vanilla `blobs2` post effect as hydration falls below the configured threshold, and clears LSO's effect when hydration recovers or the player enters Creative/Spectator.
+- The Fabric implementation does not replace another active post effect.
+- Java 17 build and in-game verification are pending.
+
 ## Release and edit notes
 
 All current artifacts are prereleases for testing, not claims of feature parity with Forge. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
@@ -195,12 +201,13 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Configured thirst exhaustion from jumping, successful block breaking, and attacking is user-validated in `.5`; attack food exhaustion also works, and Creative/Spectator do not lose hydration from those triggers.
 - Localized body damage and healing items are user-validated in `.6`; hydration consumables work. Temperature-consumable behavior still needs separate validation.
 - Death-respawn temperature immunity is user-validated in `.7` at the configured default 90-second duration. Dimension-change testing is intentionally deferred.
+- The user confirmed the configured F3 debug filter hides debug values when enabled; disabling the option still needs verification.
 - Optional Overflowing Bars shared-height integration.
 
 ### Not yet restored or not fully validated
 
 - Overflowing Bars overlap and multi-row health/body-damage placement still need validation.
-- Forge-specific health/thirst screen overlay ordering and the low-hydration blur effect.
+- Forge-specific health/thirst screen overlay ordering.
 - Forge event subscriber behavior not yet represented by Fabric callbacks/mixins.
 - Forge datagen providers and selected optional-mod integrations.
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
