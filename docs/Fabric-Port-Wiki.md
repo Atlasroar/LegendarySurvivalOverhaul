@@ -203,7 +203,9 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Replaced the single Fabric `HudRenderCallback` with mixin anchors after vanilla's combined status-bar pass and at the end of `Gui.render`, separating bars from screen-wide overlays/cards.
 - Adapted Overflowing Bars' health renderer and imported its icon sheet for LSO's health-overhaul HUD when Overflowing Bars itself is absent. If the optional mod is loaded, its own health rendering remains authoritative; the existing ObjectShare spacing integration is retained.
 - Used Puzzles Lib's per-element rendering hooks as a design reference. Its Fabric mixin does not expose hooks for the combined health/armor/food/air status-bar pass, so LSO uses local anchors rather than adding Puzzles Lib as a runtime dependency.
-- The implementation is build-verified but has not been visually tested. Validate default hearts, health above 20, absorption, regeneration, poison/wither/frozen states, LSO shield/broken hearts, hunger/thirst alignment, and the optional Overflowing Bars combination before release.
+- The user confirmed vanilla health rendering at 40 health, including extra rows and vanilla effect styles; armor toughness also does not overlap the armor bar. They reported that LSO shield/broken hearts still conflict with the armor row.
+- Moved the LSO shield/broken-heart display up one 10-pixel row, reserved that extra left-side HUD height, and base its prior-row spacing on the actual vanilla max-health row count. This dedicated-row adjustment builds successfully but awaits in-game verification.
+- Next checks: confirm shield/broken-heart icons no longer conflict with armor at 20 and 40 health; verify shield depletion and broken-heart behavior; recheck hunger/thirst alignment and the optional Overflowing Bars combination.
 - Third-party attribution, Overflowing Bars' MPL-2.0 text, and the separately authorized asset notice are included under `src/main/resources/META-INF/licenses/`.
 
 ## Release and edit notes

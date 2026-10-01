@@ -39,8 +39,7 @@ public class RenderHealthGui
 				&& !player.isCreative() && !player.isSpectator()) {
 			rand.setSeed(player.tickCount * 445L);
 			Minecraft.getInstance().getProfiler().push("health");
-			int vanillaHealthRows = LegendarySurvivalOverhaul.overflowingbarsLoaded
-					? Mth.ceil(player.getMaxHealth() / 20.0F) : 1;
+			int vanillaHealthRows = Mth.ceil(player.getMaxHealth() / 20.0F);
 			drawHealthBar(guiGraphics, player, width, height,
 					OverflowingBarsUtil.leftHeight(39 + vanillaHealthRows * 10));
 			Minecraft.getInstance().getProfiler().pop();
@@ -67,7 +66,7 @@ public class RenderHealthGui
 			return;
 
 		int left = width / 2 - 91; // Same x offset as the health bar
-		int top = height - leftHeight + HEALTH_BAR_VERTICAL_OFFSET;
+		int top = height - leftHeight + HEALTH_BAR_VERTICAL_OFFSET - 10;
 
 		int playerHearts = 0;
 
@@ -87,7 +86,7 @@ public class RenderHealthGui
 		}
 		int healthRows = Mth.ceil((totalHearts)  / 10.0F);
 
-		OverflowingBarsUtil.reserveLeftHeight(healthRows * 10 - (playerHearts > 0 ? 10 : 0));
+		OverflowingBarsUtil.reserveLeftHeight(healthRows * 10 - (playerHearts > 0 ? 10 : 0) + 10);
 
 		int healthBlinkTimer = bodyDamageCap != null ? bodyDamageCap.getHealthBlinkTimer() : 0;
 		renderHearts(gui, left, top, 10, playerHearts, brokenHearts, Mth.ceil(player.getHealth()), shieldHealth, healthBlinkTimer);
