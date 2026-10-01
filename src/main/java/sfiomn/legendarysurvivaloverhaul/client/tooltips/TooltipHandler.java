@@ -7,6 +7,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffectUtil;
@@ -20,7 +21,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonHealingConsumable;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonMobEffect;
@@ -55,7 +55,7 @@ public class TooltipHandler
 	{
 		ItemStack stack = event.getItemStack();
 
-		ResourceLocation itemRegistryName = ForgeRegistries.ITEMS.getKey(stack.getItem());
+		ResourceLocation itemRegistryName = 		BuiltInRegistries.ITEM.getKey(stack.getItem());
 
 		if (!stack.isEmpty() && itemRegistryName != null)
 		{
@@ -196,7 +196,7 @@ public class TooltipHandler
 	}
 
 	private static void addFoodEffectText(ItemStack stack, List<Component> tooltips) {
-		ResourceLocation itemRegistryName = ForgeRegistries.ITEMS.getKey(stack.getItem());
+		ResourceLocation itemRegistryName = BuiltInRegistries.ITEM.getKey(stack.getItem());
 		List<JsonTemperatureConsumable> jtcs = TemperatureDataManager.getConsumable(itemRegistryName);
 
 		if (jtcs != null) {
@@ -223,7 +223,7 @@ public class TooltipHandler
 
 	private static void addHealingText(ItemStack stack, List<Component> tooltips) {
 
-		ResourceLocation itemRegistryName = ForgeRegistries.ITEMS.getKey(stack.getItem());
+		ResourceLocation itemRegistryName = BuiltInRegistries.ITEM.getKey(stack.getItem());
 		JsonHealingConsumable jsonConsumableHeal = BodyDamageDataManager.getHealingItem(itemRegistryName);
 
 		if (jsonConsumableHeal != null) {
@@ -254,7 +254,7 @@ public class TooltipHandler
 
 	private static void addShadeText(ItemStack stack, List<Component> tooltips) {
 
-		ResourceLocation itemRegistryName = ForgeRegistries.ITEMS.getKey(stack.getItem());
+		ResourceLocation itemRegistryName = BuiltInRegistries.ITEM.getKey(stack.getItem());
 
 		if (itemRegistryName != null && (BeachpartyUtil.canProvideShade(itemRegistryName) || ArtifactsUtil.canProvideShade(itemRegistryName))) {
 			tooltips.add(
@@ -304,7 +304,7 @@ public class TooltipHandler
 	private static MutableComponent getHydrationEffectTooltip(double effectChance, String effectName, int amplifier, int duration) {
 		MobEffect effect = null;
 		if (effectName != null && !effectName.isEmpty() && effectChance > 0)
-			effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(effectName));
+			effect = 			BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(effectName));
 
 		if (effect == null)
 			return null;

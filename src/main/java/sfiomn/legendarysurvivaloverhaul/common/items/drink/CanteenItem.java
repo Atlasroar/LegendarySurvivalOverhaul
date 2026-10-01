@@ -1,6 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.common.items.drink;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -23,8 +24,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonMobEffect;
@@ -33,7 +32,6 @@ import sfiomn.legendarysurvivaloverhaul.api.data.manager.ThirstDataManager;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.HydrationEnum;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
 import sfiomn.legendarysurvivaloverhaul.api.wetness.WetnessUtil;
-import sfiomn.legendarysurvivaloverhaul.common.integration.crayfish.CrayfishFurnitureUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.EnchantmentRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
@@ -88,7 +86,7 @@ public class CanteenItem extends DrinkItem {
 
         if (thirstInfo != null && thirstInfo.hydration == 3 && thirstInfo.saturation == 0 && !thirstInfo.effects.isEmpty()) {
             for (JsonMobEffect jsonMobEffect : thirstInfo.effects) {
-                if (jsonMobEffect.name.equalsIgnoreCase(MobEffectRegistry.THIRST.getId().toString()))
+                if (jsonMobEffect.name.equalsIgnoreCase(BuiltInRegistries.MOB_EFFECT.getKey(MobEffectRegistry.THIRST.get()).toString()))
                     return true;
             }
         }
@@ -141,16 +139,7 @@ public class CanteenItem extends DrinkItem {
             }
         }
 
-        // Priority 2: Try Crayfish furniture for filling (always check first)
-        if (LegendarySurvivalOverhaul.crayfishFurnitureLoaded) {
-            InteractionResult result = CrayfishFurnitureUtil.tryFillCanteenFromSinkOrBasin(level, clickedPos, player, canteen);
-            if (result.consumesAction()) {
-                player.swing(InteractionHand.MAIN_HAND, true);
-                return result;
-            }
-        }
-
-        // Priority 3: Handle vanilla water cauldron - fill canteen from it
+        // Handle vanilla water cauldron - fill canteen from it
         if (blockState.is(Blocks.WATER_CAULDRON) && canFill(canteen)) {
             if (!level.isClientSide) {
                 this.fill(canteen);
@@ -162,7 +151,7 @@ public class CanteenItem extends DrinkItem {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
-        // Priority 4: Empty partial canteen into empty cauldron
+        // Empty partial canteen into empty cauldron
         if (blockState.is(Blocks.CAULDRON) && canDrink(canteen)) {
             if (!level.isClientSide) {
                 shrinkCapacity(canteen);
@@ -174,7 +163,7 @@ public class CanteenItem extends DrinkItem {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         
-        // Priority 5: Empty partial canteen into partial water cauldron
+        // Empty partial canteen into partial water cauldron
         if (blockState.is(Blocks.WATER_CAULDRON) && canDrink(canteen)) {
             int currentLevel = blockState.getValue(LayeredCauldronBlock.LEVEL);
             if (currentLevel < 3) {
@@ -195,10 +184,10 @@ public class CanteenItem extends DrinkItem {
             player.swing(InteractionHand.MAIN_HAND, true);
 
             if (player instanceof ServerPlayer serverPlayer) {
-                ForgeRegistries.SOUND_EVENTS.getHolder(SoundEvents.BOTTLE_FILL).ifPresent(soundHolder -> serverPlayer.connection.send(
-                        new ClientboundSoundPacket(
-                                soundHolder, SoundSource.PLAYERS, serverPlayer.getX(),
-                                serverPlayer.getY(), serverPlayer.getZ(), 1.0F, 1.0F, player.level().getRandom().nextLong())));
+                serverPlayer.connection.send(new ClientboundSoundPacket(
+                        BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.BOTTLE_FILL), SoundSource.PLAYERS,
+                        serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 1.0F, 1.0F,
+                        player.level().getRandom().nextLong()));
             }
             this.fill(canteen);
             return InteractionResult.CONSUME;
@@ -209,7 +198,7 @@ public class CanteenItem extends DrinkItem {
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
-        HitResult positionLookedAt = player.pick(Math.max(3.0, player.getAttributeValue(ForgeMod.BLOCK_REACH.get()) / 2), 0.0F, true);
+        HitResult positionLookedAt = player.pick(3.0, 0.0F, true);
 
         ItemStack canteen = player.getItemInHand(hand);
 
@@ -229,17 +218,12 @@ public class CanteenItem extends DrinkItem {
             return InteractionResultHolder.consume(canteen);
         }
 
-        // Only pass to useOn() for blocks that it actually handles:
-        // - Cauldrons (both empty and water-filled)
-        // - Modded blocks (sinks, basins, etc.)
+        // Only pass to useOn() for cauldrons; do not block drinking at other blocks.
         // This prevents blocking drinking when looking at regular blocks
         if (positionLookedAt.getType() == HitResult.Type.BLOCK && blockPos != null) {
             BlockState blockState = level.getBlockState(blockPos);
-            // Check if it's a block that useOn() can handle
-            boolean isHandledByUseOn = blockState.is(Blocks.CAULDRON) || 
-                                       blockState.is(Blocks.WATER_CAULDRON) ||
-                                       (LegendarySurvivalOverhaul.crayfishFurnitureLoaded && 
-                                        CrayfishFurnitureUtil.isSinkOrBasin(blockState));
+            boolean isHandledByUseOn = blockState.is(Blocks.CAULDRON)
+                    || blockState.is(Blocks.WATER_CAULDRON);
             
             if (isHandledByUseOn) {
                 return InteractionResultHolder.pass(canteen);

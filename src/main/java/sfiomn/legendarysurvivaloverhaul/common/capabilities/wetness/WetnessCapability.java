@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -19,10 +20,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.LavaFluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.registries.ForgeRegistries;
+import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import sfiomn.legendarysurvivaloverhaul.api.wetness.IWetnessCapability;
 import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.meadow.MeadowUtil;
@@ -96,7 +94,7 @@ public class WetnessCapability implements IWetnessCapability
 	 * TODO: optimization!!
 	 */
 	@Override
-	public void tickUpdate(Player player, Level level, Phase phase)
+	public void tickUpdate(Player player, Level level, TickPhase phase)
 	{
 		if (getWetnessTickTimer() == -1 || CuriosUtil.isCurioItemEquipped(player, ItemRegistry.SPONGE.get())) {
 			if (this.getWetness() > 0)
@@ -104,7 +102,7 @@ public class WetnessCapability implements IWetnessCapability
 			return;
 		}
 
-		if(phase == TickEvent.Phase.START)
+		if(phase == TickPhase.START)
 		{
 			packetTimer++;
 			return;
@@ -121,7 +119,7 @@ public class WetnessCapability implements IWetnessCapability
 		BlockPos pos = player.blockPosition();
 
 		if (player.getVehicle() != null) {
-			ResourceLocation entityRegistryName = ForgeRegistries.ENTITY_TYPES.getKey(player.getVehicle().getType());
+			ResourceLocation entityRegistryName = BuiltInRegistries.ENTITY_TYPE.getKey(player.getVehicle().getType());
 			if (entityRegistryName != null && Config.Baked.wetnessImmunityMounts.contains(entityRegistryName.toString())) {
 				if (this.wetness > 0)
 					this.addWetness(Config.Baked.wetnessDecrease);
@@ -175,31 +173,13 @@ public class WetnessCapability implements IWetnessCapability
 			if (!fluidStateUp.isEmpty())
 				fractionalLevel += MathUtil.invLerp(1, 8, fluidStateUp.getAmount());
 
-			if (fluid instanceof ForgeFlowingFluid)
-			{
-				ForgeFlowingFluid forgeFluid = (ForgeFlowingFluid) fluidState.getType();
-				
-				if (this.wetness > 0 && forgeFluid.getFluidType().isAir())				{
-					this.addWetness(Config.Baked.wetnessDecrease);
-					return;
-				}
-				
-				int temperature = forgeFluid.getFluidType().getTemperature();
-				
-				if (this.wetness < WETNESS_LIMIT && temperature < 400)
-				{
-					this.addWetness(Math.round(Config.Baked.wetnessFluidIncrease * fractionalLevel));
-				}
-				else if (this.wetness > 0)
-				{
-					this.addWetness(Config.Baked.wetnessDecrease);
-				}
-			} else if (this.wetness > 0 && fluid instanceof LavaFluid) {
-				this.addWetness(-Math.round(20.0f * fractionalLevel));
+			if (fluid instanceof LavaFluid) {
+				if (this.wetness > 0)
+					this.addWetness(-Math.round(20.0f * fractionalLevel));
 			}
-			// Last fallback, just assume that it's the same as water and go from there
 			else if (this.wetness < WETNESS_LIMIT)
 			{
+				// Fabric has no common fluid-temperature API; non-lava fluids behave as wetting fluids.
 				this.addWetness(Math.round(Config.Baked.wetnessFluidIncrease * fractionalLevel));
 			}
 		}

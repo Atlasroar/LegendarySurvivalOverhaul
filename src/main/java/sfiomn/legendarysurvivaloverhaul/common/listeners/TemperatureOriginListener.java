@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.PacketDistributor;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureResistance;
@@ -37,7 +36,7 @@ public class TemperatureOriginListener extends SimpleJsonResourceReloadListener 
             try {
                 var parsedJson = JsonTemperatureResistance.CODEC.parse(JsonOps.INSTANCE, json);
                 JsonTemperatureResistance temperatures = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing temperature origin : {}", error));
-                if (ModList.get().isLoaded(key.getNamespace()))
+                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
                     TEMPERATURE_ORIGINS.put(key, temperatures);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse temperature origin json {}", key);
@@ -47,8 +46,8 @@ public class TemperatureOriginListener extends SimpleJsonResourceReloadListener 
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} temperature origins", TEMPERATURE_ORIGINS.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncTemperatureOriginsPacket.sendTo(packetTarget, TEMPERATURE_ORIGINS);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncTemperatureOriginsPacket.sendTo(player, TEMPERATURE_ORIGINS);
     }
 
     public static void acceptServerTemperatureOrigins(Map<ResourceLocation, JsonTemperatureResistance> temperatureOrigins) {

@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.PacketDistributor;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureBiomeOverride;
@@ -37,7 +36,7 @@ public class TemperatureBiomeListener extends SimpleJsonResourceReloadListener i
             try {
                 var parsedJson = JsonTemperatureBiomeOverride.CODEC.parse(JsonOps.INSTANCE, json);
                 JsonTemperatureBiomeOverride temperatures = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing temperature biome : {}", error));
-                if (ModList.get().isLoaded(key.getNamespace()))
+                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
                     TEMPERATURE_BIOMES.put(key, temperatures);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse temperature biome json {}", key);
@@ -47,8 +46,8 @@ public class TemperatureBiomeListener extends SimpleJsonResourceReloadListener i
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} temperature biomes", TEMPERATURE_BIOMES.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncTemperatureBiomesPacket.sendTo(packetTarget, TEMPERATURE_BIOMES);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncTemperatureBiomesPacket.sendTo(player, TEMPERATURE_BIOMES);
     }
 
     public static void acceptServerTemperatureBiomes(Map<ResourceLocation, JsonTemperatureBiomeOverride> temperatureBiomes) {

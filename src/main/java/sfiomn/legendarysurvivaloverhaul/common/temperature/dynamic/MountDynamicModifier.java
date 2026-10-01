@@ -1,10 +1,10 @@
 package sfiomn.legendarysurvivaloverhaul.common.temperature.dynamic;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureResistance;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.TemperatureDataManager;
@@ -30,7 +30,7 @@ public class MountDynamicModifier extends DynamicModifierBase {
 
     private JsonTemperatureResistance processMountJson(Entity entity)
     {
-        ResourceLocation entityRegistryName = ForgeRegistries.ENTITY_TYPES.getKey(entity.getType());
+        ResourceLocation entityRegistryName = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
         JsonTemperatureResistance jsonTemperatureResistance = TemperatureDataManager.getMount(entityRegistryName);
         return Objects.requireNonNullElseGet(jsonTemperatureResistance, JsonTemperatureResistance::new);
     }

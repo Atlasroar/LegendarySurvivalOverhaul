@@ -5,7 +5,7 @@ import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 //  Deeply inspired by the tall AloeVera from MinecraftAbnormals
 //  https://github.com/team-abnormals/atmospheric/blob/1.16.x/src/main/java/com/minecraftabnormals/atmospheric/client/particle/AloeBlossomParticle.java

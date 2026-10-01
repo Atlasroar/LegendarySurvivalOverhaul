@@ -7,19 +7,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
-import sfiomn.legendarysurvivaloverhaul.common.integration.eclipticseasons.EclipticSeasonsUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneSeasonsUtil;
 
 
 public class SeasonalCalendarTimeProperty implements ClampedItemPropertyFunction {
     float olderD0 = 0;
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public float unclampedCall(@NotNull ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity entity, int i)
     {
@@ -43,8 +39,7 @@ public class SeasonalCalendarTimeProperty implements ClampedItemPropertyFunction
 
                 if (LegendarySurvivalOverhaul.sereneSeasonsLoaded) {
                     d0 = SereneSeasonsUtil.getTimeInSeasonCycle(level);
-                } else if (LegendarySurvivalOverhaul.eclipticSeasonsLoaded)
-                    d0 = EclipticSeasonsUtil.getDayInSeasonCycle(level);
+                }
 
                 return Mth.positiveModulo((float) d0, 1.0F);
             }

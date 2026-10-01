@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.PacketDistributor;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureConsumableBlock;
@@ -38,7 +37,7 @@ public class TemperatureConsumableBlockListener extends SimpleJsonResourceReload
             try {
                 var parsedJson = JsonTemperatureConsumableBlock.LIST_CODEC.parse(JsonOps.INSTANCE, json);
                 List<JsonTemperatureConsumableBlock> temperatures = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing temperature consumable block : {}", error));
-                if (ModList.get().isLoaded(key.getNamespace()))
+                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
                     TEMPERATURE_CONSUMABLE_BLOCKS.put(key, temperatures);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse temperature consumable block json {}", key);
@@ -48,8 +47,8 @@ public class TemperatureConsumableBlockListener extends SimpleJsonResourceReload
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} temperature consumable blocks", TEMPERATURE_CONSUMABLE_BLOCKS.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncTemperatureConsumableBlocksPacket.sendTo(packetTarget, TEMPERATURE_CONSUMABLE_BLOCKS);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncTemperatureConsumableBlocksPacket.sendTo(player, TEMPERATURE_CONSUMABLE_BLOCKS);
     }
 
     public static void acceptServerTemperatureConsumableBlocks(Map<ResourceLocation, List<JsonTemperatureConsumableBlock>> temperatureConsumableBlocks) {

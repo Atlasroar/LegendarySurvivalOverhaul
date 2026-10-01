@@ -145,7 +145,7 @@ public class TemperatureConfig
 				.define("Wetness Enabled", true);
 		wetnessImmunityMounts = builder
 				.comment(" List of mounts that provide a wetness immunity.")
-				.defineListAllowEmpty("Wetness Immunity Mounts", List.of("alexscaves:submarine", "immersive_machinery:bamboo_bee", "immersive_machinery:tunnel_digger", "immersive_machinery:redstone_sheep", "immersive_machinery:copperfin"), Config::validateEntityType);
+				.defineList("Wetness Immunity Mounts", List.of("alexscaves:submarine", "immersive_machinery:bamboo_bee", "immersive_machinery:tunnel_digger", "immersive_machinery:redstone_sheep", "immersive_machinery:copperfin"), Config::validateEntityType);
 		wetMultiplier = builder
 				.comment(" How much being wet influences the player's temperature.",
 						" It means that for a value of -10, the body temperature of the player is reduced by 10.")

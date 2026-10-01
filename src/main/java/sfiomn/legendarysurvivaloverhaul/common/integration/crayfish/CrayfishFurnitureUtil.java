@@ -9,6 +9,7 @@ import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.common.items.drink.CanteenItem;
 
@@ -82,10 +82,10 @@ public class CrayfishFurnitureUtil {
                 }
 
                 if (player instanceof ServerPlayer serverPlayer) {
-                    ForgeRegistries.SOUND_EVENTS.getHolder(SoundEvents.BOTTLE_FILL).ifPresent(soundHolder -> serverPlayer.connection.send(
-                            new ClientboundSoundPacket(
-                                    soundHolder, SoundSource.PLAYERS, serverPlayer.getX(),
-                                    serverPlayer.getY(), serverPlayer.getZ(), 1.0F, 1.0F, player.level().getRandom().nextLong())));
+                    serverPlayer.connection.send(new ClientboundSoundPacket(
+                            BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.BOTTLE_FILL), SoundSource.PLAYERS,
+                            serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 1.0F, 1.0F,
+                            player.level().getRandom().nextLong()));
                 }
 
                 return InteractionResult.sidedSuccess(level.isClientSide);
@@ -157,10 +157,10 @@ public class CrayfishFurnitureUtil {
             }
 
             if (player instanceof ServerPlayer serverPlayer) {
-                ForgeRegistries.SOUND_EVENTS.getHolder(SoundEvents.BOTTLE_EMPTY).ifPresent(soundHolder -> serverPlayer.connection.send(
-                        new ClientboundSoundPacket(
-                                soundHolder, SoundSource.PLAYERS, serverPlayer.getX(),
-                                serverPlayer.getY(), serverPlayer.getZ(), 1.0F, 1.0F, player.level().getRandom().nextLong())));
+                serverPlayer.connection.send(new ClientboundSoundPacket(
+                        BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.BOTTLE_EMPTY), SoundSource.PLAYERS,
+                        serverPlayer.getX(), serverPlayer.getY(), serverPlayer.getZ(), 1.0F, 1.0F,
+                        player.level().getRandom().nextLong()));
             }
 
             return InteractionResult.sidedSuccess(level.isClientSide);

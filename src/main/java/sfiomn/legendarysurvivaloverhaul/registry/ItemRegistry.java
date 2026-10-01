@@ -4,10 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.Nullable;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.item.CoatEnum;
@@ -22,7 +19,7 @@ import static sfiomn.legendarysurvivaloverhaul.common.items.armor.ArmorMaterialB
 
 public class ItemRegistry {
 
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, LegendarySurvivalOverhaul.MOD_ID);
+	public static final FabricDeferredRegister<Item> ITEMS = FabricDeferredRegister.create(BuiltInRegistries.ITEM);
 
 	public static final RegistryObject<Item> THERMOMETER = ITEMS.register("thermometer", () -> new ThermometerItem(new Item.Properties().stacksTo(1)));
 	public static final RegistryObject<Item> SEASONAL_CALENDAR = ITEMS.register("seasonal_calendar", () -> new SeasonalCalendarItem(new Item.Properties()));
@@ -54,10 +51,6 @@ public class ItemRegistry {
 	public static final RegistryObject<Item> SNOW_CHEST = ITEMS.register("snow_chestplate", () -> new ArmorItem(SNOW, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
 	public static final RegistryObject<Item> SNOW_LEGGINGS = ITEMS.register("snow_leggings", () -> new ArmorItem(SNOW, ArmorItem.Type.LEGGINGS, new Item.Properties()));
 	public static final RegistryObject<Item> SNOW_BOOTS = ITEMS.register("snow_boots", () -> new ArmorItem(SNOW, ArmorItem.Type.BOOTS, new Item.Properties()) {
-		@Override
-		public boolean canWalkOnPowderedSnow(ItemStack stack, LivingEntity wearer) {
-			return true;
-		}
 	});
 
 	public static final RegistryObject<Item> DESERT_HELMET = ITEMS.register("desert_helmet", () -> new ArmorItem(DESERT, ArmorItem.Type.HELMET, new Item.Properties()));
@@ -128,7 +121,7 @@ public class ItemRegistry {
 	public static final RegistryObject<Item> MEDKIT = ITEMS.register("medkit", () -> new Medkit(new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<Item> MORPHINE = ITEMS.register("morphine", () -> new MorphineItem(new Item.Properties()));
 
-	public static void register(IEventBus eventBus){
-		ITEMS.register(eventBus);
+	public static void register(){
+		ITEMS.registerAll();
 	}
 }

@@ -3,10 +3,7 @@ package sfiomn.legendarysurvivaloverhaul.registry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.core.registries.BuiltInRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.block.ThermalTypeEnum;
 import sfiomn.legendarysurvivaloverhaul.common.blocks.*;
@@ -15,7 +12,7 @@ import java.util.function.Supplier;
 
 public class BlockRegistry {
 
-	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, LegendarySurvivalOverhaul.MOD_ID);
+	public static final FabricDeferredRegister<Block> BLOCKS = FabricDeferredRegister.create(BuiltInRegistries.BLOCK);
 
 	public static final RegistryObject<Block> HEATER = registerBlock("heater", () -> new HeaterBaseBlock(ThermalTypeEnum.HEATING));
 	public static final RegistryObject<Block> HEATER_TOP = BLOCKS.register("heater_top", HeaterTopBlock::new);
@@ -37,7 +34,7 @@ public class BlockRegistry {
 		ItemRegistry.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
 	}
 
-	public static void register(IEventBus eventBus){
-		BLOCKS.register(eventBus);
+	public static void register(){
+		BLOCKS.registerAll();
 	}
 }

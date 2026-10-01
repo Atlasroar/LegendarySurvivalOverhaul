@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.PacketDistributor;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureResistance;
@@ -37,7 +36,7 @@ public class TemperatureItemListener extends SimpleJsonResourceReloadListener im
             try {
                 var parsedJson = JsonTemperatureResistance.CODEC.parse(JsonOps.INSTANCE, json);
                 JsonTemperatureResistance temperatures = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing temperature item : {}", error));
-                if (ModList.get().isLoaded(key.getNamespace()))
+                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
                     TEMPERATURE_ITEMS.put(key, temperatures);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse temperature item json {}", key);
@@ -47,8 +46,8 @@ public class TemperatureItemListener extends SimpleJsonResourceReloadListener im
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} temperature items", TEMPERATURE_ITEMS.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncTemperatureItemsPacket.sendTo(packetTarget, TEMPERATURE_ITEMS);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncTemperatureItemsPacket.sendTo(player, TEMPERATURE_ITEMS);
     }
 
     public static void acceptServerTemperatureItems(Map<ResourceLocation, JsonTemperatureResistance> temperatureItems) {

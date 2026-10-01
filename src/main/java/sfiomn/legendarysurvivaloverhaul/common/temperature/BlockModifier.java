@@ -3,12 +3,12 @@ package sfiomn.legendarysurvivaloverhaul.common.temperature;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureBlock;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.TemperatureDataManager;
@@ -209,7 +209,7 @@ public class BlockModifier extends ModifierBase
 
 		BlockState blockState = spreadPoint.blockState();
 		float temperature = 0.0f;
-		ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(blockState.getBlock());
+		ResourceLocation registryName = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
 
 		if (registryName == null || blockState.isAir()) {
 			return 0.0f;

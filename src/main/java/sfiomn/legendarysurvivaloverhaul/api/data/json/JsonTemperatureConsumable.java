@@ -3,8 +3,8 @@ package sfiomn.legendarysurvivaloverhaul.api.data.json;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraftforge.registries.RegistryObject;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemporaryModifierGroupEnum;
+import sfiomn.legendarysurvivaloverhaul.registry.RegistryObject;
 
 import java.util.List;
 

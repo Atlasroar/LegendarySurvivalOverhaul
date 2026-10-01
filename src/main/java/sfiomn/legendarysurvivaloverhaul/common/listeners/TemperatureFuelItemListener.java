@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.PacketDistributor;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureFuelItem;
@@ -37,7 +36,7 @@ public class TemperatureFuelItemListener extends SimpleJsonResourceReloadListene
             try {
                 var parsedJson = JsonTemperatureFuelItem.CODEC.parse(JsonOps.INSTANCE, json);
                 JsonTemperatureFuelItem temperatures = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing temperature fuel item : {}", error));
-                if (ModList.get().isLoaded(key.getNamespace()))
+                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
                     TEMPERATURE_FUEL_ITEMS.put(key, temperatures);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse temperature fuel item json {}", key);
@@ -47,8 +46,8 @@ public class TemperatureFuelItemListener extends SimpleJsonResourceReloadListene
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} temperature fuel items", TEMPERATURE_FUEL_ITEMS.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncTemperatureFuelItemsPacket.sendTo(packetTarget, TEMPERATURE_FUEL_ITEMS);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncTemperatureFuelItemsPacket.sendTo(player, TEMPERATURE_FUEL_ITEMS);
     }
 
     public static void acceptServerTemperatureFuelItems(Map<ResourceLocation, JsonTemperatureFuelItem> temperatureFuelItems) {

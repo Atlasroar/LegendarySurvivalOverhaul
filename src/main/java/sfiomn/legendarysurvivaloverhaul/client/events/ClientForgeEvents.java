@@ -38,7 +38,7 @@ import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapabil
 import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.config.json_old.JsonConfigRegistration;
-import sfiomn.legendarysurvivaloverhaul.network.packets.DrinkBlockFluidMessage;
+import sfiomn.legendarysurvivaloverhaul.client.network.FabricClientNetworkHandler;
 import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.KeyMappingRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
@@ -115,7 +115,7 @@ public class ClientForgeEvents {
 
                     if (jsonFluidThirst != null && (jsonFluidThirst.hydration != 0 || jsonFluidThirst.saturation != 0)) {
                         playerDrinkEffect(event.getEntity());
-                        DrinkBlockFluidMessage.sendToServer();
+                        FabricClientNetworkHandler.sendDrinkBlockFluid();
                     }
                 }
             }

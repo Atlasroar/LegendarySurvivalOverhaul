@@ -4,10 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import sereneseasons.api.season.ISeasonState;
 import sereneseasons.api.season.Season;
 import sereneseasons.api.season.SeasonHelper;
@@ -76,7 +76,7 @@ public class SereneSeasonsUtil {
     }
 
     public static boolean plantCanGrow(Level level, BlockPos pos, BlockState plant) {
-        ResourceLocation resourceLocation = ForgeRegistries.BLOCKS.getKey(plant.getBlock());
+        ResourceLocation resourceLocation = BuiltInRegistries.BLOCK.getKey(plant.getBlock());
         if (resourceLocation != null) {
             boolean isFertile = ModFertility.isCropFertile(resourceLocation.getPath(), level, pos);
             if (ModConfig.fertility.seasonalCrops && ModFertility.isCrop(plant) && !isFertile && !isGlassAboveBlock(level, pos)) {
@@ -115,6 +115,8 @@ public class SereneSeasonsUtil {
     }
 
     public static void initAverageTemperatures() {
+        averageSeasonTemperature = 0;
+        averageTropicalSeasonTemperature = 0;
         averageSeasonTemperature += Config.Baked.ssEarlyAutumnModifier;
         averageSeasonTemperature += Config.Baked.ssEarlySpringModifier;
         averageSeasonTemperature += Config.Baked.ssEarlySummerModifier;

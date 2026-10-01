@@ -4,17 +4,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureBiomeOverride;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureBiomeListener;
-import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class SyncTemperatureBiomesPacket
 {
@@ -53,29 +47,13 @@ public class SyncTemperatureBiomesPacket
 		return new SyncTemperatureBiomesPacket(temperatureBiomes);
 	}
 	
-	public static void handle(SyncTemperatureBiomesPacket message, Supplier<NetworkEvent.Context> supplier)
-	{
-		final NetworkEvent.Context context = supplier.get();
-		context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> syncTemperatureBiomes(message.temperatureBiomes)));
-		
-		supplier.get().setPacketHandled(true);
+	public void applyToClient() {
+		TemperatureBiomeListener.acceptServerTemperatureBiomes(temperatureBiomes);
 	}
 
-	public static DistExecutor.SafeRunnable syncTemperatureBiomes(Map<ResourceLocation, JsonTemperatureBiomeOverride> temperatureBiomes)
-	{
-		return new DistExecutor.SafeRunnable()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void run()
-			{
-				TemperatureBiomeListener.acceptServerTemperatureBiomes(temperatureBiomes);
-			}
-		};
-	}
-
-	public static void sendTo(PacketDistributor.PacketTarget packetDistributor, Map<ResourceLocation, JsonTemperatureBiomeOverride> temperatureBiomes) {
-		NetworkHandler.INSTANCE.send(packetDistributor, new SyncTemperatureBiomesPacket(temperatureBiomes));
+	public static void sendTo(net.minecraft.server.level.ServerPlayer player, Map<ResourceLocation, JsonTemperatureBiomeOverride> temperatureBiomes) {
+		sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler.send(
+				player, "temperature_biomes",
+				new SyncTemperatureBiomesPacket(temperatureBiomes), SyncTemperatureBiomesPacket::encode);
 	}
 }

@@ -4,17 +4,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonHealingConsumable;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.BodyDamageHealingConsumableListener;
-import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class SyncBodyDamageHealingConsumablesPacket
 {
@@ -53,29 +47,13 @@ public class SyncBodyDamageHealingConsumablesPacket
 		return new SyncBodyDamageHealingConsumablesPacket(healingConsumables);
 	}
 	
-	public static void handle(SyncBodyDamageHealingConsumablesPacket message, Supplier<NetworkEvent.Context> supplier)
-	{
-		final NetworkEvent.Context context = supplier.get();
-		context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> syncTemperatureItems(message.healingConsumables)));
-		
-		supplier.get().setPacketHandled(true);
+	public void applyToClient() {
+		BodyDamageHealingConsumableListener.acceptServerHealingConsumables(healingConsumables);
 	}
 
-	public static DistExecutor.SafeRunnable syncTemperatureItems(Map<ResourceLocation, JsonHealingConsumable> healingConsumables)
-	{
-		return new DistExecutor.SafeRunnable()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void run()
-			{
-				BodyDamageHealingConsumableListener.acceptServerHealingConsumables(healingConsumables);
-			}
-		};
-	}
-
-	public static void sendTo(PacketDistributor.PacketTarget packetDistributor, Map<ResourceLocation, JsonHealingConsumable> healingConsumables) {
-		NetworkHandler.INSTANCE.send(packetDistributor, new SyncBodyDamageHealingConsumablesPacket(healingConsumables));
+	public static void sendTo(net.minecraft.server.level.ServerPlayer player, Map<ResourceLocation, JsonHealingConsumable> healingConsumables) {
+		sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler.send(
+				player, "body_damage_healing_consumables",
+				new SyncBodyDamageHealingConsumablesPacket(healingConsumables), SyncBodyDamageHealingConsumablesPacket::encode);
 	}
 }

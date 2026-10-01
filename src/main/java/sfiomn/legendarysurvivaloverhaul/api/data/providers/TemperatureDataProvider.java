@@ -1,6 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.api.data.providers;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -8,13 +9,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.builder.*;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemporaryModifierGroupEnum;
 import sfiomn.legendarysurvivaloverhaul.data.builders.*;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,8 +62,8 @@ public abstract class TemperatureDataProvider implements DataProvider {
 
     public abstract void generate(HolderLookup.Provider provider, ExistingFileHelper existingFileHelper);
 
-    @Nonnull
-    public CompletableFuture<?> run(@Nonnull CachedOutput pOutput) {
+    @NotNull
+    public CompletableFuture<?> run(@NotNull CachedOutput pOutput) {
         return this.lookupProvider.thenCompose((p_255484_) -> {
             List<CompletableFuture<?>> list = new ArrayList<>();
             this.generate(p_255484_, this.fileHelper);
@@ -117,7 +117,7 @@ public abstract class TemperatureDataProvider implements DataProvider {
     }
 
     public final ITemperatureConsumableDataHolder consumable(Item item) {
-        ResourceLocation itemRegistryName = ForgeRegistries.ITEMS.getKey(item);
+        ResourceLocation itemRegistryName = BuiltInRegistries.ITEM.getKey(item);
         assert itemRegistryName != null;
         return this.consumableBuilders.computeIfAbsent(itemRegistryName.toString(), (k) -> new TemperatureConsumableDataHolder());
     }
@@ -144,7 +144,7 @@ public abstract class TemperatureDataProvider implements DataProvider {
     }
 
     public final ITemperatureBlockDataHolder block(Block block) {
-        ResourceLocation blockRegistryName = ForgeRegistries.BLOCKS.getKey(block);
+        ResourceLocation blockRegistryName = BuiltInRegistries.BLOCK.getKey(block);
         assert blockRegistryName != null;
         return this.blockBuilders.computeIfAbsent(blockRegistryName.toString(), (k) -> new TemperatureBlockDataHolder());
     }
@@ -158,7 +158,7 @@ public abstract class TemperatureDataProvider implements DataProvider {
     }
 
     public final ITemperatureResistanceData item(Item item) {
-        ResourceLocation itemRegistryName = ForgeRegistries.ITEMS.getKey(item);
+        ResourceLocation itemRegistryName = BuiltInRegistries.ITEM.getKey(item);
         assert itemRegistryName != null;
         return this.itemBuilders.computeIfAbsent(itemRegistryName.toString(), (k) -> new TemperatureResistanceData());
     }
@@ -183,7 +183,7 @@ public abstract class TemperatureDataProvider implements DataProvider {
         return this.originBuilders.computeIfAbsent(id, (k) -> new TemperatureResistanceData());
     }
 
-    @Nonnull
+    @NotNull
     public final String getName() {
         return "Temperature for " + this.modId;
     }

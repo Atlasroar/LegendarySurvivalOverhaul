@@ -5,7 +5,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.TickEvent;
+import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import sfiomn.legendarysurvivaloverhaul.api.ModDamageTypes;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.IThirstCapability;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
@@ -59,12 +59,12 @@ public class ThirstCapability implements IThirstCapability
 	}
 
 	@Override
-	public void tickUpdate(Player player, Level level, TickEvent.Phase phase)
+	public void tickUpdate(Player player, Level level, TickPhase phase)
 	{
 		if (getTickTimer() == -1)
 			return;
 
-		if(phase == TickEvent.Phase.START)
+		if(phase == TickPhase.START)
 		{
 			packetTimer++;
 			return;

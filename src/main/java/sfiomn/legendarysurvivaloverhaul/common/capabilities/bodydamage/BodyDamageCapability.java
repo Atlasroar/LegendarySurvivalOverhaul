@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.TickEvent;
+import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import org.apache.commons.lang3.tuple.Pair;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyDamageUtil;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyPartEnum;
@@ -124,9 +124,9 @@ public class BodyDamageCapability implements IBodyDamageCapability
 	}
 
 	@Override
-	public void tickUpdate(Player player, Level level, TickEvent.Phase phase)
+	public void tickUpdate(Player player, Level level, TickPhase phase)
 	{
-		if(phase == TickEvent.Phase.START) {
+		if(phase == TickPhase.START) {
 			this.packetTimer++;
 			return;
 		};

@@ -39,9 +39,7 @@ public class WeatherModifier extends ModifierBase
 		// Apply shade effect either if it's raining or block above player or player under parasol
 		if (Config.Baked.shadeTimeModifier != 0 && time <= 12000)
 		{
-			if ((TemperatureModifierRegistry.BIOME.get().getWorldInfluence(player, level, pos) +
-					TemperatureModifierRegistry.SERENE_SEASONS.get().getWorldInfluence(player, level, pos) +
-					TemperatureModifierRegistry.ECLIPTIC_SEASONS.get().getWorldInfluence(player, level, pos)) >= Config.Baked.shadeTimeModifierThreshold) {
+			if (TemperatureModifierRegistry.BIOME.get().getWorldInfluence(player, level, pos) >= Config.Baked.shadeTimeModifierThreshold) {
 				// PI / 12000 = 0.00026179938
 				float shadeTemperature = (float) Config.Baked.shadeTimeModifier * (float) Math.sin(time * 0.00026179938);
 				weatherTemperature += shadeTemperature;

@@ -1,6 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.util.internal;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -11,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureConsumable;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureConsumableBlock;
@@ -61,24 +61,24 @@ public class TemperatureUtilInternal implements ITemperatureUtil
 		Level world = player.getCommandSenderWorld();
 		BlockPos pos = WorldUtil.getSidedBlockPos(world, player);
 		
-		for(ModifierBase modifier : MODIFIERS_REGISTRY.get().getValues())
+		for(ModifierBase modifier : MODIFIERS_REGISTRY.stream().toList())
 		{
 			float worldInfluence = modifier.getWorldInfluence(player, world, pos);
 			float playerInfluence = modifier.getPlayerInfluence(player);
 			if (player.getMainHandItem().is(Items.DEBUG_STICK)) {
-                LegendarySurvivalOverhaul.LOGGER.info("{} : world influence={}, player influence={}", MODIFIERS_REGISTRY.get().getKey(modifier), worldInfluence, playerInfluence);
+                LegendarySurvivalOverhaul.LOGGER.info("{} : world influence={}, player influence={}", MODIFIERS_REGISTRY.getKey(modifier), worldInfluence, playerInfluence);
 			}
 
 			sum += worldInfluence + playerInfluence;
 		}
 
 		float dynamicModification = 0.0f;
-		for (DynamicModifierBase dynamicModifier : DYNAMIC_MODIFIERS_REGISTRY.get().getValues())
+		for (DynamicModifierBase dynamicModifier : DYNAMIC_MODIFIERS_REGISTRY.stream().toList())
 		{
 			float worldInfluence = dynamicModifier.applyDynamicWorldInfluence(player, world, pos, sum, dynamicModification);
 			float playerInfluence = dynamicModifier.applyDynamicPlayerInfluence(player, sum, dynamicModification);
 			if (player.getMainHandItem().is(Items.DEBUG_STICK)) {
-                LegendarySurvivalOverhaul.LOGGER.info("{} : dynamic world influence={}, dynamic player influence={}", DYNAMIC_MODIFIERS_REGISTRY.get().getKey(dynamicModifier), worldInfluence, playerInfluence);
+                LegendarySurvivalOverhaul.LOGGER.info("{} : dynamic world influence={}, dynamic player influence={}", DYNAMIC_MODIFIERS_REGISTRY.getKey(dynamicModifier), worldInfluence, playerInfluence);
 			}
 
 			dynamicModification += worldInfluence + playerInfluence;
@@ -92,14 +92,14 @@ public class TemperatureUtilInternal implements ITemperatureUtil
 	{
 		float sum = 0.0f;
 
-		for(ModifierBase modifier : MODIFIERS_REGISTRY.get().getValues())
+		for(ModifierBase modifier : MODIFIERS_REGISTRY.stream().toList())
 		{
 			// LegendarySurvivalOverhaul.LOGGER.debug("tmp influence : " + modifier.getRegistryName() + ", " + modifier.getWorldInfluence(world, pos));
 			sum += modifier.getWorldInfluence(null, world, pos);
 		}
 
 		float dynamicModification = 0.0f;
-		for (DynamicModifierBase dynamicModifier : DYNAMIC_MODIFIERS_REGISTRY.get().getValues())
+		for (DynamicModifierBase dynamicModifier : DYNAMIC_MODIFIERS_REGISTRY.stream().toList())
 		{
 			// LegendarySurvivalOverhaul.LOGGER.debug("tmp influence : " + dynamicModifier.getRegistryName() + ", " + dynamicModifier.applyDynamicWorldInfluence(world, pos, sum));
 			dynamicModification += dynamicModifier.applyDynamicWorldInfluence(null, world, pos, sum, dynamicModification);
@@ -167,7 +167,7 @@ public class TemperatureUtilInternal implements ITemperatureUtil
 	@Override
 	public void applyConsumableBlockTemperature(Player player, BlockState blockState) {
 		if (Config.Baked.temperatureEnabled) {
-			ResourceLocation blockRegistryName = ForgeRegistries.BLOCKS.getKey(blockState.getBlock());
+			ResourceLocation blockRegistryName = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
 			List<JsonTemperatureConsumableBlock> jsonConsumableBlockTemperatures = TemperatureDataManager.getConsumableBlock(blockRegistryName);
 
 			if (jsonConsumableBlockTemperatures != null) {

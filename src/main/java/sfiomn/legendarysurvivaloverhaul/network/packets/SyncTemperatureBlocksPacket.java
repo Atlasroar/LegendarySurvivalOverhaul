@@ -5,19 +5,13 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureBlock;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureBlockListener;
-import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class SyncTemperatureBlocksPacket
 {
@@ -61,29 +55,13 @@ public class SyncTemperatureBlocksPacket
 		return new SyncTemperatureBlocksPacket(temperatureBlocks);
 	}
 	
-	public static void handle(SyncTemperatureBlocksPacket message, Supplier<NetworkEvent.Context> supplier)
-	{
-		final NetworkEvent.Context context = supplier.get();
-		context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> syncTemperatureBlocks(message.temperatureBlocks)));
-		
-		supplier.get().setPacketHandled(true);
+	public void applyToClient() {
+		TemperatureBlockListener.acceptServerTemperatureBlocks(temperatureBlocks);
 	}
 
-	public static DistExecutor.SafeRunnable syncTemperatureBlocks(Map<ResourceLocation, List<JsonTemperatureBlock>> temperatureBlocks)
-	{
-		return new DistExecutor.SafeRunnable()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void run()
-			{
-				TemperatureBlockListener.acceptServerTemperatureBlocks(temperatureBlocks);
-			}
-		};
-	}
-
-	public static void sendTo(PacketDistributor.PacketTarget packetDistributor, Map<ResourceLocation, List<JsonTemperatureBlock>> temperatureBlocks) {
-		NetworkHandler.INSTANCE.send(packetDistributor, new SyncTemperatureBlocksPacket(temperatureBlocks));
+	public static void sendTo(net.minecraft.server.level.ServerPlayer player, Map<ResourceLocation, List<JsonTemperatureBlock>> temperatureBlocks) {
+		sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler.send(
+				player, "temperature_blocks",
+				new SyncTemperatureBlocksPacket(temperatureBlocks), SyncTemperatureBlocksPacket::encode);
 	}
 }

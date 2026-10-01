@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.PacketDistributor;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonHealingConsumable;
@@ -37,7 +36,7 @@ public class BodyDamageHealingConsumableListener extends SimpleJsonResourceReloa
             try {
                 var parsedJson = JsonHealingConsumable.CODEC.parse(JsonOps.INSTANCE, json);
                 JsonHealingConsumable temperatures = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing body healing consumable : {}", error));
-                if (ModList.get().isLoaded(key.getNamespace()))
+                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
                     HEALING_CONSUMABLES.put(key, temperatures);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse body healing consumable json {}", key);
@@ -47,8 +46,8 @@ public class BodyDamageHealingConsumableListener extends SimpleJsonResourceReloa
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} body healing consumables", HEALING_CONSUMABLES.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncBodyDamageHealingConsumablesPacket.sendTo(packetTarget, HEALING_CONSUMABLES);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncBodyDamageHealingConsumablesPacket.sendTo(player, HEALING_CONSUMABLES);
     }
 
     public static void acceptServerHealingConsumables(Map<ResourceLocation, JsonHealingConsumable> healingConsumables) {

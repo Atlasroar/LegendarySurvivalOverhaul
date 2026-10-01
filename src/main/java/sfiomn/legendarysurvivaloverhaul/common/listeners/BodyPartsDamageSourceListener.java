@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.PacketDistributor;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonBodyPartsDamageSource;
@@ -37,7 +36,7 @@ public class BodyPartsDamageSourceListener extends SimpleJsonResourceReloadListe
             try {
                 var parsedJson = JsonBodyPartsDamageSource.CODEC.parse(JsonOps.INSTANCE, json);
                 JsonBodyPartsDamageSource temperatures = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing body parts damage source : {}", error));
-                if (ModList.get().isLoaded(key.getNamespace()))
+                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
                     DAMAGE_SOURCES.put(key, temperatures);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse body parts damage source json {}", key);
@@ -47,8 +46,8 @@ public class BodyPartsDamageSourceListener extends SimpleJsonResourceReloadListe
         LegendarySurvivalOverhaul.LOGGER.info("Loaded {} body parts damage sources", DAMAGE_SOURCES.size());
     }
 
-    public static void sendDataToClient(PacketDistributor.PacketTarget packetTarget) {
-        SyncBodyPartsDamageSourcesPacket.sendTo(packetTarget, DAMAGE_SOURCES);
+    public static void sendDataToClient(net.minecraft.server.level.ServerPlayer player) {
+        SyncBodyPartsDamageSourcesPacket.sendTo(player, DAMAGE_SOURCES);
     }
 
     public static void acceptServerDamageSources(Map<ResourceLocation, JsonBodyPartsDamageSource> damageSources) {

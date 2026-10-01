@@ -1,13 +1,13 @@
 package sfiomn.legendarysurvivaloverhaul.api.data.providers;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.builder.IBodyPartResistanceData;
 import sfiomn.legendarysurvivaloverhaul.api.data.builder.IBodyPartsDamageSourceData;
@@ -16,7 +16,7 @@ import sfiomn.legendarysurvivaloverhaul.data.builders.BodyPartResistanceData;
 import sfiomn.legendarysurvivaloverhaul.data.builders.BodyPartsDamageSourceData;
 import sfiomn.legendarysurvivaloverhaul.data.builders.HealingConsumableData;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,8 +46,8 @@ public abstract class BodyDamageDataProvider implements DataProvider {
 
     public abstract void generate(HolderLookup.Provider provider, ExistingFileHelper existingFileHelper);
 
-    @Nonnull
-    public CompletableFuture<?> run(@Nonnull CachedOutput pOutput) {
+    @NotNull
+    public CompletableFuture<?> run(@NotNull CachedOutput pOutput) {
         return this.lookupProvider.thenCompose((p_255484_) -> {
             List<CompletableFuture<?>> list = new ArrayList<>();
             this.generate(p_255484_, this.fileHelper);
@@ -74,7 +74,7 @@ public abstract class BodyDamageDataProvider implements DataProvider {
     }
 
     public final IHealingConsumableData consumable(Item item) {
-        ResourceLocation itemRegistryName = ForgeRegistries.ITEMS.getKey(item);
+        ResourceLocation itemRegistryName = BuiltInRegistries.ITEM.getKey(item);
         assert itemRegistryName != null;
         return this.consumablesBuilders.computeIfAbsent(itemRegistryName.toString(), (k) -> new HealingConsumableData());
     }
@@ -88,12 +88,12 @@ public abstract class BodyDamageDataProvider implements DataProvider {
     }
 
     public final IBodyPartResistanceData item(Item item) {
-        ResourceLocation itemRegistryName = ForgeRegistries.ITEMS.getKey(item);
+        ResourceLocation itemRegistryName = BuiltInRegistries.ITEM.getKey(item);
         assert itemRegistryName != null;
         return this.bodyPartResistanceBuilders.computeIfAbsent(itemRegistryName.toString(), (k) -> new BodyPartResistanceData());
     }
 
-    @Nonnull
+    @NotNull
     public final String getName() {
         return "Body Damage for " + this.modId;
     }

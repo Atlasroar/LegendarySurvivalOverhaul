@@ -7,14 +7,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.block.ThermalTypeEnum;
 import sfiomn.legendarysurvivaloverhaul.common.containers.AbstractThermalContainer;
 
-@OnlyIn(Dist.CLIENT)
 public class ThermalScreen extends AbstractContainerScreen<AbstractThermalContainer> {
     public static final ResourceLocation HEATER_SCREEN = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "textures/gui/heater_screen.png");
     public static final ResourceLocation COOLER_SCREEN = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "textures/gui/cooler_screen.png");

@@ -20,7 +20,6 @@ import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.artifacts.ArtifactsUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.beachparty.BeachpartyUtil;
-import sfiomn.legendarysurvivaloverhaul.common.integration.eclipticseasons.EclipticSeasonsUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 
 public final class WorldUtil
@@ -78,19 +77,13 @@ public final class WorldUtil
 		if (isPlayerOrPosUndercover(level, player, pos))
 			return Biome.Precipitation.NONE;
 
-		if (LegendarySurvivalOverhaul.eclipticSeasonsLoaded)
-			return EclipticSeasonsUtil.getPrecipitation(level, pos);
-
 		if (!level.isRaining())
 			return Biome.Precipitation.NONE;
 
-		return level.getBiome(pos).get().getPrecipitationAt(pos);
+		return level.getBiome(pos).value().getPrecipitationAt(pos);
 	}
 
 	public static boolean isRainingOrSnowingAt(Level level, BlockPos pos) {
-		if (LegendarySurvivalOverhaul.eclipticSeasonsLoaded)
-			return EclipticSeasonsUtil.getPrecipitation(level, pos) != Biome.Precipitation.NONE;
-
 		if (!level.isRaining()) {
 			return false;
 		} else if (!level.canSeeSky(pos)) {

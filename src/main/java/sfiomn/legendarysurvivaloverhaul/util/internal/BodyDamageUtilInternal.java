@@ -1,6 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.util.internal;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -9,7 +10,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.tuple.Pair;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.*;
@@ -73,7 +73,7 @@ public class BodyDamageUtilInternal implements IBodyDamageUtil {
             }
 
             for (int i=0; i<malus.effects.size(); i++) {
-                MobEffect malusEffect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(malus.effects.get(i)));
+                MobEffect malusEffect = BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(malus.effects.get(i)));
                 int malusAmplifier;
                 float malusThreshold;
                 if (malusEffect == null) {
@@ -103,7 +103,7 @@ public class BodyDamageUtilInternal implements IBodyDamageUtil {
             if (!ResourceLocation.isValidResourceLocation(effectRegistryName))
                 LegendarySurvivalOverhaul.LOGGER.info("First Aid Supplies boosting effect : not valid effect registry name : {}", effectRegistryName);
 
-            MobEffect boostingEffect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(effectRegistryName));
+            MobEffect boostingEffect = BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(effectRegistryName));
             if (boostingEffect == null) {
                 LegendarySurvivalOverhaul.LOGGER.info("Unknown effect {}", effectRegistryName);
                 continue;
@@ -115,7 +115,7 @@ public class BodyDamageUtilInternal implements IBodyDamageUtil {
             if (!ResourceLocation.isValidResourceLocation(effectRegistryName))
                 LegendarySurvivalOverhaul.LOGGER.info("Limb Regeneration Effect : not valid effect registry name : {}", effectRegistryName);
 
-            MobEffect regenerationEffect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(effectRegistryName));
+            MobEffect regenerationEffect = BuiltInRegistries.MOB_EFFECT.get(new ResourceLocation(effectRegistryName));
             if (regenerationEffect == null) {
                 LegendarySurvivalOverhaul.LOGGER.info("Unknown effect {}", effectRegistryName);
                 continue;
@@ -126,7 +126,7 @@ public class BodyDamageUtilInternal implements IBodyDamageUtil {
 
     @Override
     public void applyConsumableHealing(Player player, ItemStack itemStack, boolean itemAlreadyConsumed) {
-        ResourceLocation itemRegistryName = ForgeRegistries.ITEMS.getKey(itemStack.getItem());
+        ResourceLocation itemRegistryName = BuiltInRegistries.ITEM.getKey(itemStack.getItem());
         JsonHealingConsumable jsonConsumableHeal = BodyDamageDataManager.getHealingItem(itemRegistryName);
 
         if (jsonConsumableHeal == null)
