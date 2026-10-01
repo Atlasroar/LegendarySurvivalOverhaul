@@ -60,7 +60,7 @@ Current highlights:
 - Low-hydration vision blur is restored using the vanilla post-processing effect and has been verified in-game.
 - Equipment item-data modifiers for temperature resistance and localized body-part resistance are restored for vanilla equipment and LSO Trinkets; the user confirmed they work as expected in-game.
 - Heat-stroke and frostbite warning overlays and sounds are restored and verified in-game. Heat Stroke and heat-related thirst gameplay effects remain a separate investigation.
-- Optional Serene Seasons season cards are restored on Fabric; temperate-season card display is verified in-game, while wet/dry cards need re-testing with the tropical-season option enabled.
+- Optional Serene Seasons season cards are restored on Fabric; the user verified temperate Spring/Summer/Autumn/Winter cards and tropical Wet/Dry cards in-game.
 - Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.
