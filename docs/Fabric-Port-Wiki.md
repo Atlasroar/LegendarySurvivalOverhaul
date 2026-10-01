@@ -15,9 +15,9 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.12`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.12). It removes unsupported Origins compatibility and fixes the Serene Seasons out-of-season bonemeal warning.
+The current public artifact is [Fabric 1.20.1 `v1.20.1-2.4.7-fabric.15`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.15), the first full (non-prerelease) release of the Fabric port.
 
-The port is still incomplete. The user confirmed the `.10` broken-heart foreground layering and the `.12` Serene Seasons bonemeal warning. The Forge event-subscriber audit restored Purity anvil behavior, debug-screen game-mode filtering, loot injection, and biome placement on Fabric. Forge-only datagen execution and selected optional integrations remain omitted.
+The port is considered feature-complete pending further in-game testing, particularly multiplayer/dedicated-server validation. Every tracked gameplay slice — survival systems, HUD/tooltip rendering, sewing table and coat application, heater/cooler multiblocks, and the Forge event-subscriber audit — is user-verified in a single-player/integrated-server world as of `.14`. A full audit of the three Forge-only event files found no remaining behavioral gaps: all differences from Forge are either intentional feature drops (Origins, Meds and Herbs), necessary platform adaptations forced by different Fabric hook points (bonemeal, damage pipeline), or pre-existing Forge behavior that was never different on Fabric (the armor coat tooltip, which never showed a numeric resistance delta on Forge either). Forge-only datagen execution and selected optional integrations remain intentionally omitted.
 
 ## Step-by-step port history
 
@@ -238,8 +238,8 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 ### Remaining port-wide validation
 
 - Exercise multiplayer and dedicated-server behavior beyond the networking paths already tested in an integrated world.
-- Continue checking remaining Forge event edge cases where Fabric behavior has not yet been specifically verified.
-- Forge datagen task execution remains omitted; checked-in generated runtime resources are used by the Fabric build, so restoring that developer workflow is not a gameplay prerequisite.
+
+Forge datagen task execution remains omitted; checked-in generated runtime resources are used by the Fabric build, so restoring that developer workflow is not a gameplay prerequisite.
 
 ### 27. Overflowing Bars HUD compatibility fixes (released in `.14`)
 
@@ -249,9 +249,18 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Fixed a phantom 10-pixel gap between the armor-toughness row and the thirst bar on the right side: Overflowing Bars unconditionally reserves a mount/vehicle health-bar row (`Math.max(1, getVisibleVehicleHeartRows(getVehicleMaxHearts(vehicle)) - 1) * 10`) even when the player isn't riding anything, because `getVisibleVehicleHeartRows(0)` returns `0` rather than feeding the `-1` adjustment as expected. Added `OverflowingBarsUtil.correctVehicleRowQuirk(Player)`, which subtracts the known 10-pixel quirk from the shared `overflowingbars:rightHeight` value when no vehicle health bar is actually shown, applied before any height-dependent HUD renderer reads it.
 - All three fixes were user-verified in-game with Overflowing Bars installed and enabled: shield hearts, broken hearts, and the armor row render correctly, and the right-side stack (hunger, air, toughness, thirst) has no gap.
 
+### 28. Forge event-subscriber final audit and first full release (released in `.15`)
+
+- Re-audited all `@SubscribeEvent` handlers in the three excluded Forge-only files (`CommonForgeEvents`, `CommonModBusEvents`, `ClientForgeEvents`) against their Fabric mixin/callback equivalents, including cancellation semantics, side-only checks, and damage-pipeline timing.
+- Confirmed `CommonModBusEvents`'s player attribute registration has full parity with `PlayerAttributeMixin`: all 15 LSO attributes (temperature, resistance, body-part resistance, and heart attributes) are registered identically.
+- Confirmed the drink-reach distance is intentionally hardcoded to `3.0` in `FabricInteractionCallbacks` rather than reading Forge's dynamic `BLOCK_REACH` attribute, because vanilla Fabric has no equivalent reach attribute without Forge; this is an acceptable platform limitation, not a bug.
+- Confirmed the Serene Seasons bonemeal `MAIN_HAND`-only restriction and the collapsed `LivingHurtEvent`/`LivingDamageEvent` → `actuallyHurt` mixin handling are correct adaptations to Fabric's different hook points, not missing functionality.
+- Confirmed, by comparing against the original Forge `TooltipHandler`, that the armor coat tooltip only ever showed flavor text (e.g. "Warm Coat Applied") rather than a numeric resistance delta on Forge as well — this was not a port regression. The underlying `AttributeModifier` is recomputed every server tick in `FabricEquipmentAttributeHooks` and updates correctly when a coat is applied.
+- No remaining code changes were required; this audit closes out the last tracked "remaining Forge event edge cases" item. The port is considered complete pending further in-game testing (particularly multiplayer/dedicated-server scenarios), and `.15` is published as the first full (non-prerelease) release.
+
 ## Release and edit notes
 
-All current artifacts are prereleases for testing, not claims of feature parity with Forge. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
+`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release: the port is feature-complete and every tracked gameplay slice is user-verified, pending further in-game testing (particularly multiplayer/dedicated-server scenarios). Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
 
 | Version | Notes |
 | --- | --- |
@@ -270,13 +279,14 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | `v1.20.1-2.4.7-fabric.12` | Removes unsupported Origins integration and restores the Serene Seasons out-of-season bonemeal warning, verified in-game. |
 | `v1.20.1-2.4.7-fabric.13` | Fixes the sewing table not opening (`ExtendedScreenHandlerFactory` mismatch), restores vanilla heater/cooler fuel entries, fixes thermal fuel tick timing/persistence, and fixes sewing-table preview/advancement-timing bugs. User-verified: heater, cooler, sewing table opening, warm/cold string recipes, and coat application to armor. |
 | `v1.20.1-2.4.7-fabric.14` | Fixes Overflowing Bars HUD compatibility: shield hearts no longer overlap the armor row, broken hearts render correctly instead of disappearing, and a phantom 10-pixel gap above the thirst bar is corrected. All three fixes are user-verified in-game with Overflowing Bars installed and enabled. |
+| `v1.20.1-2.4.7-fabric.15` | First full (non-prerelease) release. Final audit of the excluded Forge event-subscriber files found no remaining behavioral gaps; the port is considered complete pending further in-game testing, particularly multiplayer/dedicated-server scenarios. No code changes were required. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.14`
-- SHA-256: `22861697A15C1CFE248D749C95DD438E9CDA5CEDAC8235D8DB317C0893A884D9`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.14>
+- Tag: `v1.20.1-2.4.7-fabric.15`
+- SHA-256: `28949E2B38C63AA218501A61FB377ED31F1FDB5ABF119D582CAADB2C55FC2913`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.15>
 
 ## Feature and compatibility notes
 
@@ -295,11 +305,11 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - The user confirmed the configured F3 debug filter both hides debug values when enabled and restores them when disabled. Verified on both states.
 - Item tooltips for hydration, consumable effects, and equipment temperature/resistance are restored and user-verified, including the Snow and Desert armor tooltip colors and values.
 - Optional Overflowing Bars shared-height integration, including shield-heart/armor-row separation, broken-heart rendering, and the corrected right-side vehicle-row quirk — all user-verified in-game in `.14`.
+- The final Forge event-subscriber audit (`.15`) found all excluded Forge-only handlers either have Fabric equivalents, are intentional feature drops, or are justified platform adaptations; no code changes were required.
 
 ### Not yet restored or not fully validated
 
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
-- Remaining Forge event edge cases where behavior has not yet been specifically verified.
 
 Forge datagen execution remains omitted as a developer workflow; generated resources used at runtime are checked into the repository. Origins and Meds and Herbs are intentionally unsupported, and Supplementaries requires no special adapter for its standard item finish-use path.
 
