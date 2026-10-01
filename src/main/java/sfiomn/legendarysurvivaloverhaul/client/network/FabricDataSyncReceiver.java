@@ -17,7 +17,6 @@ import sfiomn.legendarysurvivaloverhaul.network.packets.SyncTemperatureDimension
 import sfiomn.legendarysurvivaloverhaul.network.packets.SyncTemperatureFuelItemsPacket;
 import sfiomn.legendarysurvivaloverhaul.network.packets.SyncTemperatureItemsPacket;
 import sfiomn.legendarysurvivaloverhaul.network.packets.SyncTemperatureMountsPacket;
-import sfiomn.legendarysurvivaloverhaul.network.packets.SyncTemperatureOriginsPacket;
 import sfiomn.legendarysurvivaloverhaul.network.packets.SyncThirstBlocksPacket;
 import sfiomn.legendarysurvivaloverhaul.network.packets.SyncThirstConsumablesPacket;
 
@@ -36,7 +35,6 @@ public final class FabricDataSyncReceiver {
         register("temperature_fuel_items", SyncTemperatureFuelItemsPacket::decode, SyncTemperatureFuelItemsPacket::applyToClient);
         register("temperature_items", SyncTemperatureItemsPacket::decode, SyncTemperatureItemsPacket::applyToClient);
         register("temperature_mounts", SyncTemperatureMountsPacket::decode, SyncTemperatureMountsPacket::applyToClient);
-        register("temperature_origins", SyncTemperatureOriginsPacket::decode, SyncTemperatureOriginsPacket::applyToClient);
         register("body_damage_healing_consumables", SyncBodyDamageHealingConsumablesPacket::decode, SyncBodyDamageHealingConsumablesPacket::applyToClient);
         register("body_parts_damage_sources", SyncBodyPartsDamageSourcesPacket::decode, SyncBodyPartsDamageSourcesPacket::applyToClient);
         register("body_part_resistance_items", SyncBodyPartResistanceItemsPacket::decode, SyncBodyPartResistanceItemsPacket::applyToClient);

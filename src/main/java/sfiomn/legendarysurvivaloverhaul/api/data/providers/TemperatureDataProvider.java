@@ -33,7 +33,6 @@ public abstract class TemperatureDataProvider implements DataProvider {
     private final PackOutput.PathProvider fuelItemPathProvider;
     private final PackOutput.PathProvider dimensionPathProvider;
     private final PackOutput.PathProvider mountPathProvider;
-    private final PackOutput.PathProvider originPathProvider;
     private final Map<String, ITemperatureConsumableDataHolder> consumableBuilders = new HashMap<>();
     private final Map<String, ITemperatureConsumableBlockDataHolder> consumableBlockBuilders = new HashMap<>();
     private final Map<String, ITemperatureBlockDataHolder> blockBuilders = new HashMap<>();
@@ -42,7 +41,6 @@ public abstract class TemperatureDataProvider implements DataProvider {
     private final Map<String, ITemperatureFuelItemData> fuelItemBuilders = new HashMap<>();
     private final Map<String, ITemperatureDimensionData> dimensionBuilders = new HashMap<>();
     private final Map<String, ITemperatureResistanceData> mountBuilders = new HashMap<>();
-    private final Map<String, ITemperatureResistanceData> originBuilders = new HashMap<>();
     private final ExistingFileHelper fileHelper;
 
     public TemperatureDataProvider(String modId, PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper fileHelper) {
@@ -56,7 +54,6 @@ public abstract class TemperatureDataProvider implements DataProvider {
         this.fuelItemPathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, LegendarySurvivalOverhaul.MOD_ID + "/temperature/fuel_items");
         this.dimensionPathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, LegendarySurvivalOverhaul.MOD_ID + "/temperature/dimensions");
         this.mountPathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, LegendarySurvivalOverhaul.MOD_ID + "/temperature/mounts");
-        this.originPathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, LegendarySurvivalOverhaul.MOD_ID + "/temperature/origins");
         this.lookupProvider = lookupProvider;
     }
 
@@ -102,10 +99,6 @@ public abstract class TemperatureDataProvider implements DataProvider {
             });
             this.mountBuilders.forEach((mount, builder) -> {
                 Path path = this.mountPathProvider.json(new ResourceLocation(this.modId, mount.toLowerCase()));
-                list.add(DataProvider.saveStable(pOutput, builder.build(), path));
-            });
-            this.originBuilders.forEach((origin, builder) -> {
-                Path path = this.originPathProvider.json(new ResourceLocation(this.modId, origin.toLowerCase()));
                 list.add(DataProvider.saveStable(pOutput, builder.build(), path));
             });
             return CompletableFuture.allOf(list.toArray(CompletableFuture[]::new));
@@ -177,10 +170,6 @@ public abstract class TemperatureDataProvider implements DataProvider {
 
     public final ITemperatureResistanceData mount(String id) {
         return this.mountBuilders.computeIfAbsent(id, (k) -> new TemperatureResistanceData());
-    }
-
-    public final ITemperatureResistanceData origin(String id) {
-        return this.originBuilders.computeIfAbsent(id, (k) -> new TemperatureResistanceData());
     }
 
     @NotNull

@@ -60,7 +60,6 @@ sourceSets.main.java {
     exclude '**/client/render/RenderTooltipFrame.java'
     exclude '**/client/shaders/FocusShader.java'
     exclude '**/common/integration/eclipticseasons/**'
-    exclude '**/common/integration/origins/**'
     exclude '**/common/integration/jei/**'
     exclude '**/common/integration/crayfish/CrayfishFurnitureUtil.java'
     exclude '**/common/integration/mutantmonsters/**'

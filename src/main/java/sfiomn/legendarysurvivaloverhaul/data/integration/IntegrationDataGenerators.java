@@ -73,7 +73,6 @@ public final class IntegrationDataGenerators {
         gen.addProvider(event.includeServer(), new NeapolitanThirstProvider(packOutput, lookupProvider, existingFileHelper));
         gen.addProvider(event.includeServer(), new NetherVineryTemperatureProvider(packOutput, lookupProvider, existingFileHelper));
         gen.addProvider(event.includeServer(), new NetherVineryThirstProvider(packOutput, lookupProvider, existingFileHelper));
-        gen.addProvider(event.includeServer(), new OriginsTemperatureProvider(packOutput, lookupProvider, existingFileHelper));
         gen.addProvider(event.includeServer(), new PeculiarsTemperatureProvider(packOutput, lookupProvider, existingFileHelper));
         gen.addProvider(event.includeServer(), new PeculiarsThirstProvider(packOutput, lookupProvider, existingFileHelper));
         gen.addProvider(event.includeServer(), new QuarkTemperatureProvider(packOutput, lookupProvider, existingFileHelper));

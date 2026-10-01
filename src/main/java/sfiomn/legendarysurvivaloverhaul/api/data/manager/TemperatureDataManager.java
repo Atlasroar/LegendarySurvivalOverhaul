@@ -16,7 +16,6 @@ public class TemperatureDataManager {
     public static ITemperatureFuelItemManager internalFuelItem;
     public static ITemperatureDimensionManager internalDimension;
     public static ITemperatureMountManager internalMount;
-    public static ITemperatureOriginManager internalOrigin;
 
     /**
      * Retrieves the list of Temperature Information related to the provided block registry name
@@ -105,14 +104,4 @@ public class TemperatureDataManager {
         return internalMount.get(mountRegistryName);
     }
 
-    /**
-     * Retrieves the temperature value of the provided origin registry name
-     *
-     * @param originRegistryName resource location of the origin
-     * @return Origin Temperature
-     */
-    @Nullable
-    public static JsonTemperatureResistance getOrigin(ResourceLocation originRegistryName) {
-        return internalOrigin.get(originRegistryName);
-    }
 }

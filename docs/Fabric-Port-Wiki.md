@@ -189,7 +189,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The first Wet/Dry card test used `Tropical Seasons Enabled = false`, which selects normal seasons rather than Wet/Dry cards. The test profile option was enabled for the follow-up.
 - Clarified the tropical-season config comment, which previously contradicted itself.
 - After enabling `Tropical Seasons Enabled`, the user confirmed all temperate and Wet/Dry cards appear as intended.
-- The out-of-season bonemeal warning remains unverified: multiple callback/mixin approaches failed to display it in the user's test profile despite seasonal crops being enabled and `out_of_season_crop_behavior = 1` (can't grow). It is deferred as a low-priority issue; do not consider the warning functional.
+- The warning is injected into Serene Seasons' own client-side `SeasonalCropGrowthHandler.applyBonemeal` event. Its Fabric/GlitchCore callback can cancel the interaction client-side, so a server-side warning is never sent for blocked crops. Crop fertility uses Serene Seasons' full namespaced IDs. The user confirmed the warning appears in-game with seasonal crops enabled and `out_of_season_crop_behavior = 1` (can't grow).
 
 ### 24. Item tooltips
 
@@ -218,7 +218,8 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The user confirmed in-game that loot, Purity anvil behavior, world feature generation, and plant transparency appear correct. This follow-up adjusts spawn frequency and water-plant substrates after that validation.
 - Restored Purity's anvil side effect in `AnvilMenuMixin`: a canteen output with the Purity enchantment immediately converts existing normal water to purified water without mutating the input stack. The old grindstone handler had no behavior beyond comments; purified contents already persist through enchantment removal.
 - Restored the Forge debug-filter scope so position/target information is hidden only outside Creative and Spectator modes.
-- Still omitted: optional Supplementaries lunch-basket and Meds and Herbs interactions, the repeatedly unverified/deferred Serene Seasons bonemeal warning, and Forge-only datagen execution. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`; these audit fixes are not yet included in a published build.
+- Still omitted: optional Supplementaries lunch-basket and Meds and Herbs interactions, and Forge-only datagen execution. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`.
+- Origins-specific Fabric compatibility and generated data have been removed at the user's direction; Origins is intentionally unsupported in this port.
 
 ## Release and edit notes
 
@@ -238,13 +239,14 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | `v1.20.1-2.4.7-fabric.9` | Restores item tooltip details for hydration/saturation, temperature/resistance modifiers, body healing, shade, and consumable effects. User verified hydration, Rotten Flesh and Refreshing Canteen tooltips, and the correct colors/values for Snow and Desert armor. |
 | `v1.20.1-2.4.7-fabric.10` | Reworks HUD render anchors and health-bar rendering; places broken hearts in the visible health row at foreground depth, gives shield hearts separate alternating rows, and moves armor only while shield rows are present. |
 | `v1.20.1-2.4.7-fabric.11` | Restores Fabric cutout rendering for the survival plants, corrects fern biome/substrate placement, increases plant feature frequency to once per 15 chunks, and enables water plants on farmland and grass. |
+| `v1.20.1-2.4.7-fabric.12` | Removes unsupported Origins integration and restores the Serene Seasons out-of-season bonemeal warning, verified in-game. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.10`
-- SHA-256: `9DAC8D5A211A870AC3BAC131D4A6F0099A7C369061C9A0BEECC3DB535E1B5E3F`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.10>
+- Tag: `v1.20.1-2.4.7-fabric.12`
+- SHA-256: `225D7F7A5EC9295FFF88A3E906767B6DD1D1BFD75AB68D532432650E81E9596E`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.12>
 
 ## Feature and compatibility notes
 

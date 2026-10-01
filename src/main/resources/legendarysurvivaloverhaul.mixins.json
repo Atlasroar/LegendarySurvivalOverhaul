@@ -11,15 +11,15 @@
     "PlayerDamageMixin",
     "LivingEntityEffectMixin",
     "LivingEntityDamageMixin",
-    "ServerLevelSleepMixin",
-    "BoneMealItemMixin"
+    "ServerLevelSleepMixin"
   ],
   "client": [
     "ItemStackTooltipMixin",
     "DebugScreenOverlayMixin",
     "PostChainAccessor",
     "GameRendererAccessor",
-    "GuiHudLayersMixin"
+    "GuiHudLayersMixin",
+    "SereneSeasonsBonemealMixin"
   ],
   "injectors": {
     "defaultRequire": 1
