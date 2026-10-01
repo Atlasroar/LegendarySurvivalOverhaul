@@ -15,6 +15,7 @@ import sfiomn.legendarysurvivaloverhaul.client.tooltips.HydrationTooltipComponen
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonHealingConsumable;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonMobEffect;
+import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureResistance;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureConsumable;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonThirstConsumable;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.BodyDamageDataManager;
@@ -67,6 +68,7 @@ public class TooltipHandler
 				mergeHandModifierSections(tooltips);
 				if (stack.getItem() instanceof ArmorItem) {
 					addCoatTemperatureOnArmorText(stack, tooltips);
+					addItemTemperatureText(itemRegistryName, tooltips);
 				}
 
 				addFoodEffectText(stack, tooltips);
@@ -167,6 +169,34 @@ public class TooltipHandler
 				.append(text);
 
 		tooltips.add(text);
+	}
+
+	private static void addItemTemperatureText(ResourceLocation itemRegistryName, List<Component> tooltips) {
+		JsonTemperatureResistance resistance = TemperatureDataManager.getItem(itemRegistryName);
+		if (resistance == null)
+			return;
+
+		addTemperatureAttributeText(tooltips, resistance.temperature > 0
+				? AttributeRegistry.HEATING_TEMPERATURE.get().getDescriptionId()
+				: AttributeRegistry.COOLING_TEMPERATURE.get().getDescriptionId(), resistance.temperature,
+				16420407);
+		addTemperatureAttributeText(tooltips, AttributeRegistry.HEAT_RESISTANCE.get().getDescriptionId(),
+				resistance.heatResistance, 16420407);
+		addTemperatureAttributeText(tooltips, AttributeRegistry.COLD_RESISTANCE.get().getDescriptionId(),
+				resistance.coldResistance, 6466303);
+		addTemperatureAttributeText(tooltips, AttributeRegistry.THERMAL_RESISTANCE.get().getDescriptionId(),
+				resistance.thermalResistance, 10040319);
+	}
+
+	private static void addTemperatureAttributeText(List<Component> tooltips, String attributeId, float value, int color) {
+		if (value == 0)
+			return;
+
+		tooltips.add(Component.translatable(
+				value > 0 ? "attribute.modifier.plus.0" : "attribute.modifier.take.0",
+				Math.abs(value),
+				Component.translatable(attributeId))
+				.withStyle(Style.EMPTY.withColor(TextColor.fromRgb(color))));
 	}
 
 	private static void addFoodEffectText(ItemStack stack, List<Component> tooltips) {

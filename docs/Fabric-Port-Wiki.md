@@ -195,7 +195,8 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - Re-enabled the shared tooltip handler on Fabric through `ItemTooltipCallback`, restoring LSO temperature attribute coloring, merged hand modifier sections, armor coat text, temperature consumable effects, body-healing details, shade details, and hydration-consumable effect text.
 - Restored the hydration/saturation tooltip image through a client-only `ItemStack.getTooltipImage` mixin, while preserving any tooltip image already supplied by the item. When an existing image takes precedence, hydration and saturation are displayed as text instead.
-- Build succeeded. In-game verification is pending.
+- The user confirmed hydration tooltips for apples and melon, Rotten Flesh's thirst effect and values, and the displayed values for Refreshing enchantment levels I-III. Temperature tooltips work for tested temperature-related items except the Snow and Desert armor sets.
+- Added rendering of the armor's configured temperature, heat-resistance, cold-resistance, and thermal-resistance values using localized attribute labels. This follow-up fix still needs in-game verification.
 
 ## Release and edit notes
 
