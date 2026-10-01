@@ -22,6 +22,8 @@ public final class FabricHudCallbacks {
         if (player == null)
             return;
 
+        OverflowingBarsUtil.correctVehicleRowQuirk(player);
+
         RenderHealthGui.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),
                 client.getWindow().getGuiScaledHeight());
         RenderThirstGui.render(guiGraphics, player, client.getWindow().getGuiScaledWidth(),

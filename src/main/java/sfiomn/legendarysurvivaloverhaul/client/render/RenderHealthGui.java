@@ -29,9 +29,11 @@ public class RenderHealthGui
 				&& !Minecraft.getInstance().options.hideGui
 				&& !player.isCreative() && !player.isSpectator()) {
 			Minecraft.getInstance().getProfiler().push("health");
-			int vanillaHealthRows = Mth.ceil(player.getMaxHealth() / 20.0F);
+			int fallbackLeftHeight = LegendarySurvivalOverhaul.overflowingbarsLoaded
+					? OverflowingBarsUtil.estimateHealthBarLeftHeight(player)
+					: 39 + Mth.ceil(player.getMaxHealth() / 20.0F) * 10;
 			drawHealthBar(guiGraphics, player, width, height,
-					OverflowingBarsUtil.leftHeight(39 + vanillaHealthRows * 10));
+					OverflowingBarsUtil.leftHeight(fallbackLeftHeight));
 			Minecraft.getInstance().getProfiler().pop();
 
 			RenderSystem.depthMask(true);
@@ -51,6 +53,10 @@ public class RenderHealthGui
 		int left = width / 2 - 91; // Same x offset as the health bar
 		int top = height - leftHeight;
 		drawShieldHearts(gui, left, top, shieldHealth);
+
+		int shieldHearts = Mth.ceil(shieldHealth / 2.0F);
+		int shieldRows = Mth.ceil(shieldHearts / 10.0F);
+		OverflowingBarsUtil.reserveLeftHeight(shieldRows * 10);
 	}
 
 	public static int additionalHeartRows(Player player) {

@@ -42,14 +42,14 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest prerelease is [**v1.20.1-2.4.7-fabric.13**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.13), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
+The latest prerelease is [**v1.20.1-2.4.7-fabric.14**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.14), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
 
 Current highlights:
 
 - Temperature, thirst, wetness, and body-damage HUD indicators.
 - LSO shield/broken-heart health HUD layers, including broken hearts replacing health containers and shield rows separated from the armor bar.
 - Cold-hunger food overlay and thirst-row placement, visually confirmed.
-- Core survival items, including wearable armor and heater/chiller behavior, validated in-game. The sewing table, warm/cold string recipes, and coat application to armor are also validated in-game; heater multiblock drops and fuel persistence across save/reload are still pending.
+- Core survival items, including wearable armor and heater/chiller behavior, validated in-game. The sewing table, warm/cold string recipes, and coat application to armor are also validated in-game, along with heater multiblock drop behavior and fuel persistence across save/reload.
 - Configured thirst exhaustion from jumping, mining, and attacking, validated in-game.
 - Consumable hydration, temperature effects, localized body damage, and healing items are validated in-game.
 - Configured temperature immunity after death is validated for its 90-second default duration.
