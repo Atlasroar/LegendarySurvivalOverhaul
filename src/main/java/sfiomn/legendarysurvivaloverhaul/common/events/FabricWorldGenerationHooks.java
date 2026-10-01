@@ -12,7 +12,7 @@ public final class FabricWorldGenerationHooks {
     public static void register() {
         var overworld = BiomeSelectors.foundInOverworld();
         BiomeModifications.addFeature(overworld.and(context ->
-                        context.getBiome().getBaseTemperature() <= 0.2F),
+                        context.getBiome().getBaseTemperature() <= 0.3F),
                 GenerationStep.Decoration.VEGETAL_DECORATION, ModPlacedFeatures.ICE_FERN_PLACED_KEY);
         BiomeModifications.addFeature(overworld.and(context ->
                         context.getBiome().getBaseTemperature() >= 1.0F),

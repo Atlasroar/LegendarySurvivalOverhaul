@@ -91,7 +91,7 @@ public class IceFernBlock extends CropBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState blockState, BlockGetter level, BlockPos pos) {
-        return blockState.is(Blocks.GRASS_BLOCK) || blockState.is(Blocks.DIRT) || blockState.is(Blocks.COARSE_DIRT) || blockState.is(Blocks.PODZOL) || blockState.is(Blocks.FARMLAND) || blockState.is(Blocks.SNOW_BLOCK);
+        return blockState.is(Blocks.GRASS_BLOCK) || blockState.is(Blocks.DIRT) || blockState.is(Blocks.COARSE_DIRT) || blockState.is(Blocks.PODZOL) || blockState.is(Blocks.FARMLAND) || blockState.is(Blocks.SNOW) || blockState.is(Blocks.SNOW_BLOCK);
     }
 
     @Override
