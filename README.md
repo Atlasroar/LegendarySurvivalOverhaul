@@ -53,7 +53,7 @@ Current highlights:
 - Configured thirst exhaustion from jumping, mining, and attacking, validated in-game.
 - Consumable hydration, localized body damage, and healing items are validated in-game; other consumable effects remain under test.
 - Configured temperature immunity after death is validated for its 90-second default duration.
-- Absorption-to-shield conversion and Water Purifier effect blocking are under in-game verification in the current development PR.
+- Absorption-to-shield conversion, shield depletion on damage, and Water Purifier effect blocking are under in-game verification in the current development PR.
 - Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required by the development build.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.

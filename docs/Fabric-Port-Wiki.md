@@ -129,6 +129,13 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Replaced the Fabric Curios stub with Trinkets 3.7.2+ support, including equip/use behavior, slot assignments for the LSO accessories, and data-driven temperature attribute modifiers on equipped LSO accessories.
 - Modrinth profile testing for these follow-up changes is pending.
 
+### 14. Health HUD, shield damage, and First Aid Supplies follow-up
+
+- Moved broken-heart icons down 10 pixels so they align with the health row instead of the armor row.
+- Routed post-mitigation player damage through the health-overhaul shield pool before vanilla health and localized body damage are applied. Damage fully absorbed by shield health no longer causes body-part damage.
+- Refreshes First Aid Supplies held/equipped detection every server tick so switching between hands and Trinkets slots takes effect immediately. With the default config, limb healing runs every 300 ticks (15 seconds) and uses food exhaustion; confirm limb damage in the body menu after allowing that interval.
+- Client testing is pending for shield depletion on damage and First Aid Supplies healing.
+
 ## Release and edit notes
 
 All current artifacts are prereleases for testing, not claims of feature parity with Forge. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.

@@ -21,7 +21,7 @@ public final class FabricDamageHooks {
 
     public static void onPlayerActuallyHurt(Player player, DamageSource source, float damage) {
         if (player.level().isClientSide || player.isCreative() || player.isSpectator()
-                || !Config.Baked.localizedBodyDamageEnabled)
+                || !Config.Baked.localizedBodyDamageEnabled || damage <= 0)
             return;
 
         float bodyPartDamage = damage * (float) Config.Baked.bodyDamageMultiplier;

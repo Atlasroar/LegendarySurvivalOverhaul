@@ -131,6 +131,10 @@ public class BodyDamageCapability implements IBodyDamageCapability
 			return;
 		};
 
+		this.hasFirstAidSupplies = TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.FIRST_AID_SUPPLIES.get());
+		this.hasFirstAidSuppliesBoosted = this.hasFirstAidSupplies
+				&& BodyDamageUtil.hasPlayerFirstAidSuppliesBoostingEffect(player);
+
 		if (updateTickTimer++ >= 19) {
 			updateTickTimer = 0;
 			double playerMaxHealthCheckUpdate = HealthUtil.getPlayerStableMaxHealth(player);
@@ -190,10 +194,7 @@ public class BodyDamageCapability implements IBodyDamageCapability
 
 		if (updateTickTimer % 10 == 0) {
 			this.headacheEffect = player.getEffect(MobEffectRegistry.HEADACHE.get());
-			this.hasFirstAidSupplies = TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.FIRST_AID_SUPPLIES.get());
-			if (hasFirstAidSupplies) {
-				this.hasFirstAidSuppliesBoosted = BodyDamageUtil.hasPlayerFirstAidSuppliesBoostingEffect(player);
-			} else {
+			if (!this.hasFirstAidSupplies) {
 				this.passiveLimbRegenerationEffects = BodyDamageUtil.getPlayerPassiveLimbRegenerationEffect(player);
 				this.passiveLimbRegenerationEnabled = this.passiveLimbRegenerationEffects != null;
 			}
