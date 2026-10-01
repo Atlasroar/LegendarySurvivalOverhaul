@@ -25,9 +25,6 @@ public class NetworkHandler
 		INSTANCE.registerMessage(id++, UpdateThirstPacket.class, UpdateThirstPacket::encode, UpdateThirstPacket::decode, UpdateThirstPacket::handle);
 		INSTANCE.registerMessage(id++, UpdateHeartsPacket.class, UpdateHeartsPacket::encode, UpdateHeartsPacket::decode, UpdateHeartsPacket::handle);
 		INSTANCE.registerMessage(id++, UpdateBodyDamagePacket.class, UpdateBodyDamagePacket::encode, UpdateBodyDamagePacket::decode, UpdateBodyDamagePacket::handle);
-		INSTANCE.registerMessage(id++, DrinkBlockFluidMessage.class, DrinkBlockFluidMessage::encode, DrinkBlockFluidMessage::decode, DrinkBlockFluidMessage::handle);
-		INSTANCE.registerMessage(id++, BodyPartHealingTimeMessage.class, BodyPartHealingTimeMessage::encode, BodyPartHealingTimeMessage::decode, BodyPartHealingTimeMessage::handle);
-
 		INSTANCE.registerMessage(id++, SyncTemperatureConsumablesPacket.class, SyncTemperatureConsumablesPacket::encode, SyncTemperatureConsumablesPacket::decode, SyncTemperatureConsumablesPacket::handle);
 		INSTANCE.registerMessage(id++, SyncTemperatureConsumableBlocksPacket.class, SyncTemperatureConsumableBlocksPacket::encode, SyncTemperatureConsumableBlocksPacket::decode, SyncTemperatureConsumableBlocksPacket::handle);
 		INSTANCE.registerMessage(id++, SyncTemperatureBlocksPacket.class, SyncTemperatureBlocksPacket::encode, SyncTemperatureBlocksPacket::decode, SyncTemperatureBlocksPacket::handle);

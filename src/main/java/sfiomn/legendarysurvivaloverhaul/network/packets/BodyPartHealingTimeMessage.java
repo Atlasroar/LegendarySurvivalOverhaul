@@ -9,21 +9,14 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyDamageUtil;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyPartEnum;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonHealingConsumable;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.BodyDamageDataManager;
 import sfiomn.legendarysurvivaloverhaul.common.integration.supplementaries.SupplementariesUtil;
-import sfiomn.legendarysurvivaloverhaul.common.items.heal.BodyHealingItem;
-import sfiomn.legendarysurvivaloverhaul.network.NetworkHandler;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.SoundRegistry;
-
-import java.util.function.Supplier;
 
 public class BodyPartHealingTimeMessage
 {
@@ -56,16 +49,8 @@ public class BodyPartHealingTimeMessage
         return new BodyPartHealingTimeMessage(buffer.readNbt());
     }
 
-    public static void handle(BodyPartHealingTimeMessage message, Supplier<NetworkEvent.Context> supplier)
-    {
-        final NetworkEvent.Context context = supplier.get();
-        if (context.getDirection() == NetworkDirection.PLAY_TO_SERVER) {
-            ServerPlayer player = context.getSender();
-            if (player != null) {
-                context.enqueueWork(() -> applyHealingItemOnServer(player, message.compound));
-            }
-        }
-        supplier.get().setPacketHandled(true);
+    public void handleServer(ServerPlayer player) {
+        applyHealingItemOnServer(player, compound);
     }
 
     public static void applyHealingItemOnServer(ServerPlayer player, CompoundTag nbt) {
@@ -97,8 +82,4 @@ public class BodyPartHealingTimeMessage
         }
     }
 
-    public static void sendToServer(BodyPartEnum bodyPart, String healingItem, InteractionHand hand, boolean consumeItem, boolean applyEffect) {
-        BodyPartHealingTimeMessage bodyPartHealingTimeMessageToServer = new BodyPartHealingTimeMessage(bodyPart, healingItem, hand, consumeItem, applyEffect);
-        NetworkHandler.INSTANCE.sendToServer(bodyPartHealingTimeMessageToServer);
-    }
 }

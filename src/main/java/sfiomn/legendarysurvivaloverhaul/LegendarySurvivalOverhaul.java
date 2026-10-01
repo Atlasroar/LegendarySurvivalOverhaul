@@ -17,6 +17,7 @@ import sfiomn.legendarysurvivaloverhaul.common.capabilities.ModCapabilities;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.*;
 import sfiomn.legendarysurvivaloverhaul.common.events.CanteenInteractionHandler;
 import sfiomn.legendarysurvivaloverhaul.common.events.FabricInteractionCallbacks;
+import sfiomn.legendarysurvivaloverhaul.network.FabricServerNetworkHandler;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.*;
 import sfiomn.legendarysurvivaloverhaul.util.internal.*;
@@ -64,6 +65,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		betterDaysLoaded = FabricLoader.getInstance().isModLoaded("betterdays");
 
 		Config.register();
+		FabricServerNetworkHandler.register();
 		registerContent();
 		initializeRuntimeLogic();
 		ModCapabilities.registerServerEvents();
