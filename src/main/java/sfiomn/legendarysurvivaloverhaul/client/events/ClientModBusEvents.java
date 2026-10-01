@@ -6,6 +6,7 @@ import sfiomn.legendarysurvivaloverhaul.client.particles.BreathParticle;
 import sfiomn.legendarysurvivaloverhaul.client.particles.FernBlossomParticle;
 import sfiomn.legendarysurvivaloverhaul.client.tooltips.HydrationClientTooltipComponent;
 import sfiomn.legendarysurvivaloverhaul.client.tooltips.HydrationTooltipComponent;
+import sfiomn.legendarysurvivaloverhaul.client.tooltips.TooltipHandler;
 import sfiomn.legendarysurvivaloverhaul.registry.ParticleTypeRegistry;
 
 public final class ClientModBusEvents {
@@ -13,6 +14,7 @@ public final class ClientModBusEvents {
     }
 
     public static void register() {
+        TooltipHandler.register();
         TooltipComponentCallback.EVENT.register(data ->
                 data instanceof HydrationTooltipComponent hydration
                         ? new HydrationClientTooltipComponent(hydration.hydration, hydration.saturation)

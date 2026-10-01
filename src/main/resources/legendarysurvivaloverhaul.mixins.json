@@ -13,6 +13,7 @@
     "BoneMealItemMixin"
   ],
   "client": [
+    "ItemStackTooltipMixin",
     "DebugScreenOverlayMixin",
     "PostChainAccessor",
     "GameRendererAccessor"

@@ -1,9 +1,6 @@
 package sfiomn.legendarysurvivaloverhaul.client.tooltips;
 
-import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
@@ -11,16 +8,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffectUtil;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderTooltipEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import sfiomn.legendarysurvivaloverhaul.client.tooltips.HydrationTooltipComponent;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonHealingConsumable;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonMobEffect;
@@ -42,25 +33,20 @@ import sfiomn.legendarysurvivaloverhaul.util.MathUtil;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = LegendarySurvivalOverhaul.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.FORGE)
 public class TooltipHandler
 {
-	
-	@SuppressWarnings("unused")
-	@SubscribeEvent(priority = EventPriority.LOWEST)
-	public static void onTooltip(ItemTooltipEvent event)
-	{
-		ItemStack stack = event.getItemStack();
+	public static void register() {
+		ItemTooltipCallback.EVENT.register((stack, context, lines) -> onTooltip(stack, lines));
+	}
 
-		ResourceLocation itemRegistryName = 		BuiltInRegistries.ITEM.getKey(stack.getItem());
+	private static void onTooltip(ItemStack stack, List<Component> tooltips)
+	{
+		ResourceLocation itemRegistryName = BuiltInRegistries.ITEM.getKey(stack.getItem());
 
 		if (!stack.isEmpty() && itemRegistryName != null)
 		{
-			List<Component> tooltips = event.getToolTip();
-
 			for (Component component: tooltips) {
 				if (component instanceof MutableComponent mutableComponent) {
 					if (componentHasOneOfKeys(component,
@@ -92,6 +78,9 @@ public class TooltipHandler
 			if (LegendarySurvivalOverhaul.beachpartyLoaded)
 				addShadeText(stack, tooltips);
 		}
+
+		if (Config.Baked.thirstEnabled && Config.Baked.showHydrationTooltip)
+			addHydrationEffects(stack, tooltips);
 	}
 	private static void mergeHandModifierSections(List<Component> tooltips) {
 		int mainHandHeader = -1;
@@ -143,25 +132,10 @@ public class TooltipHandler
 		return null;
 	}
 
-	@SuppressWarnings("unused")
-	@SubscribeEvent
-	public static void onRenderTooltip(RenderTooltipEvent.GatherComponents event) {
-		if (event.isCanceled())
-			return;
-
-		Minecraft mc = Minecraft.getInstance();
-		Screen gui = mc.screen;
-		if (gui == null)
-			return;
-
-		if (Config.Baked.thirstEnabled && Config.Baked.showHydrationTooltip)
-			addHydrationTooltip(event.getItemStack(), event.getTooltipElements());
-	}
-
 	private static boolean componentHasOneOfKeys(Component component, String... keys) {
 		if (component != null && component.getContents() instanceof TranslatableContents translatableContents &&
 				translatableContents.getArgs() != null) {
-            return Arrays.stream(translatableContents.getArgs()).anyMatch(s -> {
+            return java.util.Arrays.stream(translatableContents.getArgs()).anyMatch(s -> {
 				if (s instanceof MutableComponent mutableComponent &&
 						mutableComponent.getContents() instanceof TranslatableContents translatableContents1) {
 					for (String key: keys) {
@@ -263,42 +237,49 @@ public class TooltipHandler
 		}
 	}
 
-	private static void addHydrationTooltip(ItemStack stack, List<Either<FormattedText, TooltipComponent>> tooltips) {
-
+	private static void addHydrationEffects(ItemStack stack, List<Component> tooltips) {
 		JsonThirstConsumable jsonThirstConsumable = ThirstDataManager.getConsumable(stack);
-
-		HydrationTooltipComponent hydrationTooltipComponent = null;
-		List<MutableComponent> hydrationEffectComponents = new ArrayList<>();
-
 		if (jsonThirstConsumable != null) {
-			int hydration = jsonThirstConsumable.hydration;
-			float saturation = jsonThirstConsumable.saturation;
-			
-			// Add Refreshing enchantment bonus for canteens
-			if (stack.getItem() instanceof CanteenItem && CanteenItem.canDrink(stack)) {
-				int refreshingLevel = EnchantmentHelper.getItemEnchantmentLevel(EnchantmentRegistry.REFRESHING.get(), stack);
-				if (refreshingLevel > 0) {
-					hydration += refreshingLevel;
-					saturation += Math.max(0, refreshingLevel - 1);
+			if (!(stack.getTooltipImage().orElse(null) instanceof HydrationTooltipComponent)) {
+				HydrationTooltipComponent hydration = getHydrationTooltipComponent(stack);
+				if (hydration != null) {
+					tooltips.add(Component.translatable(
+							"tooltip.legendarysurvivaloverhaul.hydration_values",
+							hydration.hydration));
+					if (Config.Baked.hydrationSaturationDisplayed)
+						tooltips.add(Component.translatable(
+								"tooltip.legendarysurvivaloverhaul.saturation_value",
+								hydration.saturation));
 				}
 			}
-			
-			hydrationTooltipComponent = new HydrationTooltipComponent(hydration, saturation);
 			for (JsonMobEffect effect: jsonThirstConsumable.effects) {
 				if (effect.chance > 0 && effect.duration > 0 && !effect.name.isEmpty()) {
-					hydrationEffectComponents.add(getHydrationEffectTooltip(effect.chance, effect.name, effect.amplifier, effect.duration));
+					MutableComponent component = getHydrationEffectTooltip(
+							effect.chance, effect.name, effect.amplifier, effect.duration);
+					if (component != null)
+						tooltips.add(component);
 				}
 			}
 		}
+	}
 
-		if (hydrationTooltipComponent != null) {
-			tooltips.add(Either.right(hydrationTooltipComponent));
-		}
+	public static HydrationTooltipComponent getHydrationTooltipComponent(ItemStack stack) {
+		if (stack.isEmpty() || !Config.Baked.thirstEnabled || !Config.Baked.showHydrationTooltip)
+			return null;
+		JsonThirstConsumable consumable = ThirstDataManager.getConsumable(stack);
+		if (consumable == null)
+			return null;
 
-		for (MutableComponent hydrationEffectComponent: hydrationEffectComponents) {
-			if (hydrationEffectComponent != null)
-				tooltips.add(Either.left(hydrationEffectComponent));
+		int hydration = consumable.hydration;
+		float saturation = consumable.saturation;
+		if (stack.getItem() instanceof CanteenItem && CanteenItem.canDrink(stack)) {
+			int refreshingLevel = EnchantmentHelper.getItemEnchantmentLevel(EnchantmentRegistry.REFRESHING.get(), stack);
+			if (refreshingLevel > 0) {
+				hydration += refreshingLevel;
+				saturation += Math.max(0, refreshingLevel - 1);
+			}
 		}
+		return new HydrationTooltipComponent(hydration, saturation);
 	}
 
 	private static MutableComponent getHydrationEffectTooltip(double effectChance, String effectName, int amplifier, int duration) {

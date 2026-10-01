@@ -189,9 +189,13 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The first Wet/Dry card test used `Tropical Seasons Enabled = false`, which selects normal seasons rather than Wet/Dry cards. The test profile option was enabled for the follow-up.
 - Clarified the tropical-season config comment, which previously contradicted itself.
 - After enabling `Tropical Seasons Enabled`, the user confirmed all temperate and Wet/Dry cards appear as intended.
-- Restored the Serene Seasons out-of-season bonemeal feedback through the Fabric block-use callback. The seasonal crop check only displays its existing warning and does not cancel vanilla bonemeal behavior.
-- The first bonemeal warning test did not show a warning. The profile has seasonal crops enabled and `out_of_season_crop_behavior = 1` (can't grow), but a retry still did not show a warning.
-- Moved the warning hook from generic Fabric block interaction to a server mixin on `BoneMealItem.useOn`, so it uses Serene Seasons' authoritative fertility config and sends the action-bar warning through `ServerPlayer.displayClientMessage`. Build and retest are pending.
+- The out-of-season bonemeal warning remains unverified: multiple callback/mixin approaches failed to display it in the user's test profile despite seasonal crops being enabled and `out_of_season_crop_behavior = 1` (can't grow). It is deferred as a low-priority issue; do not consider the warning functional.
+
+### 24. Item tooltips
+
+- Re-enabled the shared tooltip handler on Fabric through `ItemTooltipCallback`, restoring LSO temperature attribute coloring, merged hand modifier sections, armor coat text, temperature consumable effects, body-healing details, shade details, and hydration-consumable effect text.
+- Restored the hydration/saturation tooltip image through a client-only `ItemStack.getTooltipImage` mixin, while preserving any tooltip image already supplied by the item. When an existing image takes precedence, hydration and saturation are displayed as text instead.
+- Build succeeded. In-game verification is pending.
 
 ## Release and edit notes
 
