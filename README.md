@@ -42,7 +42,7 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest prerelease is [**v1.20.1-2.4.7-fabric.10**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.10), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
+The latest prerelease is [**v1.20.1-2.4.7-fabric.12**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.12), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
 
 Current highlights:
 
@@ -62,7 +62,8 @@ Current highlights:
 - Heat-stroke and frostbite warning overlays/sounds and Heat Stroke/heat-driven thirst effects are restored and verified in-game at forced thresholds.
 - Optional Serene Seasons season cards are restored on Fabric; the user verified temperate Spring/Summer/Autumn/Winter cards and tropical Wet/Dry cards in-game.
 - Item tooltips are user-verified for hydration and consumable effects, including Rotten Flesh and Refreshing enchantment levels I-III, and for temperature modifiers with appropriate colors and values on Snow and Desert armor.
-- Serene Seasons' out-of-season bonemeal warning remains unverified after multiple attempts and is deferred as a low-priority issue.
+- Serene Seasons' out-of-season bonemeal warning is restored and verified in-game with seasonal crops enabled and the "can't grow" behavior selected.
+- Origins compatibility is intentionally omitted from the Fabric port.
 - Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.
