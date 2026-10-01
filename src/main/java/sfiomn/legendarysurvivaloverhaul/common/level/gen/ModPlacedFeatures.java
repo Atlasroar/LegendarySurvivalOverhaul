@@ -36,17 +36,17 @@ public class ModPlacedFeatures {
         PlacementUtils.register(context,
                 ICE_FERN_PLACED_KEY,
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.ICE_FERN_CONFIG_KEY),
-                worldSurfaceWithCountAndChance(4, 7, 10));
+                worldSurfaceWithCountAndChance(4, 7, 15));
 
         PlacementUtils.register(context,
                 SUN_FERN_PLACED_KEY,
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.SUN_FERN_CONFIG_KEY),
-                worldSurfaceWithCountAndChance(4, 7, 10));
+                worldSurfaceWithCountAndChance(4, 7, 15));
 
         PlacementUtils.register(context,
                 WATER_PLANT_PLACED_KEY,
                 configuredFeatures.getOrThrow(ModConfiguredFeatures.WATER_PLANT_CONFIG_KEY),
-                worldSurfaceWithCountAndChance(3, 5, 10));
+                worldSurfaceWithCountAndChance(3, 5, 15));
     }
 
 }
