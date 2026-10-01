@@ -67,13 +67,13 @@ public class RenderHealthGui
 		return shieldHearts > 0 ? Mth.ceil(shieldHearts / 10.0F) : 0;
 	}
 
-	public static void renderBrokenHearts(GuiGraphics gui, Player player, int left, int top, int rowHeight,
-										  float maxHealth) {
+	public static void renderBrokenHearts(GuiGraphics gui, Player player, int left, int top, int rowHeight) {
 		if (!Config.Baked.appendBrokenShieldHeartsToHealthBar)
 			return;
 
 		int brokenHearts = HealthUtil.getEffectiveBrokenHearts(player);
-		int firstBrokenHeart = Mth.ceil(maxHealth / 2.0F);
+		int stableHeartCount = Mth.ceil((float) HealthUtil.getPlayerStableMaxHealth(player) / 2.0F);
+		int firstBrokenHeart = stableHeartCount - brokenHearts;
 		for (int heart = firstBrokenHeart; heart < firstBrokenHeart + brokenHearts; heart++) {
 			int x = left + heart % 10 * 8;
 			int y = top - heart / 10 * rowHeight;

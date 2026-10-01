@@ -59,7 +59,7 @@ abstract class GuiHudLayersMixin {
         if (Config.Baked.healthOverhaulEnabled && !LegendarySurvivalOverhaul.overflowingbarsLoaded) {
             OverflowingBarsHealthRenderer.INSTANCE.renderPlayerHealth(guiGraphics, x, y, player,
                     Minecraft.getInstance().getProfiler());
-            RenderHealthGui.renderBrokenHearts(guiGraphics, player, x, y, rowHeight, maxHealth);
+            RenderHealthGui.renderBrokenHearts(guiGraphics, player, x, y, rowHeight);
             callback.cancel();
         }
     }
@@ -73,7 +73,7 @@ abstract class GuiHudLayersMixin {
                                                                           int absorption, boolean blink,
                                                                           CallbackInfo callback) {
         if (Config.Baked.healthOverhaulEnabled && LegendarySurvivalOverhaul.overflowingbarsLoaded) {
-            RenderHealthGui.renderBrokenHearts(guiGraphics, player, x, y, rowHeight, maxHealth);
+            RenderHealthGui.renderBrokenHearts(guiGraphics, player, x, y, rowHeight);
         }
     }
 
