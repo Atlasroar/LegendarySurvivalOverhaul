@@ -231,12 +231,9 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Supplementaries' ordinary lunch-basket finish-use flow is covered by LSO's existing item-finish hook, so no Supplementaries-specific adapter is planned.
 - Temperature consumables, tonic recovery over time, the F3 filter in both states, and death-respawn immunity across dimension changes are user-verified.
 - Vanilla heater and cooler fuel data is present in the generated resources. The listener must retain vanilla entries as well as optional-mod entries.
-
-### Active slice: heater, cooler, and sewing table
-
-1. Source-audit fixes are implemented: sewing previews preserve inputs, the sew-a-coat advancement is awarded only when its result is taken, the duplicate-coat warning checks for an actual coat, and thermal fuel timing/persistence is corrected.
-2. The user confirmed the heater and cooler work as expected in-game. Heater multiblock drops and fuel persistence remain to be checked.
-3. The sewing interaction failure was traced to registering an `ExtendedScreenHandlerType` but opening it through `SimpleMenuProvider`. It now opens through `ExtendedScreenHandlerFactory` and sends the table position to the client. The user confirmed the table now opens, both the warm/cold string recipes craft correctly, and applying a crafted coat item (e.g. `heating_coat_1`) to armor in the sewing table works as expected. The static per-item resistance line shown in item tooltips (e.g. Desert Cap's "+1.5 Heat Resistance") is the item's own intrinsic resistance value and is intentionally separate from the coat's runtime attribute bonus; this matches the original design, not a regression.
+- Heater and cooler, including fuel consumption, lit state, and thermal fuel persistence across save/reload, are user-verified in-game.
+- Heater multiblock drop behavior (breaking the base vs. top block) is user-verified in-game.
+- The sewing table opens correctly, the warm/cold string recipes craft correctly, and coat application to armor works as expected; all user-verified in-game.
 
 ### Remaining port-wide validation
 
@@ -293,7 +290,6 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 
 ### Not yet restored or not fully validated
 
-- Heater multiblock drop behavior (breaking the base vs. top block) and thermal fuel persistence across save/reload.
 - Overflowing Bars overlap and multi-row health/body-damage placement still need validation.
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
