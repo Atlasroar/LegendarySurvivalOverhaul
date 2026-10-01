@@ -328,5 +328,11 @@
 	"enchantment.legendarysurvivaloverhaul.purity": "Purity",
 	"enchantment.legendarysurvivaloverhaul.purity.desc": "Automatically purifies all water in the canteen",
 	"enchantment.legendarysurvivaloverhaul.reservoir": "Reservoir",
-	"enchantment.legendarysurvivaloverhaul.reservoir.desc": "Increases the canteen's water capacity"
+	"enchantment.legendarysurvivaloverhaul.reservoir.desc": "Increases the canteen's water capacity",
+
+	"item.legendarysurvivaloverhaul.respirator": "Respirator",
+	"item.legendarysurvivaloverhaul.air_bladder": "Air Bladder",
+	"item.legendarysurvivaloverhaul.reinforced_air_bladder": "Reinforced Air Bladder",
+	"item.legendarysurvivaloverhaul.soulfire_bottle": "Bottle of Soulfire",
+	"block.legendarysurvivaloverhaul.safety_lantern": "Safety Lantern"
 }

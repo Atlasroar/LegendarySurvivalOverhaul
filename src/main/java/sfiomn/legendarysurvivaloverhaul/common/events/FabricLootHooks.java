@@ -6,6 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetEnchantmentsFunction;
@@ -60,7 +61,23 @@ public final class FabricLootHooks {
 
             if (id.equals(minecraftLootTable("gameplay/piglin_bartering")))
                 addWeightedChance(tableBuilder, ItemRegistry.NETHER_CHALICE.get(), 1, 99);
+
+            injectLootPool(tableBuilder, id, "chests/buried_treasure", "soulfire_bottle_buried");
+            injectLootPool(tableBuilder, id, "chests/shipwreck_treasure", "soulfire_bottle_shipwreck");
+            injectLootPool(tableBuilder, id, "chests/underwater_ruin_big", "soulfire_bottle_big_ruin");
+            injectLootPool(tableBuilder, id, "chests/underwater_ruin_small", "soulfire_bottle_small_ruin");
+            injectLootPool(tableBuilder, id, "chests/simple_dungeon", "safety_lantern_dungeon");
+            injectLootPool(tableBuilder, id, "chests/abandoned_mineshaft", "safety_lantern_mineshaft");
+            injectLootPool(tableBuilder, id, "chests/stronghold_corridor", "safety_lantern_stronghold");
         });
+    }
+
+    private static void injectLootPool(LootTable.Builder tableBuilder, ResourceLocation id, String sourceTable, String injectedTable) {
+        if (id.equals(minecraftLootTable(sourceTable))) {
+            tableBuilder.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+                    .add(LootTableReference.lootTableReference(
+                            new ResourceLocation("legendarysurvivaloverhaul", injectedTable))));
+        }
     }
 
     private static LootPool.Builder heartFragmentPool() {

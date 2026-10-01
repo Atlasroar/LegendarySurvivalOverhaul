@@ -9,6 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.item.CoatEnum;
 import sfiomn.legendarysurvivaloverhaul.common.items.*;
+import sfiomn.legendarysurvivaloverhaul.common.items.airquality.AirBladderItem;
+import sfiomn.legendarysurvivaloverhaul.common.items.airquality.SoulfireBottleItem;
 import sfiomn.legendarysurvivaloverhaul.common.items.drink.*;
 import sfiomn.legendarysurvivaloverhaul.common.items.heal.*;
 
@@ -120,6 +122,12 @@ public class ItemRegistry {
 	public static final RegistryObject<Item> TONIC = ITEMS.register("tonic", () -> new TonicItem(new Item.Properties().rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> MEDKIT = ITEMS.register("medkit", () -> new Medkit(new Item.Properties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<Item> MORPHINE = ITEMS.register("morphine", () -> new MorphineItem(new Item.Properties()));
+
+	// Air Quality
+	public static final RegistryObject<Item> RESPIRATOR = ITEMS.register("respirator", () -> new Item(new Item.Properties().durability(77)));
+	public static final RegistryObject<Item> AIR_BLADDER = ITEMS.register("air_bladder", () -> new AirBladderItem(new Item.Properties().durability(327)));
+	public static final RegistryObject<Item> REINFORCED_AIR_BLADDER = ITEMS.register("reinforced_air_bladder", () -> new AirBladderItem(new Item.Properties().durability(1962)));
+	public static final RegistryObject<Item> SOULFIRE_BOTTLE = ITEMS.register("soulfire_bottle", () -> new SoulfireBottleItem(new Item.Properties()));
 
 	public static void register(){
 		ITEMS.registerAll();

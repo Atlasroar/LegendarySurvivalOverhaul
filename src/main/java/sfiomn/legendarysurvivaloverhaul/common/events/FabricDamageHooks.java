@@ -6,6 +6,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.player.Player;
 import sfiomn.legendarysurvivaloverhaul.api.ModDamageTypes;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyDamageUtil;
@@ -27,6 +28,11 @@ public final class FabricDamageHooks {
     }
 
     public static float modifyIncomingDamage(LivingEntity entity, DamageSource source, float damage) {
+        if (source.getEntity() instanceof Drowned && source.is(DamageTypes.MOB_ATTACK)
+                && Config.Baked.drownedChoking > 0 && !entity.level().isClientSide) {
+            entity.setAirSupply(entity.getAirSupply() - Config.Baked.drownedChoking);
+        }
+
         if (entity.hasEffect(MobEffectRegistry.VULNERABILITY.get())
                 && !source.is(DamageTypes.FALL)
                 && !source.is(DamageTypes.STARVE)

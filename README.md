@@ -74,6 +74,10 @@ The Fabric port is feature-complete, pending further in-game testing (particular
 
 Cold Hunger is a temperature-managed secondary effect: LSO applies it during dangerous cold and clears it when the player is no longer in that condition, so manually granting it with `/effect` outside dangerous cold will not keep it active for the requested duration.
 
+### Thin Air integration (unreleased branch)
+
+The `thinner-air-integration` branch adds Thin Air's air-quality mechanics and assets, including height/dimension-based air, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, and a Trinkets Respirator. This work is not included in the `.15` release and still requires in-game validation; see the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration-unreleased).
+
 ## Installation
 
 Install the latest Fabric release from the [GitHub releases page](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases), along with:

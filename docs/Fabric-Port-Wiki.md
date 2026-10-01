@@ -258,6 +258,16 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 - Confirmed, by comparing against the original Forge `TooltipHandler`, that the armor coat tooltip only ever showed flavor text (e.g. "Warm Coat Applied") rather than a numeric resistance delta on Forge as well — this was not a port regression. The underlying `AttributeModifier` is recomputed every server tick in `FabricEquipmentAttributeHooks` and updates correctly when a coat is applied.
 - No remaining code changes were required; this audit closes out the last tracked "remaining Forge event edge cases" item. The port is considered complete pending further in-game testing (particularly multiplayer/dedicated-server scenarios), and `.15` is published as the first full (non-prerelease) release.
 
+### 29. Thin Air air-quality integration (unreleased)
+
+- The `thinner-air-integration` branch adapts the MIT-licensed 1.20.1 Thin Air code and its assets into LSO's Fabric module. Asset reuse is separately All Rights Reserved and was expressly authorized; both notices are included under `src/main/resources/META-INF/licenses/`.
+- Adds Green, Blue, Yellow, and Red air quality, configurable air-provider radii, data-driven dimension/height profiles, breathing-equipment protection, Drowned attack choking, and air-supply hooks in `LivingEntity.baseTick`.
+- Default profiles make Overworld air Green from Y=0 through Y=255 and Yellow outside that range, Nether air Yellow, and End air Red. Unconfigured dimensions default to Green.
+- Adds Safety Lanterns with dye-locking and axe-unlocking, Signal Torches, Air Bladders (including durability/tag-preserving reinforcement), a Soulfire Bottle, and a Trinkets Respirator with a custom head render layer. Core air-provider/item/entity tags, crafting recipes, models, textures, and structure loot injections are included.
+- Deliberately replaces Thin Air's acknowledged-unreliable per-chunk provider-position capability with an on-demand nearby-block scan cached briefly per entity. Curios, Create, Aether, and Dimensional Doors compatibility is out of scope.
+- A Java 17 Gradle build succeeds. This branch has not yet had in-game validation; specifically verify breathing/draining across height bands and dimensions, provider bubbles, respirator slot/equipment rendering and durability, air bladder recharge/refill, lantern appearance/locking, signal torch toggling, and chest loot.
+- The integration is not part of the published `.15` release.
+
 ## Release and edit notes
 
 `v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release: the port is feature-complete and every tracked gameplay slice is user-verified, pending further in-game testing (particularly multiplayer/dedicated-server scenarios). Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.

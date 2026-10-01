@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyDamageUtil;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.BodyDamageDataManager;
+import sfiomn.legendarysurvivaloverhaul.api.data.manager.AirQualityDataManager;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.TemperatureDataManager;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.ThirstDataManager;
 import sfiomn.legendarysurvivaloverhaul.api.health.HealthUtil;
@@ -119,6 +120,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		TemperatureBiomeListener temperatureBiomes = new TemperatureBiomeListener();
 		TemperatureFuelItemListener temperatureFuelItems = new TemperatureFuelItemListener();
 		TemperatureDimensionListener temperatureDimensions = new TemperatureDimensionListener();
+		AirQualityDimensionListener airQualityDimensions = new AirQualityDimensionListener();
 		TemperatureMountListener temperatureMounts = new TemperatureMountListener();
 		ThirstConsumableListener thirstConsumables = new ThirstConsumableListener();
 		ThirstBlockListener thirstBlocks = new ThirstBlockListener();
@@ -133,6 +135,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		TemperatureDataManager.internalBiome = temperatureBiomes;
 		TemperatureDataManager.internalFuelItem = temperatureFuelItems;
 		TemperatureDataManager.internalDimension = temperatureDimensions;
+		AirQualityDataManager.internalDimension = airQualityDimensions;
 		TemperatureDataManager.internalMount = temperatureMounts;
 		ThirstDataManager.internalConsumable = thirstConsumables;
 		ThirstDataManager.internalBlock = thirstBlocks;
@@ -147,6 +150,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		FabricReloadListener.register(id("temperature/biomes"), temperatureBiomes);
 		FabricReloadListener.register(id("temperature/fuel_items"), temperatureFuelItems);
 		FabricReloadListener.register(id("temperature/dimensions"), temperatureDimensions);
+		FabricReloadListener.register(id("air_quality/dimensions"), airQualityDimensions);
 		FabricReloadListener.register(id("temperature/mounts"), temperatureMounts);
 		FabricReloadListener.register(id("thirst/consumables"), thirstConsumables);
 		FabricReloadListener.register(id("thirst/blocks"), thirstBlocks);

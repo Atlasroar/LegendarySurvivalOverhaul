@@ -96,6 +96,12 @@ public class CreativeTabRegistry {
                         ItemRegistry.HEART_FRAGMENT.get().getDefaultInstance(),
                         ItemRegistry.SHIELD_CONTAINER.get().getDefaultInstance(),
 
+                        ItemRegistry.RESPIRATOR.get().getDefaultInstance(),
+                        ItemRegistry.AIR_BLADDER.get().getDefaultInstance(),
+                        ItemRegistry.REINFORCED_AIR_BLADDER.get().getDefaultInstance(),
+                        ItemRegistry.SOULFIRE_BOTTLE.get().getDefaultInstance(),
+                        BlockRegistry.SAFETY_LANTERN.get().asItem().getDefaultInstance(),
+
                         BlockRegistry.COOLER.get().asItem().getDefaultInstance(),
                         BlockRegistry.HEATER.get().asItem().getDefaultInstance(),
                         BlockRegistry.ICE_FERN_GOLD.get().asItem().getDefaultInstance(),

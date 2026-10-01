@@ -7,12 +7,14 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.client.itemproperties.CanteenProperty;
+import sfiomn.legendarysurvivaloverhaul.client.itemproperties.AirQualityProperty;
 import sfiomn.legendarysurvivaloverhaul.client.itemproperties.SeasonalCalendarSeasonTypeProperty;
 import sfiomn.legendarysurvivaloverhaul.client.itemproperties.SeasonalCalendarTimeProperty;
 import sfiomn.legendarysurvivaloverhaul.client.itemproperties.ThermometerProperty;
 import sfiomn.legendarysurvivaloverhaul.client.render.OverflowingBarsHealthRenderer;
 import sfiomn.legendarysurvivaloverhaul.client.events.ClientModBusEvents;
 import sfiomn.legendarysurvivaloverhaul.client.events.FabricClientCallbacks;
+import sfiomn.legendarysurvivaloverhaul.client.integration.trinkets.AirQualityTrinketsClientIntegration;
 import sfiomn.legendarysurvivaloverhaul.client.network.FabricDataSyncReceiver;
 import sfiomn.legendarysurvivaloverhaul.client.screens.SewingTableScreen;
 import sfiomn.legendarysurvivaloverhaul.client.screens.ThermalScreen;
@@ -20,6 +22,7 @@ import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.ModCapabilities;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.ContainerRegistry;
+import sfiomn.legendarysurvivaloverhaul.registry.BlockRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.KeyMappingRegistry;
 
@@ -50,6 +53,9 @@ public final class LegendarySurvivalOverhaulClient implements ClientModInitializ
 		ItemProperties.register(ItemRegistry.THERMOMETER.get(), id("temperature"), new ThermometerProperty());
 		ItemProperties.register(ItemRegistry.CANTEEN.get(), id("thirstenum"), new CanteenProperty());
 		ItemProperties.register(ItemRegistry.LARGE_CANTEEN.get(), id("thirstenum"), new CanteenProperty());
+		ItemProperties.register(BlockRegistry.SAFETY_LANTERN.get().asItem(), id("air_quality_level"), new AirQualityProperty());
+		if (LegendarySurvivalOverhaul.trinketsLoaded)
+			AirQualityTrinketsClientIntegration.register();
 		if (LegendarySurvivalOverhaul.sereneSeasonsLoaded) {
 			ItemProperties.register(ItemRegistry.SEASONAL_CALENDAR.get(), id("time"), new SeasonalCalendarTimeProperty());
 			ItemProperties.register(ItemRegistry.SEASONAL_CALENDAR.get(), id("seasontype"), new SeasonalCalendarSeasonTypeProperty());
