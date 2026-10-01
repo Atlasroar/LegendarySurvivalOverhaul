@@ -1,5 +1,6 @@
 package sfiomn.legendarysurvivaloverhaul.mixin;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.DebugScreenOverlay;
 import net.minecraft.network.chat.Component;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,7 +28,9 @@ public abstract class DebugScreenOverlayMixin {
     }
 
     private static void hideCoordinates(List<String> lines) {
-        if (!Config.Baked.hideInfoFromDebug)
+        Minecraft client = Minecraft.getInstance();
+        if (!Config.Baked.hideInfoFromDebug || client.player == null
+                || client.player.isCreative() || client.player.isSpectator())
             return;
 
         ListIterator<String> iterator = lines.listIterator();

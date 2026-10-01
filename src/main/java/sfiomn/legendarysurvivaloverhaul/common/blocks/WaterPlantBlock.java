@@ -10,6 +10,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -120,7 +121,7 @@ public class WaterPlantBlock extends CropBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState blockState, BlockGetter blockReader, BlockPos blockPos) {
-        return blockState.is(BlockTags.SAND);
+        return blockState.is(BlockTags.SAND) || blockState.is(Blocks.FARMLAND) || blockState.is(Blocks.GRASS_BLOCK);
     }
 
     @Override

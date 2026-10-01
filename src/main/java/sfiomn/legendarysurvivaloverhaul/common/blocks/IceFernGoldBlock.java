@@ -1,6 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.common.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -35,7 +36,7 @@ public class IceFernGoldBlock extends BushBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState blockState, BlockGetter level, BlockPos pos) {
-        return blockState.is(Blocks.GRASS_BLOCK) || blockState.is(Blocks.DIRT) || blockState.is(Blocks.COARSE_DIRT) || blockState.is(Blocks.PODZOL) || blockState.is(Blocks.FARMLAND) || blockState.is(Blocks.SNOW_BLOCK);
+        return blockState.is(Blocks.GRASS_BLOCK) || blockState.is(BlockTags.DIRT) || blockState.is(Blocks.FARMLAND) || blockState.is(Blocks.SNOW) || blockState.is(Blocks.SNOW_BLOCK);
     }
 
     @Override
