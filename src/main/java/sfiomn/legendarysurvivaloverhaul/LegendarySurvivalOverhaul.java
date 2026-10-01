@@ -2,6 +2,7 @@ package sfiomn.legendarysurvivaloverhaul;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyDamageUtil;
@@ -17,6 +18,7 @@ import sfiomn.legendarysurvivaloverhaul.common.capabilities.ModCapabilities;
 import sfiomn.legendarysurvivaloverhaul.common.listeners.*;
 import sfiomn.legendarysurvivaloverhaul.common.events.CanteenInteractionHandler;
 import sfiomn.legendarysurvivaloverhaul.common.events.FabricInteractionCallbacks;
+import sfiomn.legendarysurvivaloverhaul.common.data.FabricReloadListener;
 import sfiomn.legendarysurvivaloverhaul.network.FabricServerNetworkHandler;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.*;
@@ -105,22 +107,54 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		WetnessUtil.internal = new WetnessUtilInternal();
 		HealthUtil.internal = new HealthUtilInternal();
 
-		TemperatureDataManager.internalConsumable = new TemperatureConsumableListener();
-		TemperatureDataManager.internalConsumableBlock = new TemperatureConsumableBlockListener();
-		TemperatureDataManager.internalBlock = new TemperatureBlockListener();
-		TemperatureDataManager.internalItem = new TemperatureItemListener();
-		TemperatureDataManager.internalBiome = new TemperatureBiomeListener();
-		TemperatureDataManager.internalFuelItem = new TemperatureFuelItemListener();
-		TemperatureDataManager.internalDimension = new TemperatureDimensionListener();
-		TemperatureDataManager.internalMount = new TemperatureMountListener();
-		TemperatureDataManager.internalOrigin = new TemperatureOriginListener();
+		TemperatureConsumableListener temperatureConsumables = new TemperatureConsumableListener();
+		TemperatureConsumableBlockListener temperatureConsumableBlocks = new TemperatureConsumableBlockListener();
+		TemperatureBlockListener temperatureBlocks = new TemperatureBlockListener();
+		TemperatureItemListener temperatureItems = new TemperatureItemListener();
+		TemperatureBiomeListener temperatureBiomes = new TemperatureBiomeListener();
+		TemperatureFuelItemListener temperatureFuelItems = new TemperatureFuelItemListener();
+		TemperatureDimensionListener temperatureDimensions = new TemperatureDimensionListener();
+		TemperatureMountListener temperatureMounts = new TemperatureMountListener();
+		TemperatureOriginListener temperatureOrigins = new TemperatureOriginListener();
+		ThirstConsumableListener thirstConsumables = new ThirstConsumableListener();
+		ThirstBlockListener thirstBlocks = new ThirstBlockListener();
+		BodyPartsDamageSourceListener bodyPartsDamageSources = new BodyPartsDamageSourceListener();
+		BodyDamageHealingConsumableListener healingConsumables = new BodyDamageHealingConsumableListener();
+		BodyPartResistanceItemListener bodyPartResistanceItems = new BodyPartResistanceItemListener();
 
-		ThirstDataManager.internalConsumable = new ThirstConsumableListener();
-		ThirstDataManager.internalBlock = new ThirstBlockListener();
+		TemperatureDataManager.internalConsumable = temperatureConsumables;
+		TemperatureDataManager.internalConsumableBlock = temperatureConsumableBlocks;
+		TemperatureDataManager.internalBlock = temperatureBlocks;
+		TemperatureDataManager.internalItem = temperatureItems;
+		TemperatureDataManager.internalBiome = temperatureBiomes;
+		TemperatureDataManager.internalFuelItem = temperatureFuelItems;
+		TemperatureDataManager.internalDimension = temperatureDimensions;
+		TemperatureDataManager.internalMount = temperatureMounts;
+		TemperatureDataManager.internalOrigin = temperatureOrigins;
+		ThirstDataManager.internalConsumable = thirstConsumables;
+		ThirstDataManager.internalBlock = thirstBlocks;
+		BodyDamageDataManager.internalBodyPartsDamageSource = bodyPartsDamageSources;
+		BodyDamageDataManager.internalHealingConsumable = healingConsumables;
+		BodyDamageDataManager.internalBodyResistanceItem = bodyPartResistanceItems;
 
-		BodyDamageDataManager.internalBodyPartsDamageSource = new BodyPartsDamageSourceListener();
-		BodyDamageDataManager.internalHealingConsumable = new BodyDamageHealingConsumableListener();
-		BodyDamageDataManager.internalBodyResistanceItem = new BodyPartResistanceItemListener();
+		FabricReloadListener.register(id("temperature/consumables"), temperatureConsumables);
+		FabricReloadListener.register(id("temperature/consumable_blocks"), temperatureConsumableBlocks);
+		FabricReloadListener.register(id("temperature/blocks"), temperatureBlocks);
+		FabricReloadListener.register(id("temperature/items"), temperatureItems);
+		FabricReloadListener.register(id("temperature/biomes"), temperatureBiomes);
+		FabricReloadListener.register(id("temperature/fuel_items"), temperatureFuelItems);
+		FabricReloadListener.register(id("temperature/dimensions"), temperatureDimensions);
+		FabricReloadListener.register(id("temperature/mounts"), temperatureMounts);
+		FabricReloadListener.register(id("temperature/origins"), temperatureOrigins);
+		FabricReloadListener.register(id("thirst/consumables"), thirstConsumables);
+		FabricReloadListener.register(id("thirst/blocks"), thirstBlocks);
+		FabricReloadListener.register(id("body_damage/damage_sources"), bodyPartsDamageSources);
+		FabricReloadListener.register(id("body_damage/consumables"), healingConsumables);
+		FabricReloadListener.register(id("body_damage/items"), bodyPartResistanceItems);
+	}
+
+	private static ResourceLocation id(String path) {
+		return new ResourceLocation(MOD_ID, path);
 	}
 
 	private static void registerIntegrations()
