@@ -35,6 +35,7 @@ public class RenderThirstGui
 	private static final int HYDRATION_TEXTURE_WIDTH = 9;
 	private static final int HYDRATION_TEXTURE_HEIGHT = 9;
 	private static final int EXHAUSTION_BAR_WIDTH = 81;
+	private static final int HYDRATION_BAR_VERTICAL_OFFSET = -8;
 
 	@Nullable
 	private static Item heldItemOnPreview;
@@ -106,7 +107,7 @@ public class RenderThirstGui
 
 		// Same as hunger bar
 		int left = width / 2 + 91 + Config.Baked.hydrationBarOffsetX;
-		int top = height - rightHeight + Config.Baked.hydrationBarOffsetY;
+		int top = height - rightHeight + HYDRATION_BAR_VERTICAL_OFFSET + Config.Baked.hydrationBarOffsetY;
 
 		boolean hasThirstEffect = player.hasEffect(MobEffectRegistry.THIRST.get());
 		boolean hasHeatThirstEffect = player.hasEffect(MobEffectRegistry.HEAT_THIRST.get());
