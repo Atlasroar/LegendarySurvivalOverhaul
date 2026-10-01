@@ -17,7 +17,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.10`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.10). It includes the HUD-layer rewrite and health/shield/broken-heart rendering updates.
 
-The port is still incomplete. The health-bar renderer and ordered HUD anchors are implemented; the latest broken-heart foreground layering adjustment awaits fresh in-game verification. Some Forge event surfaces, data generation, and selected optional integrations still need Fabric replacements or an explicit decision to remain omitted.
+The port is still incomplete. The health-bar renderer and ordered HUD anchors are implemented, and the user confirmed the `.10` broken-heart foreground layering. A follow-up audit of Forge event subscribers found several core event paths already replaced and identified the Purity-anvil effect and debug-screen game-mode filtering as remaining parity gaps; these are being restored in the current follow-up. Some Forge event surfaces, data generation, and selected optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
 ## Step-by-step port history
 
@@ -203,10 +203,19 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Replaced the single Fabric `HudRenderCallback` with mixin anchors after vanilla's combined status-bar pass and at the end of `Gui.render`, separating bars from screen-wide overlays/cards.
 - Adapted Overflowing Bars' health renderer and imported its icon sheet for LSO's health-overhaul HUD when Overflowing Bars itself is absent. If the optional mod is loaded, its own health rendering remains authoritative; the existing ObjectShare spacing integration is retained.
 - Used Puzzles Lib's per-element rendering hooks as a design reference. Its Fabric mixin does not expose hooks for the combined health/armor/food/air status-bar pass, so LSO uses local anchors rather than adding Puzzles Lib as a runtime dependency.
-- The user confirmed vanilla health rendering at 40 health, including extra rows and vanilla effect styles; armor toughness also does not overlap the armor bar. They reported that LSO shield/broken hearts still conflict with the armor row, especially after temporary extra health is lost.
+- The user confirmed vanilla health rendering at 40 health, including extra rows and vanilla effect styles; armor toughness also does not overlap the armor bar. Subsequent in-game tests confirmed shield/armor row separation, broken-heart row placement, and foreground rendering over the health containers.
 - The first spacing correction shifted both the armor row and LSO hearts into the same row. Broken hearts are drawn into the last visible slots of the custom renderer's single ten-heart row, replacing the separate broken-heart row. The user reported that additional broken hearts were wrapping into a row above regular hearts and overlapping shield hearts; the overlay now caps its slot count to the renderer's visible row instead of wrapping based on stable max health. After confirming the slots, the user reported that broken sprites were behind the regular health layer; LSO heart sprites now render at a foreground Z offset above the custom health renderer.
-- Shield hearts occupy their own row at the vanilla armor-row position; armor shifts upward only while shield hearts are present. Shield layers alternate yellow and orange every 10 hearts. Visually verify broken-heart alignment and replacement, shield-layer colors and spacing, and armor returning to vanilla position when shield is depleted.
+- Shield hearts occupy their own row at the vanilla armor-row position; armor shifts upward only while shield hearts are present. Shield layers alternate yellow and orange every 10 hearts. The user confirmed the final broken-heart layering and the intended shield/armor placement in `.10`.
 - Third-party attribution, Overflowing Bars' MPL-2.0 text, and the separately authorized asset notice are included under `src/main/resources/META-INF/licenses/`.
+
+### 26. Forge event-subscriber audit (follow-up in progress)
+
+- Compared the excluded Forge event subscribers with Fabric callbacks, mixins, and lifecycle hooks. Core thirst interactions, consumable effects, survival exhaustion, damage/body-part handling, sleep recovery, mob-effect interception, login/respawn behavior, natural-regeneration gamerule setup, client timers, season cards, and HUD callbacks already have Fabric equivalents.
+- Restored the excluded loot-table injections with Fabric's loot-table modify event: heart fragments and resistance rings in their configured chests, First Aid Supplies in pillager outposts, Purity books in Nether chests, Water Purifiers from drowned, sponges from fishing treasure, and Nether Chalices from piglin bartering. The original weights and counts are preserved.
+- Replaced the excluded Forge biome modifiers with Fabric biome modifications for ice ferns in cold Overworld biomes and sun ferns/water plants in hot Overworld biomes, using base-temperature selectors.
+- Restored Purity's anvil side effect in `AnvilMenuMixin`: a canteen output with the Purity enchantment immediately converts existing normal water to purified water without mutating the input stack. The old grindstone handler had no behavior beyond comments; purified contents already persist through enchantment removal.
+- Restored the Forge debug-filter scope so position/target information is hidden only outside Creative and Spectator modes.
+- Still omitted: optional Supplementaries lunch-basket and Meds and Herbs interactions, the repeatedly unverified/deferred Serene Seasons bonemeal warning, and Forge-only datagen execution. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`; these audit fixes are not yet included in a published build.
 
 ## Release and edit notes
 
@@ -254,12 +263,11 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 ### Not yet restored or not fully validated
 
 - Overflowing Bars overlap and multi-row health/body-damage placement still need validation.
-- Forge-specific health/thirst screen overlay ordering.
-- Forge event subscriber behavior not yet represented by Fabric callbacks/mixins.
-- Forge datagen providers and selected optional-mod integrations.
+- Optional Supplementaries and Meds and Herbs event integrations.
+- Forge datagen task execution on Fabric; the generated data files used at runtime are checked into the repository.
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
-- Remaining excluded Forge event behaviors and event edge cases.
+- Remaining Forge event edge cases and selected optional integrations.
 - Temperature-consumable behavior and healing recovery over time need further in-game validation.
 
 Do not describe excluded features as supported. Check `build.gradle` source exclusions and references from client/common initializers before restoring a class; removing an exclusion alone is not a port.

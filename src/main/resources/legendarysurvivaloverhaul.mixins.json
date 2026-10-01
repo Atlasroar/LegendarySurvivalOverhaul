@@ -3,6 +3,8 @@
   "package": "sfiomn.legendarysurvivaloverhaul.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AnvilMenuMixin",
+    "ItemCombinerMenuAccessor",
     "PlayerAttributeMixin",
     "PlayerJumpMixin",
     "ItemStackConsumableMixin",
