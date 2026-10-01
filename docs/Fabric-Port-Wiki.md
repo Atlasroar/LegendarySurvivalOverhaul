@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The current public artifact is [Fabric 1.20.1 HUD test build `v1.20.1-2.4.7-fabric.4`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.4). It contains the initial Fabric survival slice, startup fixes, restored thirst/temperature/wetness/body-damage indicators, the shield/broken-heart overlay, and the cold-hunger food overlay. The user visually confirmed the shield-heart row clears the armor row and that the cold icons and thirst placement now look correct.
+The current public artifact is [Fabric 1.20.1 survival HUD and thirst test build `v1.20.1-2.4.7-fabric.5`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.5). It contains the initial Fabric survival slice, startup fixes, restored thirst/temperature/wetness/body-damage indicators, the shield/broken-heart overlay, cold-hunger food overlay, and configured thirst-exhaustion gameplay hooks.
 
 The port is still incomplete. In particular, the health-bar replacement, several Forge event surfaces, data generation, and some optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
@@ -92,6 +92,14 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The user also reported that `/effect` durations, including infinite duration, are cleared after about two seconds. This matches LSO's existing temperature-state logic: `TemperatureCapability.applySecondaryEffects` removes Cold Hunger when the player is no longer in dangerous cold. It is not a duration countdown bug; the effect is intentionally owned by the temperature state. Validate sustained behavior in an environment that keeps the player at frostbite temperature.
 - The Java 17 build and integrated-client launch both succeed. Published in `v1.20.1-2.4.7-fabric.4`; the artifact SHA-256 is `A71866493A8DD35D079E7DC780E7CA82B3D7EF35E95DBDDCDE902827DF2D854D`.
 
+### 10. Thirst exhaustion gameplay hooks
+
+- Replaced three excluded Forge thirst-exhaustion hooks with Fabric callbacks/mixin: attacking an attackable entity adds configured hydration and food exhaustion, successfully breaking a breakable block adds configured hydration exhaustion, and jumping adds configured hydration exhaustion.
+- All three paths preserve the existing thirst-enabled, active-thirst, non-creative/non-spectator gate and apply exhaustion server-side only.
+- The block-break hook runs only after a successful break, preventing thirst exhaustion for canceled breaks.
+- A Java 17 Gradle build succeeded, and the user confirmed in the Modrinth profile that jumping, block breaking, and attacks cause thirst exhaustion; attacks also cause food exhaustion. Creative and Spectator preserve hydration. No manual config or source change was needed after testing.
+- Published in `v1.20.1-2.4.7-fabric.5`; the artifact SHA-256 is `260CA2FA72DA21B23C72AFE3BC2FD6E0A7FD5D70BF6D5460E28CDF3055F5EB86`.
+
 ## Release and edit notes
 
 All current artifacts are prereleases for testing, not claims of feature parity with Forge. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
@@ -103,13 +111,14 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | `v1.20.1-2.4.7-fabric.2` | Restores thirst, temperature, wetness, and body-damage HUD indicators. The initial thirst Y placement was adjusted by -8 pixels. |
 | `v1.20.1-2.4.7-fabric.3` | Adds the LSO shield/broken-heart HUD overlay. After visual feedback, the overlay was moved up 9 pixels to clear the armor row. Includes this versioned port wiki. |
 | `v1.20.1-2.4.7-fabric.4` | Adds the cold-hunger food overlay, moves the thirst row up another 3 pixels, and records user visual validation. Cold Hunger remains governed by temperature state and is removed when dangerous cold ends. |
+| `v1.20.1-2.4.7-fabric.5` | Ports configured thirst exhaustion for jumping, successful block breaks, and attacks; attacks also apply food exhaustion. In-game tests confirmed all three thirst triggers, attack food exhaustion, and hydration preservation in Creative/Spectator. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.4`
-- SHA-256: `A71866493A8DD35D079E7DC780E7CA82B3D7EF35E95DBDDCDE902827DF2D854D`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.4>
+- Tag: `v1.20.1-2.4.7-fabric.5`
+- SHA-256: `260CA2FA72DA21B23C72AFE3BC2FD6E0A7FD5D70BF6D5460E28CDF3055F5EB86`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.5>
 
 ## Feature and compatibility notes
 
@@ -122,6 +131,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Thirst, temperature, wetness, and body-damage HUD indicators.
 - LSO shield/broken-heart HUD overlay (user-verified placement above the armor row).
 - Cold-hunger food-bar overlay is visually confirmed in `.4`. Its active duration is managed by the temperature system, not by command duration overrides.
+- Configured thirst exhaustion from jumping, successful block breaking, and attacking is user-validated in `.5`; attack food exhaustion also works, and Creative/Spectator do not lose hydration from those triggers.
 - Optional Overflowing Bars shared-height integration.
 
 ### Not yet restored or not fully validated
@@ -132,6 +142,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Forge datagen providers and selected optional-mod integrations.
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
+- Several remaining excluded Forge event behaviors, including damage adjustments, sleep recovery, effect interception, and temperature-on-death handling.
 
 Do not describe excluded features as supported. Check `build.gradle` source exclusions and references from client/common initializers before restoring a class; removing an exclusion alone is not a port.
 
