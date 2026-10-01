@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.common.containers.SewingTableContainer;
 
@@ -47,7 +46,7 @@ public class SewingTableScreen extends AbstractContainerScreen<SewingTableContai
         gui.blit(SEWING_TABLE_SCREEN, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 
         if (this.menu.getSlot(0).getItem().getItem() instanceof ArmorItem &&
-                this.menu.getSlot(1).getItem().getItem() instanceof Item &&
+                SewingTableContainer.isItemCoat(this.menu.getSlot(1).getItem()) &&
                 !this.menu.getSlot(2).hasItem()) {
             gui.blit(SEWING_TABLE_SCREEN, this.leftPos + 93, this.topPos + 41, 176, 0, 13, 13);
         }
@@ -62,7 +61,7 @@ public class SewingTableScreen extends AbstractContainerScreen<SewingTableContai
 
         if (craftDisabledArea.contains(mouseX, mouseY)) {
             if (this.menu.getSlot(0).getItem().getItem() instanceof ArmorItem &&
-                    this.menu.getSlot(1).getItem().getItem() instanceof Item &&
+                    SewingTableContainer.isItemCoat(this.menu.getSlot(1).getItem()) &&
                     !this.menu.getSlot(2).hasItem()) {
 
                 Component tooltipText = Component.translatable("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".sewing_table.disabled");

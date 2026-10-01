@@ -36,7 +36,8 @@ public class TemperatureFuelItemListener extends SimpleJsonResourceReloadListene
             try {
                 var parsedJson = JsonTemperatureFuelItem.CODEC.parse(JsonOps.INSTANCE, json);
                 JsonTemperatureFuelItem temperatures = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing temperature fuel item : {}", error));
-                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
+                if (key.getNamespace().equals("minecraft")
+                        || FabricLoader.getInstance().isModLoaded(key.getNamespace()))
                     TEMPERATURE_FUEL_ITEMS.put(key, temperatures);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse temperature fuel item json {}", key);

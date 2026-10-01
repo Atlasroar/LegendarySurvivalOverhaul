@@ -2,11 +2,11 @@ package sfiomn.legendarysurvivaloverhaul.common.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -19,6 +19,8 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.MapColor;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -72,16 +74,30 @@ public class SewingTableBlock extends HorizontalDirectionalBlock implements Menu
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTrace) {
 		if (level.isClientSide) {
-			return InteractionResult.SUCCESS;
+			return InteractionResult.PASS;
 		}
-		player.openMenu(state.getMenuProvider(level, pos));
+		player.openMenu(getMenuProvider(state, level, pos));
 		return InteractionResult.CONSUME;
 	}
 
 	@Override
-	public MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
-		return new SimpleMenuProvider((windowIs, inventory, player) ->
-				new SewingTableContainer(windowIs, inventory, ContainerLevelAccess.create(pLevel, pPos)), CONTAINER_TITLE);
+	public ExtendedScreenHandlerFactory getMenuProvider(BlockState state, Level level, BlockPos pos) {
+		return new ExtendedScreenHandlerFactory() {
+			@Override
+			public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buffer) {
+				buffer.writeBlockPos(pos);
+			}
+
+			@Override
+			public AbstractContainerMenu createMenu(int windowId, Inventory inventory, Player player) {
+				return new SewingTableContainer(windowId, inventory, ContainerLevelAccess.create(level, pos));
+			}
+
+			@Override
+			public Component getDisplayName() {
+				return CONTAINER_TITLE;
+			}
+		};
 	}
 
 	@Override

@@ -15,9 +15,9 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.10`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.10). It includes the HUD-layer rewrite and health/shield/broken-heart rendering updates.
+The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.12`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.12). It removes unsupported Origins compatibility and fixes the Serene Seasons out-of-season bonemeal warning.
 
-The port is still incomplete. The health-bar renderer and ordered HUD anchors are implemented, and the user confirmed the `.10` broken-heart foreground layering. A follow-up audit of Forge event subscribers found several core event paths already replaced and identified the Purity-anvil effect and debug-screen game-mode filtering as remaining parity gaps; these are being restored in the current follow-up. Some Forge event surfaces, data generation, and selected optional integrations still need Fabric replacements or an explicit decision to remain omitted.
+The port is still incomplete. The user confirmed the `.10` broken-heart foreground layering and the `.12` Serene Seasons bonemeal warning. The Forge event-subscriber audit restored Purity anvil behavior, debug-screen game-mode filtering, loot injection, and biome placement on Fabric. Forge-only datagen execution and selected optional integrations remain omitted.
 
 ## Step-by-step port history
 
@@ -117,7 +117,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Ported the Forge player-respawn temperature-immunity behavior to Fabric's `ServerPlayerEvents.AFTER_RESPAWN`.
 - Grants the configured immunity only when the old player is dead (a death respawn), and only when temperature and the feature are enabled.
 - The Java 17 build succeeds. The user confirmed in-game that a death respawn grants Temperature Immunity for the configured 90 seconds.
-- Dimension-change behavior, including returning alive from the End, is explicitly deferred to a later focused test plan once more features are working as intended.
+- The user later verified that death-respawn temperature immunity remains active across a Nether portal trip and return before its timer expires.
 - Merged and published in `v1.20.1-2.4.7-fabric.7`.
 
 ### 13. Mob-effect interception
@@ -208,7 +208,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Shield hearts occupy their own row at the vanilla armor-row position; armor shifts upward only while shield hearts are present. Shield layers alternate yellow and orange every 10 hearts. The user confirmed the final broken-heart layering and the intended shield/armor placement in `.10`.
 - Third-party attribution, Overflowing Bars' MPL-2.0 text, and the separately authorized asset notice are included under `src/main/resources/META-INF/licenses/`.
 
-### 26. Forge event-subscriber audit (follow-up in progress)
+### 26. Forge event-subscriber audit (released in `.11` and `.12`)
 
 - Compared the excluded Forge event subscribers with Fabric callbacks, mixins, and lifecycle hooks. Core thirst interactions, consumable effects, survival exhaustion, damage/body-part handling, sleep recovery, mob-effect interception, login/respawn behavior, natural-regeneration gamerule setup, client timers, season cards, and HUD callbacks already have Fabric equivalents.
 - Restored the excluded loot-table injections with Fabric's loot-table modify event: heart fragments and resistance rings in their configured chests, First Aid Supplies in pillager outposts, Purity books in Nether chests, Water Purifiers from drowned, sponges from fishing treasure, and Nether Chalices from piglin bartering. The original weights and counts are preserved.
@@ -218,8 +218,32 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - The user confirmed in-game that loot, Purity anvil behavior, world feature generation, and plant transparency appear correct. This follow-up adjusts spawn frequency and water-plant substrates after that validation.
 - Restored Purity's anvil side effect in `AnvilMenuMixin`: a canteen output with the Purity enchantment immediately converts existing normal water to purified water without mutating the input stack. The old grindstone handler had no behavior beyond comments; purified contents already persist through enchantment removal.
 - Restored the Forge debug-filter scope so position/target information is hidden only outside Creative and Spectator modes.
-- Still omitted: optional Supplementaries lunch-basket and Meds and Herbs interactions, and Forge-only datagen execution. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`.
+- Meds and Herbs compatibility is closed as intentionally unsupported: it is Forge-only, and the user confirmed that Fabric compatibility can be dropped. No integration or generated medkit data is included in the Fabric port.
+- Still omitted: Forge-only datagen execution. Supplementaries has a Fabric 1.20.1 build and its lunch-basket delegates to the selected item's normal finish-use path, which LSO already handles; no adapter was needed. Generated recipes, advancements, models, and block loot are checked into `src/generated/resources`.
 - Origins-specific Fabric compatibility and generated data have been removed at the user's direction; Origins is intentionally unsupported in this port.
+- The out-of-season warning is injected into Serene Seasons' client-side `SeasonalCropGrowthHandler.applyBonemeal` event. Serene Seasons' Fabric/GlitchCore callback may cancel bonemeal client-side, so a server-side warning hook did not work. The user confirmed the warning with seasonal crops enabled and `out_of_season_crop_behavior = 1` (can't grow).
+
+## Current next-work plan after `.12`
+
+### Closed or already verified
+
+- Origins and Meds and Herbs are intentionally unsupported; no Fabric adapter work remains for either.
+- Supplementaries' ordinary lunch-basket finish-use flow is covered by LSO's existing item-finish hook, so no Supplementaries-specific adapter is planned.
+- Temperature consumables, tonic recovery over time, the F3 filter in both states, and death-respawn immunity across dimension changes are user-verified.
+- Vanilla heater and cooler fuel data is present in the generated resources. The listener must retain vanilla entries as well as optional-mod entries.
+
+### Active slice: heater, cooler, and sewing table
+
+1. Source-audit fixes are implemented: sewing previews preserve inputs, the sew-a-coat advancement is awarded only when its result is taken, the duplicate-coat warning checks for an actual coat, and thermal fuel timing/persistence is corrected.
+2. The user confirmed the heater and cooler work as expected in-game. Heater multiblock drops and fuel persistence remain to be checked.
+3. The sewing interaction failure was traced to registering an `ExtendedScreenHandlerType` but opening it through `SimpleMenuProvider`. It now opens through `ExtendedScreenHandlerFactory` and sends the table position to the client. The user confirmed the table now opens, both the warm/cold string recipes craft correctly, and applying a crafted coat item (e.g. `heating_coat_1`) to armor in the sewing table works as expected. The static per-item resistance line shown in item tooltips (e.g. Desert Cap's "+1.5 Heat Resistance") is the item's own intrinsic resistance value and is intentionally separate from the coat's runtime attribute bonus; this matches the original design, not a regression.
+
+### Remaining port-wide validation
+
+- Validate Overflowing Bars overlap and multi-row health/body-damage placement, plus overlap with other third-party HUDs.
+- Exercise multiplayer and dedicated-server behavior beyond the networking paths already tested in an integrated world.
+- Continue checking remaining Forge event edge cases where Fabric behavior has not yet been specifically verified.
+- Forge datagen task execution remains omitted; checked-in generated runtime resources are used by the Fabric build, so restoring that developer workflow is not a gameplay prerequisite.
 
 ## Release and edit notes
 
@@ -257,24 +281,24 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Fabric player survival components and selected lifecycle/gameplay hooks.
 - Server-data JSON reload listeners and 14-dataset client synchronization.
 - Thirst, temperature, wetness, and body-damage HUD indicators.
-- LSO shield/broken-heart HUD overlay (shield/armor separation and broken-heart row placement verified in-game; latest foreground layering awaits fresh confirmation).
+- LSO shield/broken-heart HUD overlay (shield/armor separation and broken-heart foreground layering verified in-game).
 - Cold-hunger food-bar overlay is visually confirmed in `.4`. Its active duration is managed by the temperature system, not by command duration overrides.
 - Configured thirst exhaustion from jumping, successful block breaking, and attacking is user-validated in `.5`; attack food exhaustion also works, and Creative/Spectator do not lose hydration from those triggers.
-- Localized body damage and healing items are user-validated in `.6`; hydration consumables work. Temperature-consumable behavior still needs separate validation.
-- Death-respawn temperature immunity is user-validated in `.7` at the configured default 90-second duration. Dimension-change testing is intentionally deferred.
-- The user confirmed the configured F3 debug filter hides debug values when enabled; disabling the option still needs verification.
+- Localized body damage and healing items are user-validated in `.6`; hydration consumables work. The user confirmed melon juice applies Cold for 60 seconds and glistering melon juice applies Cold II for 3 minutes, with the stronger effect replacing the weaker one and temperature behavior responding accordingly.
+- Death-respawn temperature immunity is user-validated in `.7` at the configured default 90-second duration and remains active across Nether dimension changes.
+- The user confirmed the configured F3 debug filter both hides debug values when enabled and restores them when disabled. Verified on both states.
 - Item tooltips for hydration, consumable effects, and equipment temperature/resistance are restored and user-verified, including the Snow and Desert armor tooltip colors and values.
 - Optional Overflowing Bars shared-height integration.
 
 ### Not yet restored or not fully validated
 
+- Heater multiblock drop behavior (breaking the base vs. top block) and thermal fuel persistence across save/reload.
 - Overflowing Bars overlap and multi-row health/body-damage placement still need validation.
-- Optional Supplementaries and Meds and Herbs event integrations.
-- Forge datagen task execution on Fabric; the generated data files used at runtime are checked into the repository.
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
-- Remaining Forge event edge cases and selected optional integrations.
-- Temperature-consumable behavior and healing recovery over time need further in-game validation.
+- Remaining Forge event edge cases where behavior has not yet been specifically verified.
+
+Forge datagen execution remains omitted as a developer workflow; generated resources used at runtime are checked into the repository. Origins and Meds and Herbs are intentionally unsupported, and Supplementaries requires no special adapter for its standard item finish-use path.
 
 Do not describe excluded features as supported. Check `build.gradle` source exclusions and references from client/common initializers before restoring a class; removing an exclusion alone is not a port.
 

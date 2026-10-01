@@ -49,9 +49,9 @@ Current highlights:
 - Temperature, thirst, wetness, and body-damage HUD indicators.
 - LSO shield/broken-heart health HUD layers, including broken hearts replacing health containers and shield rows separated from the armor bar.
 - Cold-hunger food overlay and thirst-row placement, visually confirmed.
-- Core survival items, including wearable armor and heater/chiller behavior.
+- Core survival items, including wearable armor and heater/chiller behavior, validated in-game. The sewing table, warm/cold string recipes, and coat application to armor are also validated in-game; heater multiblock drops and fuel persistence across save/reload are still pending.
 - Configured thirst exhaustion from jumping, mining, and attacking, validated in-game.
-- Consumable hydration, localized body damage, and healing items are validated in-game; other consumable effects remain under test.
+- Consumable hydration, temperature effects, localized body damage, and healing items are validated in-game.
 - Configured temperature immunity after death is validated for its 90-second default duration.
 - Absorption-to-shield conversion and Water Purifier effect blocking have passed initial in-game verification; shield depletion and the HUD presentation remain under further testing.
 - Vulnerability and Hard Falling damage adjustments have been verified in-game.
@@ -64,6 +64,7 @@ Current highlights:
 - Item tooltips are user-verified for hydration and consumable effects, including Rotten Flesh and Refreshing enchantment levels I-III, and for temperature modifiers with appropriate colors and values on Snow and Desert armor.
 - Serene Seasons' out-of-season bonemeal warning is restored and verified in-game with seasonal crops enabled and the "can't grow" behavior selected.
 - Origins compatibility is intentionally omitted from the Fabric port.
+- Meds and Herbs compatibility is intentionally unsupported because the mod is Forge-only.
 - Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.
