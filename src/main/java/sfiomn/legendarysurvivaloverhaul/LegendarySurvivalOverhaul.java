@@ -19,6 +19,7 @@ import sfiomn.legendarysurvivaloverhaul.common.listeners.*;
 import sfiomn.legendarysurvivaloverhaul.common.events.CanteenInteractionHandler;
 import sfiomn.legendarysurvivaloverhaul.common.events.FabricInteractionCallbacks;
 import sfiomn.legendarysurvivaloverhaul.common.events.FabricLootHooks;
+import sfiomn.legendarysurvivaloverhaul.common.events.FabricOptionalIntegrationHooks;
 import sfiomn.legendarysurvivaloverhaul.common.events.FabricSurvivalCallbacks;
 import sfiomn.legendarysurvivaloverhaul.common.events.FabricWorldGenerationHooks;
 import sfiomn.legendarysurvivaloverhaul.common.data.FabricReloadListener;
@@ -70,6 +71,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		betterDaysLoaded = FabricLoader.getInstance().isModLoaded("betterdays");
 		overflowingbarsLoaded = FabricLoader.getInstance().isModLoaded("overflowingbars");
 		trinketsLoaded = FabricLoader.getInstance().isModLoaded("trinkets");
+		medsandherbsLoaded = FabricLoader.getInstance().isModLoaded("meds_and_herbs");
 
 		Config.register();
 		FabricServerNetworkHandler.register();
@@ -78,6 +80,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		ModCapabilities.registerServerEvents();
 		CanteenInteractionHandler.register();
 		FabricInteractionCallbacks.register();
+		FabricOptionalIntegrationHooks.register();
 		FabricLootHooks.register();
 		FabricSurvivalCallbacks.register();
 		FabricWorldGenerationHooks.register();
