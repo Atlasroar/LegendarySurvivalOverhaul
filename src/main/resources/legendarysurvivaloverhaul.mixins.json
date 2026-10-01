@@ -12,6 +12,7 @@
     "ServerLevelSleepMixin"
   ],
   "client": [
+    "BoneMealItemMixin",
     "DebugScreenOverlayMixin",
     "PostChainAccessor",
     "GameRendererAccessor"

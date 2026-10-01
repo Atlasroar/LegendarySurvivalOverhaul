@@ -190,7 +190,8 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Clarified the tropical-season config comment, which previously contradicted itself.
 - After enabling `Tropical Seasons Enabled`, the user confirmed all temperate and Wet/Dry cards appear as intended.
 - Restored the Serene Seasons out-of-season bonemeal feedback through the Fabric block-use callback. The seasonal crop check only displays its existing warning and does not cancel vanilla bonemeal behavior.
-- The first bonemeal warning test did not show a warning. Investigation found Serene Seasons config had seasonal crops enabled but `out_of_season_crop_behavior = 0` (grow slowly), for which the existing warning condition is false. The test profile is now set to behavior `1` (can't grow); retry warning test is pending.
+- The first bonemeal warning test did not show a warning. The profile has seasonal crops enabled and `out_of_season_crop_behavior = 1` (can't grow), but a retry still did not show a warning.
+- Moved the warning hook from generic Fabric block interaction to a client mixin on `BoneMealItem.useOn`, preserving the same Serene Seasons fertility check. Build succeeds; retest is pending.
 
 ## Release and edit notes
 

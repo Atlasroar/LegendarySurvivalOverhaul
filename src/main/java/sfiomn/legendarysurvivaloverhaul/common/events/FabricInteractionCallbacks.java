@@ -4,17 +4,13 @@ import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonThirstBlock;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
-import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
-import sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneSeasonsUtil;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
@@ -28,14 +24,6 @@ public final class FabricInteractionCallbacks {
     }
 
     private static InteractionResult onUseBlock(Player player, Level level, InteractionHand hand, BlockHitResult hit) {
-        if (level.isClientSide && LegendarySurvivalOverhaul.sereneSeasonsLoaded
-                && player.getItemInHand(hand).is(Items.BONE_MEAL)) {
-            BlockState state = level.getBlockState(hit.getBlockPos());
-            if (!SereneSeasonsUtil.plantCanGrow(level, hit.getBlockPos(), state))
-                player.displayClientMessage(Component.translatable(
-                        "message." + LegendarySurvivalOverhaul.MOD_ID + ".bonemeal.not_correct_season"), true);
-        }
-
         if (shouldApplyThirst(player) && hand == InteractionHand.MAIN_HAND && player.getMainHandItem().isEmpty()) {
             ThirstCapability thirst = CapabilityUtil.getThirstCapability(player);
             if (!thirst.isHydrationLevelAtMax()) {
