@@ -8,7 +8,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.client.events.FabricHudCallbacks;
 import sfiomn.legendarysurvivaloverhaul.client.render.OverflowingBarsHealthRenderer;
@@ -64,17 +66,20 @@ abstract class GuiHudLayersMixin {
         }
     }
 
-    @Inject(method = "renderHearts(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V",
-            at = @At("TAIL"))
-    private void legendarysurvivaloverhaul$renderBrokenHeartReplacements(GuiGraphics guiGraphics, Player player,
-                                                                          int x, int y, int rowHeight,
-                                                                          int regenerationOffset, float maxHealth,
-                                                                          int health, int displayHealth,
-                                                                          int absorption, boolean blink,
-                                                                          CallbackInfo callback) {
-        if (Config.Baked.healthOverhaulEnabled && LegendarySurvivalOverhaul.overflowingbarsLoaded) {
-            RenderHealthGui.renderBrokenHearts(guiGraphics, player, x, y);
-        }
+    // Overflowing Bars also injects a cancellable HEAD handler into renderHearts to draw its own
+    // layered health bar. When it cancels the method, any TAIL injection we place in renderHearts
+    // never runs. We instead capture the coordinates vanilla passes into renderHearts from the call
+    // site in renderPlayerHealth (which always executes regardless of what the callee does), and
+    // draw our broken-heart overlay afterwards from a point that is guaranteed to run.
+    private static int legendarysurvivaloverhaul$brokenHeartsX;
+    private static int legendarysurvivaloverhaul$brokenHeartsY;
+
+    @ModifyArgs(method = "renderPlayerHealth",
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/Gui;renderHearts(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V"))
+    private void legendarysurvivaloverhaul$captureHeartsPosition(Args args) {
+        legendarysurvivaloverhaul$brokenHeartsX = args.get(2);
+        legendarysurvivaloverhaul$brokenHeartsY = args.get(3);
     }
 
     @Inject(method = "render",
@@ -83,6 +88,11 @@ abstract class GuiHudLayersMixin {
                     shift = At.Shift.AFTER))
     private void legendarysurvivaloverhaul$renderStatusBarLayers(GuiGraphics guiGraphics, float partialTick,
                                                                   CallbackInfo callback) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null && Config.Baked.healthOverhaulEnabled && LegendarySurvivalOverhaul.overflowingbarsLoaded) {
+            RenderHealthGui.renderBrokenHearts(guiGraphics, player,
+                    legendarysurvivaloverhaul$brokenHeartsX, legendarysurvivaloverhaul$brokenHeartsY);
+        }
         FabricHudCallbacks.renderAfterStatusBars(guiGraphics);
     }
 

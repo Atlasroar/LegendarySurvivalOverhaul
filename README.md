@@ -42,7 +42,7 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest prerelease is [**v1.20.1-2.4.7-fabric.13**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.13), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
+The latest prerelease is [**v1.20.1-2.4.7-fabric.14**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.14), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
 
 Current highlights:
 

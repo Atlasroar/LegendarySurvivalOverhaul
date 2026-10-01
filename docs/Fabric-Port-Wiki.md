@@ -237,10 +237,17 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 ### Remaining port-wide validation
 
-- Validate Overflowing Bars overlap and multi-row health/body-damage placement, plus overlap with other third-party HUDs.
 - Exercise multiplayer and dedicated-server behavior beyond the networking paths already tested in an integrated world.
 - Continue checking remaining Forge event edge cases where Fabric behavior has not yet been specifically verified.
 - Forge datagen task execution remains omitted; checked-in generated runtime resources are used by the Fabric build, so restoring that developer workflow is not a gameplay prerequisite.
+
+### 27. Overflowing Bars HUD compatibility fixes (released in `.14`)
+
+- Reverse-engineered Overflowing Bars v8.0.1's Fabric mixin behavior by decompiling its jar (no public source repository exists), since its shared-height contract was only partially matched by the original integration.
+- Fixed shield hearts overlapping the armor row by calling `OverflowingBarsUtil.reserveLeftHeight(...)` after drawing shield hearts, reporting their row height back through the shared `overflowingbars:leftHeight` value, which Overflowing Bars never receives by default (its `toughness.leftSide` config defaults to `false`).
+- Fixed broken hearts disappearing entirely when Overflowing Bars is installed: Overflowing Bars cancels vanilla `Gui.renderHearts` at `HEAD` when its `health.allowLayers` config (default `true`) is set, which silently skipped LSO's old `TAIL` injection into the same method. Replaced it with a `@ModifyArgs` capture of the heart-rendering coordinates at the call site in `renderPlayerHealth` (which always executes regardless of what the callee does), then draws broken hearts from the guaranteed-to-run `renderStatusBarLayers` injection point.
+- Fixed a phantom 10-pixel gap between the armor-toughness row and the thirst bar on the right side: Overflowing Bars unconditionally reserves a mount/vehicle health-bar row (`Math.max(1, getVisibleVehicleHeartRows(getVehicleMaxHearts(vehicle)) - 1) * 10`) even when the player isn't riding anything, because `getVisibleVehicleHeartRows(0)` returns `0` rather than feeding the `-1` adjustment as expected. Added `OverflowingBarsUtil.correctVehicleRowQuirk(Player)`, which subtracts the known 10-pixel quirk from the shared `overflowingbars:rightHeight` value when no vehicle health bar is actually shown, applied before any height-dependent HUD renderer reads it.
+- All three fixes were user-verified in-game with Overflowing Bars installed and enabled: shield hearts, broken hearts, and the armor row render correctly, and the right-side stack (hunger, air, toughness, thirst) has no gap.
 
 ## Release and edit notes
 
@@ -262,13 +269,14 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | `v1.20.1-2.4.7-fabric.11` | Restores Fabric cutout rendering for the survival plants, corrects fern biome/substrate placement, increases plant feature frequency to once per 15 chunks, and enables water plants on farmland and grass. |
 | `v1.20.1-2.4.7-fabric.12` | Removes unsupported Origins integration and restores the Serene Seasons out-of-season bonemeal warning, verified in-game. |
 | `v1.20.1-2.4.7-fabric.13` | Fixes the sewing table not opening (`ExtendedScreenHandlerFactory` mismatch), restores vanilla heater/cooler fuel entries, fixes thermal fuel tick timing/persistence, and fixes sewing-table preview/advancement-timing bugs. User-verified: heater, cooler, sewing table opening, warm/cold string recipes, and coat application to armor. |
+| `v1.20.1-2.4.7-fabric.14` | Fixes Overflowing Bars HUD compatibility: shield hearts no longer overlap the armor row, broken hearts render correctly instead of disappearing, and a phantom 10-pixel gap above the thirst bar is corrected. All three fixes are user-verified in-game with Overflowing Bars installed and enabled. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.13`
-- SHA-256: `0B38E8D0E5626B8594136C2424E467C0F0DF1655DF65FC42A5491BF4DE8D5769`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.13>
+- Tag: `v1.20.1-2.4.7-fabric.14`
+- SHA-256: `22861697A15C1CFE248D749C95DD438E9CDA5CEDAC8235D8DB317C0893A884D9`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.14>
 
 ## Feature and compatibility notes
 
@@ -286,12 +294,10 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Death-respawn temperature immunity is user-validated in `.7` at the configured default 90-second duration and remains active across Nether dimension changes.
 - The user confirmed the configured F3 debug filter both hides debug values when enabled and restores them when disabled. Verified on both states.
 - Item tooltips for hydration, consumable effects, and equipment temperature/resistance are restored and user-verified, including the Snow and Desert armor tooltip colors and values.
-- Optional Overflowing Bars shared-height integration.
+- Optional Overflowing Bars shared-height integration, including shield-heart/armor-row separation, broken-heart rendering, and the corrected right-side vehicle-row quirk — all user-verified in-game in `.14`.
 
 ### Not yet restored or not fully validated
 
-- Overflowing Bars overlap and multi-row health/body-damage placement still need validation.
-- HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
 - Remaining Forge event edge cases where behavior has not yet been specifically verified.
 
