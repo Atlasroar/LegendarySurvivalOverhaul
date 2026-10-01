@@ -42,7 +42,7 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest prerelease is [**v1.20.1-2.4.7-fabric.5**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.5), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
+The latest prerelease is [**v1.20.1-2.4.7-fabric.6**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.6), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
 
 Current highlights:
 
@@ -51,6 +51,7 @@ Current highlights:
 - Cold-hunger food overlay and thirst-row placement, visually confirmed.
 - Core survival items, including wearable armor and heater/chiller behavior.
 - Configured thirst exhaustion from jumping, mining, and attacking, validated in-game.
+- Consumable hydration, localized body damage, and healing items are validated in-game; other consumable effects remain under test.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.
 

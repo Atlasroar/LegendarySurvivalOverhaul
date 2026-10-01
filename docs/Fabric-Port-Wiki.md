@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The current public artifact is [Fabric 1.20.1 survival HUD and thirst test build `v1.20.1-2.4.7-fabric.5`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.5). It contains the initial Fabric survival slice, startup fixes, restored thirst/temperature/wetness/body-damage indicators, the shield/broken-heart overlay, cold-hunger food overlay, and configured thirst-exhaustion gameplay hooks.
+The current public artifact is [Fabric 1.20.1 survival and body-damage test build `v1.20.1-2.4.7-fabric.6`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.6). It contains the initial Fabric survival slice, startup fixes, restored thirst/temperature/wetness/body-damage indicators, the shield/broken-heart and cold-hunger overlays, configured thirst-exhaustion gameplay hooks, and generic consumable hooks.
 
 The port is still incomplete. In particular, the health-bar replacement, several Forge event surfaces, data generation, and some optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
@@ -100,6 +100,18 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - A Java 17 Gradle build succeeded, and the user confirmed in the Modrinth profile that jumping, block breaking, and attacks cause thirst exhaustion; attacks also cause food exhaustion. Creative and Spectator preserve hydration. No manual config or source change was needed after testing.
 - Published in `v1.20.1-2.4.7-fabric.5`; the artifact SHA-256 is `260CA2FA72DA21B23C72AFE3BC2FD6E0A7FD5D70BF6D5460E28CDF3055F5EB86`.
 
+### 11. Consumable finish effects
+
+- Replaced the player item-finish Forge hook with a Fabric mixin at `ItemStack.finishUsingItem`.
+- Completed player consumables apply configured temperature changes and thirst values on the server; configured body-part healing is also applied to consumables that are not `BodyHealingItem` instances.
+- Existing dedicated body-healing items retain their own finish behavior and are excluded from the generic healing hook to avoid duplicate healing.
+- The first Modrinth profile launch exposed an invalid mixin callback signature: `ItemStack.finishUsingItem` returns an `ItemStack`, so its injection must use `CallbackInfoReturnable<ItemStack>`. Corrected the callback signature.
+- Initial testing confirmed hydration consumables work but localized body damage never occurs. The first Fabric replacement targeted `LivingEntity.actuallyHurt`, but Minecraft 1.20.1 overrides that method in `Player`, so the superclass injection never ran for players. The mixin now targets `Player.actuallyHurt` directly, where it restores configured damage distribution and hit-location selection.
+- Reviewed [Body-Health-System](https://github.com/SrGnis/Body-Health-System) and [Body-Health-System-FORKED](https://github.com/32bitx64bit/Body-Health-System-FORKED) for damage-application and hit-routing approaches. This port keeps LSO's supplemental body-damage model, JSON damage-source rules, and hitbox utilities rather than replacing vanilla player health.
+- The client-side generic healing callback is preserved so configured healing consumables can open the body-selection UI; temperature and hydration effects remain server-side.
+- The user confirmed the corrected client launches, localized body damage occurs, and healing items work. Hydration consumables had also been confirmed working; temperature-consumable behavior has not yet been separately confirmed.
+- Published in `v1.20.1-2.4.7-fabric.6`; artifact SHA-256: `BF47CCB6953612AC0BE0BAA1FE8DEB9EBE0B25BF0D27235D1DC9FF1DF3885B34`.
+
 ## Release and edit notes
 
 All current artifacts are prereleases for testing, not claims of feature parity with Forge. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
@@ -112,13 +124,14 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 | `v1.20.1-2.4.7-fabric.3` | Adds the LSO shield/broken-heart HUD overlay. After visual feedback, the overlay was moved up 9 pixels to clear the armor row. Includes this versioned port wiki. |
 | `v1.20.1-2.4.7-fabric.4` | Adds the cold-hunger food overlay, moves the thirst row up another 3 pixels, and records user visual validation. Cold Hunger remains governed by temperature state and is removed when dangerous cold ends. |
 | `v1.20.1-2.4.7-fabric.5` | Ports configured thirst exhaustion for jumping, successful block breaks, and attacks; attacks also apply food exhaustion. In-game tests confirmed all three thirst triggers, attack food exhaustion, and hydration preservation in Creative/Spectator. |
+| `v1.20.1-2.4.7-fabric.6` | Adds generic consumable finish effects and restores player body-part damage by injecting at `Player.actuallyHurt`. In-game tests confirmed body damage, healing items, hydration consumables, and successful client launch. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.5`
-- SHA-256: `260CA2FA72DA21B23C72AFE3BC2FD6E0A7FD5D70BF6D5460E28CDF3055F5EB86`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.5>
+- Tag: `v1.20.1-2.4.7-fabric.6`
+- SHA-256: `BF47CCB6953612AC0BE0BAA1FE8DEB9EBE0B25BF0D27235D1DC9FF1DF3885B34`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.6>
 
 ## Feature and compatibility notes
 
@@ -132,6 +145,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - LSO shield/broken-heart HUD overlay (user-verified placement above the armor row).
 - Cold-hunger food-bar overlay is visually confirmed in `.4`. Its active duration is managed by the temperature system, not by command duration overrides.
 - Configured thirst exhaustion from jumping, successful block breaking, and attacking is user-validated in `.5`; attack food exhaustion also works, and Creative/Spectator do not lose hydration from those triggers.
+- Localized body damage and healing items are user-validated in `.6`; hydration consumables work. Temperature-consumable behavior still needs separate validation.
 - Optional Overflowing Bars shared-height integration.
 
 ### Not yet restored or not fully validated
@@ -143,6 +157,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
 - Several remaining excluded Forge event behaviors, including damage adjustments, sleep recovery, effect interception, and temperature-on-death handling.
+- Temperature-consumable behavior and healing recovery over time need further in-game validation.
 
 Do not describe excluded features as supported. Check `build.gradle` source exclusions and references from client/common initializers before restoring a class; removing an exclusion alone is not a port.
 
