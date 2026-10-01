@@ -17,7 +17,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 The current public artifact is [Fabric 1.20.1 test build `v1.20.1-2.4.7-fabric.8`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.8). It includes the earlier survival port slices plus Trinkets support, shield-health handling, First Aid Supplies updates, and the verified Vulnerability and Hard Falling effects.
 
-The port is still incomplete. In particular, the health-bar replacement, several Forge event surfaces, data generation, and some optional integrations still need Fabric replacements or an explicit decision to remain omitted.
+The port is still incomplete. In particular, the health-bar replacement, some Forge event surfaces, data generation, and selected optional integrations still need Fabric replacements or an explicit decision to remain omitted.
 
 ## Step-by-step port history
 
@@ -151,6 +151,11 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 - Restores the configured unhelmeted headshot multiplier when projectile impact designation hits the head, with the Forge headshot sound.
 - Preserves Forge ordering: body-part damage is based on post-shield damage before the headshot multiplier is applied to remaining player health damage.
+- Java 17 build succeeded, and the user confirmed the configured multiplier behaves as intended in-game.
+
+### 18. Debug-screen coordinate filtering
+
+- Restored the `Hide Info From Debug` client option for F3: coordinates are replaced by the compass hint, block/facing details are removed, and targeted information is reduced to its label.
 - Java 17 build and in-game verification are pending.
 
 ## Release and edit notes
@@ -195,12 +200,12 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 ### Not yet restored or not fully validated
 
 - Overflowing Bars overlap and multi-row health/body-damage placement still need validation.
-- Forge-specific health/thirst screen overlay ordering and remaining GUI effects.
+- Forge-specific health/thirst screen overlay ordering and the low-hydration blur effect.
 - Forge event subscriber behavior not yet represented by Fabric callbacks/mixins.
 - Forge datagen providers and selected optional-mod integrations.
 - HUD overlap with Overflowing Bars and other third-party HUD mods.
 - Multiplayer/dedicated-server behavior beyond the specific networking paths already ported.
-- Several remaining excluded Forge event behaviors, including damage adjustments, sleep recovery, and effect interception.
+- Remaining excluded Forge event behaviors and event edge cases.
 - Temperature-consumable behavior and healing recovery over time need further in-game validation.
 
 Do not describe excluded features as supported. Check `build.gradle` source exclusions and references from client/common initializers before restoring a class; removing an exclusion alone is not a port.

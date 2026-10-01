@@ -11,6 +11,9 @@
     "LivingEntityDamageMixin",
     "ServerLevelSleepMixin"
   ],
+  "client": [
+    "DebugScreenOverlayMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
