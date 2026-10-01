@@ -5,6 +5,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import sfiomn.legendarysurvivaloverhaul.api.ModDamageTypes;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyDamageUtil;
@@ -48,10 +49,10 @@ public final class FabricDamageHooks {
         return damage;
     }
 
-    public static void onPlayerActuallyHurt(Player player, DamageSource source, float damage) {
+    public static float onPlayerActuallyHurt(Player player, DamageSource source, float damage) {
         if (player.level().isClientSide || player.isCreative() || player.isSpectator()
                 || !Config.Baked.localizedBodyDamageEnabled || damage <= 0)
-            return;
+            return damage;
 
         float bodyPartDamage = damage * (float) Config.Baked.bodyDamageMultiplier;
         JsonBodyPartsDamageSource configuredSource = BodyDamageDataManager.getBodyParts(source.getMsgId());
@@ -72,5 +73,15 @@ public final class FabricDamageHooks {
 
         if (!hitBodyParts.isEmpty())
             BodyDamageUtil.balancedHurtBodyParts(player, hitBodyParts, bodyPartDamage);
+
+        if (source.is(DamageTypeTags.IS_PROJECTILE)
+                && hitBodyParts.contains(BodyPartEnum.HEAD)
+                && Config.Baked.headCriticalShotMultiplier > 1
+                && player.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {
+            player.level().playLocalSound(player.blockPosition(), SoundRegistry.HEADSHOT.get(),
+                    SoundSource.HOSTILE, 1.0F, 1.0F, false);
+            return damage * (float) Config.Baked.headCriticalShotMultiplier;
+        }
+        return damage;
     }
 }

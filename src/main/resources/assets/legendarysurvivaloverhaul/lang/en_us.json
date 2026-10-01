@@ -323,6 +323,8 @@
 
 	"enchantment.legendarysurvivaloverhaul.refreshing": "Refreshing",
 	"enchantment.legendarysurvivaloverhaul.refreshing.desc": "Provides additional hydration and saturation when drinking from the canteen",
+	"tooltip.legendarysurvivaloverhaul.hydration_values": "Hydration: %s",
+	"tooltip.legendarysurvivaloverhaul.saturation_value": "Saturation: %s",
 	"enchantment.legendarysurvivaloverhaul.purity": "Purity",
 	"enchantment.legendarysurvivaloverhaul.purity.desc": "Automatically purifies all water in the canteen",
 	"enchantment.legendarysurvivaloverhaul.reservoir": "Reservoir",

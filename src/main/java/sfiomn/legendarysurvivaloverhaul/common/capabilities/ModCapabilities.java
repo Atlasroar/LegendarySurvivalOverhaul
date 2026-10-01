@@ -19,6 +19,7 @@ import sfiomn.legendarysurvivaloverhaul.common.capabilities.temperature.Temperat
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessCapability;
 import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
+import sfiomn.legendarysurvivaloverhaul.common.events.FabricEquipmentAttributeHooks;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
 import sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler;
@@ -98,6 +99,9 @@ public class ModCapabilities
 			Level level = player.level();
 
 			if (shouldSkipTick(player)) return;
+
+			if (phase == TickPhase.END)
+				FabricEquipmentAttributeHooks.updatePlayerEquipmentModifiers(player);
 
 			if (!Config.Baked.vanillaFreezeEnabled) {
 				if (player.getTicksFrozen() > 0)

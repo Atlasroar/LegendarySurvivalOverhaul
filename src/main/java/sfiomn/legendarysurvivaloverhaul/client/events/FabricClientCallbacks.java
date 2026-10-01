@@ -2,6 +2,8 @@ package sfiomn.legendarysurvivaloverhaul.client.events;
 
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
@@ -28,9 +30,12 @@ import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.config.json_old.JsonConfigRegistration;
 import sfiomn.legendarysurvivaloverhaul.client.network.FabricClientNetworkHandler;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderBodyDamageGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderBlurOverlay;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureOverlay;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderThirstGui;
 import sfiomn.legendarysurvivaloverhaul.client.render.RenderWetnessGui;
+import sfiomn.legendarysurvivaloverhaul.client.integration.sereneseasons.RenderSeasonCards;
 import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.KeyMappingRegistry;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
@@ -47,6 +52,20 @@ public final class FabricClientCallbacks {
     public static void register() {
         UseItemCallback.EVENT.register(FabricClientCallbacks::onUseItem);
         ClientTickEvents.END_CLIENT_TICK.register(FabricClientCallbacks::onEndClientTick);
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            if (LegendarySurvivalOverhaul.sereneSeasonsLoaded)
+                RenderSeasonCards.init();
+        });
+        WorldRenderEvents.END.register(context -> {
+            Minecraft client = Minecraft.getInstance();
+            Player player = client.player;
+            if (player != null && Config.Baked.thirstEnabled && Config.Baked.lowHydrationEffect
+                    && shouldApplyThirst(player)) {
+                RenderBlurOverlay.render(player);
+            } else {
+                RenderBlurOverlay.stop();
+            }
+        });
         FabricHudCallbacks.register();
     }
 
@@ -55,11 +74,15 @@ public final class FabricClientCallbacks {
         if (!client.isPaused() && player != null) {
             if (Config.Baked.temperatureEnabled) {
                 RenderTemperatureGui.updateTimer();
+                RenderTemperatureOverlay.updateTemperatureEffect(player);
                 if (Config.Baked.coldBreathEffectThreshold != -1000)
                     TemperatureBreathEffect.tickPlay(player);
                 if (Config.Baked.breathingSoundEnabled)
                     TemperatureBreathSound.tickPlay(player);
             }
+
+            if (LegendarySurvivalOverhaul.sereneSeasonsLoaded && Config.Baked.ssSeasonCardsEnabled)
+                RenderSeasonCards.updateSeasonCardFading(player);
 
             if (Config.Baked.localizedBodyDamageEnabled) {
                 RenderBodyDamageGui.updateFlashingTimer();
@@ -68,6 +91,10 @@ public final class FabricClientCallbacks {
             }
             if (Config.Baked.thirstEnabled)
                 RenderThirstGui.updateTimer();
+            if (Config.Baked.thirstEnabled && Config.Baked.lowHydrationEffect && shouldApplyThirst(player))
+                RenderBlurOverlay.updateBlurIntensity(player);
+            else
+                RenderBlurOverlay.updateBlurIntensity(null);
             if (Config.Baked.wetnessEnabled)
                 RenderWetnessGui.updateTimer();
 

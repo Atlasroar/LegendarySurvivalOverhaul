@@ -20,7 +20,7 @@ public abstract class PlayerDamageMixin {
                     && Config.Baked.healthOverhaulEnabled) {
                 amount = HealthUtil.hurtPlayer(player, amount);
             }
-            FabricDamageHooks.onPlayerActuallyHurt(player, source, amount);
+            amount = FabricDamageHooks.onPlayerActuallyHurt(player, source, amount);
         }
         return amount;
     }

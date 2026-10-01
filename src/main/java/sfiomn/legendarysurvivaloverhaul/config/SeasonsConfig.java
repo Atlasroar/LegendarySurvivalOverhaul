@@ -48,8 +48,7 @@ public class SeasonsConfig
 				.comment(" If Serene Seasons is installed, whether the seasons have an effect on the player's temperature.")
 				.define("Serene Seasons Enabled", true);
 		ssTropicalSeasonsEnabled = builder
-				.comment(" If the tropical seasons are disabled, the normal summer-autumn-winter-spring seasons are applied.",
-						" If disabled, dry and wet seasons are applied for hot biomes.")
+				.comment(" If enabled, tropical biomes use Serene Seasons wet and dry seasons instead of the normal seasons.")
 				.define("Tropical Seasons Enabled", false);
 		ssSeasonCardsEnabled = builder
 				.comment(" If season cards are enabled, season cards will appear at every season changes.")

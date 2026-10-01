@@ -2,14 +2,12 @@ package sfiomn.legendarysurvivaloverhaul.client.integration.sereneseasons;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import sereneseasons.api.season.Season;
 import sereneseasons.api.season.SeasonHelper;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
@@ -17,7 +15,6 @@ import sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneS
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.util.RenderUtil;
 
-@OnlyIn(Dist.CLIENT)
 public class RenderSeasonCards {
     private static final ResourceLocation SPRING_CARD = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "textures/cards/spring.png");
     private static final ResourceLocation AUTUMN_CARD = new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "textures/cards/autumn.png");
@@ -37,20 +34,19 @@ public class RenderSeasonCards {
     private static int delayTimer = 0;
     private static int cardTimer = 0;
 
-    public static IGuiOverlay SEASON_CARD_GUI = (forgeGui, guiGraphics, partialTicks, width, height) -> {
+    public static void render(GuiGraphics guiGraphics, int width, int height) {
         if (LegendarySurvivalOverhaul.sereneSeasonsLoaded && Config.Baked.ssSeasonCardsEnabled &&
                 seasonCard != null) {
             int x = Mth.floor(width / 2.0f - CARD_WIDTH / 2.0f);
             int y = Mth.floor(height / 4.0f - CARD_HEIGHT / 2.0f);
 
-            forgeGui.setupOverlayRenderState(true, false);
-
             Minecraft.getInstance().getProfiler().push("season_card");
+            RenderSystem.enableBlend();
             RenderSystem.setShaderTexture(0, seasonCard);
             RenderUtil.drawTexturedModelRectWithAlpha(guiGraphics.pose().last().pose(), x + Config.Baked.seasonCardsDisplayOffsetX, y + Config.Baked.seasonCardsDisplayOffsetY, 128, 128, 0, 0, 256, 256, fadeLevel);
             Minecraft.getInstance().getProfiler().pop();
         }
-    };
+    }
 
     public static void updateSeasonCardFading(Player player) {
         if (player == null || !player.isAlive())

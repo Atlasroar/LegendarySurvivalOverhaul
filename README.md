@@ -42,7 +42,7 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest prerelease is [**v1.20.1-2.4.7-fabric.7**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.7), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
+The latest prerelease is [**v1.20.1-2.4.7-fabric.8**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.8), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**.
 
 Current highlights:
 
@@ -55,7 +55,15 @@ Current highlights:
 - Configured temperature immunity after death is validated for its 90-second default duration.
 - Absorption-to-shield conversion and Water Purifier effect blocking have passed initial in-game verification; shield depletion and the HUD presentation remain under further testing.
 - Vulnerability and Hard Falling damage adjustments have been verified in-game.
-- Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required by the development build.
+- Configured player-health and body-part recovery after sleeping has been verified in-game.
+- The configurable F3 coordinate/debug-information filter is restored on Fabric; the user confirmed F3 debug values are hidden when enabled.
+- Low-hydration vision blur is restored using the vanilla post-processing effect and has been verified in-game.
+- Equipment item-data modifiers for temperature resistance and localized body-part resistance are restored for vanilla equipment and LSO Trinkets; the user confirmed they work as expected in-game.
+- Heat-stroke and frostbite warning overlays/sounds and Heat Stroke/heat-driven thirst effects are restored and verified in-game at forced thresholds.
+- Optional Serene Seasons season cards are restored on Fabric; the user verified temperate Spring/Summer/Autumn/Winter cards and tropical Wet/Dry cards in-game.
+- Item tooltips for hydration and consumable effects are user-verified, including Rotten Flesh and all Refreshing enchantment levels tested. Temperature tooltip support works for tested items except the Snow and Desert armor sets; their missing data-driven resistance lines are being addressed.
+- Serene Seasons' out-of-season bonemeal warning remains unverified after multiple attempts and is deferred as a low-priority issue.
+- Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.
 
@@ -71,7 +79,7 @@ Install the latest Fabric prerelease from the [GitHub releases page](https://git
 - Fabric Loader
 - Fabric API
 - Forge Config API Port **8.0.3** for Minecraft 1.20.1
-- Trinkets **3.7.2+** for Minecraft 1.20.1 (required by the current development build; not required by release `.7`)
+- Trinkets **3.7.2+** for Minecraft 1.20.1
 - Cardinal Components API (base and entity; included in the published mod jar)
 
 Overflowing Bars is optional. The mod remains playable without it.

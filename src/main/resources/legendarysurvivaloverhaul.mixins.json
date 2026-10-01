@@ -8,7 +8,15 @@
     "ItemStackConsumableMixin",
     "PlayerDamageMixin",
     "LivingEntityEffectMixin",
-    "LivingEntityDamageMixin"
+    "LivingEntityDamageMixin",
+    "ServerLevelSleepMixin",
+    "BoneMealItemMixin"
+  ],
+  "client": [
+    "ItemStackTooltipMixin",
+    "DebugScreenOverlayMixin",
+    "PostChainAccessor",
+    "GameRendererAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
