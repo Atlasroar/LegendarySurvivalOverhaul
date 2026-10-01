@@ -1,7 +1,9 @@
 package sfiomn.legendarysurvivaloverhaul.client.events;
 
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionHand;
@@ -15,20 +17,85 @@ import sereneseasons.api.SSItems;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonThirstBlock;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
+import sfiomn.legendarysurvivaloverhaul.client.ClientHooks;
+import sfiomn.legendarysurvivaloverhaul.client.effects.TemperatureBreathEffect;
+import sfiomn.legendarysurvivaloverhaul.client.integration.sereneseasons.RenderSeasonCards;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderBlurOverlay;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderBodyDamageGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderTemperatureOverlay;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderThirstGui;
+import sfiomn.legendarysurvivaloverhaul.client.render.RenderWetnessGui;
+import sfiomn.legendarysurvivaloverhaul.client.screens.WarningDataPackScreen;
+import sfiomn.legendarysurvivaloverhaul.client.sounds.TemperatureBreathSound;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
+import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneSeasonsUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
+import sfiomn.legendarysurvivaloverhaul.config.json_old.JsonConfigRegistration;
 import sfiomn.legendarysurvivaloverhaul.client.network.FabricClientNetworkHandler;
+import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
+import sfiomn.legendarysurvivaloverhaul.registry.KeyMappingRegistry;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 import sfiomn.legendarysurvivaloverhaul.util.ItemUtil;
 import sfiomn.legendarysurvivaloverhaul.util.WorldUtil;
 
 public final class FabricClientCallbacks {
+    private static boolean hasOpened;
+    private static int warningPageDelay = 40;
+
     private FabricClientCallbacks() {
     }
 
     public static void register() {
         UseItemCallback.EVENT.register(FabricClientCallbacks::onUseItem);
+        ClientTickEvents.END_CLIENT_TICK.register(FabricClientCallbacks::onEndClientTick);
+    }
+
+    private static void onEndClientTick(Minecraft client) {
+        Player player = client.player;
+        if (!client.isPaused() && player != null) {
+            if (Config.Baked.temperatureEnabled) {
+                RenderTemperatureGui.updateTimer();
+                RenderTemperatureOverlay.updateTemperatureEffect(player);
+                if (Config.Baked.coldBreathEffectThreshold != -1000)
+                    TemperatureBreathEffect.tickPlay(player);
+                if (Config.Baked.breathingSoundEnabled)
+                    TemperatureBreathSound.tickPlay(player);
+            }
+
+            if (Config.Baked.wetnessEnabled)
+                RenderWetnessGui.updateTimer();
+
+            if (shouldApplyThirst(player) && Config.Baked.lowHydrationEffect)
+                RenderBlurOverlay.updateBlurIntensity(player);
+
+            if (LegendarySurvivalOverhaul.sereneSeasonsLoaded && Config.Baked.ssSeasonCardsEnabled)
+                RenderSeasonCards.updateSeasonCardFading(player);
+
+            if (Config.Baked.localizedBodyDamageEnabled) {
+                RenderBodyDamageGui.updateFlashingTimer();
+                if (KeyMappingRegistry.showBodyHealth.consumeClick())
+                    ClientHooks.openBodyHealthScreen(player);
+            }
+
+            if (Config.Baked.thirstEnabled && Config.Baked.showDrinkPreview)
+                RenderThirstGui.updateTimer();
+
+            if (LegendarySurvivalOverhaul.curiosLoaded && player.tickCount % 10 == 0)
+                CuriosUtil.isThermometerEquipped =
+                        CuriosUtil.isCurioItemEquipped(player, ItemRegistry.THERMOMETER.get());
+        }
+
+        if (client.screen instanceof TitleScreen) {
+            warningPageDelay = Math.max(0, warningPageDelay - 1);
+            if (warningPageDelay == 0 && !hasOpened
+                    && JsonConfigRegistration.customDatapackFolder.toFile().exists()) {
+                client.setScreen(new WarningDataPackScreen());
+                hasOpened = true;
+            }
+        }
+
     }
 
     private static InteractionResultHolder<net.minecraft.world.item.ItemStack> onUseItem(
