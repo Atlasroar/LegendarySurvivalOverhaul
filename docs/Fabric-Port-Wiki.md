@@ -275,7 +275,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
 - Tag: `v1.20.1-2.4.7-fabric.14`
-- SHA-256: `22861697A15C1CFE248D749C95DD438E9CDA5CEDAC8235D8DB317C0893A884D9`
+- SHA-256: `28949E2B38C63AA218501A61FB377ED31F1FDB5ABF119D582CAADB2C55FC2913`
 - Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.14>
 
 ## Feature and compatibility notes
