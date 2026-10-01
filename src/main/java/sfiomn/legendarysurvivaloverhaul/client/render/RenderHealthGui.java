@@ -92,6 +92,21 @@ public class RenderHealthGui
 		renderHearts(gui, left, top, 10, playerHearts, brokenHearts, Mth.ceil(player.getHealth()), shieldHealth, healthBlinkTimer);
 	}
 
+	public static int additionalHeartRows(Player player) {
+		if (!Config.Baked.healthOverhaulEnabled
+				|| Minecraft.getInstance().options.hideGui
+				|| player.isCreative() || player.isSpectator()
+				|| LegendarySurvivalOverhaul.overflowingbarsLoaded)
+			return 0;
+
+		if (HEALTH_CAP == null || player.tickCount % 20 == 0)
+			HEALTH_CAP = CapabilityUtil.getHealthCapability(player);
+
+		int additionalHearts = HealthUtil.getEffectiveBrokenHearts(player)
+				+ Mth.ceil(HEALTH_CAP.getShieldHealth() / 2.0F);
+		return additionalHearts > 0 ? Mth.ceil(additionalHearts / 10.0F) : 0;
+	}
+
 	public static void renderHearts(GuiGraphics gui, int left, int top, int rowHeight, int playerHearts, int brokenHearts, int health, float shieldHealth, int healthBlinkTimer) {
 		int shieldHearts = Mth.ceil((double)shieldHealth / 2.0);
 		
