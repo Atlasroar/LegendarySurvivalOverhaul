@@ -9,10 +9,10 @@
     "PlayerDamageMixin",
     "LivingEntityEffectMixin",
     "LivingEntityDamageMixin",
-    "ServerLevelSleepMixin"
+    "ServerLevelSleepMixin",
+    "BoneMealItemMixin"
   ],
   "client": [
-    "BoneMealItemMixin",
     "DebugScreenOverlayMixin",
     "PostChainAccessor",
     "GameRendererAccessor"
