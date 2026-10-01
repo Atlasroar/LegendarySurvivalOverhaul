@@ -117,7 +117,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Ported the Forge player-respawn temperature-immunity behavior to Fabric's `ServerPlayerEvents.AFTER_RESPAWN`.
 - Grants the configured immunity only when the old player is dead (a death respawn), and only when temperature and the feature are enabled.
 - The Java 17 build succeeds. The user confirmed in-game that a death respawn grants Temperature Immunity for the configured 90 seconds.
-- Dimension-change behavior, including returning alive from the End, is explicitly deferred to a later focused test plan once more features are working as intended.
+- The user later verified that death-respawn temperature immunity remains active across a Nether portal trip and return before its timer expires.
 - Merged and published in `v1.20.1-2.4.7-fabric.7`.
 
 ### 13. Mob-effect interception
@@ -262,7 +262,7 @@ All current artifacts are prereleases for testing, not claims of feature parity 
 - Cold-hunger food-bar overlay is visually confirmed in `.4`. Its active duration is managed by the temperature system, not by command duration overrides.
 - Configured thirst exhaustion from jumping, successful block breaking, and attacking is user-validated in `.5`; attack food exhaustion also works, and Creative/Spectator do not lose hydration from those triggers.
 - Localized body damage and healing items are user-validated in `.6`; hydration consumables work. Temperature-consumable behavior still needs separate validation.
-- Death-respawn temperature immunity is user-validated in `.7` at the configured default 90-second duration. Dimension-change testing is intentionally deferred.
+- Death-respawn temperature immunity is user-validated in `.7` at the configured default 90-second duration and remains active across Nether dimension changes.
 - The user confirmed the configured F3 debug filter hides debug values when enabled; disabling the option still needs verification.
 - Item tooltips for hydration, consumable effects, and equipment temperature/resistance are restored and user-verified, including the Snow and Desert armor tooltip colors and values.
 - Optional Overflowing Bars shared-height integration.
