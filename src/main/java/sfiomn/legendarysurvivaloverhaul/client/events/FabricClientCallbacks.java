@@ -22,7 +22,7 @@ import sfiomn.legendarysurvivaloverhaul.client.effects.TemperatureBreathEffect;
 import sfiomn.legendarysurvivaloverhaul.client.screens.WarningDataPackScreen;
 import sfiomn.legendarysurvivaloverhaul.client.sounds.TemperatureBreathSound;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.thirst.ThirstCapability;
-import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneSeasonsUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.config.json_old.JsonConfigRegistration;
@@ -71,9 +71,9 @@ public final class FabricClientCallbacks {
             if (Config.Baked.wetnessEnabled)
                 RenderWetnessGui.updateTimer();
 
-            if (LegendarySurvivalOverhaul.curiosLoaded && player.tickCount % 10 == 0)
-                CuriosUtil.isThermometerEquipped =
-                        CuriosUtil.isCurioItemEquipped(player, ItemRegistry.THERMOMETER.get());
+            if (player.tickCount % 10 == 0)
+                TrinketsUtil.isThermometerEquipped =
+                        TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.THERMOMETER.get());
         }
 
         if (client.screen instanceof TitleScreen) {

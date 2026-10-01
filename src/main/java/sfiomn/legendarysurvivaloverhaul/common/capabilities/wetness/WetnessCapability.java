@@ -22,7 +22,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import sfiomn.legendarysurvivaloverhaul.common.TickPhase;
 import sfiomn.legendarysurvivaloverhaul.api.wetness.IWetnessCapability;
-import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
 import sfiomn.legendarysurvivaloverhaul.common.integration.meadow.MeadowUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
@@ -96,7 +96,7 @@ public class WetnessCapability implements IWetnessCapability
 	@Override
 	public void tickUpdate(Player player, Level level, TickPhase phase)
 	{
-		if (getWetnessTickTimer() == -1 || CuriosUtil.isCurioItemEquipped(player, ItemRegistry.SPONGE.get())) {
+		if (getWetnessTickTimer() == -1 || TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.SPONGE.get())) {
 			if (this.getWetness() > 0)
 				this.setWetness(0);
 			return;

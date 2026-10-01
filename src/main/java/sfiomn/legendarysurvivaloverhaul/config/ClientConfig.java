@@ -76,7 +76,7 @@ public class ClientConfig
 		temperatureDisplayOffsetY = builder
 				.defineInRange("Temperature Display Y Offset", 0, -10000, 10000);
 		bodyTemperatureDisplayOffsetX = builder
-				.comment(" The X and Y offset of the body temperature, shown when thermometer is equipped as a bauble (needs the curios mod).",
+				.comment(" The X and Y offset of the body temperature, shown when the thermometer is equipped as a Trinkets accessory.",
 						" Set both to 0 for no offset.")
 				.defineInRange("Body Temperature Display X Offset", 0, -10000, 10000);
 		bodyTemperatureDisplayOffsetY = builder

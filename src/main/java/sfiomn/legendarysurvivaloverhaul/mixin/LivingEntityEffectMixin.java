@@ -11,6 +11,14 @@ import sfiomn.legendarysurvivaloverhaul.common.events.FabricMobEffectHooks;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityEffectMixin {
+    @Inject(method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;)Z",
+            at = @At("HEAD"), cancellable = true)
+    private void legendarysurvivaloverhaul$interceptDirectEffects(
+            MobEffectInstance effect, CallbackInfoReturnable<Boolean> callback) {
+        if (FabricMobEffectHooks.shouldCancelEffect((LivingEntity) (Object) this, effect))
+            callback.setReturnValue(false);
+    }
+
     @Inject(method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z",
             at = @At("HEAD"), cancellable = true)
     private void legendarysurvivaloverhaul$interceptEffects(

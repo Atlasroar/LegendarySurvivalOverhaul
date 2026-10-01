@@ -122,10 +122,12 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 ### 13. Mob-effect interception
 
-- Replaced the excluded Forge effect-applicable handler with a mixin on `LivingEntity.addEffect`.
+- Replaced the excluded Forge effect-applicable handler with mixins on both `LivingEntity.addEffect` overloads.
 - When the health overhaul and absorption override are enabled, Absorption is converted to two shield-health points and the vanilla effect is denied. This mirrors the existing Forge behavior.
-- Blocks the LSO Thirst effect while the player has the Water Purifier in a slot recognized by the current Fabric Curios compatibility helper (main or off hand).
-- Java 17 build and Modrinth-profile testing are pending for this development/PR slice.
+- Blocks the LSO Thirst effect while the player has the Water Purifier in either hand or a Trinkets slot.
+- The user confirmed the config values were enabled and reported the Absorption effect still appeared after eating a Golden Apple. The direct one-argument effect overload is now intercepted as well; the updated build is awaiting a repeat test.
+- Replaced the Fabric Curios stub with Trinkets 3.7.2+ support, including equip/use behavior, slot assignments for the LSO accessories, and data-driven temperature attribute modifiers on equipped LSO accessories.
+- Modrinth profile testing for these follow-up changes is pending.
 
 ## Release and edit notes
 

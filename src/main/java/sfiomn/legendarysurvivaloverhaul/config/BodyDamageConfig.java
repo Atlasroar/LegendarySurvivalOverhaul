@@ -154,7 +154,7 @@ public class BodyDamageConfig
 
 		builder.comment(" The First Aid Supplies overrides the passive limb regeneration as its effects is meant to be stronger.").push("first-aid-supplies");
 		firstAidSuppliesLimbHealthRegenerated = builder
-				.comment(" The First Aid Supplies regenerate limb health passively, either by holding it or using Curios mod, the most damaged limb first.")
+				.comment(" The First Aid Supplies regenerate limb health passively, either by holding it or equipping it as a trinket, the most damaged limb first.")
 				.defineInRange("First Aid Supplies Limb Health Regenerated", 0.25, 0, 1000);
 		firstAidSuppliesLimbRegenerationMode = builder
 				.comment(" How a player's limb health regenerated is defined. Accepted values are as follows:",

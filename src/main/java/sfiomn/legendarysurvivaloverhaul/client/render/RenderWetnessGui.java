@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessCapability;
-import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 
@@ -52,7 +52,7 @@ public class RenderWetnessGui
 		int x = width / 2 - (WETNESS_TEXTURE_WIDTH / 2) + Config.Baked.wetnessIndicatorOffsetX;
 		int y = height - 61 + Config.Baked.wetnessIndicatorOffsetY;
 
-		if (CuriosUtil.isThermometerEquipped && Config.Baked.wetnessIndicatorOffsetY == 0)
+		if (TrinketsUtil.isThermometerEquipped && Config.Baked.wetnessIndicatorOffsetY == 0)
 			y += 10;
 
 		WetnessIcon wetnessIcon = WetnessIcon.get(wetness);

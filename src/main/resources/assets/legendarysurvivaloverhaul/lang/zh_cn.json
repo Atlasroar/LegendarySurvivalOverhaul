@@ -39,7 +39,7 @@
 	"item.legendarysurvivaloverhaul.sponge": "海绵",
 	"item.legendarysurvivaloverhaul.water_purifier": "水灵净化",
 	"tooltip.legendarysurvivaloverhaul.thermometer.description": "右键使用可显示环境温度",
-	"tooltip.legendarysurvivaloverhaul.thermometer.bauble_description": "当作为饰品佩戴时可在物品栏左边显示你的体温",
+	"tooltip.legendarysurvivaloverhaul.thermometer.trinket_description": "作为 Trinkets 饰品佩戴时可在物品栏左边显示你的体温",
 	"tooltip.legendarysurvivaloverhaul.nether_chalice.description": "佩戴时可以使岩浆可饮用",
 	"tooltip.legendarysurvivaloverhaul.sponge.description": "佩戴时吸收身上的水分，防止增加湿度。",
 	"tooltip.legendarysurvivaloverhaul.water_purifier.description": "佩戴时任何饮用将自动净化，防止获得干渴Buff。",

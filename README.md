@@ -53,7 +53,8 @@ Current highlights:
 - Configured thirst exhaustion from jumping, mining, and attacking, validated in-game.
 - Consumable hydration, localized body damage, and healing items are validated in-game; other consumable effects remain under test.
 - Configured temperature immunity after death is validated for its 90-second default duration.
-- Absorption-to-shield conversion and Water Purifier effect blocking are being ported on the development branch.
+- Absorption-to-shield conversion and Water Purifier effect blocking are under in-game verification in the current development PR.
+- Wearable survival items use Trinkets slots; Trinkets 3.7.2 or later for Minecraft 1.20.1 is required by the development build.
 - Datapack-driven survival data loading and synchronization.
 - Optional shared HUD spacing with Overflowing Bars.
 
@@ -69,6 +70,7 @@ Install the latest Fabric prerelease from the [GitHub releases page](https://git
 - Fabric Loader
 - Fabric API
 - Forge Config API Port **8.0.3** for Minecraft 1.20.1
+- Trinkets **3.7.2+** for Minecraft 1.20.1 (required by the current development build; not required by release `.7`)
 - Cardinal Components API (base and entity; included in the published mod jar)
 
 Overflowing Bars is optional. The mod remains playable without it.

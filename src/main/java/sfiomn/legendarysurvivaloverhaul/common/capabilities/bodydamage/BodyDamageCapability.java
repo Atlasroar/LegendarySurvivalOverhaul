@@ -14,7 +14,7 @@ import sfiomn.legendarysurvivaloverhaul.api.bodydamage.BodyPartEnum;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.IBodyDamageCapability;
 import sfiomn.legendarysurvivaloverhaul.api.bodydamage.MalusBodyPartEnum;
 import sfiomn.legendarysurvivaloverhaul.api.health.HealthUtil;
-import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
@@ -190,7 +190,7 @@ public class BodyDamageCapability implements IBodyDamageCapability
 
 		if (updateTickTimer % 10 == 0) {
 			this.headacheEffect = player.getEffect(MobEffectRegistry.HEADACHE.get());
-			this.hasFirstAidSupplies = CuriosUtil.isCurioItemEquipped(player, ItemRegistry.FIRST_AID_SUPPLIES.get());
+			this.hasFirstAidSupplies = TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.FIRST_AID_SUPPLIES.get());
 			if (hasFirstAidSupplies) {
 				this.hasFirstAidSuppliesBoosted = BodyDamageUtil.hasPlayerFirstAidSuppliesBoostingEffect(player);
 			} else {

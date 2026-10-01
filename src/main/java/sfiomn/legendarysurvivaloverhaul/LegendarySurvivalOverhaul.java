@@ -39,7 +39,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 	public static boolean eclipticSeasonsLoaded;
 	public static boolean terraFirmaCraftLoaded;
 	public static boolean surviveLoaded;
-	public static boolean curiosLoaded;
+	public static boolean trinketsLoaded;
 	public static boolean vampirismLoaded;
 	public static boolean originsLoaded;
 	public static boolean mutantMonstersLoaded;
@@ -67,6 +67,7 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		sereneSeasonsLoaded = FabricLoader.getInstance().isModLoaded("sereneseasons");
 		betterDaysLoaded = FabricLoader.getInstance().isModLoaded("betterdays");
 		overflowingbarsLoaded = FabricLoader.getInstance().isModLoaded("overflowingbars");
+		trinketsLoaded = FabricLoader.getInstance().isModLoaded("trinkets");
 
 		Config.register();
 		FabricServerNetworkHandler.register();

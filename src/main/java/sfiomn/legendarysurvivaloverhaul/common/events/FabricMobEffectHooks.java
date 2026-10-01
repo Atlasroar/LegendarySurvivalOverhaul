@@ -9,7 +9,7 @@ import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
-import sfiomn.legendarysurvivaloverhaul.common.integration.curios.CuriosUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
 
 public final class FabricMobEffectHooks {
     private FabricMobEffectHooks() {
@@ -30,6 +30,6 @@ public final class FabricMobEffectHooks {
         }
 
         return effect.getEffect() == MobEffectRegistry.THIRST.get()
-                && CuriosUtil.isCurioItemEquipped(player, ItemRegistry.WATER_PURIFIER.get());
+                && TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.WATER_PURIFIER.get());
     }
 }

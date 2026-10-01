@@ -33,7 +33,8 @@
     "fabric-api": "*",
     "cardinal-components-base": ">=5.2.2",
     "cardinal-components-entity": ">=5.2.2",
-    "forgeconfigapiport": "*"
+    "forgeconfigapiport": "*",
+    "trinkets": ">=3.7.2"
   },
   "suggests": {
     "sereneseasons": "*",
