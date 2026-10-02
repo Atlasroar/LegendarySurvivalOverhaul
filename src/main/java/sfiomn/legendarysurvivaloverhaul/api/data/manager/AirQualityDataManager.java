@@ -22,7 +22,10 @@ public class AirQualityDataManager {
      */
     public static AirQualityLevel getAirQualityAtLevelByDimension(Level level, int height) {
         JsonAirQualityDimension dimension = internalDimension.get(level.dimension().location());
-        if (dimension == null) return AirQualityLevel.GREEN;
+        if (dimension == null) {
+            if (level.dimension() == Level.NETHER) return AirQualityLevel.YELLOW;
+            return AirQualityLevel.GREEN;
+        }
         return dimension.getAirQualityAtHeight(height);
     }
 }

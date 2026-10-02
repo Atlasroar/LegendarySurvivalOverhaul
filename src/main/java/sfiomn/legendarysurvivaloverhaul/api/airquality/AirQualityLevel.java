@@ -10,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -56,7 +57,8 @@ public enum AirQualityLevel implements StringRepresentable {
     YELLOW(false, false, "breathing_equipment") {
         @Override
         int getAirAmount(LivingEntity entity) {
-            return entity.level().getGameTime() % 4 == 0 ? super.getAirAmount(entity) : 0;
+            long drainInterval = entity.level().dimension() == Level.NETHER ? 2L : 4L;
+            return entity.level().getGameTime() % drainInterval == 0 ? super.getAirAmount(entity) : 0;
         }
     },
     RED(false, false, "heavy_breathing_equipment");
