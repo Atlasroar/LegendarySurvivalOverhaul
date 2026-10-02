@@ -18,6 +18,23 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v2.6.0
+====
+Added compatibility for several client-side utility mods. Item
+Descriptions / Mod Descriptions: LSO now ships its own
+`lore.legendarysurvivaloverhaul.*` lang entries for every registered
+item and block, so Ctrl-hover descriptions work out of the box with no
+dependency or separate resource pack needed. Field Guide: added a
+built-in "LSO Flora" datapack category (auto-populated with Sun Fern,
+Sun Fern (Gold), Ice Fern and Water Plant crops) with its own
+hand-styled tab icon matching Field Guide's sepia icon palette; this
+only activates when Field Guide is installed. Immersive Overlays:
+confirmed LSO's public TemperatureUtil API already fully supports their
+thermometer compat class, but it is currently unreachable on Fabric
+1.20.1 due to an upstream Stonecutter build-configuration gap in
+Immersive Overlays itself (not fixable from LSO's codebase). Confirmed
+in-game.
+
 v2.5.0
 ====
 Added HardcoreLite-inspired Enchanted Golden Apple and death heart-loss
