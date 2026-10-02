@@ -54,7 +54,7 @@ public final class AirQualityHooks {
     }
 
     private static void logIfNeeded(LivingEntity entity, AirQualityLevel level, int airChange) {
-        if (!(entity instanceof Player)) return;
+        if (!(entity instanceof Player) || !LegendarySurvivalOverhaul.LOGGER.isDebugEnabled()) return;
         long gameTime = entity.level().getGameTime();
         AirQualityLevel previousLevel = LAST_LOGGED_LEVEL.get(entity);
         Long previousTick = LAST_LOGGED_TICK.get(entity);
@@ -64,7 +64,7 @@ public final class AirQualityHooks {
 
         LAST_LOGGED_LEVEL.put(entity, level);
         LAST_LOGGED_TICK.put(entity, gameTime);
-        LegendarySurvivalOverhaul.LOGGER.info(
+        LegendarySurvivalOverhaul.        LOGGER.debug(
                 "[AirQuality] {} breathing {} at {} in {} (airChange={}, airSupply={}, changed={})",
                 entity.getName().getString(), level, entity.blockPosition(), entity.level().dimension().location(),
                 airChange, entity.getAirSupply(), levelChanged);
