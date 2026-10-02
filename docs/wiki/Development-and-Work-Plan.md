@@ -51,7 +51,7 @@ Before restoring an excluded integration, inspect build exclusions and registrat
 | Optional sulfur-cave ambient air | Implemented in v2.3.0 for Backport 1.2 development branch; user reported beta.1 air behavior works |
 | Respirator Nausea prevention | Revised for v2.3.0 to block new Nausea from any source, with tooltip and toggle; isolated server assertions passed |
 | SemVer and obsolete branch/PR cleanup | Completed |
-| LevelZ health compatibility | Implemented; death-respawn heal deferred by one tick so LevelZ's max-health attribute bonus is never overwritten or read early; in-game validation pending |
+| LevelZ health compatibility | Implemented; death-respawn heal deferred by one tick so LevelZ's max-health attribute bonus is never overwritten or read early; confirmed in-game: health bonus remains stable after death |
 
 ## Open validation
 
