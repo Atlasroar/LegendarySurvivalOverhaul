@@ -2,10 +2,23 @@ package sfiomn.legendarysurvivaloverhaul.common.events.airquality;
 
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
+import sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityLevel;
 import sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 public final class AirQualityHooks {
+    // Diagnostic-only: logs a player's computed air quality level/air supply periodically and whenever the level
+    // changes, to help pin down cases where the level resolves unexpectedly (e.g. appearing "frozen" with no
+    // drain/regen) without live debugging.
+    private static final int PERIODIC_LOG_INTERVAL_TICKS = 100;
+    private static final Map<LivingEntity, AirQualityLevel> LAST_LOGGED_LEVEL = new WeakHashMap<>();
+    private static final Map<LivingEntity, Long> LAST_LOGGED_TICK = new WeakHashMap<>();
+
     private AirQualityHooks() {
     }
 
@@ -19,7 +32,9 @@ public final class AirQualityHooks {
             return;
         }
 
-        int airChange = AirQualityUtil.getAirQualityAtLocation(entity).getAirAmountAfterProtection(entity);
+        AirQualityLevel airQualityLevel = AirQualityUtil.getAirQualityAtLocation(entity);
+        int airChange = airQualityLevel.getAirAmountAfterProtection(entity);
+        logIfNeeded(entity, airQualityLevel, airChange);
         int newAirSupply = Math.min(entity.getMaxAirSupply(), originalAirSupply + airChange);
 
         // Vanilla's own drowning damage is only ever applied inside LivingEntity#baseTick's
@@ -36,5 +51,22 @@ public final class AirQualityHooks {
 
     private static boolean isEyeInWater(LivingEntity entity) {
         return entity.isEyeInFluid(FluidTags.WATER);
+    }
+
+    private static void logIfNeeded(LivingEntity entity, AirQualityLevel level, int airChange) {
+        if (!(entity instanceof Player)) return;
+        long gameTime = entity.level().getGameTime();
+        AirQualityLevel previousLevel = LAST_LOGGED_LEVEL.get(entity);
+        Long previousTick = LAST_LOGGED_TICK.get(entity);
+        boolean levelChanged = previousLevel != level;
+        boolean periodicDue = previousTick == null || gameTime - previousTick >= PERIODIC_LOG_INTERVAL_TICKS;
+        if (!levelChanged && !periodicDue) return;
+
+        LAST_LOGGED_LEVEL.put(entity, level);
+        LAST_LOGGED_TICK.put(entity, gameTime);
+        LegendarySurvivalOverhaul.LOGGER.info(
+                "[AirQuality] {} breathing {} at {} in {} (airChange={}, airSupply={}, changed={})",
+                entity.getName().getString(), level, entity.blockPosition(), entity.level().dimension().location(),
+                airChange, entity.getAirSupply(), levelChanged);
     }
 }

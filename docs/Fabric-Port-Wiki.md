@@ -278,7 +278,7 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 
 ## Release and edit notes
 
-`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release. `.16` adds the Thin Air integration, with `.17`, `.19`, `.20`, `.22`–`.28` follow-up fixes; these remain prereleases pending in-game testing. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
+`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release. `.16` adds the Thin Air integration, with `.17`, `.19`, `.20`, `.22`–`.29` follow-up fixes; these remain prereleases pending in-game testing. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
 
 | Version | Notes |
 | --- | --- |
@@ -310,13 +310,14 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 | `v1.20.1-2.4.7-fabric.26` | Adds suffocation damage for air-quality-driven air loss (bad air pockets, lava fumes, Nether ambience) outside of water, since vanilla's own drowning damage only triggers while the entity's eyes are in water. Prerelease pending in-game validation. |
 | `v1.20.1-2.4.7-fabric.27` | Makes the Nether's ambient YELLOW air quality apply directly in code instead of solely through the data-driven dimension profile JSON, so the Nether always behaves correctly even if that datapack-style profile ever fails to load; adds a dimension-key log for diagnosing the air-quality dimension loader. Prerelease pending in-game validation. |
 | `v1.20.1-2.4.7-fabric.28` | Fixes the nearby air-provider scan picking the *safest* quality in range instead of the *worst*: a GREEN source (e.g. a portal) within its large radius was silently overriding a closer RED/lava hazard or the Nether's YELLOW ambience whenever both were simultaneously in range. The scan now always returns the worst (most hazardous) quality found, which also fixes the Nether being masked by its own portal. Prerelease pending in-game validation. |
+| `v1.20.1-2.4.7-fabric.29` | Diagnostics-only build: logs a player's computed air quality level, position, dimension, and air change amount (on level change, and periodically every 5 seconds) to help pin down an unresolved report of the air bar appearing to freeze (no drain/regen) at the bottom of the Nether. No behavior changes. Prerelease pending in-game validation. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.28`
-- SHA-256: `F5C24CD6F4E55DAD9590F562F93012880EEAA0C0C1436894FBB58C77E2983CE3`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.28>
+- Tag: `v1.20.1-2.4.7-fabric.29`
+- SHA-256: `B9034FEB079B4496EA6600BD2BE7DF8675621441C19C7093F43C2DE0861968E7`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.29>
 
 ## Feature and compatibility notes
 
