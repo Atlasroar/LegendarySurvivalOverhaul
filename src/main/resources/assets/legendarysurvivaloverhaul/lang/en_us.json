@@ -951,5 +951,7 @@
 	"lore.legendarysurvivaloverhaul.water_plant_crop": "Grows Water Plants over time when planted in water.",
 	"lore.legendarysurvivaloverhaul.safety_lantern": "A lantern that changes color to reflect the surrounding air quality.",
 	"lore.legendarysurvivaloverhaul.signal_torch": "A cosmetic torch variant, used for signaling.",
-	"lore.legendarysurvivaloverhaul.wall_signal_torch": "A cosmetic torch variant, used for signaling."
+	"lore.legendarysurvivaloverhaul.wall_signal_torch": "A cosmetic torch variant, used for signaling.",
+
+	"category.legendarysurvivaloverhaul.fieldguide.flora": "LSO Flora"
 }

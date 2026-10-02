@@ -1,6 +1,6 @@
 {
 	"sort_index": 100,
-	"icon": "legendarysurvivaloverhaul:sun_fern_leaf",
+	"icon": "legendarysurvivaloverhaul:textures/item/sun_fern_leaf.png",
 	"contents": [
 		{
 			"type": "auto_populate",
