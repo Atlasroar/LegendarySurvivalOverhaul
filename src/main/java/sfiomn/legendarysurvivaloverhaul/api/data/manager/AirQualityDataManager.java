@@ -19,11 +19,19 @@ public class AirQualityDataManager {
     /**
      * Retrieves the air quality at the given height within the provided level's dimension, falling back to
      * breathable, green air for dimensions with no configured entry.
+     * <p>
+     * The Nether's ambient YELLOW air is always applied directly in code rather than relying solely on the
+     * data-driven dimension profile JSON: unlike the block/item tags backing air providers (loaded through
+     * vanilla's own robust tag reload pipeline), dimension profiles are loaded through this mod's own
+     * {@link SimpleJsonResourceReloadListener}-based manager, and a load failure there (a missing/invalid
+     * datapack entry, a reload ordering issue, etc.) would otherwise silently leave the whole Nether feeling
+     * breathable with no indication anything is wrong.
      */
     public static AirQualityLevel getAirQualityAtLevelByDimension(Level level, int height) {
+        if (level.dimension() == Level.NETHER) return AirQualityLevel.YELLOW;
+
         JsonAirQualityDimension dimension = internalDimension.get(level.dimension().location());
         if (dimension == null) {
-            if (level.dimension() == Level.NETHER) return AirQualityLevel.YELLOW;
             return AirQualityLevel.GREEN;
         }
         return dimension.getAirQualityAtHeight(height);
