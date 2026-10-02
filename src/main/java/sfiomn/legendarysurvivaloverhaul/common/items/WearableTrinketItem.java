@@ -14,6 +14,7 @@ import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
 import com.google.common.collect.Multimap;
 import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketSlotConfig;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureResistance;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonBodyPartResistance;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.BodyDamageDataManager;
@@ -27,6 +28,11 @@ public class WearableTrinketItem extends TrinketItem {
 
     public WearableTrinketItem(Properties p_41383_) {
         super(p_41383_);
+    }
+
+    @Override
+    public boolean canEquip(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        return super.canEquip(stack, slot, entity) && TrinketSlotConfig.canEquip(stack, slot);
     }
 
     @Override

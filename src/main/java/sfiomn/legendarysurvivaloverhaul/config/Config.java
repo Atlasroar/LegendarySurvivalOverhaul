@@ -28,6 +28,7 @@ public class Config
 	public static BodyDamageConfig BODY_DAMAGE;
 	public static ClientConfig CLIENT;
 	public static AirConfig AIR;
+	public static TrinketsConfig TRINKETS;
 
 	public static void register()
 	{
@@ -61,6 +62,7 @@ public class Config
 		THIRST = load("thirst", ThirstConfig::new, RegisterType.BOTH);
 		HEALTH = load("health", HealthConfig::new, RegisterType.BOTH);
 		BODY_DAMAGE = load("body_damage", BodyDamageConfig::new, RegisterType.BOTH);
+		TRINKETS = load("trinkets", TrinketsConfig::new, RegisterType.BOTH);
 
 		bake(CLIENT);
 		bake(COMMON);
@@ -70,6 +72,7 @@ public class Config
 		bake(THIRST);
 		bake(HEALTH);
 		bake(BODY_DAMAGE);
+		bake(TRINKETS);
 
 		JsonConfigRegistration.init(LegendarySurvivalOverhaul.modConfigJsons.toFile());
 	}
@@ -102,6 +105,8 @@ public class Config
 			Baked.bakeCommon();
 		else if (config instanceof AirConfig)
 			Baked.bakeAir();
+		else if (config instanceof TrinketsConfig)
+			Baked.bakeTrinkets();
 		else if (config instanceof TemperatureConfig)
 			Baked.bakeTemperature();
 		else if (config instanceof SeasonsConfig) {
@@ -150,6 +155,7 @@ public class Config
 				greenAirRefillAmount, breathingEquipmentDamageInterval;
 		public static double suffocationDamage;
 		public static int airBladderRechargeAmount, airBladderRefillAmount, airBladderCooldown;
+		public static volatile Map<net.minecraft.resources.ResourceLocation, java.util.Set<String>> trinketSlots = Map.of();
 
 		// Temperature
 		public static boolean temperatureEnabled;
@@ -433,6 +439,30 @@ public class Config
 				LegendarySurvivalOverhaul.LOGGER.warn("An exception was caused trying to load the Common config for Legendary Survival Overhaul");
 				LegendarySurvivalOverhaul.LOGGER.warn(e.getStackTrace());
 			}
+		}
+
+		public static void bakeTrinkets()
+		{
+			if (TRINKETS == null) return;
+			if (!TRINKETS.useConfiguredSlots.get()) {
+				trinketSlots = Map.of();
+				return;
+			}
+			trinketSlots = Map.of(
+					trinketId("thermometer"), java.util.Set.copyOf(TRINKETS.thermometerSlots.get()),
+					trinketId("nether_chalice"), java.util.Set.copyOf(TRINKETS.netherChaliceSlots.get()),
+					trinketId("sponge"), java.util.Set.copyOf(TRINKETS.spongeSlots.get()),
+					trinketId("heat_resistance_ring"), java.util.Set.copyOf(TRINKETS.heatResistanceRingSlots.get()),
+					trinketId("cold_resistance_ring"), java.util.Set.copyOf(TRINKETS.coldResistanceRingSlots.get()),
+					trinketId("thermal_resistance_ring"), java.util.Set.copyOf(TRINKETS.thermalResistanceRingSlots.get()),
+					trinketId("first_aid_supplies"), java.util.Set.copyOf(TRINKETS.firstAidSuppliesSlots.get()),
+					trinketId("water_purifier"), java.util.Set.copyOf(TRINKETS.waterPurifierSlots.get()));
+			sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketSlotConfig.warnUnavailableSlots();
+		}
+
+		private static net.minecraft.resources.ResourceLocation trinketId(String path)
+		{
+			return new net.minecraft.resources.ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, path);
 		}
 
 		public static void bakeAir()
