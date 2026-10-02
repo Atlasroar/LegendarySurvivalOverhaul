@@ -81,7 +81,11 @@ public final class BackportSulfurCheck implements ModInitializer {
                 PotentSulfurBlockEntity.expose(player);
                 check(!player.hasEffect(MobEffects.CONFUSION), "Worn head mask prevents sulfur nausea");
                 player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80));
-                check(player.hasEffect(MobEffects.CONFUSION), "Unrelated nausea is not blocked");
+                check(!player.hasEffect(MobEffects.CONFUSION), "Direct nausea from any source is blocked");
+                check(!player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80), player),
+                        "Source-bearing nausea overload is blocked");
+                check(player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 80)),
+                        "Unrelated effect remains allowed");
                 player.removeEffect(MobEffects.CONFUSION);
                 player.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
 

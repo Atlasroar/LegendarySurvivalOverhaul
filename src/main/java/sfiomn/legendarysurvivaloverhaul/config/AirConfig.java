@@ -117,7 +117,8 @@ public class AirConfig extends me.fzzyhmstrs.fzzy_config.config.Config {
 
     @Comment("When VanillaBackport is installed, sulfur caves have YELLOW ambient air with the Nether drain interval. Fluids and nearby providers take precedence. Disable to use the normal dimension profile.")
     public ValidatedBoolean sulfurCaveAirEnabled = new ValidatedBoolean(true);
-    @Comment("An equipped Respirator prevents VanillaBackport Potent Sulfur gas from applying nausea. Held masks and other nausea sources are not protected. Independent of Enable Air Quality.")
+    // Retain the beta.1 field key so existing saved preferences migrate without resetting.
+    @Comment("An equipped Respirator prevents new Nausea effects from any source, even without VanillaBackport. Held masks do not protect. Does not clear existing effects. Independent of Enable Air Quality.")
     @ConfigGroup.Pop
     public ValidatedBoolean respiratorBlocksSulfurNausea = new ValidatedBoolean(true);
 

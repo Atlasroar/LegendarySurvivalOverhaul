@@ -2,14 +2,14 @@
 
 This **synthetic fixture is not VanillaBackport**. It uses that mod ID/class/method
 shape solely in an isolated development server to exercise optional presence,
-Mixin interception, equipped-mask checks, ambient biome lookup, provider priority,
+direct Nausea interception, equipped-mask checks, ambient biome lookup, provider priority,
 Nether-rate drain and Air config toggles. It must never be installed alongside
 the real mod or distributed to players.
 
 The target contract was inspected in VanillaBackport's Minecraft 1.20.1
 **1.2 development branch**, notably
-`PotentSulfurBlockEntity.applyNauseaEffect(LivingEntity)` and biome
-`minecraft:sulfur_caves`. It does not validate real geyser generation, gas
+`minecraft:sulfur_caves`. Nausea is now blocked through LSO's vanilla LivingEntity
+effect hooks, not a mixin targeting Backport's gas implementation. It does not validate real geyser generation, gas
 line-of-sight, upstream version conflicts, client visuals or remote sync.
 
 With JDK 17:

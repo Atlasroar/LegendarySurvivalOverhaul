@@ -1,5 +1,7 @@
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.mojang.authlib.GameProfile;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -7,6 +9,16 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import sfiomn.legendarysurvivaloverhaul.config.Config;
+import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -16,6 +28,9 @@ import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureBiomeListene
 import sfiomn.legendarysurvivaloverhaul.network.packets.SyncTemperatureBiomesPacket;
 
 import java.util.Map;
+import java.util.UUID;
+import java.util.ArrayList;
+import net.minecraft.network.chat.Component;
 
 public final class BiomeCompatibilityCheck implements ModInitializer {
     private static final ResourceLocation TERRALITH = new ResourceLocation("terralith", "desert_canyon");
@@ -94,6 +109,31 @@ public final class BiomeCompatibilityCheck implements ModInitializer {
                 reload.reload(server, Map.of());
                 check(climate.temperature(level, plains) == nativeTemperature,
                         "Removing override restores native temperature");
+
+                check(!FabricLoader.getInstance().isModLoaded("vanillabackport"), "Backport absent");
+                var player = new ServerPlayer(server, level, new GameProfile(UUID.randomUUID(), "MaskCheck"));
+                player.connection = new ServerGamePacketListenerImpl(
+                        server, new Connection(PacketFlow.SERVERBOUND), player);
+                var component = TrinketsApi.getTrinketComponent(player).orElseThrow();
+                component.update();
+                var mask = new ItemStack(ItemRegistry.RESPIRATOR.get());
+                component.getInventory().get("head").get("face").setItem(0, mask);
+                check(!player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80)),
+                        "Equipped mask blocks nausea without Backport");
+                check(!player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80), player),
+                        "Both addEffect overloads protected without Backport");
+                var tooltip = new ArrayList<Component>();
+                mask.getItem().appendHoverText(mask, level, tooltip, TooltipFlag.Default.NORMAL);
+                check(tooltip.size() == 2, "Flavor and protection tooltip lines");
+                Config.AIR.respiratorBlocksSulfurNausea.validateAndSet(false);
+                Config.bake(Config.AIR);
+                check(player.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80)),
+                        "Disabled toggle permits nausea");
+                tooltip.clear();
+                mask.getItem().appendHoverText(mask, level, tooltip, TooltipFlag.Default.NORMAL);
+                check(tooltip.size() == 1, "Disabled protection tooltip hidden");
+                Config.AIR.respiratorBlocksSulfurNausea.validateAndSet(true);
+                Config.bake(Config.AIR);
                 System.out.println("BIOME_COMPATIBILITY_CHECK_PASSED");
             } finally {
                 server.halt(false);

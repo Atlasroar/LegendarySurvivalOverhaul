@@ -3,6 +3,12 @@
 This opt-in Fabric development-server check does not ship in LSO. It preserves
 native biome climates and exercises datapack-only namespaces, reload replacement,
 invalid-entry rejection, dry/wet overrides and biome packet encode/decode/application.
+It also checks equipped Respirator protection through both vanilla Nausea
+application overloads without VanillaBackport, the config toggle, and tooltip
+line visibility. Protection prevents new applications; it does not cure an
+already active Nausea effect. The beta.1 `respiratorBlocksSulfurNausea` file key
+is retained for existing saved preferences; its menu label is now
+**Respirator Blocks Nausea**.
 The Terralith-namespaced fixture is deliberately tested **without** Terralith.
 It is a loader/sync regression check, not a real Terralith/Tectonic worldgen test.
 

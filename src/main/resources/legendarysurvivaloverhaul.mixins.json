@@ -12,7 +12,6 @@
     "LivingEntityEffectMixin",
     "LivingEntityDamageMixin",
     "LivingEntityAirQualityMixin",
-    "VanillaBackportSulfurMixin",
     "ServerLevelSleepMixin"
   ],
   "client": [
