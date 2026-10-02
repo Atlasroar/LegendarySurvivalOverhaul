@@ -20,7 +20,7 @@ Read descriptions before editing and apply/save changes using the editor. Titles
 | LSO - Temperature | `temperature.toml` | Temperature, wetness, dangerous temperatures, immunity and environmental behavior |
 | LSO - Seasons | `seasons.toml` | Seasonal integration |
 | LSO - Thirst | `thirst.toml` | Hydration, exhaustion and thirst effects |
-| LSO - Health | `health.toml` | Player health overhaul |
+| LSO - Health | `health.toml` | Player health overhaul, including Enchanted Golden Apple bonus and death heart-loss (`enchantedGoldenAppleOverrideEnabled`, `heartsLostOnDeath`, `permanentHearts`) |
 | LSO - Body Damage | `body_damage.toml` | Body-part health, damage and secondary effects |
 | LSO - Client | `client.toml` | HUD placement, rendering and visual preferences |
 

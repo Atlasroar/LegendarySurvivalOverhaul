@@ -2,21 +2,26 @@
 
 ## Latest full release
 
-[**v2.3.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.3.0) targets Minecraft 1.20.1, Fabric, and Java 17.
+[**v2.6.2**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.6.2) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
-legendarysurvivaloverhaul-fabric-1.20.1-2.3.0.jar
-SHA-256: 9A4942EB243F73D3805A4D1B1FDFE72C0926A9CA630038CEEEC5263B89726685
+legendarysurvivaloverhaul-fabric-1.20.1-2.6.2.jar
+SHA-256: 11240C318BB64210FBB750531FD87C1FFC2AC28538539B64735123DC66FAF17E
 ```
 
-v2.3.0 enables datapack-only biome overrides while preserving native climates, adds optional VanillaBackport sulfur-cave air, and makes equipped Respirators prevent new Nausea effects from any source. **LSO - Air** now has 27 controls; there are **259 settings across nine configs**. Dependencies remain unchanged. Backport/Platform are optional.
+v2.6.2 adds "Uses:" crafting-purpose text to the flora item descriptions (Sun Fern, Ice Fern, Water Plant seeds/leaves/crops), surfaced via Item Descriptions and Field Guide. v2.6.1 sepia-toned the Field Guide "LSO Flora" tab icon from the real Sun Fern Leaf sprite. v2.6.0 added Field Guide "LSO Flora" datapack category plus Item Descriptions/Mod Descriptions compatibility lore. v2.5.0 added HardcoreLite-inspired Enchanted Golden Apple shield-health/heart-container-repair and death heart-loss mechanics, with a non-spectator floor and LevelZ precedence. v2.4.0 added LevelZ/LibZ health compatibility. v2.3.0 enabled datapack-only biome overrides while preserving native climates, added optional VanillaBackport sulfur-cave air, and made equipped Respirators prevent new Nausea effects from any source. **LSO - Air** has 27 controls; there are **259+ settings across nine configs**. Backport/Platform remain optional.
 
-The user verified beta.1 biome/sulfur air behavior and reported mask failure. The full release replaces upstream-specific gas interception with vanilla effect interception and adds a descriptive tooltip. Revised protection passed isolated server assertions; in-game mask retest and broad multiplayer remain open.
+The user confirmed in-game: the LevelZ health bonus remains stable after death, and the Enchanted Golden Apple/death heart-loss mechanics work as intended with and without LevelZ installed. Revised Respirator Nausea protection (from v2.3.0) still needs an in-game retest; broader multiplayer/dedicated-server validation remains open.
 
 ## Release milestones
 
 | Version | Milestone |
 | --- | --- |
+| v2.6.2 | "Uses:" crafting-purpose text added to flora item descriptions (Item Descriptions/Field Guide). |
+| v2.6.1 | Field Guide "LSO Flora" tab icon sepia-toned from the real Sun Fern Leaf sprite, replacing a placeholder design. |
+| v2.6.0 | Field Guide "LSO Flora" datapack category; Item Descriptions and Mod Descriptions compatibility lore. |
+| v2.5.0 | HardcoreLite-inspired Enchanted Golden Apple bonus and death heart-loss (config-driven, non-spectator floor). |
+| v2.4.0 | LevelZ/LibZ health compatibility; death-respawn heal deferred so LevelZ's max-health bonus is preserved. |
 | v2.3.0 | Datapack biome compatibility, optional sulfur-cave YELLOW air, equipped-mask Nausea prevention and tooltip. |
 | v2.3.0-beta.1 | Biome/sulfur testing prerelease; source-specific mask protection superseded by the broader full-release behavior. |
 | v2.2.0 | Configurable accessory slot lists, override/tag-fallback switch, missing-slot warnings, preservation of equipped items. |
