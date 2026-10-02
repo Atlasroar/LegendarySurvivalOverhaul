@@ -76,7 +76,7 @@ Cold Hunger is a temperature-managed secondary effect: LSO applies it during dan
 
 ### Air quality (Thin Air integration)
 
-Version 1.0.0 includes Thin Air's air-quality mechanics and content: height- and dimension-based air (the Nether drains slowly, the End drains like water), RED air within 3 blocks of lava, GREEN air near portals, BLUE air near soul fire/torches/campfires/lanterns, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, a Trinkets Respirator, and Turtle Helmet protection. See the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration).
+Version 1.0.0 includes Thin Air's air-quality mechanics and content: height- and dimension-based air (the Nether drains slowly, the End drains like water), RED air within 3 blocks of lava, GREEN air near portals, BLUE air near soul fire/torches/campfires/lanterns, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, a Trinkets Respirator, and Turtle Helmet protection. The vanilla Water Breathing effect and potions are renamed to **Free Breathing**, since they also protect against bad air. See the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration).
 
 ## Installation
 

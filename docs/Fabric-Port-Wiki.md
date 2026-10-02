@@ -330,13 +330,13 @@ The legacy `v1.20.1-2.4.7-fabric.N` tags below predate this policy and are kept 
 
 | Version | Notes |
 | --- | --- |
-| `v1.0.0` | First SemVer release and first full release with the Thin Air air-quality system (from `.16`–`.30`): height/dimension-based air quality, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, Respirator, and Turtle Helmet protection. The Nether is ambient YELLOW, the End is RED, lava creates RED air within 3 blocks, portals/gateways provide GREEN air, and soul blocks provide BLUE air. User-validated in-game across the Overworld, Nether, and End. No gameplay changes from `.30`; only the version scheme and jar name changed. |
+| `v1.0.0` | First SemVer release and first full release with the Thin Air air-quality system (from `.16`–`.30`): height/dimension-based air quality, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, Respirator, and Turtle Helmet protection. The Nether is ambient YELLOW, the End is RED, lava creates RED air within 3 blocks, portals/gateways provide GREEN air, and soul blocks provide BLUE air. User-validated in-game across the Overworld, Nether, and End. No gameplay changes from `.30`; only the version scheme and jar name changed. The vanilla Water Breathing effect, potions, splash/lingering potions, and tipped arrows are renamed to **Free Breathing** (English), since the effect also protects against bad air; user-validated Turtle Helmet protection in all dimensions. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-fabric-1.20.1-1.0.0.jar`
 - Tag: `v1.0.0`
-- SHA-256: `FB169E322B22F555A0443CC53AE0CA37B9974CCB99CEFE3A230B999715CCCA0A`
+- SHA-256: `C942EE507993FC2EE6A6E2D486EE6D8E3F003459EAAC9C2AB4D0FB8B55256EE7`
 - Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.0.0>
 
 ## Feature and compatibility notes
