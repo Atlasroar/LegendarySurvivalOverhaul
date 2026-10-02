@@ -40,7 +40,7 @@ public class AirQualityDimensionListener extends SimpleJsonResourceReloadListene
             }
         });
 
-        LegendarySurvivalOverhaul.LOGGER.info("Loaded {} air quality dimensions", AIR_QUALITY_DIMENSIONS.size());
+        LegendarySurvivalOverhaul.LOGGER.info("Loaded {} air quality dimensions: {}", AIR_QUALITY_DIMENSIONS.size(), AIR_QUALITY_DIMENSIONS.keySet());
     }
 
     @Override
