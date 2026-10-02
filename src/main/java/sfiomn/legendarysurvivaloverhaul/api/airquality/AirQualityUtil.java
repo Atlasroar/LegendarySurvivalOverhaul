@@ -93,12 +93,10 @@ public final class AirQualityUtil {
                     BlockState blockState = level.getBlockState(mutable);
                     AirQualityLevel candidate = AirQualityLevel.getAirQualityFromBlock(blockState);
                     if (candidate == null) continue;
-                    if (best != null && !candidate.isBetterThan(best)) continue;
                     double distanceSq = Vec3.atCenterOf(mutable).distanceToSqr(location);
-                    if (distanceSq <= candidate.getAirProviderRadius() * candidate.getAirProviderRadius()) {
-                        best = candidate;
-                        if (best == AirQualityLevel.GREEN) return best;
-                    }
+                    if (distanceSq > candidate.getAirProviderRadius() * candidate.getAirProviderRadius()) continue;
+                    if (candidate == AirQualityLevel.GREEN) return AirQualityLevel.GREEN;
+                    if (best == null || candidate.isBetterThan(best)) best = candidate;
                 }
             }
         }
