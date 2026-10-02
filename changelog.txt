@@ -18,6 +18,15 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v2.6.2
+====
+Added "Uses:" text to the Sun Fern, Ice Fern and Water Plant
+seed/leaf/crop item descriptions (lore.legendarysurvivaloverhaul.*
+lang entries), so holding Ctrl with Item Descriptions installed, or
+scanning them with Field Guide, now tells players what each plant is
+used for (e.g. Warm String, Cold String, drinkable Water Plant Bags).
+Text-only change; no code or recipes modified.
+
 v2.6.1
 ====
 Replaced the Field Guide "LSO Flora" category's tab icon. v2.6.0
