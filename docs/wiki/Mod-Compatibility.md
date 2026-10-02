@@ -31,6 +31,14 @@ For tropical Serene Seasons cards, enable **Tropical Seasons Enabled** as well a
 | Create, Aether, Dimensional Doors air adapters | Outside the implemented Thin Air integration scope. |
 | Separate Thin Air installation | Not required; coexistence is not claimed as tested. |
 
+## Trinkets and integrated Thin Air
+
+Trinkets is the accessory API, not Curios. **LSO - Trinkets** customizes allowed slots for eight LSO accessories. It does not create slot types or change other mods' items. The Respirator/face mask is excluded; its existing face-slot behavior remains.
+
+Custom Trinkets slot datapacks work only when the type exists and is assigned to players. While Use Configured Slots is enabled, the configured lists own those eight items' acceptance rather than their normal item tags. Disable it for tag-based pack control. See [Trinkets Configuration](Trinkets-Configuration) and [slot recipes](Datapack-Air-and-Slot-Recipes).
+
+Thin Air mechanics are built into LSO, with the dependencies/defaults listed in this wiki. The original Thin Air download page's Forge/Puzzles Lib requirements are not LSO requirements. Do not install a second Thin Air implementation expecting automatically compatible duplicate mechanics.
+
 ## Future integrations
 
 Additional mod support is the next development phase. Targets and desired interactions must be selected before implementation. New adapters should remain optional where possible and preserve behavior without the target mod installed.

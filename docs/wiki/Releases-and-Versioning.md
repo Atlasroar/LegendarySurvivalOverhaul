@@ -2,19 +2,21 @@
 
 ## Latest full release
 
-[**v2.1.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0) targets Minecraft 1.20.1, Fabric, and Java 17.
+[**v2.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.2.0) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
-legendarysurvivaloverhaul-fabric-1.20.1-2.1.0.jar
-SHA-256: C53842FFE541E9CD6E472788F6B4E1BC06288FBD8A324645F765E2268C1336E5
+legendarysurvivaloverhaul-fabric-1.20.1-2.2.0.jar
+SHA-256: 4DD625A3F28334532678E5B91544D6D7F9ED38F3AB8E87D4F6ECEB616B429AA8
 ```
 
-v2.1.0 adds **LSO - Air** with 25 air controls and automatic migration from Common. There are 248 options across eight configs. Dependencies remain unchanged from v2.0.0: Fzzy Config and Fabric Language Kotlin replace Forge Config API Port; Mod Menu is optional.
+v2.2.0 adds **LSO - Trinkets** with nine controls and per-item slot lists for eight accessories; Respirator is excluded. It retains **LSO - Air** with 25 controls. There are **257 options across nine configs**. Dependencies remain unchanged from v2.0.0: Fzzy Config and Fabric Language Kotlin replace Forge Config API Port; Mod Menu is optional.
 
 ## Release milestones
 
 | Version | Milestone |
 | --- | --- |
+| v2.2.0 | Configurable accessory slot lists, override/tag-fallback switch, missing-slot warnings, preservation of equipped items. |
+| v2.2.0-beta.1 | Trinkets configuration testing prerelease; superseded by v2.2.0. |
 | v2.1.0 | Dedicated Air config, opt-in dimension/height overrides, breathing rates, equipment wear, bladder controls, and automatic Common migration. |
 | v2.1.0-beta.1 | Air configuration testing prerelease; superseded by v2.1.0. |
 | v2.0.0 | Full Fzzy Config migration, Mod Menu support, legacy backups, short config titles. |

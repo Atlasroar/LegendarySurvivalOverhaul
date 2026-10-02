@@ -44,11 +44,16 @@ Before restoring an excluded integration, inspect build exclusions and registrat
 | Thin Air mechanics and dimensional fixes | Released and tested across all three vanilla dimensions |
 | Turtle Helmet / Free Breathing | Completed |
 | Fzzy Config / Mod Menu / legacy migration | Released in v2.0.0 through PR #31 |
+| Dedicated Air config / Common migration | Released in v2.1.0; 25 controls, default-preserving profiles/rates and tested migration |
+| Configurable Trinkets accessory placement | Released in v2.2.0; eight item lists, tag fallback, Respirator exclusion and preservation of equipped stacks |
+| Player/developer wiki and simplified README | Updated for v2.2.0; detailed codecs/APIs, attributed media and exact sync limits |
 | SemVer and obsolete branch/PR cleanup | Completed |
 
 ## Open validation
 
-Broader multiplayer/dedicated-server gameplay, real operator permissions/config synchronization, and further in-game edit coverage remain open. Dedicated-server config registration and migration were tested, but are not a substitute for multiplayer gameplay testing. The project currently has no automated Java test sources.
+Broader multiplayer/dedicated-server gameplay, real operator permissions/config synchronization, and exhaustive in-game edit coverage remain open. Dedicated-server assertions tested Air migration, rates, boundaries and equipment, plus Trinkets list validation, slot relocation, fallback, auto-equip and stack preservation. These are not a substitute for multiplayer gameplay testing. The project currently has no checked-in automated Java test sources.
+
+**Dataset sync follow-up:** 14 server listeners exist, but `syncAll()` sends 12 datasets. Temperature consumable blocks has a client receiver but no send in that method; air profiles have no dedicated dataset sync. Track these as integration/remote-client validation limits rather than claiming complete parity.
 
 ## Next phase
 
@@ -61,3 +66,5 @@ Origins and Meds and Herbs remain intentionally unsupported; Forge datagen is a 
 The wiki page sources live in `docs/wiki` in the main repository. Keep them aligned with the README and [detailed port history](https://github.com/Atlasroar/LegendarySurvivalOverhaul/blob/lso-fabric-1-20-1/docs/Fabric-Port-Wiki.md).
 
 Update player-facing pages and release notes when behavior or dependencies change. Record what was actually built/tested; distinguish known limitations from historical issues fixed in later releases.
+
+Start with the [Developer Hub](Developer-Hub), [Architecture and APIs](Architecture-and-APIs), and [Datapack Schema Reference](Datapack-Schema-Reference). Keep source-page names and sidebar links consistent when publishing to the wiki's separate Git repository.

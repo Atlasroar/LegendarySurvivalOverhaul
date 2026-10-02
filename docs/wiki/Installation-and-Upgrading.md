@@ -1,6 +1,6 @@
 # Installation and Upgrading
 
-## Requirements for v2.0.0
+## Requirements for v2.2.0
 
 | Component | Requirement |
 | --- | --- |
@@ -18,7 +18,7 @@ Fzzy Config is installed separately, not embedded in LSO. [Mod Menu](https://mod
 ## Install
 
 1. Create a Fabric 1.20.1 instance with Java 17.
-2. Download the mod jar from the [latest full release](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0).
+2. Download the mod jar from the [latest full release](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.2.0).
 3. Place it and the required dependency jars in your instance's `mods` directory.
 4. Launch the game. With Mod Menu installed, open LSO's config button to customize the settings.
 
@@ -35,3 +35,11 @@ On first launch, legacy Forge-format config files are converted automatically. O
 The Thin Air mechanics are integrated into LSO; a separate Thin Air installation is not required. This documentation does not claim compatibility with running both implementations together.
 
 Older Fabric prereleases remain available for history. They are not the recommended starting point. See [Releases and Versioning](Releases-and-Versioning).
+
+## Upgrade from 2.0.x / 2.1.x
+
+v2.1.0 introduced `air.toml`. If that file does not yet exist, LSO migrates the seven former Common air settings; Fzzy Common is retained as `common.toml.air-backup`. Existing Air values win over import.
+
+v2.2.0 adds `trinkets.toml`. Default accessory lists match previous tag assignments, so installing the update does not intentionally relocate equipped items. Do not delete configs to upgrade; let the defaults/migration fill new fields.
+
+Verify the nine [config screens](Configuration), especially [Air](Air-Configuration) and [Trinkets](Trinkets-Configuration). Keep only one LSO jar, and back up before altering datapacks or actual inventory slot capacities.

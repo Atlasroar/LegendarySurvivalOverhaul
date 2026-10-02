@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The latest release is [**v2.1.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0), adding the dedicated Air config to Fzzy Config in-game editing and Mod Menu support while retaining the Thin Air integration. Fzzy Config and Fabric Language Kotlin replace Forge Config API Port as required dependencies. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
+The latest release is [**v2.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.2.0), adding configurable Trinkets accessory slot lists while retaining the dedicated Air config, Fzzy Config editing, Mod Menu support and Thin Air integration. There are 257 settings across nine configs. Fzzy Config and Fabric Language Kotlin replace Forge Config API Port as required dependencies. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
 
 The port is considered feature-complete pending further in-game testing, particularly multiplayer/dedicated-server validation. Every tracked gameplay slice — survival systems, HUD/tooltip rendering, sewing table and coat application, heater/cooler multiblocks, and the Forge event-subscriber audit — is user-verified in a single-player/integrated-server world as of `.14`. A full audit of the three Forge-only event files found no remaining behavioral gaps: all differences from Forge are either intentional feature drops (Origins, Meds and Herbs), necessary platform adaptations forced by different Fabric hook points (bonemeal, damage pipeline), or pre-existing Forge behavior that was never different on Fabric (the armor coat tooltip, which never showed a numeric resistance delta on Forge either). Forge-only datagen execution and selected optional integrations remain intentionally omitted.
 
@@ -44,7 +44,7 @@ The port is considered feature-complete pending further in-game testing, particu
 
 - Migrated player login/initialization and world-load setup to Fabric lifecycle events.
 - Adapted the existing JSON datapack listeners to Fabric server-data reload registration.
-- Added client/server Fabric networking for all 14 survival datapack datasets, with synchronization on player join and successful datapack reload.
+- Added Fabric networking and synchronization on player join and successful datapack reload. Current source audit: 14 server listeners, 12 datasets sent by `syncAll()`, and 13 client receivers; temperature consumable blocks is not sent there and air profiles have no dedicated dataset sync.
 - Migrated client tick behavior such as temperature effects, body-health key handling, optional thermometer polling, and delayed datapack warning display.
 
 ### 5. First installable compatibility slice
@@ -249,7 +249,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 ### Next development phase
 
-- Local 2.2.0-beta.1 adds LSO - Trinkets slot lists for eight LSO accessories; the Respirator is excluded. In-game GUI/multiplayer validation remains pending, and the preview is not in v2.1.0.
+- Released v2.2.0 adds LSO - Trinkets slot lists for eight LSO accessories; the Respirator is excluded. Broader multiplayer and exhaustive GUI setting validation remain open.
 - Add support for additional mods once the user selects the targets and desired behavior.
 - Keep new adapters optional where possible, preserve vanilla/current-mod behavior, and validate each integration independently.
 - No new integration is implemented or claimed by this planning update.
@@ -349,12 +349,14 @@ The legacy `v1.20.1-2.4.7-fabric.N` tags below predate this policy and are kept 
 | --- | --- |
 | `v1.0.0` | First SemVer release and first full release with the Thin Air air-quality system (from `.16`–`.30`): height/dimension-based air quality, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, Respirator, and Turtle Helmet protection. The Nether is ambient YELLOW, the End is RED, lava creates RED air within 3 blocks, portals/gateways provide GREEN air, and soul blocks provide BLUE air. User-validated in-game across the Overworld, Nether, and End. No gameplay changes from `.30`; only the version scheme and jar name changed. The vanilla Water Breathing effect, potions, splash/lingering potions, and tipped arrows are renamed to **Free Breathing** (English), since the effect also protects against bad air; user-validated Turtle Helmet protection in all dimensions. |
 | `v2.0.0` | **Breaking:** the configuration system moves from Forge Config API Port to Fzzy Config, which requires Fabric Language Kotlin. All 230 options are editable in-game via Mod Menu or `/configure`. Server configs are synced to clients and editable by operators. Mod Menu metadata (icon, links) is added. Existing 1.x config files are migrated automatically, with `.forge-backup` copies kept. No gameplay changes. |
+| `v2.1.0` | Adds LSO - Air with 25 controls, including seven moved Common fields and automatic migration. New defaults preserve breathing behavior; vanilla dimension overrides are opt-in. Total: 248 settings across eight configs. |
+| `v2.2.0` | Adds LSO - Trinkets with nine controls for eight accessories. Multiple/empty slot lists, tag fallback and missing-slot warnings; no forced relocation/deletion of equipped items. Respirator excluded. Total: 257 settings across nine configs. |
 ### Latest released artifact
 
-- File: `legendarysurvivaloverhaul-fabric-1.20.1-2.1.0.jar`
-- Tag: `v2.1.0`
-- SHA-256: `C53842FFE541E9CD6E472788F6B4E1BC06288FBD8A324645F765E2268C1336E5`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0>
+- File: `legendarysurvivaloverhaul-fabric-1.20.1-2.2.0.jar`
+- Tag: `v2.2.0`
+- SHA-256: `4DD625A3F28334532678E5B91544D6D7F9ED38F3AB8E87D4F6ECEB616B429AA8`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.2.0>
 
 ## Feature and compatibility notes
 
@@ -363,7 +365,7 @@ The legacy `v1.20.1-2.4.7-fabric.N` tags below predate this policy and are kept 
 - Creative inventory registration and item icons.
 - Core heater/chiller behavior and wearable armor, as visually confirmed by the user.
 - Fabric player survival components and selected lifecycle/gameplay hooks.
-- Server-data JSON reload listeners and 14-dataset client synchronization.
+- Fourteen server-data JSON reload listeners; `syncAll()` sends twelve datasets and the client registers thirteen receivers. Full remote-client dataset parity is not claimed.
 - Thirst, temperature, wetness, and body-damage HUD indicators.
 - LSO shield/broken-heart HUD overlay (shield/armor separation and broken-heart foreground layering verified in-game).
 - Cold-hunger food-bar overlay is visually confirmed in `.4`. Its active duration is managed by the temperature system, not by command duration overrides.
@@ -395,11 +397,11 @@ Do not describe excluded features as supported. Check `build.gradle` source excl
 
 ## Configuration (Fzzy Config)
 
-As of 2.0.0, the seven LSO configs (`common`, `temperature`, `seasons`, `thirst`, `health`, `body_damage`, `client`) are Fzzy Config classes in `sfiomn.legendarysurvivaloverhaul.config`.
+As of 2.2.0, nine LSO configs (`common`, `temperature`, `seasons`, `thirst`, `health`, `body_damage`, `client`, `air`, `trinkets`) are Fzzy Config classes in `sfiomn.legendarysurvivaloverhaul.config`. The seven original configs migrated in 2.0.0; Air arrived in 2.1.0 and Trinkets in 2.2.0.
 
 **Editing in-game**
-- All 230 options can be edited from the Mod Menu config button or with `/configure legendarysurvivaloverhaul`.
-- `client` is client-only. The other six are registered as synced (`RegisterType.BOTH`), so the server's values are pushed to clients, and operators can edit them in-game.
+- All 257 options can be edited from the Mod Menu config button or with `/configure legendarysurvivaloverhaul`.
+- `client` is client-only. The other eight are registered as synced (`RegisterType.BOTH`), so the server's values are pushed to clients, and operators can edit them in-game; real remote-client permissions/synchronization remain a validation follow-up.
 - Options keep their original names. Labels and descriptions come from `en_us.json`, using the keys `legendarysurvivaloverhaul.<config>.<field>` and `.desc`.
 - Related options are grouped as they were in the Forge sections, e.g. "HUD - Temperature".
 - Numeric options keep their original ranges. Small ranges are edited with sliders.
@@ -424,9 +426,9 @@ As of 2.0.0, the seven LSO configs (`common`, `temperature`, `seasons`, `thirst`
 - Adds drain/refill timing and amount, equipment durability interval, outside-water suffocation damage, and bladder recharge/refill/cooldown controls. Bladder recharge is clamped at zero damage, and dispensing cannot consume more durability than remains.
 - Existing Fzzy Common values migrate with a `common.toml.air-backup`; pre-2.0 Forge Common values migrate through the existing mapping with `.forge-backup`. Existing `air.toml` values take precedence.
 - Updates rebake the Air facade and clear the lookup cache. Numeric validation prevents zero drain intervals. A reversed Overworld height range logs a warning and uses the minimum as its effective maximum.
-- Real-server assertions checked both Common formats, retained non-air Common values, default dimension profiles, inclusive override boundaries, Nether/End overrides, rebaking/cache invalidation, drain/refill amounts and intervals, range validation, equipment wear/protection, Free Breathing protection, and bladder durability boundaries. In-game GUI and broader multiplayer testing remain pending.
+- Real-server assertions checked both Common formats, retained non-air Common values, default dimension profiles, inclusive override boundaries, Nether/End overrides, rebaking/cache invalidation, drain/refill amounts and intervals, range validation, equipment wear/protection, Free Breathing protection, and bladder durability boundaries. The user requested a full release after the prerelease; exhaustive GUI combinations and broader multiplayer remain follow-ups.
 
-### Trinkets config development preview (2.2.0-beta.1)
+### Trinkets config (released in v2.2.0)
 
 - Adds synced `TrinketsConfig` with nine controls: a tag-override switch and eight allowed-slot lists. Total: 257 controls across nine configs.
 - Defaults preserve LSO's shipped item slots. Custom `group/slot` IDs and multiple entries are supported; empty lists disable new insertion. No new slot definitions/capacity are created.
@@ -434,6 +436,7 @@ As of 2.0.0, the seven LSO configs (`common`, `temperature`, `seasons`, `thirst`
 - Turning off Use Configured Slots restores datapack tag assignments. Other slot predicates and normal unequip restrictions remain intact. Existing items are not deleted or forcibly moved.
 - Config updates rebuild an immutable baked lookup, used by insertion, quick-move predicate evaluation, and right-click auto-equip. Missing player slots log warnings at server startup, successful reload, and config updates.
 - Real-server assertions checked defaults, relocation/multiple slots, empty lists, tag fallback, auto-equip, removal, existing stack retention, malformed/custom IDs, other-item isolation, and unchanged Respirator face-slot behavior.
+- Published v2.2.0-beta.1 for user testing, then v2.2.0 on user request. The wiki now separates player guides from detailed coder/API/datapack references, with attributed upstream images and explicit validation limits.
 
 ### Build commands
 

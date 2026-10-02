@@ -1,29 +1,46 @@
-# Legendary Survival Overhaul
+# Legendary Survival Overhaul Wiki
 
-**Make survival matter.** LSO adds temperature, hydration, localized body damage, expanded health, and air quality to Minecraft.
+**Make survival matter.** This wiki documents the **Fabric 1.20.1 port**, not the original Forge release.
 
-This wiki documents the **Fabric 1.20.1 port**, not the original Forge release. The latest full release is [v2.1.0](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0), requiring Java 17.
+![LSO environmental survival](https://cdn.modrinth.com/data/cached_images/b052d40ca61b2747c9003f4b508527ddd1db1df8.png)
 
-## Getting started
+*Original LSO feature image from the [LSO Modrinth project](https://modrinth.com/mod/legendary-survival-overhaul); artwork and screenshots credited to the upstream project.*
 
-1. Follow [Installation and Upgrading](Installation-and-Upgrading).
-2. Learn the [Survival Systems](Survival-Systems) and [Air Quality and Breathing](Air-Quality-and-Breathing).
-3. Customize your experience using [Configuration](Configuration).
+The latest full release is [**v2.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.2.0): Minecraft 1.20.1, Fabric, Java 17. It includes **257 settings across nine configs**, with **LSO - Air** and **LSO - Trinkets**. The Respirator is intentionally excluded from accessory slot customization.
 
-## Reference
+## For players
 
-| Page | Contents |
+| Guide | What you will learn |
 | --- | --- |
-| [Mod Compatibility](Mod-Compatibility) | Required libraries, optional integrations, and unsupported adapters. |
-| [Datapack Customization](Datapack-Customization) | Runtime data, reload behavior, and equipment test resources. |
-| [Troubleshooting](Troubleshooting) | Missing dependencies, migration, HUD, and breathing issues. |
-| [Releases and Versioning](Releases-and-Versioning) | Current release, upgrade boundaries, and SemVer policy. |
-| [Development and Work Plan](Development-and-Work-Plan) | Building, completed work, validation limits, and next development phase. |
+| [Installation and Upgrading](Installation-and-Upgrading) | Dependencies, client/server setup, and safe migration |
+| [Survival Systems](Survival-Systems) | Temperature, hydration, localized injuries, health, and equipment |
+| [Air Quality and Breathing](Air-Quality-and-Breathing) | Dimension hazards, providers, lanterns, and breathing protection |
+| [Trinkets and Accessories](Trinkets-and-Accessories) | Accessory effects, slots, relocation, and Respirator exception |
+| [Configuration](Configuration) | Nine config files, server ownership, edits, and legacy migration |
+| [Air Configuration](Air-Configuration) | Every air control, units, defaults, and profile precedence |
+| [Trinkets Configuration](Trinkets-Configuration) | Per-item slot lists and datapack fallback |
+| [Mod Compatibility](Mod-Compatibility) | Implemented integrations versus unsupported adapters |
+| [Troubleshooting](Troubleshooting) | Logs, HUD, breathing, config, and slot diagnostics |
+| [Releases and Versioning](Releases-and-Versioning) | Release history, checksums, and SemVer |
 
-## Status
+## For coders and pack authors
 
-The tracked Fabric gameplay port and air-quality fixes are complete. Single-player survival and air equipment were tested in-game across the Overworld, Nether, and End. Dedicated-server config loading and legacy migration were exercised; exhaustive multiplayer gameplay and every config edit are not claimed as validated.
+| Reference | Contents |
+| --- | --- |
+| [Developer Hub](Developer-Hub) | Reading order, source layout, and contribution boundaries |
+| [Architecture and APIs](Architecture-and-APIs) | Fabric, Cardinal Components, Fzzy, Trinkets, networking, and LSO facades |
+| [Air System Internals](Air-System-Internals) | Lookup/cache precedence, air ticks, equipment wear, and suffocation |
+| [Trinkets Integration Internals](Trinkets-Integration-Internals) | Predicate wrapping, insertion rules, immutable config lookup, and modifiers |
+| [Datapack Customization](Datapack-Customization) | Create/install packs; exact paths, namespaces, and reload behavior |
+| [Datapack Schema Reference](Datapack-Schema-Reference) | JSON fields, object/array shapes, examples, and pitfalls |
+| [Datapack Air and Slot Recipes](Datapack-Air-and-Slot-Recipes) | Dimension air profiles, source tags, breathing tags, and custom slots |
+| [Development and Work Plan](Development-and-Work-Plan) | Build commands, validation coverage, and completed/open work |
+| [Credits and Licenses](Credits-and-Licenses) | Authors, third-party code, asset permissions, and image provenance |
 
-Fzzy Config replaces Forge Config API Port in v2.0.0. v2.1.0 has 248 options across eight in-game configs, including **LSO - Air**. Additional mod integrations are the next development phase, not existing support.
+## Validation and scope
 
-[Downloads](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues) | [Source](https://github.com/Atlasroar/LegendarySurvivalOverhaul/tree/lso-fabric-1-20-1)
+The tracked Fabric gameplay port and air fixes are complete. Survival systems and air equipment were tested in single-player across the Overworld, Nether, and End. Air/Trinkets config prereleases were followed by user-directed full releases. Real-server assertions exercised migration, profiles, slot restrictions, and equipment boundaries.
+
+Broader multiplayer scenarios, operator permissions/config synchronization, and interactions with untested mods remain open. A full release is not a claim that every config combination or datapack has been tested.
+
+[Downloads](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) | [Issues](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues) | [Source branch](https://github.com/Atlasroar/LegendarySurvivalOverhaul/tree/lso-fabric-1-20-1)
