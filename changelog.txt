@@ -18,6 +18,22 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v2.5.0
+====
+Added HardcoreLite-inspired Enchanted Golden Apple and death heart-loss
+mechanics. Eating an Enchanted Golden Apple specifically now grants a
+dedicated Shield Health bonus (default 2 Shield Hearts) and repairs
+Heart Containers (default 1), distinct from the generic vanilla-
+Absorption override used by other Absorption sources. Death now removes
+1 Heart Container by default, down to a configurable floor (default 1
+Heart Container / 2 health); unlike the reference mod, LSO never forces
+Spectator mode. Both mechanics are fully config-driven and reuse LSO's
+existing delta/modifier-based max-health system, preserving LevelZ
+compatibility; LevelZ's level-based health floor intentionally takes
+precedence over LSO's floor. Fixed an ordering race so the death
+heart-loss floor check always reads the final, LevelZ-combined max
+health. Confirmed in-game with and without LevelZ installed.
+
 v2.4.0
 ====
 Added LevelZ mod compatibility: LSO's health overhaul already stacked
