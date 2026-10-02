@@ -2,6 +2,7 @@ package sfiomn.legendarysurvivaloverhaul.api.airquality;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -92,6 +93,9 @@ public final class AirQualityUtil {
                     if (!level.isLoaded(mutable)) continue;
                     BlockState blockState = level.getBlockState(mutable);
                     AirQualityLevel candidate = AirQualityLevel.getAirQualityFromBlock(blockState);
+                    if (blockState.getFluidState().is(FluidTags.LAVA)) {
+                        candidate = AirQualityLevel.RED;
+                    }
                     if (candidate == null) continue;
                     double distanceSq = Vec3.atCenterOf(mutable).distanceToSqr(location);
                     if (distanceSq > candidate.getAirProviderRadius() * candidate.getAirProviderRadius()) continue;
