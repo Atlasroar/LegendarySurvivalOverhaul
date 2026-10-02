@@ -18,6 +18,16 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v2.4.0
+====
+Added LevelZ mod compatibility: LSO's health overhaul already stacked
+correctly with LevelZ's level-based max-health bonus by design, but the
+death-respawn full heal could snapshot an incomplete max health if it
+ran before LevelZ reapplied its bonus. The death-respawn heal is now
+deferred to the player's next server tick so it always reflects the
+final combined max health, regardless of mod load order. Confirmed
+in-game: the LevelZ health bonus remains stable across death/respawn.
+
 v2.3.0
 ====
 Enabled datapack-only biome overrides while preserving native biome
