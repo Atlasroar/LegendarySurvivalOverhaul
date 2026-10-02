@@ -73,12 +73,14 @@ public final class AirQualityUtil {
 
     /**
      * Scans a bounded radius for any block tagged as an air provider (lanterns, soul fire, portals, lava...),
-     * returning the best (lowest ordinal) quality found within its own configured radius. Lookup results are cached
-     * briefly per entity; administrators should keep configured radii reasonable because the search volume grows
-     * cubically with radius.
+     * returning the worst (highest ordinal, e.g. RED over GREEN) quality found within its own configured radius.
+     * Nearby hazards (lava, bad air pockets) must always win over a nearby safe source (a portal, a lantern):
+     * standing between a lava pool and a portal should still poison you, not get "healed" by the portal simply
+     * being in range too. Lookup results are cached briefly per entity; administrators should keep configured radii
+     * reasonable because the search volume grows cubically with radius.
      */
     private static AirQualityLevel scanForNearbyAirProvider(Level level, Vec3 location) {
-        AirQualityLevel best = null;
+        AirQualityLevel worst = null;
         double maxRadius = 0;
         for (AirQualityLevel airQualityLevel : AirQualityLevel.values()) {
             maxRadius = Math.max(maxRadius, airQualityLevel.getAirProviderRadius());
@@ -99,12 +101,12 @@ public final class AirQualityUtil {
                     if (candidate == null) continue;
                     double distanceSq = Vec3.atCenterOf(mutable).distanceToSqr(location);
                     if (distanceSq > candidate.getAirProviderRadius() * candidate.getAirProviderRadius()) continue;
-                    if (candidate == AirQualityLevel.GREEN) return AirQualityLevel.GREEN;
-                    if (best == null || candidate.isBetterThan(best)) best = candidate;
+                    if (candidate == AirQualityLevel.RED) return AirQualityLevel.RED;
+                    if (worst == null || candidate.ordinal() > worst.ordinal()) worst = candidate;
                 }
             }
         }
-        return best;
+        return worst;
     }
 
     public static boolean isSensitiveToAirQuality(LivingEntity entity) {
