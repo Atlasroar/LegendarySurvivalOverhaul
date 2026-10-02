@@ -223,10 +223,17 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 - Origins-specific Fabric compatibility and generated data have been removed at the user's direction; Origins is intentionally unsupported in this port.
 - The out-of-season warning is injected into Serene Seasons' client-side `SeasonalCropGrowthHandler.applyBonemeal` event. Serene Seasons' Fabric/GlitchCore callback may cancel bonemeal client-side, so a server-side warning hook did not work. The user confirmed the warning with seasonal crops enabled and `out_of_season_crop_behavior = 1` (can't grow).
 
-## Current next-work plan after `.12`
+## Current Copilot work plan after v2.0.0
 
 ### Closed or already verified
 
+- Fabric build/metadata, runtime registries, gameplay callbacks, persistent player state, custom networking, client screens/tooltips, and packaged content are complete.
+- HUD migration and Overflowing Bars compatibility fixes are complete and user-verified.
+- Thin Air integration and air-quality fixes are complete, with dimension behavior and equipment tested across the Overworld, Nether, and End.
+- Turtle Helmet breathing protection and the English Free Breathing rename are complete.
+- Semantic Versioning is adopted; obsolete PR/branch cleanup is complete.
+- Fzzy Config migration, all 230 editable options, Mod Menu integration, and shorter `LSO - ...` config titles are shipped in v2.0.0 through PR #31. Dedicated-server loading/migration was exercised and the user opened the config GUI; exhaustive testing of every edit is not claimed.
+- v2.0.0 is published as the latest full release; README and release documentation reflect the dependency changes.
 - Origins and Meds and Herbs are intentionally unsupported; no Fabric adapter work remains for either.
 - Supplementaries' ordinary lunch-basket finish-use flow is covered by LSO's existing item-finish hook, so no Supplementaries-specific adapter is planned.
 - Temperature consumables, tonic recovery over time, the F3 filter in both states, and death-respawn immunity across dimension changes are user-verified.
@@ -238,6 +245,13 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 ### Remaining port-wide validation
 
 - Exercise multiplayer and dedicated-server behavior beyond the networking paths already tested in an integrated world.
+- Continue checking in-game config edits and server permissions/synchronization under real multiplayer conditions.
+
+### Next development phase
+
+- Add support for additional mods once the user selects the targets and desired behavior.
+- Keep new adapters optional where possible, preserve vanilla/current-mod behavior, and validate each integration independently.
+- No new integration is implemented or claimed by this planning update.
 
 Forge datagen task execution remains omitted; checked-in generated runtime resources are used by the Fabric build, so restoring that developer workflow is not a gameplay prerequisite.
 

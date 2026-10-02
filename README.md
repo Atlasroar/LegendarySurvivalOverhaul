@@ -6,7 +6,7 @@
 
 [Modrinth project](https://modrinth.com/mod/legendary-survival-overhaul) · [Fabric releases](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) · [Port and release notes](docs/Fabric-Port-Wiki.md) · [Community Discord](https://discord.gg/XPHtcP89P3) · [Guide](https://minecraft-legendary-edition.gitbook.io/minecraft-legendary-edition)
 
-> **Fabric port status:** The Fabric 1.20.1 build is now a full release. The port is feature-complete and every tracked gameplay slice is user-verified in a development client, pending further in-game testing (particularly multiplayer/dedicated-server scenarios). Back up worlds before updating.
+> **Fabric port status:** v2.0.0 is a full release for Fabric 1.20.1. The tracked gameplay port and air-quality fixes are complete, with single-player gameplay tested in-game. Broader multiplayer/dedicated-server validation remains open. Back up worlds and configs before updating.
 
 ## Screenshots
 
@@ -22,7 +22,7 @@ Temperature responds to environmental factors. Monitor it to avoid dangerous col
 
 ![Hydration bar](https://cdn.modrinth.com/data/cached_images/f0e9472f7b82073a5a17ff3ef99bcb5ec92ee7d9.png)
 
-Hydration and saturation add a survival resource alongside hunger. Drink from water, purify water, use canteens, and account for heat-related thirst. The Fabric test build includes the hydration HUD.
+Hydration and saturation add a survival resource alongside hunger. Drink from water, purify water, use canteens, and account for heat-related thirst. The Fabric release includes the hydration HUD.
 
 ![Canteen](https://cdn.modrinth.com/data/cached_images/1a26798d91db5a24755f6612f1c30b54785f94bc.png)
 
@@ -30,7 +30,7 @@ Hydration and saturation add a survival resource alongside hunger. Drink from wa
 
 ![Localized limb damage](https://cdn.modrinth.com/data/cached_images/a713a1b8637a4236bed84dbae7e9bfb8ba539ebf.png)
 
-Damage can affect specific body parts and cause secondary effects. Treat injuries with appropriate healing items. The limb-health screen is opened with **H** where supported by the current build.
+Damage can affect specific body parts and cause secondary effects. Treat injuries with appropriate healing items. Open the limb-health screen with **H** by default (rebindable in Controls).
 
 ![Limb damage effects](https://cdn.modrinth.com/data/cached_images/7f33279aa5296d405b3f31f84dc3b4418cd8f5a3.png)
 
@@ -46,6 +46,9 @@ The latest release is [**v2.0.0**](https://github.com/Atlasroar/LegendarySurviva
 
 Current highlights:
 
+- Fzzy Config in-game editing for all 230 options across seven configs, with short titles such as **LSO - Client**, server synchronization, and optional Mod Menu integration.
+- Automatic migration of 1.x configuration files, retaining `.forge-backup` copies.
+- Integrated air-quality mechanics, survival equipment, and **Free Breathing** effects; no separate Thin Air installation is required.
 - Temperature, thirst, wetness, and body-damage HUD indicators.
 - LSO shield/broken-heart health HUD layers, including broken hearts replacing health containers and shield rows separated from the armor bar.
 - Cold-hunger food overlay and thirst-row placement, visually confirmed.
@@ -53,7 +56,7 @@ Current highlights:
 - Configured thirst exhaustion from jumping, mining, and attacking, validated in-game.
 - Consumable hydration, temperature effects, localized body damage, and healing items are validated in-game.
 - Configured temperature immunity after death is validated for its 90-second default duration.
-- Absorption-to-shield conversion and Water Purifier effect blocking have passed initial in-game verification; shield depletion and the HUD presentation remain under further testing.
+- Absorption-to-shield conversion, shield-first damage processing, and Water Purifier effect blocking are restored. Shield/broken-heart HUD presentation and armor spacing were verified in-game.
 - Vulnerability and Hard Falling damage adjustments have been verified in-game.
 - Configured player-health and body-part recovery after sleeping has been verified in-game.
 - The configurable F3 coordinate/debug-information filter is restored on Fabric; the user confirmed F3 debug values are hidden when enabled.
@@ -70,13 +73,13 @@ Current highlights:
 - Optional shared HUD spacing with Overflowing Bars, including shield/armor row separation, broken-heart rendering, and vehicle-row gap correction, verified in-game.
 - The final Forge event-subscriber audit found no remaining behavioral gaps; all excluded Forge-only handlers have Fabric equivalents, are intentional feature drops, or are justified platform adaptations.
 
-The Fabric port is feature-complete, pending further in-game testing (particularly multiplayer/dedicated-server scenarios). Forge-only data generators and selected optional integrations (Origins, Meds and Herbs) remain intentionally omitted. See the [port wiki](docs/Fabric-Port-Wiki.md) for the migration history, known gaps, dependencies, and release-by-release notes.
+The tracked Fabric port is complete. Broader multiplayer/dedicated-server gameplay testing remains open; dedicated-server config loading and legacy migration have been exercised. Forge-only data generators and selected optional integrations (Origins, Meds and Herbs) remain intentionally omitted. See the [port wiki](docs/Fabric-Port-Wiki.md) for migration history, validation limits, dependencies, and release notes.
 
 Cold Hunger is a temperature-managed secondary effect: LSO applies it during dangerous cold and clears it when the player is no longer in that condition, so manually granting it with `/effect` outside dangerous cold will not keep it active for the requested duration.
 
 ### Air quality (Thin Air integration)
 
-Version 1.0.0 includes Thin Air's air-quality mechanics and content: height- and dimension-based air (the Nether drains slowly, the End drains like water), RED air within 3 blocks of lava, GREEN air near portals, BLUE air near soul fire/torches/campfires/lanterns, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, a Trinkets Respirator, and Turtle Helmet protection. The vanilla Water Breathing effect and potions are renamed to **Free Breathing**, since they also protect against bad air. See the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration).
+The air-quality system introduced in v1.0.0 remains included in v2.0.0: height- and dimension-based air (the Nether drains slowly, the End drains like water), RED air within 3 blocks of lava, GREEN air near portals, BLUE air near soul fire/torches/campfires/lanterns, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, a Trinkets Respirator, and Turtle Helmet protection. Nearby hazards take precedence over safer providers; portal proximity no longer masks Nether or lava hazards. The vanilla Water Breathing effect, potions, and tipped arrows are renamed to **Free Breathing** in English, since they also protect against bad air. The air system and equipment were tested across the Overworld, Nether, and End. See the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration).
 
 ## Installation
 
@@ -90,7 +93,7 @@ Install the latest Fabric release from the [GitHub releases page](https://github
 - Trinkets **3.7.2+** for Minecraft 1.20.1
 - Cardinal Components API (base and entity; included in the published mod jar)
 
-Forge Config API Port is no longer needed as of 2.0.0. [Mod Menu](https://modrinth.com/mod/modmenu) is optional but recommended. Overflowing Bars is optional, and the mod remains playable without it.
+Replace the old LSO jar rather than keeping multiple versions installed. Forge Config API Port is no longer needed by LSO as of 2.0.0; keep it only if another mod requires it. [Mod Menu](https://modrinth.com/mod/modmenu) is optional but recommended. Overflowing Bars is optional, and the mod remains playable without it. Use dependency builds compatible with Minecraft 1.20.1.
 
 ## Configuration
 
@@ -100,6 +103,21 @@ As of 2.0.0, all settings use [Fzzy Config](https://github.com/fzzyhmstrs/fconfi
 - Server-side settings are synced to clients, and operators can change them in-game.
 - The files are stored in `config/legendarysurvivaloverhaul/<name>.toml`.
 - Configs from 1.x (Forge Config API Port format) are migrated automatically on first launch. The original file is kept as `<name>.toml.forge-backup`.
+- Client settings stay local; the other six configs use the server's synchronized values.
+- In-game edits refresh the settings used by gameplay and HUD code. Settings read only during startup still require a restart.
+
+## Mod compatibility
+
+| Mod | Current support |
+| --- | --- |
+| Mod Menu | Optional config button, icon, project links, and wiki link. |
+| Overflowing Bars | Optional shared HUD spacing; shield, broken-heart, armor, and vehicle-row fixes tested in-game. |
+| Serene Seasons | Optional season cards and out-of-season bonemeal warnings tested in-game. |
+| Supplementaries | Standard item finish-use path is handled by the existing consumable hook; no dedicated adapter is required for that path. |
+| Origins | Intentionally unsupported in this port. |
+| Meds and Herbs | Intentionally unsupported; the original integration targets Forge. |
+
+Further mod integrations are the next development phase. This does not imply support for unlisted mods; each integration will need its own implementation and validation.
 
 ## Build from source
 
@@ -119,9 +137,9 @@ macOS/Linux:
 
 The mod jar is written to `build/libs` as `legendarysurvivaloverhaul-fabric-<minecraft version>-<mod version>.jar`. To launch a development client, run `.\gradlew.bat runClient` on Windows or `./gradlew runClient` on macOS/Linux.
 
-## Configuration and customization
+## Datapack customization
 
-Configuration files are under `config/legendarysurvivaloverhaul`. Temperature, hydration, and body-damage behavior is substantially data-driven; see the included default data and the upstream [Modrinth description](https://modrinth.com/mod/legendary-survival-overhaul) for feature concepts. The Fabric port is restoring functionality incrementally, so check the [current port notes](docs/Fabric-Port-Wiki.md) before relying on a Forge-specific feature or datapack workflow.
+Temperature, hydration, air-quality dimension profiles, equipment resistance, and body-damage behavior use datapack-driven data alongside the in-game settings. See the included default resources and [port notes](docs/Fabric-Port-Wiki.md) for supported data and reload/synchronization behavior. The Fabric build packages checked-in generated resources; Forge datagen execution is not part of the supported build workflow.
 
 ## Testing and feedback
 
