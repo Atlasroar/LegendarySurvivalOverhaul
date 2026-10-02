@@ -1,0 +1,21 @@
+allprojects {
+    afterEvaluate {
+        tasks.register('compileBackportSulfurCheck', JavaCompile) {
+            dependsOn tasks.named('classes')
+            source = files(
+                    layout.projectDirectory.file('test-runtime/backport-sulfur/BackportSulfurCheck.java'),
+                    layout.projectDirectory.file('test-runtime/backport-sulfur/com/blackgear/vanillabackport/common/level/block_entities/PotentSulfurBlockEntity.java'))
+            classpath = sourceSets.main.compileClasspath + sourceSets.main.output
+            destinationDirectory = layout.buildDirectory.dir('backport-sulfur-check/classes')
+            options.release = 17
+        }
+        tasks.register('jarBackportSulfurCheck', Jar) {
+            dependsOn tasks.named('compileBackportSulfurCheck')
+            from layout.buildDirectory.dir('backport-sulfur-check/classes')
+            from(layout.projectDirectory.dir('test-runtime/backport-sulfur')) { include 'fabric.mod.json' }
+            archiveFileName = 'lso-backport-sulfur-check.jar'
+            destinationDirectory = layout.buildDirectory.dir('backport-sulfur-server/mods')
+        }
+        loom.runs.server.runDir('build/backport-sulfur-server')
+    }
+}

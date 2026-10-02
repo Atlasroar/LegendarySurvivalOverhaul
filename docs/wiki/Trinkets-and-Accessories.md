@@ -18,9 +18,11 @@ LSO uses [Trinkets](https://modrinth.com/mod/trinkets) for accessory inventory s
 | Thermal Resistance Ring | `hand/ring` | Thermal resistance |
 | First Aid Supplies | `hand/glove` | Body-part recovery support |
 | Water Purifier | `head/face` | Blocks the LSO Thirst effect when detected held/equipped |
-| Respirator | `head/face` | Protection against YELLOW air; **excluded from configurable slot lists** |
+| Respirator | `head/face` | Protection against YELLOW air and new Nausea effects; **excluded from configurable slot lists** |
 
 Actual modifiers and behavior depend on configuration and datapack data. Moving an accessory does not automatically increase its power or available capacity.
+
+The v2.3.0 Respirator tooltip reads “Good for breathing clean air. Keeps your stomach on speaking terms.” When protection is enabled, it also states “Prevents Nausea while equipped.” That second line follows the server-synchronized Air setting. Nausea prevention works without VanillaBackport; holding the mask is insufficient and existing effects are not removed.
 
 ## Equip and relocate
 

@@ -15,6 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.AirQualityDataManager;
 import sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsUtil;
+import sfiomn.legendarysurvivaloverhaul.common.integration.vanillabackport.VanillaBackportCompat;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.AirQualityTagRegistry;
 
@@ -73,6 +74,8 @@ public final class AirQualityUtil {
 
         AirQualityLevel bestNearbyQuality = scanForNearbyAirProvider(level, location);
         if (bestNearbyQuality != null) return bestNearbyQuality;
+
+        if (VanillaBackportCompat.hasSulfurAir(level, eyePosition)) return AirQualityLevel.YELLOW;
 
         return AirQualityDataManager.getAirQualityAtLevelByDimension(level, eyePosition.getY());
     }

@@ -1,6 +1,6 @@
 # Configuration
 
-v2.2.0 uses **Fzzy Config** for **257 settings across nine configs**. Mod Menu supplies a convenient entry to the editor; it is not required for the configuration files themselves.
+v2.3.0 uses **Fzzy Config** for **259 settings across nine configs**. Mod Menu supplies a convenient entry to the editor; it is not required for the configuration files themselves.
 
 ## Open and save
 
@@ -15,7 +15,7 @@ Read descriptions before editing and apply/save changes using the editor. Titles
 | Title | File | Main purpose |
 | --- | --- | --- |
 | LSO - Common | `common.toml` | Difficulty, shared settings, compass/map/debug behavior, food exhaustion |
-| LSO - Air | `air.toml` | 25 air/provider/profile/rate/equipment/bladder controls |
+| LSO - Air | `air.toml` | 27 controls, including optional sulfur-cave air and Respirator Nausea prevention |
 | LSO - Trinkets | `trinkets.toml` | Tag override switch and eight accessory slot lists |
 | LSO - Temperature | `temperature.toml` | Temperature, wetness, dangerous temperatures, immunity and environmental behavior |
 | LSO - Seasons | `seasons.toml` | Seasonal integration |

@@ -124,7 +124,15 @@ public class ItemRegistry {
 	public static final RegistryObject<Item> MORPHINE = ITEMS.register("morphine", () -> new MorphineItem(new Item.Properties()));
 
 	// Air Quality
-	public static final RegistryObject<Item> RESPIRATOR = ITEMS.register("respirator", () -> new Item(new Item.Properties().durability(77)));
+	public static final RegistryObject<Item> RESPIRATOR = ITEMS.register("respirator", () -> new Item(new Item.Properties().durability(77)) {
+		@Override
+		public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+			super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+			tooltipComponents.add(Component.translatable("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".respirator.description"));
+			if (sfiomn.legendarysurvivaloverhaul.config.Config.Baked.respiratorBlocksSulfurNausea)
+				tooltipComponents.add(Component.translatable("tooltip." + LegendarySurvivalOverhaul.MOD_ID + ".respirator.nausea"));
+		}
+	});
 	public static final RegistryObject<Item> AIR_BLADDER = ITEMS.register("air_bladder", () -> new AirBladderItem(new Item.Properties().durability(327)));
 	public static final RegistryObject<Item> REINFORCED_AIR_BLADDER = ITEMS.register("reinforced_air_bladder", () -> new AirBladderItem(new Item.Properties().durability(1962)));
 	public static final RegistryObject<Item> SOULFIRE_BOTTLE = ITEMS.register("soulfire_bottle", () -> new SoulfireBottleItem(new Item.Properties()));

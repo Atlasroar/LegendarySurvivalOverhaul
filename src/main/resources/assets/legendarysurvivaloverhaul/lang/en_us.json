@@ -331,6 +331,8 @@
 	"enchantment.legendarysurvivaloverhaul.reservoir.desc": "Increases the canteen's water capacity",
 
 	"item.legendarysurvivaloverhaul.respirator": "Respirator",
+	"tooltip.legendarysurvivaloverhaul.respirator.description": "Good for breathing clean air. Keeps your stomach on speaking terms.",
+	"tooltip.legendarysurvivaloverhaul.respirator.nausea": "Prevents Nausea while equipped.",
 	"item.legendarysurvivaloverhaul.air_bladder": "Air Bladder",
 	"item.legendarysurvivaloverhaul.reinforced_air_bladder": "Reinforced Air Bladder",
 	"item.legendarysurvivaloverhaul.soulfire_bottle": "Bottle of Soulfire",
@@ -358,6 +360,9 @@
 	"legendarysurvivaloverhaul.air.group_dimensions": "Dimensions and Height",
 	"legendarysurvivaloverhaul.air.group_breathing": "Breathing and Protection",
 	"legendarysurvivaloverhaul.air.group_bladder": "Air Bladders",
+	"legendarysurvivaloverhaul.air.group_compatibility": "Optional Mod Compatibility",
+	"legendarysurvivaloverhaul.air.sulfurCaveAirEnabled": "VanillaBackport Sulfur Cave Air",
+	"legendarysurvivaloverhaul.air.respiratorBlocksSulfurNausea": "Respirator Blocks Nausea",
 	"legendarysurvivaloverhaul.air.airQualityEnabled": "Air Quality Enabled",
 	"legendarysurvivaloverhaul.air.enableSignalTorches": "Enable Signal Torches",
 	"legendarysurvivaloverhaul.air.drownedChoking": "Drowned Choking",

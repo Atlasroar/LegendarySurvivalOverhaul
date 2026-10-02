@@ -6,9 +6,12 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import sfiomn.legendarysurvivaloverhaul.common.items.WearableTrinketItem;
+import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 
 public final class TrinketsUtil {
     public static boolean isThermometerEquipped;
@@ -34,6 +37,13 @@ public final class TrinketsUtil {
                 || player.getItemInHand(InteractionHand.OFF_HAND).is(item)
                 || TrinketsApi.getTrinketComponent(player)
                 .map(component -> component.isEquipped(item))
+                .orElse(false);
+    }
+
+    public static boolean isRespiratorEquipped(LivingEntity entity) {
+        return entity.getItemBySlot(EquipmentSlot.HEAD).is(ItemRegistry.RESPIRATOR.get())
+                || entity instanceof Player player && TrinketsApi.getTrinketComponent(player)
+                .map(component -> component.isEquipped(ItemRegistry.RESPIRATOR.get()))
                 .orElse(false);
     }
 

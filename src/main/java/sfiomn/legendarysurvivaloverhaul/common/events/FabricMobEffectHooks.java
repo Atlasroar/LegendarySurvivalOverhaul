@@ -16,6 +16,11 @@ public final class FabricMobEffectHooks {
     }
 
     public static boolean shouldCancelEffect(LivingEntity entity, MobEffectInstance effect) {
+        if (effect.getEffect() == MobEffects.CONFUSION
+                && Config.Baked.respiratorBlocksSulfurNausea
+                && TrinketsUtil.isRespiratorEquipped(entity))
+            return true;
+
         if (!(entity instanceof Player player))
             return false;
 

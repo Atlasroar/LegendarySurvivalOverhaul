@@ -10,7 +10,7 @@ Create `MySurvivalPack` inside the world's `datapacks` folder. Its root contains
 {
   "pack": {
     "pack_format": 15,
-    "description": "Survival balance overrides for LSO 2.2.0"
+    "description": "Survival balance overrides for LSO 2.3.0"
   }
 }
 ```
@@ -36,7 +36,7 @@ The general pattern is:
 data/<target_namespace>/legendarysurvivaloverhaul/<category>/<dataset>/<target_path>.json
 ```
 
-For `minecraft:apple`, use the minecraft namespace and apple filename. For `examplemod:gear/helmet`, use `data/examplemod/legendarysurvivaloverhaul/temperature/items/gear/helmet.json`. Most listeners filter namespaces to installed mods.
+For `minecraft:apple`, use the minecraft namespace and apple filename. For `examplemod:gear/helmet`, use `data/examplemod/legendarysurvivaloverhaul/temperature/items/gear/helmet.json`. Most listeners filter namespaces to installed mods; biome temperature overrides and air dimension profiles are exceptions.
 
 For an LSO item the repeated name is correct:
 
@@ -104,6 +104,22 @@ Both listeners can target the same item independently.
 This includes eye-block Y=0..255, not Y=256. Leave Air's vanilla dimension override switch off so the profile is used. Water/nearby providers can take precedence.
 
 See [Air and Slot Recipes](Datapack-Air-and-Slot-Recipes) for custom dimensions, provider tags, protective equipment, and custom Trinkets slots.
+
+## Recipe 4: datapack-only biome climate
+
+v2.3.0 permits temperature overrides for biome namespaces without a matching Fabric mod ID. For example, a Terralith **datapack installation** can use:
+
+`data/terralith/legendarysurvivaloverhaul/temperature/biomes/desert_canyon.json`
+
+```json
+{"temperature": 1.75, "is_dry": true}
+```
+
+This is an illustrative balance override, not a shipped preset. `temperature` is Minecraft's biome climate value, **not Celsius**. LSO clamps it to -0.5..2.0, then normalizes it for its configured biome modifier. `is_dry` controls LSO's dryness behavior; it does not change world precipitation.
+
+Without an override, registered biomes retain native temperature/precipitation fallback. No hand-tuned Terralith profiles are shipped. Tectonic changes terrain and Lithostitched supplies worldgen APIs; neither needs a separate biome-temperature table.
+
+Overrides participate in the existing biome dataset packet and reload replacement. Malformed entries log their resource ID and do not prevent valid entries loading. An override alone does not register a biome or add a mod.
 
 ## Reload and verify
 

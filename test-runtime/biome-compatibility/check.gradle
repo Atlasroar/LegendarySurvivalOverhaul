@@ -1,0 +1,19 @@
+allprojects {
+    afterEvaluate {
+        tasks.register('compileBiomeCompatibilityCheck', JavaCompile) {
+            dependsOn tasks.named('classes')
+            source = files(layout.projectDirectory.file('test-runtime/biome-compatibility/BiomeCompatibilityCheck.java'))
+            classpath = sourceSets.main.compileClasspath + sourceSets.main.output
+            destinationDirectory = layout.buildDirectory.dir('biome-compatibility-check/classes')
+            options.release = 17
+        }
+        tasks.register('jarBiomeCompatibilityCheck', Jar) {
+            dependsOn tasks.named('compileBiomeCompatibilityCheck')
+            from layout.buildDirectory.dir('biome-compatibility-check/classes')
+            from(layout.projectDirectory.dir('test-runtime/biome-compatibility')) { include 'fabric.mod.json' }
+            archiveFileName = 'lso-biome-compatibility-check.jar'
+            destinationDirectory = layout.buildDirectory.dir('biome-compatibility-server/mods')
+        }
+        loom.runs.server.runDir('build/biome-compatibility-server')
+    }
+}
