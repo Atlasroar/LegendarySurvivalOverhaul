@@ -1,0 +1,10 @@
+{
+	"sort_index": 100,
+	"icon": "legendarysurvivaloverhaul:sun_fern_leaf",
+	"contents": [
+		{
+			"type": "auto_populate",
+			"strategy": "mod_plants:legendarysurvivaloverhaul"
+		}
+	]
+}
