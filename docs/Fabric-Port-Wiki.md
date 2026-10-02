@@ -311,13 +311,13 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 | `v1.20.1-2.4.7-fabric.27` | Makes the Nether's ambient YELLOW air quality apply directly in code instead of solely through the data-driven dimension profile JSON, so the Nether always behaves correctly even if that datapack-style profile ever fails to load; adds a dimension-key log for diagnosing the air-quality dimension loader. Prerelease pending in-game validation. |
 | `v1.20.1-2.4.7-fabric.28` | Fixes the nearby air-provider scan picking the *safest* quality in range instead of the *worst*: a GREEN source (e.g. a portal) within its large radius was silently overriding a closer RED/lava hazard or the Nether's YELLOW ambience whenever both were simultaneously in range. The scan now always returns the worst (most hazardous) quality found, which also fixes the Nether being masked by its own portal. Prerelease pending in-game validation. |
 | `v1.20.1-2.4.7-fabric.29` | Diagnostics-only build: logs a player's computed air quality level, position, dimension, and air change amount (on level change, and periodically every 5 seconds) to help pin down an unresolved report of the air bar appearing to freeze (no drain/regen) at the bottom of the Nether. No behavior changes. Prerelease pending in-game validation. |
-
+| `v1.20.1-2.4.7-fabric.30` | The vanilla Turtle Helmet now counts as breathing equipment for both YELLOW air (alongside the Respirator) and RED air (`heavy_breathing_equipment`, previously empty), stopping air drain while worn in the End, near lava, etc. It loses 1 durability every 15 seconds of protection. The `[AirQuality]` diagnostic logging from `.29` is now DEBUG-level, so it no longer spams the log by default. Nether, End, lava, portal, soul-block, lantern, and air bladder behavior was validated in-game on `.29`. |
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.29`
-- SHA-256: `B9034FEB079B4496EA6600BD2BE7DF8675621441C19C7093F43C2DE0861968E7`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.29>
+- Tag: `v1.20.1-2.4.7-fabric.30`
+- SHA-256: `F8E7A3500E8C1CCB33CAD62D19F74D29618FF5D105AF6836682D380B8CE21E3B`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.30>
 
 ## Feature and compatibility notes
 
