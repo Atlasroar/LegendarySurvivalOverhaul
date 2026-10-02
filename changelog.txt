@@ -18,6 +18,15 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v2.6.1
+====
+Replaced the Field Guide "LSO Flora" category's tab icon. v2.6.0
+shipped a standalone hand-drawn placeholder icon; this is now a
+sepia-toned recolor of the actual Sun Fern Leaf item sprite (silhouette
+preserved, colors remapped to Field Guide's own sepia tab-icon
+palette), so the tab visually matches the mod's built-in categories
+while still not altering the real in-game item texture.
+
 v2.6.0
 ====
 Added compatibility for several client-side utility mods. Item
