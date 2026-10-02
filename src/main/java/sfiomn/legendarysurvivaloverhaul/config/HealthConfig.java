@@ -90,14 +90,26 @@ public class HealthConfig extends me.fzzyhmstrs.fzzy_config.config.Config
 	@ConfigGroup.Pop
 	public ValidatedBoolean absorptionEffectOverride = new ValidatedBoolean(true);
 
+	public ConfigGroup group_enchanted_golden_apple = new ConfigGroup("group_enchanted_golden_apple");
+
+	@Comment("Whether eating an Enchanted Golden Apple specifically grants Shield Health and repairs Heart Containers, instead of the generic Absorption Override above. Requires Absorption Override to be enabled.")
+	public ValidatedBoolean enchantedGoldenAppleOverrideEnabled = new ValidatedBoolean(true);
+
+	@Comment("How much Shield Health is granted when eating an Enchanted Golden Apple. 2 Shield Health means a full Shield Heart.")
+	public ValidatedDouble enchantedGoldenAppleShieldHealth = new ValidatedDouble(4.0, 10000.0, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How many Heart Containers are repaired (restored) when eating an Enchanted Golden Apple.")
+	@ConfigGroup.Pop
+	public ValidatedInt enchantedGoldenAppleHeartContainersRepaired = new ValidatedInt(1, 10000, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
 	public ConfigGroup group_heart_loss = new ConfigGroup("group_heart_loss");
 
 	@Comment("The number of Hearts lost on death.")
-	public ValidatedInt heartsLostOnDeath = new ValidatedInt(0, 10000, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+	public ValidatedInt heartsLostOnDeath = new ValidatedInt(1, 10000, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
 
-	@Comment("The number of Hearts below which player can't lose hearts upon death. The hearts below this limit are de facto Permanent Hearts.")
+	@Comment("The number of Hearts below which player can't lose hearts upon death. The hearts below this limit are de facto Permanent Hearts. A value of 1 means a player can be brought as low as 1 Heart Container (2 Health) from repeated deaths, but never lower, and is never forced into Spectator mode.")
 	@ConfigGroup.Pop
-	public ValidatedInt permanentHearts = new ValidatedInt(10, 10000, 1, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+	public ValidatedInt permanentHearts = new ValidatedInt(1, 10000, 1, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
 
 	public ConfigGroup group_broken_hearts = new ConfigGroup("group_broken_hearts");
 

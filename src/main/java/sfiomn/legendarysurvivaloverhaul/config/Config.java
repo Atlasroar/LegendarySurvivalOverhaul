@@ -292,6 +292,9 @@ public class Config
 		public static double maxAdditionalHealth;
 		public static double maxShieldHealth;
 		public static boolean absorptionEffectOverride;
+		public static boolean enchantedGoldenAppleOverrideEnabled;
+		public static double enchantedGoldenAppleShieldHealth;
+		public static int enchantedGoldenAppleHeartContainersRepaired;
 		public static int heartsLostOnDeath;
 		public static int permanentHearts;
 		public static int resilientHeartsWithBrokenHearts;
@@ -657,6 +660,9 @@ public class Config
 				maxAdditionalHealth = HEALTH.maxAdditionalHealth.get();
 				maxShieldHealth = HEALTH.maxShieldHealth.get();
 				absorptionEffectOverride = HEALTH.absorptionEffectOverride.get();
+				enchantedGoldenAppleOverrideEnabled = HEALTH.enchantedGoldenAppleOverrideEnabled.get();
+				enchantedGoldenAppleShieldHealth = HEALTH.enchantedGoldenAppleShieldHealth.get();
+				enchantedGoldenAppleHeartContainersRepaired = HEALTH.enchantedGoldenAppleHeartContainersRepaired.get();
 				heartsLostOnDeath = HEALTH.heartsLostOnDeath.get();
 				permanentHearts = HEALTH.permanentHearts.get();
 				resilientHeartsWithBrokenHearts = HEALTH.resilientHeartsWithBrokenHearts.get();
