@@ -1,6 +1,6 @@
 # Installation and Upgrading
 
-## Requirements for v2.2.0
+## Requirements for v2.3.0
 
 | Component | Requirement |
 | --- | --- |
@@ -18,7 +18,7 @@ Fzzy Config is installed separately, not embedded in LSO. [Mod Menu](https://mod
 ## Install
 
 1. Create a Fabric 1.20.1 instance with Java 17.
-2. Download the mod jar from the [latest full release](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.2.0).
+2. Download the mod jar from the [latest full release](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.3.0).
 3. Place it and the required dependency jars in your instance's `mods` directory.
 4. Launch the game. With Mod Menu installed, open LSO's config button to customize the settings.
 
@@ -43,3 +43,11 @@ v2.1.0 introduced `air.toml`. If that file does not yet exist, LSO migrates the 
 v2.2.0 adds `trinkets.toml`. Default accessory lists match previous tag assignments, so installing the update does not intentionally relocate equipped items. Do not delete configs to upgrade; let the defaults/migration fill new fields.
 
 Verify the nine [config screens](Configuration), especially [Air](Air-Configuration) and [Trinkets](Trinkets-Configuration). Keep only one LSO jar, and back up before altering datapacks or actual inventory slot capacities.
+
+## Upgrade to 2.3.0
+
+Dependencies do not change. Air gains two default-enabled settings. If upgrading from beta.1, the existing `respiratorBlocksSulfurNausea` preference is retained, but now controls Nausea prevention from **all** sources and is labeled **Respirator Blocks Nausea**.
+
+Terralith/Tectonic/Lithostitched are optional; install compatible 1.20.1 versions following their own requirements. LSO neither bundles them nor changes existing terrain generation. Native climates are used unless your datapack overrides them.
+
+For sulfur content, the integration targets VanillaBackport's **1.20.1 / 1.2 development branch**, with its matching Platform build. Follow that build's dependency metadata; do not assume public 1.1.x builds contain sulfur caves. Respirator Nausea protection itself works without Backport.

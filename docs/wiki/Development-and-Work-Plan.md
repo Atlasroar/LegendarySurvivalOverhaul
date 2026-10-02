@@ -47,13 +47,20 @@ Before restoring an excluded integration, inspect build exclusions and registrat
 | Dedicated Air config / Common migration | Released in v2.1.0; 25 controls, default-preserving profiles/rates and tested migration |
 | Configurable Trinkets accessory placement | Released in v2.2.0; eight item lists, tag fallback, Respirator exclusion and preservation of equipped stacks |
 | Player/developer wiki and simplified README | Updated for v2.2.0; detailed codecs/APIs, attributed media and exact sync limits |
+| Datapack-only biome overrides / native climate compatibility | Implemented in v2.3.0; user reported beta.1 biome behavior works in-game |
+| Optional sulfur-cave ambient air | Implemented in v2.3.0 for Backport 1.2 development branch; user reported beta.1 air behavior works |
+| Respirator Nausea prevention | Revised for v2.3.0 to block new Nausea from any source, with tooltip and toggle; isolated server assertions passed |
 | SemVer and obsolete branch/PR cleanup | Completed |
 
 ## Open validation
 
-Broader multiplayer/dedicated-server gameplay, real operator permissions/config synchronization, and exhaustive in-game edit coverage remain open. Dedicated-server assertions tested Air migration, rates, boundaries and equipment, plus Trinkets list validation, slot relocation, fallback, auto-equip and stack preservation. These are not a substitute for multiplayer gameplay testing. The project currently has no checked-in automated Java test sources.
+Broader multiplayer/dedicated-server gameplay, real operator permissions/config synchronization, and exhaustive in-game edit coverage remain open. Dedicated-server assertions tested Air migration, rates, boundaries and equipment, plus Trinkets list validation, slot relocation, fallback, auto-equip and stack preservation. These are not a substitute for multiplayer gameplay testing. Opt-in runtime assertion fixtures are now checked in under `test-runtime`. Their READMEs explain isolated server setup and validation scope; they are not packaged in release jars.
 
 **Dataset sync follow-up:** 14 server listeners exist, but `syncAll()` sends 12 datasets. Temperature consumable blocks has a client receiver but no send in that method; air profiles have no dedicated dataset sync. Track these as integration/remote-client validation limits rather than claiming complete parity.
+
+## Current validation follow-up
+
+The user's beta.1 report confirmed biome/sulfur air behavior but found the mask ineffective. The replacement vanilla effect hook passed both overloads, equipped/held checks, unrelated-effect preservation, config toggles and tooltip tests, with and without a synthetic Backport fixture. In-game revised-mask retest remains open, along with actual remote-client/full upstream integration scenarios. The full v2.3.0 release was user-directed.
 
 ## Next phase
 

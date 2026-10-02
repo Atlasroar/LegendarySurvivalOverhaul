@@ -4,7 +4,7 @@
 
 **Make survival matter.** This Fabric 1.20.1 port of Legendary Survival Overhaul adds configurable environmental survival, hydration, injuries, health, and air quality.
 
-[**Download v2.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.2.0) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
+[**Download v2.3.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.3.0) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
 
 ## Features
 
@@ -13,7 +13,8 @@
 - **Localized injuries:** body-part damage, secondary effects, healing supplies, and a limb-health screen (**H** by default).
 - **Expanded health:** broken, shield, and additional hearts, with optional Overflowing Bars HUD spacing.
 - **Air quality:** integrated Thin Air mechanics, dimension/height hazards, lava fumes, soul sources, Safety Lanterns, Air Bladders, Respirators, and Turtle Helmet protection. Water Breathing is displayed as **Free Breathing** in English.
-- **In-game configuration:** **257 settings across nine configs**, including **LSO - Air** and **LSO - Trinkets**, through Fzzy Config and optional Mod Menu.
+- **In-game configuration:** **259 settings across nine configs**, including **LSO - Air** and **LSO - Trinkets**, through Fzzy Config and optional Mod Menu.
+- **Biome compatibility:** native climates for modded biomes, datapack-only temperature overrides, and optional VanillaBackport sulfur-cave air. Equipped Respirators prevent new Nausea effects.
 - **Accessory slot customization:** choose allowed slots for eight LSO accessories; the Respirator remains excluded.
 - **Datapack customization:** tune consumables, equipment resistance, environment profiles, and body-damage rules.
 

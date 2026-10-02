@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The latest release is [**v2.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.2.0), adding configurable Trinkets accessory slot lists while retaining the dedicated Air config, Fzzy Config editing, Mod Menu support and Thin Air integration. There are 257 settings across nine configs. Fzzy Config and Fabric Language Kotlin replace Forge Config API Port as required dependencies. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
+The latest release is [**v2.3.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.3.0), adding datapack-only biome overrides, optional sulfur-cave air and equipped-mask Nausea prevention. There are 259 settings across nine configs. Fzzy Config and Fabric Language Kotlin replace Forge Config API Port as required dependencies. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
 
 The port is considered feature-complete pending further in-game testing, particularly multiplayer/dedicated-server validation. Every tracked gameplay slice — survival systems, HUD/tooltip rendering, sewing table and coat application, heater/cooler multiblocks, and the Forge event-subscriber audit — is user-verified in a single-player/integrated-server world as of `.14`. A full audit of the three Forge-only event files found no remaining behavioral gaps: all differences from Forge are either intentional feature drops (Origins, Meds and Herbs), necessary platform adaptations forced by different Fabric hook points (bonemeal, damage pipeline), or pre-existing Forge behavior that was never different on Fabric (the armor coat tooltip, which never showed a numeric resistance delta on Forge either). Forge-only datagen execution and selected optional integrations remain intentionally omitted.
 
@@ -353,10 +353,10 @@ The legacy `v1.20.1-2.4.7-fabric.N` tags below predate this policy and are kept 
 | `v2.2.0` | Adds LSO - Trinkets with nine controls for eight accessories. Multiple/empty slot lists, tag fallback and missing-slot warnings; no forced relocation/deletion of equipped items. Respirator excluded. Total: 257 settings across nine configs. |
 ### Latest released artifact
 
-- File: `legendarysurvivaloverhaul-fabric-1.20.1-2.2.0.jar`
-- Tag: `v2.2.0`
-- SHA-256: `4DD625A3F28334532678E5B91544D6D7F9ED38F3AB8E87D4F6ECEB616B429AA8`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.2.0>
+- File: `legendarysurvivaloverhaul-fabric-1.20.1-2.3.0.jar`
+- Tag: `v2.3.0`
+- SHA-256: `9A4942EB243F73D3805A4D1B1FDFE72C0926A9CA630038CEEEC5263B89726685`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.3.0>
 
 ## Feature and compatibility notes
 
@@ -400,7 +400,7 @@ Do not describe excluded features as supported. Check `build.gradle` source excl
 As of 2.2.0, nine LSO configs (`common`, `temperature`, `seasons`, `thirst`, `health`, `body_damage`, `client`, `air`, `trinkets`) are Fzzy Config classes in `sfiomn.legendarysurvivaloverhaul.config`. The seven original configs migrated in 2.0.0; Air arrived in 2.1.0 and Trinkets in 2.2.0.
 
 **Editing in-game**
-- All 257 options can be edited from the Mod Menu config button or with `/configure legendarysurvivaloverhaul`.
+- All 259 options can be edited from the Mod Menu config button or with `/configure legendarysurvivaloverhaul`.
 - `client` is client-only. The other eight are registered as synced (`RegisterType.BOTH`), so the server's values are pushed to clients, and operators can edit them in-game; real remote-client permissions/synchronization remain a validation follow-up.
 - Options keep their original names. Labels and descriptions come from `en_us.json`, using the keys `legendarysurvivaloverhaul.<config>.<field>` and `.desc`.
 - Related options are grouped as they were in the Forge sections, e.g. "HUD - Temperature".
@@ -437,6 +437,16 @@ As of 2.2.0, nine LSO configs (`common`, `temperature`, `seasons`, `thirst`, `he
 - Config updates rebuild an immutable baked lookup, used by insertion, quick-move predicate evaluation, and right-click auto-equip. Missing player slots log warnings at server startup, successful reload, and config updates.
 - Real-server assertions checked defaults, relocation/multiple slots, empty lists, tag fallback, auto-equip, removal, existing stack retention, malformed/custom IDs, other-item isolation, and unchanged Respirator face-slot behavior.
 - Published v2.2.0-beta.1 for user testing, then v2.2.0 on user request. The wiki now separates player guides from detailed coder/API/datapack references, with attributed upstream images and explicit validation limits.
+
+### Biome and sulfur compatibility (v2.3.0)
+
+- Native biome temperatures remain intact; user selected no hand-tuned Terralith presets. Biome overrides no longer require a matching Fabric mod ID, so datapack-only namespaces work.
+- Tectonic modifies terrain and Lithostitched provides infrastructure; normal biome/altitude modifiers remain active.
+- Optional VanillaBackport 1.20.1 / 1.2 development-branch sulfur caves (`minecraft:sulfur_caves`) use YELLOW ambient air and the Nether drain interval, after fluids/providers and before dimension profiles.
+- Air adds `sulfurCaveAirEnabled` and `respiratorBlocksSulfurNausea`: 27 Air settings, 259 total. The latter stored key is retained from beta.1 but now appears as **Respirator Blocks Nausea**.
+- Following the user's beta.1 mask failure report, removed the fragile upstream gas-method mixin. Existing vanilla effect hooks block new Nausea from any source for an equipped Respirator, even without Backport. Held masks do not protect, existing effects are not cured, and other effects remain unchanged.
+- Added flavor and conditional protection tooltip. Biome/air behavior was user-confirmed in beta.1; revised mask behavior passed isolated server assertions but in-game retest remains pending.
+- Reproducible opt-in checks now live in `test-runtime`; the Backport fixture is synthetic, not full upstream/client validation.
 
 ### Build commands
 

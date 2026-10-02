@@ -35,6 +35,8 @@ When `overrideVanillaDimensionProfiles` is enabled, configured Overworld/Nether/
 
 Otherwise Nether is explicitly YELLOW; other dimensions query `AirQualityDimensionListener`. Missing profiles return the configured unprofiled fallback.
 
+v2.3.0 adds an earlier ambient rule in `AirQualityUtil`: if Backport is present, global air and sulfur toggles are enabled, and the eye-position biome is `minecraft:sulfur_caves`, return YELLOW. This is after fluids/providers but before the dimension manager, so it also precedes vanilla dimension overrides. YELLOW draining in that biome uses the Nether interval. Disable the sulfur toggle for normal profile evaluation.
+
 Datapack bounds differ:
 
 ```java
@@ -71,6 +73,8 @@ YELLOW uses item tag `legendarysurvivaloverhaul:breathing_equipment`; RED uses `
 Free Breathing (vanilla Water Breathing) and use of an item in `air_refiller` also protect where applicable. Protection returns zero change: it prevents drain rather than guaranteeing air refill.
 
 Protective equipment loses one durability when world time is divisible by the configured wear interval. Zero disables wear. The current break notification uses the HEAD equipment broadcast even when protection came from a Trinkets item; do not assume a custom Trinkets break-packet path here.
+
+Nausea prevention is separate: `FabricMobEffectHooks.shouldCancelEffect` recognizes vanilla `MobEffects.CONFUSION` and calls `TrinketsUtil.isRespiratorEquipped`. Both vanilla addEffect overloads are intercepted. It checks the exact Respirator item in head equipment or the player's equipped Trinkets component, not hands or all items in a breathing tag. The Air setting retains beta.1's `respiratorBlocksSulfurNausea` key. No Backport presence check, ambient quality requirement, cure operation or extra durability charge is involved.
 
 ## Suffocation
 

@@ -1,6 +1,6 @@
 # Developer Hub
 
-This section is for Java mod developers, pack authors, and maintainers. It describes the **Fabric 1.20.1 implementation shipped in v2.2.0**, not Forge APIs or a newer Fabric networking/config API.
+This section is for Java mod developers, pack authors, and maintainers. It describes the **Fabric 1.20.1 implementation shipped in v2.3.0**, not Forge APIs or a newer Fabric networking/config API.
 
 ## Recommended reading order
 

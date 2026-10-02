@@ -1,6 +1,6 @@
 # Datapack Schema Reference
 
-These are the **v2.2.0 Fabric 1.20.1** codecs in `api/data/json`, not examples for the Forge original. Start with [Datapack Customization](Datapack-Customization) for pack structure and target IDs.
+These are the **v2.3.0 Fabric 1.20.1** codecs in `api/data/json`, not examples for the Forge original. Start with [Datapack Customization](Datapack-Customization) for pack structure and target IDs.
 
 ## Dataset directory index
 
@@ -23,7 +23,7 @@ Paths below follow `data/<target_namespace>/legendarysurvivaloverhaul/`. A filen
 | `body_damage/items` | Equipment item ID | object | `JsonBodyPartResistance` |
 | `air_quality/dimensions` | Dimension ID | object | `JsonAirQualityDimension` |
 
-Most listeners load a namespace only if its mod is present; `minecraft` is available through Fabric Loader. Fuel explicitly accepts `minecraft` as well. Air profiles do not have this mod-presence filter, which permits a datapack-created dimension namespace.
+Most listeners load a namespace only if its mod is present; `minecraft` is available through Fabric Loader. Fuel explicitly accepts `minecraft` as well. **Biome temperature overrides and air dimension profiles accept datapack-only namespaces** without a matching installed mod. The resource key must still equal the actual target biome/dimension ID.
 
 Files at the same exact resource ID follow resource-pack priority. Arrays are the entire dataset entry for one target; they are not automatically appended across packs. Vanilla tags and Trinkets slot/entity data have their own merge behavior.
 

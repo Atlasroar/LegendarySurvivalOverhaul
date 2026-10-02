@@ -44,7 +44,7 @@ Provider radii and breathing behavior are now configurable under **[LSO - Air](A
 | Signal Torch | Cosmetic torch variant toggled through the configured normal-torch interaction |
 | Air Bladder / Reinforced Air Bladder | Portable air support; both were tested in-game |
 | Soulfire Bottle | Restores air; tested in-game |
-| Respirator | Trinkets breathing equipment for YELLOW air |
+| Respirator | Trinkets breathing equipment for YELLOW air; prevents new Nausea from any source while equipped when enabled |
 | Turtle Helmet | Protects against YELLOW and RED air; loses 1 durability per 15 seconds of protection at defaults |
 
 Breathing equipment prevents drain; it does not imply instant refilling of depleted oxygen. Refill in suitable air or use an air-restoring item.
@@ -59,4 +59,10 @@ Dimension behavior, lava/portal boundaries, soul sources, lantern indications, a
 
 If air appears wrong, record eye/player position, dimension, nearby source distances, worn equipment, active effects, and relevant settings. See [Troubleshooting](Troubleshooting).
 
-For implementation details, see [Air System Internals](Air-System-Internals). For all 25 controls, see [Air Configuration](Air-Configuration).
+## Optional sulfur caves
+
+With sulfur-enabled VanillaBackport installed and its Air toggle enabled, `minecraft:sulfur_caves` is a YELLOW ambient zone using the Nether drain interval. Fluids and nearby providers still take precedence. This targets Backport's 1.20.1 / 1.2 development branch and matching Platform build; it does not install either dependency.
+
+The Respirator now blocks new Nausea through vanilla effect application, rather than relying on a particular gas implementation. Wear it; simply holding it does not protect. Other Nausea sources are also prevented. It does not remove an already active effect.
+
+For implementation details, see [Air System Internals](Air-System-Internals). For all 27 controls, see [Air Configuration](Air-Configuration).

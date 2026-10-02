@@ -39,6 +39,28 @@ Custom Trinkets slot datapacks work only when the type exists and is assigned to
 
 Thin Air mechanics are built into LSO, with the dependencies/defaults listed in this wiki. The original Thin Air download page's Forge/Puzzles Lib requirements are not LSO requirements. Do not install a second Thin Air implementation expecting automatically compatible duplicate mechanics.
 
+## Modded biomes and terrain (v2.3.0)
+
+| Project | Support boundary |
+| --- | --- |
+| [Terralith](https://github.com/Stardust-Labs-MC/Terralith/tree/1.20) | Registered biomes use native climate; biome temperature overrides work with both mod and datapack installations, without requiring a matching mod ID |
+| [Tectonic](https://github.com/Apollounknowndev/tectonic/tree/v2/1.20) | Terrain uses normal LSO biome/altitude evaluation; no custom biome table or terrain patch |
+| [Lithostitched](https://github.com/Apollounknowndev/lithostitched/tree/1.20.1) | Worldgen infrastructure, not a set of biomes; no mandatory LSO dependency or direct API adapter |
+
+No hand-tuned Terralith temperature presets are shipped. Biome JSON temperature is a Minecraft climate value, not Celsius. Existing altitude, season, weather, nearby-block and underground modifiers continue to contribute.
+
+v2.3.0 does not change the default Overworld air-height limits: Tectonic's taller terrain can still encounter high-altitude YELLOW air. Adjust Air profiles deliberately if your pack should differ.
+
+## Optional VanillaBackport sulfur support
+
+[VanillaBackport](https://github.com/ItsBlackGear/VanillaBackport/tree/1.20.1) support targets the **1.2 development branch** and its matching [Platform](https://github.com/ItsBlackGear/Platform/tree/1.20.1) dependency. Sulfur caves use `minecraft:sulfur_caves`, not the mod namespace.
+
+With the Air toggle on, that biome has YELLOW ambient air using the Nether drain interval. Eye fluids and nearby providers retain priority; the sulfur rule precedes ambient dimension profiles. The installed-mod check keeps this rule inactive without Backport.
+
+An equipped Respirator now prevents new vanilla Nausea effects from any source, independently of Backport. Both `LivingEntity.addEffect` overloads pass through the existing LSO effect hook. No fragile upstream gas-method mixin or direct Platform dependency is required. This does not cure existing Nausea or protect a merely held mask.
+
+The user tested beta.1 biome/air behavior in-game successfully. Mask protection was revised after a reported failure and passed isolated server assertions; revised in-game protection remains pending. The synthetic upstream-shape fixture is not full real-mod/client validation.
+
 ## Future integrations
 
 Additional mod support is the next development phase. Targets and desired interactions must be selected before implementation. New adapters should remain optional where possible and preserve behavior without the target mod installed.

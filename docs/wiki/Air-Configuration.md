@@ -1,6 +1,6 @@
 # Air Configuration
 
-**LSO - Air** contains 25 synchronized controls in `config/legendarysurvivaloverhaul/air.toml`. It was introduced in v2.1.0 and remains included in v2.2.0.
+**LSO - Air** contains 27 synchronized controls in `config/legendarysurvivaloverhaul/air.toml`. It was introduced with 25 controls in v2.1.0; v2.3.0 adds two compatibility/protection settings.
 
 ![Thin Air item artwork](https://cdn.modrinth.com/data/ll2RO0er/images/b206d9b13e5cea444615c48f04ebff195fa838b2.png)
 
@@ -66,6 +66,19 @@ Damage uses health points (2 points = one vanilla heart), not a percentage. Vani
 | `airBladderCooldown` | `150` ticks | 0-72000 |
 
 Recharge applies in GREEN air. In non-refilling air, restoring one air point consumes one durability, with dispensing limited by remaining durability and the entity's maximum air. Cooldown follows filling the player's bar in non-refilling air. Values apply to both bladder variants; their item capacities remain different.
+
+## Optional compatibility and mask protection
+
+| Stored field | Default | Behavior |
+| --- | --- | --- |
+| `sulfurCaveAirEnabled` | `true` | With VanillaBackport installed, `minecraft:sulfur_caves` has YELLOW ambient air using `netherYellowDrainInterval` |
+| `respiratorBlocksSulfurNausea` | `true` | **Respirator Blocks Nausea**: an equipped Respirator prevents new Nausea effects from any source, even without Backport |
+
+The Nausea setting retains its beta.1 file key to preserve saved preferences. Its scope is now broader than sulfur gas. Holding a mask does not protect; equipping it in head equipment or a Trinkets slot does. Existing Nausea is not cured. Protection is independent of `airQualityEnabled` and does not add separate durability wear.
+
+Sulfur air requires `airQualityEnabled`. Eye fluids and nearby providers take precedence; otherwise the sulfur biome rule takes precedence over dimension/height profiles, including opt-in vanilla dimension overrides. Disable the sulfur toggle to return to the normal dimension profile. The profile uses the biome at eye position.
+
+The targeted upstream is **VanillaBackport 1.20.1's 1.2 development branch** with its matching Platform dependency. Do not assume older public 1.1.x releases contain sulfur caves. These dependencies remain optional for LSO.
 
 ## Recommended testing
 

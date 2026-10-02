@@ -6,7 +6,7 @@
 
 *Original LSO feature image from the [LSO Modrinth project](https://modrinth.com/mod/legendary-survival-overhaul); artwork and screenshots credited to the upstream project.*
 
-The latest full release is [**v2.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.2.0): Minecraft 1.20.1, Fabric, Java 17. It includes **257 settings across nine configs**, with **LSO - Air** and **LSO - Trinkets**. The Respirator is intentionally excluded from accessory slot customization.
+The latest full release is [**v2.3.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.3.0): Minecraft 1.20.1, Fabric, Java 17. It includes **259 settings across nine configs**, native biome climates/datapack overrides, optional sulfur-cave air, and equipped Respirator protection against new Nausea effects. The Respirator remains excluded from accessory slot customization.
 
 ## For players
 
@@ -42,5 +42,7 @@ The latest full release is [**v2.2.0**](https://github.com/Atlasroar/LegendarySu
 The tracked Fabric gameplay port and air fixes are complete. Survival systems and air equipment were tested in single-player across the Overworld, Nether, and End. Air/Trinkets config prereleases were followed by user-directed full releases. Real-server assertions exercised migration, profiles, slot restrictions, and equipment boundaries.
 
 Broader multiplayer scenarios, operator permissions/config synchronization, and interactions with untested mods remain open. A full release is not a claim that every config combination or datapack has been tested.
+
+The user tested v2.3.0-beta.1 biome/sulfur air behavior successfully but reported mask failure. v2.3.0 replaces the upstream gas-method interception with vanilla Nausea interception. Revised mask behavior passed isolated server assertions, including without Backport; its in-game retest remains pending.
 
 [Downloads](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) | [Issues](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues) | [Source branch](https://github.com/Atlasroar/LegendarySurvivalOverhaul/tree/lso-fabric-1-20-1)

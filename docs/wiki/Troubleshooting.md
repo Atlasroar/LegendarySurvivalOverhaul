@@ -52,6 +52,22 @@ Intentional: the Thin Air face mask/Respirator is excluded. Its normal face-slot
 
 Check actual target namespace/path, array versus object roots, feature toggles, config overrides and the specific consumption/equipment hook. Reload registration is not a guarantee of client synchronization. See [Schema Reference](Datapack-Schema-Reference) for the current 12-send/13-receiver limitation.
 
+## Respirator does not prevent Nausea
+
+Use v2.3.0, not beta.1's upstream-specific gas interception. Equip the mask in its Trinkets face slot; holding it does not protect. Confirm **LSO - Air > Respirator Blocks Nausea** is enabled on the server. Its stored field name remains `respiratorBlocksSulfurNausea`.
+
+The protection prevents **new** applications; wait for an existing effect to expire or remove it before testing. The tooltip's “Prevents Nausea while equipped” line appears only when the setting is enabled. VanillaBackport is not required for this protection.
+
+Mods that mutate the active effect map directly rather than using vanilla `addEffect` can bypass this hook; report exact builds if that occurs.
+
+## Sulfur caves are not YELLOW
+
+Confirm a sulfur-enabled VanillaBackport 1.2 development build and its matching Platform dependency, global Air Quality and Sulfur Cave Air toggles, and the actual biome at eye height (`minecraft:sulfur_caves`). Nearby providers and eye fluids take precedence. Old public Backport releases may not contain the biome.
+
+## High Tectonic mountains drain air
+
+Default Overworld air is YELLOW outside eye-block Y=0..255. This is separate from native biome climate compatibility. Use Air's opt-in height/profile controls or a datapack air profile if different limits are intended.
+
 ## HUD overlaps
 
 Check Client offsets and optional HUD mods. Overflowing Bars support includes tested shield/armor separation and vehicle-row correction; other HUD mods may use different layouts. Include a screenshot and the complete HUD-mod list.
