@@ -278,7 +278,7 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 
 ## Release and edit notes
 
-`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release. `.16` adds the Thin Air integration, with `.17`, `.19`, `.20`, `.22`–`.25` follow-up fixes; these remain prereleases pending in-game testing. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
+`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release. `.16` adds the Thin Air integration, with `.17`, `.19`, `.20`, `.22`–`.26` follow-up fixes; these remain prereleases pending in-game testing. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
 
 | Version | Notes |
 | --- | --- |
@@ -307,13 +307,14 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 | `v1.20.1-2.4.7-fabric.23` | Removes the invalid `minecraft:flowing_lava` tag entry and prevents client-side vanilla air refill from fighting the server-synced air value. Prerelease pending in-game validation. |
 | `v1.20.1-2.4.7-fabric.24` | Temporarily adds oak logs as GREEN providers and adjusts Nether YELLOW air drain; oak log support is removed in `.25`, while Nether behavior is deferred for further investigation. |
 | `v1.20.1-2.4.7-fabric.25` | Removes oak logs as GREEN providers and recognizes source/flowing lava via `FluidTags.LAVA` for RED air within the configured provider radius (default 3 blocks). Prerelease pending in-game validation. |
+| `v1.20.1-2.4.7-fabric.26` | Adds suffocation damage for air-quality-driven air loss (bad air pockets, lava fumes, Nether ambience) outside of water, since vanilla's own drowning damage only triggers while the entity's eyes are in water. Prerelease pending in-game validation. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.25`
-- SHA-256: `F14F5A198C67EC85E63385279E4C131C7DFA15378234288F411061550A66CCB5`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.25>
+- Tag: `v1.20.1-2.4.7-fabric.26`
+- SHA-256: `B0B870A2A3142E5D8F854E2D67DA60D7105E7B5A043E817AF9831A7129F96E86`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.26>
 
 ## Feature and compatibility notes
 
