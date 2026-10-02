@@ -1,4 +1,67 @@
 legendarysurvivaloverhaul 1.20.1 Changelog
+====
+
+This file combines two separate release lines for the 1.20.1 build of
+LegendarySurvivalOverhaul:
+
+- Unprefixed versions (e.g. "2.4.7") are carried over from the original
+  Forge 1.20.1 mod's changelog, as of the point the Fabric port branched
+  off. That Forge line is no longer updated here.
+- "v"-prefixed versions (e.g. "v2.3.0") are the Fabric port's own,
+  independently-numbered SemVer (https://semver.org/) releases. The
+  Fabric port restarted numbering at v1.0.0 rather than continuing the
+  Forge mod's version numbers, since it is a separate codebase/runtime
+  (Fabric instead of Forge) with its own compatibility guarantees. See
+  docs/wiki/Releases-and-Versioning.md for the full SemVer policy and
+  docs/Fabric-Port-Wiki.md for the detailed per-build port history,
+  including the pre-SemVer "v1.20.1-2.4.7-fabric.N" legacy prereleases.
+
+== Fabric port (SemVer) ==
+
+v2.3.0
+====
+Enabled datapack-only biome overrides while preserving native biome
+climates (no matching Fabric mod ID required). Added optional
+VanillaBackport sulfur-cave ambient YELLOW air. Equipped Respirators now
+block new Nausea from any source, replacing the old upstream-specific
+gas interception, with a descriptive tooltip. LSO - Air now has 27
+controls; 259 settings across nine configs. Supersedes v2.3.0-beta.1.
+
+v2.2.0
+====
+Added the LSO - Trinkets config: nine controls covering eight
+accessories, with a tag-override switch, multiple/empty slot lists, and
+missing-slot warnings. Equipped items are never force-relocated or
+deleted; the Respirator is excluded. Total: 257 settings across nine
+configs. Supersedes v2.2.0-beta.1.
+
+v2.1.0
+====
+Added the dedicated LSO - Air config: 25 controls, including seven
+fields moved from Common plus 18 new controls for dimension/height
+overrides (opt-in), breathing rates, equipment wear, and bladder
+behavior. Existing Common values migrate automatically. Total: 248
+settings across eight configs. Supersedes v2.1.0-beta.1.
+
+v2.0.0
+====
+Breaking: migrated configuration from Forge Config API Port to Fzzy
+Config (requires Fabric Language Kotlin). All 230 options are editable
+in-game via Mod Menu or /configure, and server configs sync to clients.
+Existing 1.x config files are migrated automatically, keeping
+.forge-backup copies. No gameplay changes. Supersedes v2.0.0-beta.1.
+
+v1.0.0
+====
+First SemVer release. Validates the Thin Air air-quality system,
+Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles,
+Respirator, and Turtle Helmet protection across the Overworld, Nether,
+and End. Renames the vanilla Water Breathing effect/potions to "Free
+Breathing". No gameplay changes from the legacy .30 build; only the
+version scheme and jar name changed.
+
+== Forge (legacy, pre-fork) ==
+
 2.4.7
 ====
 Fixed a crash with block temperature check in unloaded chunks
