@@ -76,7 +76,7 @@ Cold Hunger is a temperature-managed secondary effect: LSO applies it during dan
 
 ### Thin Air air-quality test builds
 
-The `.16` prerelease added Thin Air's air-quality mechanics and content, including height/dimension-based air, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, and a Trinkets Respirator. Follow-up test builds fix cache invalidation, HUD spacing, flowing-lava detection, and air-supply tick handling/profile loading; `.22` retains the Nether's gradual YELLOW air profile. These builds still need in-game validation; see the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration).
+The `.16` prerelease added Thin Air's air-quality mechanics and content, including height/dimension-based air, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, and a Trinkets Respirator. Follow-up test builds fix cache invalidation, HUD spacing, lava provider tag loading, and client/server air-supply synchronization; `.23` retains the Nether's gradual YELLOW air profile. These builds still need in-game validation; see the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration).
 
 ## Installation
 
