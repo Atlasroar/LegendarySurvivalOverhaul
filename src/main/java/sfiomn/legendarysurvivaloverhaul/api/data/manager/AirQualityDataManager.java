@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityLevel;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonAirQualityDimension;
 import net.minecraft.world.level.Level;
+import sfiomn.legendarysurvivaloverhaul.config.Config;
 
 public class AirQualityDataManager {
 
@@ -17,10 +18,10 @@ public class AirQualityDataManager {
     }
 
     /**
-     * Retrieves the air quality at the given height within the provided level's dimension, falling back to
-     * breathable, green air for dimensions with no configured entry.
+     * Retrieves ambient quality using opt-in vanilla-dimension overrides, then datapack profiles and the
+     * configured unprofiled-dimension fallback (GREEN by default).
      * <p>
-     * The Nether's ambient YELLOW air is always applied directly in code rather than relying solely on the
+     * Unless explicitly overridden, the Nether's ambient YELLOW air is applied directly rather than relying solely on the
      * data-driven dimension profile JSON: unlike the block/item tags backing air providers (loaded through
      * vanilla's own robust tag reload pipeline), dimension profiles are loaded through this mod's own
      * {@link SimpleJsonResourceReloadListener}-based manager, and a load failure there (a missing/invalid
@@ -28,11 +29,18 @@ public class AirQualityDataManager {
      * breathable with no indication anything is wrong.
      */
     public static AirQualityLevel getAirQualityAtLevelByDimension(Level level, int height) {
+        if (Config.Baked.overrideVanillaDimensionProfiles) {
+            if (level.dimension() == Level.OVERWORLD)
+                return height >= Config.Baked.overworldMinY && height <= Config.Baked.overworldMaxY
+                        ? Config.Baked.overworldAir : Config.Baked.overworldOutsideAir;
+            if (level.dimension() == Level.NETHER) return Config.Baked.netherAir;
+            if (level.dimension() == Level.END) return Config.Baked.endAir;
+        }
         if (level.dimension() == Level.NETHER) return AirQualityLevel.YELLOW;
 
         JsonAirQualityDimension dimension = internalDimension.get(level.dimension().location());
         if (dimension == null) {
-            return AirQualityLevel.GREEN;
+            return Config.Baked.unconfiguredDimensionAir;
         }
         return dimension.getAirQualityAtHeight(height);
     }

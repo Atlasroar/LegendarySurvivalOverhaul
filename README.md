@@ -106,6 +106,16 @@ As of 2.0.0, all settings use [Fzzy Config](https://github.com/fzzyhmstrs/fconfi
 - Client settings stay local; the other six configs use the server's synchronized values.
 - In-game edits refresh the settings used by gameplay and HUD code. Settings read only during startup still require a restart.
 
+### Air config development preview (2.1.0-beta.1)
+
+The next build adds a separate **LSO - Air** editor and `air.toml`, with **25 air options** (248 total across eight configs). This is not part of the published v2.0.0 release.
+
+It moves the seven existing Common air controls and adds opt-in Overworld height/quality, Nether/End quality overrides, an unconfigured-dimension fallback, drain intervals/amount, GREEN refill rate, equipment wear, outside-water suffocation damage, and air-bladder recharge/refill/cooldown.
+
+Defaults preserve existing behavior. Enable **Override Vanilla Dimension Profiles** to use the vanilla-dimension controls; custom datapack profiles remain active otherwise. Heights use the entity's **eye-block Y**, with inclusive bounds. A maximum below the minimum logs a warning and uses the minimum as the effective maximum.
+
+Existing Common air values migrate on first launch when `air.toml` does not exist. Fzzy Common files are backed up as `common.toml.air-backup`; older Forge files retain their `.forge-backup`. An existing `air.toml` takes precedence and is not overwritten by Common settings. New edits rebake settings and invalidate cached air-quality results.
+
 ## Mod compatibility
 
 | Mod | Current support |

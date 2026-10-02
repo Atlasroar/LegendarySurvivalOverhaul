@@ -13,6 +13,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityLevel;
 import sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityUtil;
+import sfiomn.legendarysurvivaloverhaul.config.Config;
 
 /**
  * A refillable air tank: refills from a green/blue air source while damaged, or spends its remaining durability to
@@ -43,12 +44,13 @@ public class AirBladderItem extends Item implements FabricItem {
         AirQualityLevel airQualityLevel = AirQualityUtil.getAirQualityAtLocation(entity);
         if (airQualityLevel.canRefillAir) {
             if (itemStack.isDamaged()) {
-                itemStack.setDamageValue(itemStack.getDamageValue() - 4);
+                itemStack.setDamageValue(Math.max(0, itemStack.getDamageValue() - Config.Baked.airBladderRechargeAmount));
                 stopUsing = false;
             }
         } else if (itemStack.getDamageValue() < itemStack.getMaxDamage()) {
-            int i = 4;
-            while (i-- > 0 && entity.getAirSupply() < entity.getMaxAirSupply()) {
+            int i = Config.Baked.airBladderRefillAmount;
+            while (i-- > 0 && entity.getAirSupply() < entity.getMaxAirSupply()
+                    && itemStack.getDamageValue() < itemStack.getMaxDamage()) {
                 entity.setAirSupply(entity.getAirSupply() + 1);
                 itemStack.hurt(1, entity.getRandom(), entity instanceof ServerPlayer player ? player : null);
                 stopUsing = false;
@@ -67,7 +69,7 @@ public class AirBladderItem extends Item implements FabricItem {
     public void releaseUsing(ItemStack itemStack, Level level, LivingEntity livingEntity, int timeCharged) {
         if (livingEntity instanceof Player player && player.getAirSupply() >= player.getMaxAirSupply()) {
             if (!AirQualityUtil.getAirQualityAtLocation(livingEntity).canRefillAir) {
-                player.getCooldowns().addCooldown(this, 150);
+                player.getCooldowns().addCooldown(this, Config.Baked.airBladderCooldown);
             }
         }
         super.releaseUsing(itemStack, level, livingEntity, timeCharged);

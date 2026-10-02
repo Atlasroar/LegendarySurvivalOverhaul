@@ -51,3 +51,21 @@ Mappings are packaged in `assets/legendarysurvivaloverhaul/forge_config_migratio
 Dedicated-server checks verified enum, boolean, integer, double, string-list, and double-list migration. An invalid enum was skipped with a warning; an out-of-range radius of 99 was clamped to 32.
 
 Keep the backup until you have checked your settings. If conversion looks wrong, preserve both files and the log when [reporting an issue](Troubleshooting).
+
+## Development preview: LSO - Air (2.1.0-beta.1)
+
+The next build adds an eighth synced config, **LSO - Air**, stored in `air.toml`. Its 25 options move the seven existing Common air controls and add 18 controls. The total becomes 248 options. These additions are not present in the published v2.0.0 jar.
+
+| Group | Controls |
+| --- | --- |
+| General | Air quality toggle, Signal Torches, Drowned choking |
+| Air Providers | GREEN/BLUE/YELLOW/RED provider radii |
+| Dimensions and Height | Opt-in vanilla-dimension overrides, Overworld inclusive eye-height range and inside/outside quality, Nether/End quality, unprofiled-dimension fallback |
+| Breathing and Protection | YELLOW/Nether YELLOW/RED drain intervals, drain amount, GREEN refill rate, equipment durability interval, outside-water suffocation damage |
+| Air Bladders | Recharge amount, air refill amount, cooldown |
+
+Defaults preserve v2.0.0 behavior. Enable **Override Vanilla Dimension Profiles** to use the Overworld/Nether/End controls; custom dimensions still use datapacks. A reversed Overworld range logs a warning and uses the minimum as the effective maximum.
+
+Intervals are in ticks (20 ticks = one second). Equipment wear and bladder cooldown can be disabled with 0. Outside-water suffocation damage can be disabled with 0; vanilla underwater damage is unchanged. RED drain settings also affect air loss when submerged. Respiration and breathing protection continue to apply.
+
+The first launch imports Common air values only if no `air.toml` exists. Fzzy Common is backed up as `common.toml.air-backup`; Forge Common uses `.forge-backup`. Later launches keep Air's values rather than re-importing Common. Air edits invalidate cached results.

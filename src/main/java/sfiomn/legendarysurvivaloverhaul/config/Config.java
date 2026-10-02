@@ -27,6 +27,7 @@ public class Config
 	public static HealthConfig HEALTH;
 	public static BodyDamageConfig BODY_DAMAGE;
 	public static ClientConfig CLIENT;
+	public static AirConfig AIR;
 
 	public static void register()
 	{
@@ -40,8 +41,21 @@ public class Config
 			}
 		}
 
+		boolean migrateAir = !Files.exists(LegendarySurvivalOverhaul.modConfigPath.resolve("air.toml"));
+		Map<String, String> legacyCommon = ForgeConfigMigration.readLegacyFile(LegendarySurvivalOverhaul.modConfigPath, "common");
+		Map<String, String> commonAir = legacyCommon == null
+				? AirConfigMigration.readCommon(LegendarySurvivalOverhaul.modConfigPath) : Map.of();
 		CLIENT = load("client", ClientConfig::new, RegisterType.CLIENT);
-		COMMON = load("common", CommonConfig::new, RegisterType.BOTH);
+		AIR = load("air", AirConfig::new, RegisterType.BOTH);
+		if (migrateAir) {
+			if (legacyCommon != null)
+				ForgeConfigMigration.apply("common", AIR, legacyCommon, AirConfig.LEGACY_FIELDS::contains);
+			else
+				AirConfigMigration.apply(AIR, commonAir);
+		}
+		if (!commonAir.isEmpty())
+			AirConfigMigration.removeMigratedFields(LegendarySurvivalOverhaul.modConfigPath);
+		COMMON = load("common", CommonConfig::new, RegisterType.BOTH, legacyCommon);
 		TEMPERATURE = load("temperature", TemperatureConfig::new, RegisterType.BOTH);
 		SEASONS = load("seasons", SeasonsConfig::new, RegisterType.BOTH);
 		THIRST = load("thirst", ThirstConfig::new, RegisterType.BOTH);
@@ -50,6 +64,7 @@ public class Config
 
 		bake(CLIENT);
 		bake(COMMON);
+		bake(AIR);
 		bake(TEMPERATURE);
 		bake(SEASONS);
 		bake(THIRST);
@@ -61,8 +76,14 @@ public class Config
 
 	private static <T extends me.fzzyhmstrs.fzzy_config.config.Config> T load(String name, Supplier<T> supplier, RegisterType type)
 	{
-		// Read (and back up) a pre-1.1 Forge Config API Port file before Fzzy Config replaces it with its own format.
+		// Read and back up legacy Forge files before Fzzy Config replaces their format.
 		Map<String, String> legacyValues = ForgeConfigMigration.readLegacyFile(LegendarySurvivalOverhaul.modConfigPath, name);
+		return load(name, supplier, type, legacyValues);
+	}
+
+	private static <T extends me.fzzyhmstrs.fzzy_config.config.Config> T load(String name, Supplier<T> supplier,
+			RegisterType type, Map<String, String> legacyValues)
+	{
 		T config = ConfigApiJava.registerAndLoadConfig(supplier, type);
 		if (legacyValues != null)
 			ForgeConfigMigration.apply(name, config, legacyValues);
@@ -79,6 +100,8 @@ public class Config
 			Baked.bakeClient();
 		else if (config instanceof CommonConfig)
 			Baked.bakeCommon();
+		else if (config instanceof AirConfig)
+			Baked.bakeAir();
 		else if (config instanceof TemperatureConfig)
 			Baked.bakeTemperature();
 		else if (config instanceof SeasonsConfig) {
@@ -119,6 +142,14 @@ public class Config
 		public static double blueAirProviderRadius;
 		public static double redAirProviderRadius;
 		public static double greenAirProviderRadius;
+		public static boolean overrideVanillaDimensionProfiles;
+		public static int overworldMinY, overworldMaxY;
+		public static sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityLevel overworldAir, overworldOutsideAir,
+				netherAir, endAir, unconfiguredDimensionAir;
+		public static int yellowDrainInterval, netherYellowDrainInterval, redDrainInterval, airDrainAmount,
+				greenAirRefillAmount, breathingEquipmentDamageInterval;
+		public static double suffocationDamage;
+		public static int airBladderRechargeAmount, airBladderRefillAmount, airBladderCooldown;
 
 		// Temperature
 		public static boolean temperatureEnabled;
@@ -396,19 +427,48 @@ public class Config
 				baseFoodExhaustion = COMMON.baseFoodExhaustion.get();
 				sprintingFoodExhaustion = COMMON.sprintingFoodExhaustion.get();
 				onAttackFoodExhaustion = COMMON.onAttackFoodExhaustion.get();
-				airQualityEnabled = COMMON.airQualityEnabled.get();
-				enableSignalTorches = COMMON.enableSignalTorches.get();
-				drownedChoking = COMMON.drownedChoking.get();
-				yellowAirProviderRadius = COMMON.yellowAirProviderRadius.get();
-				blueAirProviderRadius = COMMON.blueAirProviderRadius.get();
-				redAirProviderRadius = COMMON.redAirProviderRadius.get();
-				greenAirProviderRadius = COMMON.greenAirProviderRadius.get();
 			}
 			catch (Exception e)
 			{
 				LegendarySurvivalOverhaul.LOGGER.warn("An exception was caused trying to load the Common config for Legendary Survival Overhaul");
 				LegendarySurvivalOverhaul.LOGGER.warn(e.getStackTrace());
 			}
+		}
+
+		public static void bakeAir()
+		{
+			if (AIR == null) return;
+			airQualityEnabled = AIR.airQualityEnabled.get();
+			enableSignalTorches = AIR.enableSignalTorches.get();
+			drownedChoking = AIR.drownedChoking.get();
+			yellowAirProviderRadius = AIR.yellowAirProviderRadius.get();
+			blueAirProviderRadius = AIR.blueAirProviderRadius.get();
+			redAirProviderRadius = AIR.redAirProviderRadius.get();
+			greenAirProviderRadius = AIR.greenAirProviderRadius.get();
+			overrideVanillaDimensionProfiles = AIR.overrideVanillaDimensionProfiles.get();
+			overworldMinY = AIR.overworldMinY.get();
+			overworldMaxY = AIR.overworldMaxY.get();
+			if (overworldMaxY < overworldMinY) {
+				LegendarySurvivalOverhaul.LOGGER.warn("Air Overworld maximum Y {} is below minimum Y {}; using minimum Y as the effective maximum",
+						overworldMaxY, overworldMinY);
+				overworldMaxY = overworldMinY;
+			}
+			overworldAir = AIR.overworldAir.get();
+			overworldOutsideAir = AIR.overworldOutsideAir.get();
+			netherAir = AIR.netherAir.get();
+			endAir = AIR.endAir.get();
+			unconfiguredDimensionAir = AIR.unconfiguredDimensionAir.get();
+			yellowDrainInterval = AIR.yellowDrainInterval.get();
+			netherYellowDrainInterval = AIR.netherYellowDrainInterval.get();
+			redDrainInterval = AIR.redDrainInterval.get();
+			airDrainAmount = AIR.airDrainAmount.get();
+			greenAirRefillAmount = AIR.greenAirRefillAmount.get();
+			breathingEquipmentDamageInterval = AIR.breathingEquipmentDamageInterval.get();
+			suffocationDamage = AIR.suffocationDamage.get();
+			airBladderRechargeAmount = AIR.airBladderRechargeAmount.get();
+			airBladderRefillAmount = AIR.airBladderRefillAmount.get();
+			airBladderCooldown = AIR.airBladderCooldown.get();
+			sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityUtil.invalidateCache();
 		}
 
 		public static void bakeTemperature()

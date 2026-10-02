@@ -41,9 +41,13 @@ public final class AirQualityHooks {
         // "eye in water" branch, so air-quality-driven depletion (bad air pockets, lava fumes,
         // Nether ambience, etc.) needs its own suffocation damage when the entity isn't actually
         // submerged in water; otherwise air can run out with no consequence at all.
-        if (newAirSupply <= -20 && !isEyeInWater(entity)) {
+        if (isEyeInWater(entity)) {
+            // Vanilla checks exactly -20; larger configured drain steps must not skip that threshold.
+            newAirSupply = Math.max(-20, newAirSupply);
+        } else if (newAirSupply <= -20) {
             newAirSupply = 0;
-            entity.hurt(entity.damageSources().drown(), 2.0F);
+            if (Config.Baked.suffocationDamage > 0)
+                entity.hurt(entity.damageSources().drown(), (float) Config.Baked.suffocationDamage);
         }
 
         entity.setAirSupply(newAirSupply);

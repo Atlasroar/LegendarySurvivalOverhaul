@@ -35,6 +35,12 @@ public final class AirQualityUtil {
     private AirQualityUtil() {
     }
 
+    public static void invalidateCache() {
+        synchronized (CACHE) {
+            CACHE.clear();
+        }
+    }
+
     public static AirQualityLevel getAirQualityAtLocation(LivingEntity entity) {
         if (!Config.Baked.airQualityEnabled) return AirQualityLevel.GREEN;
         Vec3 location = entity.getEyePosition();

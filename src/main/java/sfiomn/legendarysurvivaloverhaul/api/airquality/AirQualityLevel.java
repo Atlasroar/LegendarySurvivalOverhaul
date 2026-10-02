@@ -40,7 +40,7 @@ public enum AirQualityLevel implements StringRepresentable {
 
         @Override
         int getAirAmount(LivingEntity entity) {
-            return 4;
+            return Config.Baked.greenAirRefillAmount;
         }
     },
     BLUE(true, false, null) {
@@ -57,11 +57,18 @@ public enum AirQualityLevel implements StringRepresentable {
     YELLOW(false, false, "breathing_equipment") {
         @Override
         int getAirAmount(LivingEntity entity) {
-            long drainInterval = entity.level().dimension() == Level.NETHER ? 2L : 4L;
+            long drainInterval = entity.level().dimension() == Level.NETHER
+                    ? Config.Baked.netherYellowDrainInterval : Config.Baked.yellowDrainInterval;
             return entity.level().getGameTime() % drainInterval == 0 ? super.getAirAmount(entity) : 0;
         }
     },
-    RED(false, false, "heavy_breathing_equipment");
+    RED(false, false, "heavy_breathing_equipment") {
+        @Override
+        int getAirAmount(LivingEntity entity) {
+            return entity.level().getGameTime() % Config.Baked.redDrainInterval == 0
+                    ? super.getAirAmount(entity) : 0;
+        }
+    };
 
     public static final Codec<AirQualityLevel> CODEC = StringRepresentable.fromEnum(AirQualityLevel::values);
 
@@ -157,14 +164,16 @@ public enum AirQualityLevel implements StringRepresentable {
     private boolean isProtectedViaBreathingEquipment(LivingEntity entity) {
         if (this.breathingEquipment == null) return false;
         ItemStack itemStack = AirQualityUtil.findEquippedBreathingEquipment(entity, this.breathingEquipment);
-        if (!itemStack.isEmpty() && entity.level().getGameTime() % (20L * 15L) == 0) {
+        if (!itemStack.isEmpty() && Config.Baked.breathingEquipmentDamageInterval > 0
+                && entity.level().getGameTime() % Config.Baked.breathingEquipmentDamageInterval == 0) {
             itemStack.hurtAndBreak(1, entity, livingEntity -> livingEntity.broadcastBreakEvent(EquipmentSlot.HEAD));
         }
         return !itemStack.isEmpty();
     }
 
     int getAirAmount(LivingEntity entity) {
-        return entity.getRandom().nextInt(EnchantmentHelper.getRespiration(entity) + 1) == 0 ? -1 : 0;
+        return entity.getRandom().nextInt(EnchantmentHelper.getRespiration(entity) + 1) == 0
+                ? -Config.Baked.airDrainAmount : 0;
     }
 
     public int getAirAmountAfterProtection(LivingEntity entity) {

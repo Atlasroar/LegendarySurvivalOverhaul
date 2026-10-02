@@ -416,6 +416,17 @@ As of 2.0.0, the seven LSO configs (`common`, `temperature`, `seasons`, `thirst`
 
 ## Build and test
 
+### Air config development preview (2.1.0-beta.1)
+
+- Adds a synced `AirConfig` (`LSO - Air`, `air.toml`) containing 25 options: the seven former Common air fields plus 18 new controls. Total: 248 options across eight configs.
+- Default behavior remains unchanged. Vanilla-dimension ambient overrides are opt-in; custom dimension datapacks remain supported. Height boundaries are inclusive eye-block Y.
+- Adds drain/refill timing and amount, equipment durability interval, outside-water suffocation damage, and bladder recharge/refill/cooldown controls. Bladder recharge is clamped at zero damage, and dispensing cannot consume more durability than remains.
+- Existing Fzzy Common values migrate with a `common.toml.air-backup`; pre-2.0 Forge Common values migrate through the existing mapping with `.forge-backup`. Existing `air.toml` values take precedence.
+- Updates rebake the Air facade and clear the lookup cache. Numeric validation prevents zero drain intervals. A reversed Overworld height range logs a warning and uses the minimum as its effective maximum.
+- Real-server assertions checked both Common formats, retained non-air Common values, default dimension profiles, inclusive override boundaries, Nether/End overrides, rebaking/cache invalidation, drain/refill amounts and intervals, range validation, equipment wear/protection, Free Breathing protection, and bladder durability boundaries. In-game GUI and broader multiplayer testing remain pending.
+
+### Build commands
+
 Use JDK 17. On Windows:
 
 ```powershell

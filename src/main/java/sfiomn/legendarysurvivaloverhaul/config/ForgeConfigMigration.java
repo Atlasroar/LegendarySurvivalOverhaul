@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.function.Predicate;
 
 /**
  * One-time migration of the config files written by Forge Config API Port (mod versions before 2.0.0) to Fzzy Config.
@@ -86,6 +87,12 @@ final class ForgeConfigMigration
 
 	static void apply(String name, me.fzzyhmstrs.fzzy_config.config.Config config, Map<String, String> legacyValues)
 	{
+		apply(name, config, legacyValues, field -> !(config instanceof CommonConfig) || !AirConfig.LEGACY_FIELDS.contains(field));
+	}
+
+	static void apply(String name, me.fzzyhmstrs.fzzy_config.config.Config config, Map<String, String> legacyValues,
+					  Predicate<String> includeField)
+	{
 		JsonArray mappings = loadMappings(name);
 		if (mappings == null)
 			return;
@@ -98,6 +105,8 @@ final class ForgeConfigMigration
 			if (raw == null)
 				continue;
 			String fieldName = mapping.get(2).getAsString();
+			if (!includeField.test(fieldName))
+				continue;
 			try
 			{
 				Field field = config.getClass().getField(fieldName);
@@ -115,7 +124,7 @@ final class ForgeConfigMigration
 			}
 		}
 		config.save();
-		LegendarySurvivalOverhaul.LOGGER.info("Migrated {} values into {}.toml", migrated, name);
+		LegendarySurvivalOverhaul.LOGGER.info("Migrated {} values into {}.toml", migrated, config instanceof AirConfig ? "air" : name);
 	}
 
 	@SuppressWarnings("unchecked")

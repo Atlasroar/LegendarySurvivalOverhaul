@@ -3,7 +3,6 @@ package sfiomn.legendarysurvivaloverhaul.config;
 import me.fzzyhmstrs.fzzy_config.annotations.Comment;
 import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
 import me.fzzyhmstrs.fzzy_config.event.api.ServerUpdateContext;
-import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
 import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
 import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
@@ -12,8 +11,6 @@ import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
 import net.minecraft.resources.ResourceLocation;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.util.EnumUtil;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Common settings, editable in-game through Fzzy Config (Mod Menu / {@code /configure}).
@@ -87,30 +84,4 @@ public class CommonConfig extends me.fzzyhmstrs.fzzy_config.config.Config
 	@ConfigGroup.Pop
 	public ValidatedDouble onAttackFoodExhaustion = new ValidatedDouble(0.1d, 1000.0D, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
 
-	public ConfigGroup group_air_quality = new ConfigGroup("group_air_quality");
-
-	@Comment("If enabled, air quality affects breathing: bad air drains the air supply even outside of liquids, good air refills it.")
-	public ValidatedBoolean airQualityEnabled = new ValidatedBoolean(true);
-
-	@Comment("If enabled, right-clicking a normal torch with an empty main hand turns it into a (cosmetic) Signal Torch and back.")
-	public ValidatedBoolean enableSignalTorches = new ValidatedBoolean(true);
-
-	@Comment("Air supply removed by a Drowned's melee attack. Set to 0 to disable.")
-	@ConfigGroup.Pop
-	public ValidatedInt drownedChoking = new ValidatedInt(100, 72000, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
-
-	public ConfigGroup group_air_quality_air_provider_ranges = new ConfigGroup("group_air_quality_air_provider_ranges");
-
-	@Comment("Radius in blocks for providers in the yellow air tag.")
-	public ValidatedDouble yellowAirProviderRadius = new ValidatedDouble(6.0D, 32.0D, 1.0D, ValidatedNumber.WidgetType.TEXTBOX);
-
-	@Comment("Radius in blocks for providers in the blue air tag.")
-	public ValidatedDouble blueAirProviderRadius = new ValidatedDouble(6.0D, 32.0D, 1.0D, ValidatedNumber.WidgetType.TEXTBOX);
-
-	@Comment("Radius in blocks for providers in the red air tag.")
-	public ValidatedDouble redAirProviderRadius = new ValidatedDouble(3.0D, 32.0D, 1.0D, ValidatedNumber.WidgetType.TEXTBOX);
-
-	@Comment("Radius in blocks for providers in the green air tag.")
-	@ConfigGroup.Pop
-	public ValidatedDouble greenAirProviderRadius = new ValidatedDouble(9.0D, 32.0D, 1.0D, ValidatedNumber.WidgetType.TEXTBOX);
 }
