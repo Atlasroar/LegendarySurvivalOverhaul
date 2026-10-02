@@ -62,6 +62,17 @@ Confirmed in-game (v2.4.0): the LevelZ health bonus remains stable across death 
 
 LibZ itself only supplies shared GUI/network/config/registry utilities for LevelZ; it has no attribute or health logic of its own, so no additional adapter is needed for it.
 
+## Enchanted Golden Apple and death heart-loss (v2.5.0, HardcoreLite-inspired)
+
+Inspired by [HardcoreLite](https://github.com/MC-Mods-Pete/HardcoreLite/tree/1.20.1-Fabric), LSO adds two independently config-driven, opt-out mechanics layered on its existing heart-container/shield-health systems rather than copying HardcoreLite's own max-health/gamemode logic:
+
+- **Enchanted Golden Apple bonus** (`enchantedGoldenAppleOverrideEnabled`, default on): eating specifically an Enchanted Golden Apple grants a configurable Shield Health bonus (default `enchantedGoldenAppleShieldHealth = 4.0`, i.e. 2 Shield Hearts) and repairs/restores Heart Containers (default `enchantedGoldenAppleHeartContainersRepaired = 1`). This is distinct from, and takes priority over, the generic vanilla-Absorption override (`absorptionEffectOverride`) used for other Absorption sources such as a regular Golden Apple — the two do not stack.
+- **Death heart loss** (`heartsLostOnDeath`, default `1`) removes one Heart Container per death, down to a configurable floor (`permanentHearts`, default `1`, i.e. 1 Heart Container / 2 health). Unlike HardcoreLite, LSO never forces Spectator mode at the floor — the existing floor-clamping `loseHearth` logic simply stops reducing hearts once the floor is reached.
+
+**LevelZ precedence (by design):** when LevelZ is installed, its level-based `generic.max_health` bonus is treated as the baseline on top of which LSO's own heart-loss delta is applied. In practice this means a player's level-based LevelZ health floor takes precedence over LSO's `permanentHearts` floor — e.g. a level-0 LevelZ character starting at 3 Heart Containers (6 health) will not be brought lower than that by LSO's death heart-loss, even if `permanentHearts` is configured as low as `1`. This is intentional for compatibility between the two mods; raising a player's LevelZ level still raises how far they can be brought down by subsequent deaths. Like the full-heal path above, the heart-loss floor check is deferred to the player's next server tick on death so it always reads the final, LevelZ-combined max health rather than a pre-LevelZ snapshot.
+
+Both features are fully config-driven (Fzzy Config) and can be disabled or tuned per world, including reverting to the pre-v2.5.0 defaults (`heartsLostOnDeath = 0`, `permanentHearts = 10`).
+
 ## Optional VanillaBackport sulfur support
 
 [VanillaBackport](https://github.com/ItsBlackGear/VanillaBackport/tree/1.20.1) support targets the **1.2 development branch** and its matching [Platform](https://github.com/ItsBlackGear/Platform/tree/1.20.1) dependency. Sulfur caves use `minecraft:sulfur_caves`, not the mod namespace.

@@ -42,6 +42,16 @@ public class ModCapabilities
 	 */
 	private static final Set<UUID> PENDING_RESPAWN_FULL_HEAL = ConcurrentHashMap.newKeySet();
 
+	/**
+	 * Players whose death heart-loss ({@code heartsLostOnDeath}) should be applied on their
+	 * next server tick instead of immediately in {@link #copyPlayerState}. The loseHearth floor
+	 * check reads the player's current max-health attribute as an absolute reference point (how
+	 * many hearts they currently have), which is only accurate once every other mod's respawn
+	 * attribute math (e.g. LevelZ's level-based max health) has also finished, for the same
+	 * ordering reasons documented on {@link #PENDING_RESPAWN_FULL_HEAL}.
+	 */
+	private static final Set<UUID> PENDING_RESPAWN_HEART_LOSS = ConcurrentHashMap.newKeySet();
+
 	public static void registerServerEvents()
 	{
 		ServerTickEvents.START_SERVER_TICK.register(server -> server.getPlayerList().getPlayers()
@@ -53,7 +63,10 @@ public class ModCapabilities
 			syncPlayerState(handler.player);
 			FabricDataSyncHandler.syncAll(handler.player);
 		});
-		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> PENDING_RESPAWN_FULL_HEAL.remove(handler.player.getUUID()));
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
+			PENDING_RESPAWN_FULL_HEAL.remove(handler.player.getUUID());
+			PENDING_RESPAWN_HEART_LOSS.remove(handler.player.getUUID());
+		});
 		ServerPlayerEvents.COPY_FROM.register(ModCapabilities::copyPlayerState);
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, player, alive) -> {
 			applyTemperatureImmunityOnDeathRespawn(player, alive);
@@ -113,6 +126,9 @@ public class ModCapabilities
 		{
 			// Server Side
 			Level level = player.level();
+
+			if (phase == TickPhase.START && PENDING_RESPAWN_HEART_LOSS.remove(player.getUUID()))
+				HealthUtil.loseHearth(player, Config.Baked.heartsLostOnDeath);
 
 			if (phase == TickPhase.START && PENDING_RESPAWN_FULL_HEAL.remove(player.getUUID()))
 				player.setHealth(player.getMaxHealth());
@@ -222,18 +238,23 @@ public class ModCapabilities
 
 		if (Config.Baked.healthOverhaulEnabled) {
 			HealthUtil.initializeHealthAttributes(player);
-			if (!alive && Config.Baked.heartsLostOnDeath > 0)
-				HealthUtil.loseHearth(player, Config.Baked.heartsLostOnDeath);
-			else
-				HealthUtil.updatePlayerMaxHealthAttribute(player);
 
 			if (alive) {
-				// World/dimension change: no other mod re-derives max health here, safe to heal now.
+				// World/dimension change: no other mod re-derives max health here, safe to
+				// update the attribute and heal now.
+				HealthUtil.updatePlayerMaxHealthAttribute(player);
 				player.setHealth(player.getMaxHealth());
 			} else {
 				// Death respawn: other mods (e.g. LevelZ) may still apply their own max-health
-				// attribute changes from their AFTER_RESPAWN listener. Defer the full heal to
-				// this player's next tick instead of healing to a possibly-stale max health now.
+				// attribute changes from their AFTER_RESPAWN listener. Defer both the heart-loss
+				// floor check (which reads the player's current max health as an absolute
+				// reference point) and the full heal to this player's next tick, so they run
+				// after every mod's respawn attribute math has finished, regardless of
+				// registration order.
+				if (Config.Baked.heartsLostOnDeath > 0)
+					PENDING_RESPAWN_HEART_LOSS.add(player.getUUID());
+				else
+					HealthUtil.updatePlayerMaxHealthAttribute(player);
 				PENDING_RESPAWN_FULL_HEAL.add(player.getUUID());
 			}
 		}
