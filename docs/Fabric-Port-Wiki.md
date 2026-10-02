@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The latest public artifact is the [Fabric 1.20.1 `.24` prerelease](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.24). The next test build removes oak logs as GREEN providers and explicitly recognizes lava fluid states for RED air within the existing 3-block default radius. The Nether behavior is deferred for later investigation. The first full (non-prerelease) release remains [`v1.20.1-2.4.7-fabric.15`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.15). Air-quality behavior remains pending in-game verification.
+The latest release is [**v1.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.0.0), the first full release containing the Thin Air air-quality integration. The Fabric port now follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
 
 The port is considered feature-complete pending further in-game testing, particularly multiplayer/dedicated-server validation. Every tracked gameplay slice — survival systems, HUD/tooltip rendering, sewing table and coat application, heater/cooler multiblocks, and the Forge event-subscriber audit — is user-verified in a single-player/integrated-server world as of `.14`. A full audit of the three Forge-only event files found no remaining behavioral gaps: all differences from Forge are either intentional feature drops (Origins, Meds and Herbs), necessary platform adaptations forced by different Fabric hook points (bonemeal, damage pipeline), or pre-existing Forge behavior that was never different on Fabric (the armor coat tooltip, which never showed a numeric resistance delta on Forge either). Forge-only datagen execution and selected optional integrations remain intentionally omitted.
 
@@ -278,7 +278,20 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 
 ## Release and edit notes
 
-`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release. `.16` adds the Thin Air integration, with `.17`, `.19`, `.20`, `.22`–`.29` follow-up fixes; these remain prereleases pending in-game testing. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
+### Versioning policy
+
+Starting with **1.0.0**, the Fabric port is versioned as its own project under [Semantic Versioning 2.0.0](https://semver.org/):
+
+- `mod_version` in `gradle.properties` is `MAJOR.MINOR.PATCH`. Bump MAJOR for incompatible changes (removed items/blocks, breaking config, datapack or save formats), MINOR for backward-compatible features, and PATCH for backward-compatible bug fixes.
+- Test builds use a prerelease suffix, e.g. `1.1.0-beta.1`, `1.1.0-beta.2`, published as GitHub prereleases; the final release drops the suffix.
+- The in-game version (`fabric.mod.json`) is `<mod_version>+<minecraft_version>`, e.g. `1.0.0+1.20.1`; the Minecraft version is SemVer build metadata and does not affect precedence.
+- Git tags are `v<mod_version>` (e.g. `v1.0.0`, `v1.1.0-beta.1`). Jar files are `legendarysurvivaloverhaul-fabric-<minecraft_version>-<mod_version>.jar`, because GitHub rewrites `+` in release asset names.
+
+The legacy `v1.20.1-2.4.7-fabric.N` tags below predate this policy and are kept for history.
+
+### Legacy builds
+
+`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release. `.16` adds the Thin Air integration, with `.17`, `.19`, `.20`, `.22`–`.30` follow-up fixes, all superseded by `v1.0.0`. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
 
 | Version | Notes |
 | --- | --- |
@@ -312,12 +325,19 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 | `v1.20.1-2.4.7-fabric.28` | Fixes the nearby air-provider scan picking the *safest* quality in range instead of the *worst*: a GREEN source (e.g. a portal) within its large radius was silently overriding a closer RED/lava hazard or the Nether's YELLOW ambience whenever both were simultaneously in range. The scan now always returns the worst (most hazardous) quality found, which also fixes the Nether being masked by its own portal. Prerelease pending in-game validation. |
 | `v1.20.1-2.4.7-fabric.29` | Diagnostics-only build: logs a player's computed air quality level, position, dimension, and air change amount (on level change, and periodically every 5 seconds) to help pin down an unresolved report of the air bar appearing to freeze (no drain/regen) at the bottom of the Nether. No behavior changes. Prerelease pending in-game validation. |
 | `v1.20.1-2.4.7-fabric.30` | The vanilla Turtle Helmet now counts as breathing equipment for both YELLOW air (alongside the Respirator) and RED air (`heavy_breathing_equipment`, previously empty), stopping air drain while worn in the End, near lava, etc. It loses 1 durability every 15 seconds of protection. The `[AirQuality]` diagnostic logging from `.29` is now DEBUG-level, so it no longer spams the log by default. Nether, End, lava, portal, soul-block, lantern, and air bladder behavior was validated in-game on `.29`. |
+
+### SemVer releases
+
+| Version | Notes |
+| --- | --- |
+| `v1.0.0` | First SemVer release and first full release with the Thin Air air-quality system (from `.16`–`.30`): height/dimension-based air quality, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, Respirator, and Turtle Helmet protection. The Nether is ambient YELLOW, the End is RED, lava creates RED air within 3 blocks, portals/gateways provide GREEN air, and soul blocks provide BLUE air. User-validated in-game across the Overworld, Nether, and End. No gameplay changes from `.30`; only the version scheme and jar name changed. |
+
 ### Latest released artifact
 
-- File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.30`
-- SHA-256: `F8E7A3500E8C1CCB33CAD62D19F74D29618FF5D105AF6836682D380B8CE21E3B`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.30>
+- File: `legendarysurvivaloverhaul-fabric-1.20.1-1.0.0.jar`
+- Tag: `v1.0.0`
+- SHA-256: `FB169E322B22F555A0443CC53AE0CA37B9974CCB99CEFE3A230B999715CCCA0A`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.0.0>
 
 ## Feature and compatibility notes
 

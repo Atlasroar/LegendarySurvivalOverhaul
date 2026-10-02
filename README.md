@@ -42,7 +42,7 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest release is [**v1.20.1-2.4.7-fabric.15**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.15), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**. This is the first full (non-prerelease) release of the Fabric port.
+The latest release is [**v1.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.0.0), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**. Starting with 1.0.0, the Fabric port is versioned as its own project using [Semantic Versioning](https://semver.org/); see the [versioning policy](docs/Fabric-Port-Wiki.md#versioning-policy). Older `v1.20.1-2.4.7-fabric.N` builds remain on the releases page for history.
 
 Current highlights:
 
@@ -74,9 +74,9 @@ The Fabric port is feature-complete, pending further in-game testing (particular
 
 Cold Hunger is a temperature-managed secondary effect: LSO applies it during dangerous cold and clears it when the player is no longer in that condition, so manually granting it with `/effect` outside dangerous cold will not keep it active for the requested duration.
 
-### Thin Air air-quality test builds
+### Air quality (Thin Air integration)
 
-The `.16` prerelease added Thin Air's air-quality mechanics and content, including height/dimension-based air, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, and a Trinkets Respirator. Follow-up test builds fix cache invalidation, HUD spacing, provider-tag loading, and client/server air-supply synchronization. The next test build removes oak logs as GREEN providers and detects lava fluid states directly for RED air within the existing 3-block default radius. See the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration).
+Version 1.0.0 includes Thin Air's air-quality mechanics and content: height- and dimension-based air (the Nether drains slowly, the End drains like water), RED air within 3 blocks of lava, GREEN air near portals, BLUE air near soul fire/torches/campfires/lanterns, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, a Trinkets Respirator, and Turtle Helmet protection. See the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration).
 
 ## Installation
 
@@ -107,7 +107,7 @@ macOS/Linux:
 ./gradlew build
 ```
 
-The mod jar is written to `build/libs`. To launch a development client, run `.\gradlew.bat runClient` on Windows or `./gradlew runClient` on macOS/Linux.
+The mod jar is written to `build/libs` as `legendarysurvivaloverhaul-fabric-<minecraft version>-<mod version>.jar`. To launch a development client, run `.\gradlew.bat runClient` on Windows or `./gradlew runClient` on macOS/Linux.
 
 ## Configuration and customization
 
