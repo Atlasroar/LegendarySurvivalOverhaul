@@ -4,7 +4,7 @@
 
 **Make survival matter.** Legendary Survival Overhaul (LSO) adds configurable temperature, hydration, localized body damage, and health systems to Minecraft.
 
-[Modrinth project](https://modrinth.com/mod/legendary-survival-overhaul) · [Fabric releases](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) · [Port and release notes](docs/Fabric-Port-Wiki.md) · [Community Discord](https://discord.gg/XPHtcP89P3) · [Guide](https://minecraft-legendary-edition.gitbook.io/minecraft-legendary-edition)
+[Modrinth project](https://modrinth.com/mod/legendary-survival-overhaul) · [Fabric releases](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) · [Wiki](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) · [Port and release notes](docs/Fabric-Port-Wiki.md) · [Community Discord](https://discord.gg/XPHtcP89P3) · [Guide](https://minecraft-legendary-edition.gitbook.io/minecraft-legendary-edition)
 
 > **Fabric port status:** v2.0.0 is a full release for Fabric 1.20.1. The tracked gameplay port and air-quality fixes are complete, with single-player gameplay tested in-game. Broader multiplayer/dedicated-server validation remains open. Back up worlds and configs before updating.
 

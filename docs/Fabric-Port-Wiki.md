@@ -2,7 +2,7 @@
 
 This is the working reference for the Fabric port of Legendary Survival Overhaul (LSO). It is written for players testing releases, developers changing the port, and AI coding agents continuing the work. Keep it current whenever a port slice, compatibility decision, test result, or release changes.
 
-> **Wiki hosting:** The repository's GitHub Wiki is disabled and GitHub did not accept attempts to enable it. This versioned page is the canonical wiki source until Wiki hosting is available.
+> **Wiki hosting:** Player-facing guides are published in the [GitHub Wiki](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki), with versioned page sources in `docs/wiki`. This document retains the detailed port history and maintainer reference. Historical test results below describe their release at the time, not necessarily current limitations.
 
 ## Project target
 
@@ -272,7 +272,9 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 - Confirmed, by comparing against the original Forge `TooltipHandler`, that the armor coat tooltip only ever showed flavor text (e.g. "Warm Coat Applied") rather than a numeric resistance delta on Forge as well — this was not a port regression. The underlying `AttributeModifier` is recomputed every server tick in `FabricEquipmentAttributeHooks` and updates correctly when a coat is applied.
 - No remaining code changes were required; this audit closes out the last tracked "remaining Forge event edge cases" item. The port is considered complete pending further in-game testing (particularly multiplayer/dedicated-server scenarios), and `.15` is published as the first full (non-prerelease) release.
 
-### 29. Thin Air air-quality integration (released in `.16`; fixes in `.17`–`.25`)
+### 29. Thin Air air-quality integration (introduced in `.16`; finalized in v1.0.0)
+
+**Current status:** Nether/End profiles, hazard precedence, oxygen handling, soul providers, lanterns, air bladders, bottles, and Turtle Helmet protection were subsequently tested in-game across all three vanilla dimensions. The earlier unresolved reports below were superseded by the fixes through `.30` and v1.0.0. See the [current air guide](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki/Air-Quality-and-Breathing).
 
 - Adapts the MIT-licensed 1.20.1 Thin Air code and its assets into LSO's Fabric module. Asset reuse is separately All Rights Reserved and was expressly authorized; both notices are included under `src/main/resources/META-INF/licenses/`.
 - Adds Green, Blue, Yellow, and Red air quality, configurable air-provider radii, data-driven dimension/height profiles, breathing-equipment protection, Drowned attack choking, and air-supply hooks in `LivingEntity.baseTick`.
@@ -434,4 +436,4 @@ When continuing the port:
 2. Preserve core survival behavior; replace Forge hooks at their actual call sites and keep client-only code on the client side.
 3. Update this page in the same change as implementation. Add user-facing release notes separately in the GitHub prerelease description.
 4. Record what changed, what remains omitted, what was built/launched, and exact artifact/tag/hash.
-5. If the GitHub Wiki becomes enabled, publish/synchronize this versioned page there; until then, this file is the canonical discoverable wiki.
+5. Keep `docs/wiki` page sources synchronized with the GitHub Wiki. Keep this detailed history as the versioned maintainer reference.

@@ -1,0 +1,1 @@
+Legendary Survival Overhaul - Fabric 1.20.1 - [Home](Home) - [Downloads](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) - [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
