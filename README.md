@@ -85,11 +85,21 @@ Install the latest Fabric release from the [GitHub releases page](https://github
 - Minecraft **1.20.1**
 - Fabric Loader
 - Fabric API
-- Forge Config API Port **8.0.3** for Minecraft 1.20.1
+- [Fzzy Config](https://modrinth.com/mod/fzzy-config) **0.7.7+1.20.1** or newer (required as of 2.0.0)
+- [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) (required by Fzzy Config)
 - Trinkets **3.7.2+** for Minecraft 1.20.1
 - Cardinal Components API (base and entity; included in the published mod jar)
 
-Overflowing Bars is optional. The mod remains playable without it.
+Forge Config API Port is no longer needed as of 2.0.0. [Mod Menu](https://modrinth.com/mod/modmenu) is optional but recommended. Overflowing Bars is optional, and the mod remains playable without it.
+
+## Configuration
+
+As of 2.0.0, all settings use [Fzzy Config](https://github.com/fzzyhmstrs/fconfig). Every option in the seven config files can be edited in-game: Common, Temperature, Seasons, Thirst, Health, Body Damage, and Client.
+
+- Open the editor from the **Mod Menu** config button, or run `/configure legendarysurvivaloverhaul`.
+- Server-side settings are synced to clients, and operators can change them in-game.
+- The files are stored in `config/legendarysurvivaloverhaul/<name>.toml`.
+- Configs from 1.x (Forge Config API Port format) are migrated automatically on first launch. The original file is kept as `<name>.toml.forge-backup`.
 
 ## Build from source
 

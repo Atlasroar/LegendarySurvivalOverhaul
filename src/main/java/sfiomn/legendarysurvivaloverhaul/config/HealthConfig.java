@@ -1,101 +1,113 @@
 package sfiomn.legendarysurvivaloverhaul.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import me.fzzyhmstrs.fzzy_config.annotations.Comment;
+import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
+import me.fzzyhmstrs.fzzy_config.event.api.ServerUpdateContext;
+import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
+import net.minecraft.resources.ResourceLocation;
+import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.util.EnumUtil;
+import java.util.Collections;
+import java.util.List;
 
-public class HealthConfig
+/**
+ * Health settings, editable in-game through Fzzy Config (Mod Menu / {@code /configure}).
+ * Generated from the former ForgeConfigSpec definition; field names are referenced by {@link Config.Baked}.
+ */
+@SuppressWarnings("unused")
+public class HealthConfig extends me.fzzyhmstrs.fzzy_config.config.Config
 {
-	public final ForgeConfigSpec.BooleanValue healthOverhaulEnabled;
-	public final ForgeConfigSpec.DoubleValue initialHealth;
-	public final ForgeConfigSpec.BooleanValue naturalRegenerationEnabled;
-	public final ForgeConfigSpec.DoubleValue healthRatioRecoveredFromSleep;
-	public final ForgeConfigSpec.DoubleValue maxAdditionalHealth;
-	public final ForgeConfigSpec.DoubleValue maxShieldHealth;
-	public final ForgeConfigSpec.BooleanValue absorptionEffectOverride;
-	public final ForgeConfigSpec.IntValue heartsLostOnDeath;
-	public final ForgeConfigSpec.IntValue permanentHearts;
-	public final ForgeConfigSpec.IntValue resilientHeartsWithBrokenHearts;
-	public final ForgeConfigSpec.DoubleValue brokenHeartsPerInjuredLimb;
-	public final ForgeConfigSpec.EnumValue<EnumUtil.brokenHeartsPerInjuredLimbMode> brokenHeartsPerInjuredLimbMode;
-
-	public final ForgeConfigSpec.BooleanValue customHealthRegenEnabled;
-	public final ForgeConfigSpec.DoubleValue customHealthRegenRate;
-	public final ForgeConfigSpec.IntValue customHealthRegenTickRate;
-	public final ForgeConfigSpec.DoubleValue customHealthRegenFoodExhaustion;
-
-	HealthConfig(ForgeConfigSpec.Builder builder)
+	public HealthConfig()
 	{
-		healthOverhaulEnabled = builder
-				.comment(" Whether the overhaul health system is enabled.")
-				.define("Health Overhaul Enabled", true);
-		initialHealth = builder
-				.comment(" How much health player will have initially.")
-				.defineInRange("Initial Player Health", 20.0, 1.0, 10000.0);
-		maxAdditionalHealth = builder
-				.comment(" How much of Additional Health a player can accumulate. 2 Heath means a full heart.")
-				.defineInRange("Maximum Additional Health", 20.0, 0.0, 10000.0);
-		healthRatioRecoveredFromSleep = builder
-				.comment(" How much health ratio are recovered from bed sleeping.")
-				.defineInRange("Health Ratio Recovered", 1.0d, 0.0d, 1.0d);
-
-		builder.push("regeneration");
-		naturalRegenerationEnabled = builder
-				.comment(" If enabled, the player can regenerate health naturally if their hunger is full enough (doesn't affect external healing, such as golden apples, the Regeneration effect, etc.)")
-				.define("Natural Regeneration Enabled", false);
-		customHealthRegenEnabled = builder
-				.comment(" Enable custom health regeneration when natural regen is off. Consumes saturation and hunger.")
-				.define("Custom Health Regen Enabled", true);
-		customHealthRegenRate = builder
-				.comment(" Amount of health to regenerate per tick rate.")
-				.defineInRange("Custom Health Regen Rate", 1.0, 0, 1000);
-		customHealthRegenTickRate = builder
-				.comment(" How often in ticks health regenerates. 20 ticks = 1s")
-				.defineInRange("Custom Health Regen Tick Rate", 200, 1, 10000);
-		customHealthRegenFoodExhaustion = builder
-				.comment(" Food exhaustion per health point regenerated.")
-				.defineInRange("Custom Health Regen Food Exhaustion", 6.0, 0, 100);
-		builder.pop();
-
-		builder.push("shield-health");
-		maxShieldHealth = builder
-				.comment(" How much of Shield Health a player can accumulate. 2 Shield Heath means a full shield.",
-						" Shield Health are lost when the player suffers damages and can't regenerate. Works similarly as the Minecraft Absorption.")
-				.defineInRange("Maximum Shield Health", 20.0, 1.0, 10000.0);
-		absorptionEffectOverride = builder
-				.comment(" Override the absorption effect by a shield health increase of 2.",
-						" The absorption is typically given by the Golden Apple.")
-				.define("Absorption Effect Override", true);
-		builder.pop();
-
-		builder.push("heart-loss");
-		heartsLostOnDeath = builder
-				.comment(" The number of Hearts lost on death.")
-				.defineInRange("Hearts Lost On Death", 0, 0, 10000);
-		permanentHearts = builder
-				.comment(" The number of Hearts below which player can't lose hearts upon death.",
-						" The hearts below this limit are de facto Permanent Hearts.")
-				.defineInRange("Permanent Hearts", 10, 1, 10000);
-		builder.pop();
-
-		builder.comment(" Broken Hearts are an interaction with the localized body damage feature. Enables both feature to have it.",
-						" Broken Hearts are lost hearts when a player's limb is severely injured and it can be recovered by healing the injured limb.")
-				.push("broken-hearts");
-		resilientHeartsWithBrokenHearts = builder
-				.comment(" The Resilient Hearts is the number of heart below which Broken Hearts can no longer be added.",
-						" By default, the player has 2 resilient heart, meaning no matter the amount of broken hearts, the player won't go below 2 hearts.")
-				.defineInRange("Minimum Amount Of Player's Heart With Broken Hearts (Broken Heart Resilience)", 2, 1, 10000);
-		brokenHeartsPerInjuredLimb = builder
-				.comment(" Amount of Broken Hearts added per limbs fully injured.")
-				.defineInRange("Added Broken Hearts Per Injured Limb", 0.1, 0, 10000);
-		brokenHeartsPerInjuredLimbMode = builder
-				.comment(" How broken hearts inflicted per injured limbs are calculated. The total amount will be round down to have an integer amount of broken hearts.",
-						" For example, if the amount per injured limb is 0.1 with mode Player Dynamic and the player has 3 limbs injured, the total amount is 3 * (0.1 * 20), 20 being the default player max health, so 6 broken hearts will be inflicted.",
-						" Accepted values are as follows:",
-						"   SIMPLE - The broken heart amount is a fixed value defined in Broken Hearts Per Injured Limb.",
-						"   PLAYER_DYNAMIC - The broken heart amount is a percentage value of the player max health using the percentage value defined in Broken Hearts Per Injured Limb.",
-						"   LIMB_DYNAMIC - The broken heart amount is a percentage value of the injured limb max health using the percentage value defined in Broken Hearts Per Injured Limb.",
-						" Any other value will default to SIMPLE.")
-				.defineEnum("Broken Hearts Per Injured Limb Mode", EnumUtil.brokenHeartsPerInjuredLimbMode.PLAYER_DYNAMIC);
-		builder.pop();
+		super(new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "health"));
 	}
+
+	@Override
+	public void onSyncClient()
+	{
+		Config.bake(this);
+	}
+
+	@Override
+	public void onSyncServer()
+	{
+		Config.bake(this);
+	}
+
+	@Override
+	public void onUpdateClient()
+	{
+		Config.bake(this);
+	}
+
+	@Override
+	public void onUpdateServer(ServerUpdateContext context)
+	{
+		Config.bake(this);
+	}
+
+	@Comment("Whether the overhaul health system is enabled.")
+	public ValidatedBoolean healthOverhaulEnabled = new ValidatedBoolean(true);
+
+	@Comment("How much health player will have initially.")
+	public ValidatedDouble initialHealth = new ValidatedDouble(20.0, 10000.0, 1.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How much of Additional Health a player can accumulate. 2 Heath means a full heart.")
+	public ValidatedDouble maxAdditionalHealth = new ValidatedDouble(20.0, 10000.0, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How much health ratio are recovered from bed sleeping.")
+	public ValidatedDouble healthRatioRecoveredFromSleep = new ValidatedDouble(1.0d, 1.0d, 0.0d, ValidatedNumber.WidgetType.SLIDER);
+
+	public ConfigGroup group_regeneration = new ConfigGroup("group_regeneration");
+
+	@Comment("If enabled, the player can regenerate health naturally if their hunger is full enough (doesn't affect external healing, such as golden apples, the Regeneration effect, etc.)")
+	public ValidatedBoolean naturalRegenerationEnabled = new ValidatedBoolean(false);
+
+	@Comment("Enable custom health regeneration when natural regen is off. Consumes saturation and hunger.")
+	public ValidatedBoolean customHealthRegenEnabled = new ValidatedBoolean(true);
+
+	@Comment("Amount of health to regenerate per tick rate.")
+	public ValidatedDouble customHealthRegenRate = new ValidatedDouble(1.0, 1000.0, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How often in ticks health regenerates. 20 ticks = 1s")
+	public ValidatedInt customHealthRegenTickRate = new ValidatedInt(200, 10000, 1, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	@Comment("Food exhaustion per health point regenerated.")
+	@ConfigGroup.Pop
+	public ValidatedDouble customHealthRegenFoodExhaustion = new ValidatedDouble(6.0, 100.0, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_shield_health = new ConfigGroup("group_shield_health");
+
+	@Comment("How much of Shield Health a player can accumulate. 2 Shield Heath means a full shield. Shield Health are lost when the player suffers damages and can't regenerate. Works similarly as the Minecraft Absorption.")
+	public ValidatedDouble maxShieldHealth = new ValidatedDouble(20.0, 10000.0, 1.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("Override the absorption effect by a shield health increase of 2. The absorption is typically given by the Golden Apple.")
+	@ConfigGroup.Pop
+	public ValidatedBoolean absorptionEffectOverride = new ValidatedBoolean(true);
+
+	public ConfigGroup group_heart_loss = new ConfigGroup("group_heart_loss");
+
+	@Comment("The number of Hearts lost on death.")
+	public ValidatedInt heartsLostOnDeath = new ValidatedInt(0, 10000, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	@Comment("The number of Hearts below which player can't lose hearts upon death. The hearts below this limit are de facto Permanent Hearts.")
+	@ConfigGroup.Pop
+	public ValidatedInt permanentHearts = new ValidatedInt(10, 10000, 1, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	public ConfigGroup group_broken_hearts = new ConfigGroup("group_broken_hearts");
+
+	@Comment("The Resilient Hearts is the number of heart below which Broken Hearts can no longer be added. By default, the player has 2 resilient heart, meaning no matter the amount of broken hearts, the player won't go below 2 hearts.")
+	public ValidatedInt resilientHeartsWithBrokenHearts = new ValidatedInt(2, 10000, 1, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	@Comment("Amount of Broken Hearts added per limbs fully injured.")
+	public ValidatedDouble brokenHeartsPerInjuredLimb = new ValidatedDouble(0.1, 10000.0, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How broken hearts inflicted per injured limbs are calculated. The total amount will be round down to have an integer amount of broken hearts. For example, if the amount per injured limb is 0.1 with mode Player Dynamic and the player has 3 limbs injured, the total amount is 3 * (0.1 * 20), 20 being the default player max health, so 6 broken hearts will be inflicted. Accepted values are as follows: SIMPLE - The broken heart amount is a fixed value defined in Broken Hearts Per Injured Limb. PLAYER_DYNAMIC - The broken heart amount is a percentage value of the player max health using the percentage value defined in Broken Hearts Per Injured Limb. LIMB_DYNAMIC - The broken heart amount is a percentage value of the injured limb max health using the percentage value defined in Broken Hearts Per Injured Limb. Any other value will default to SIMPLE.")
+	@ConfigGroup.Pop
+	public ValidatedEnum<EnumUtil.brokenHeartsPerInjuredLimbMode> brokenHeartsPerInjuredLimbMode = new ValidatedEnum<>(EnumUtil.brokenHeartsPerInjuredLimbMode.PLAYER_DYNAMIC);
 }

@@ -331,7 +331,7 @@ The legacy `v1.20.1-2.4.7-fabric.N` tags below predate this policy and are kept 
 | Version | Notes |
 | --- | --- |
 | `v1.0.0` | First SemVer release and first full release with the Thin Air air-quality system (from `.16`–`.30`): height/dimension-based air quality, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, Respirator, and Turtle Helmet protection. The Nether is ambient YELLOW, the End is RED, lava creates RED air within 3 blocks, portals/gateways provide GREEN air, and soul blocks provide BLUE air. User-validated in-game across the Overworld, Nether, and End. No gameplay changes from `.30`; only the version scheme and jar name changed. The vanilla Water Breathing effect, potions, splash/lingering potions, and tipped arrows are renamed to **Free Breathing** (English), since the effect also protects against bad air; user-validated Turtle Helmet protection in all dimensions. |
-
+| `v2.0.0` | **Breaking:** the configuration system moves from Forge Config API Port to Fzzy Config, which requires Fabric Language Kotlin. All 230 options are editable in-game via Mod Menu or `/configure`. Server configs are synced to clients and editable by operators. Mod Menu metadata (icon, links) is added. Existing 1.x config files are migrated automatically, with `.forge-backup` copies kept. No gameplay changes. |
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-fabric-1.20.1-1.0.0.jar`
@@ -369,10 +369,34 @@ Do not describe excluded features as supported. Check `build.gradle` source excl
 ### Optional integrations and library choices
 
 - **Overflowing Bars:** optional; interoperate through its Fabric shared HUD-height values. Do not add it as a required dependency.
-- **Forge Config API Port:** required by the current configuration implementation; use the 1.20.1-compatible 8.0.3 release.
+- **Fzzy Config:** required as of 2.0.0 and replaces Forge Config API Port. It needs Fabric Language Kotlin. Its license forbids jar-in-jar, so users install it separately. See [Configuration (Fzzy Config)](#configuration-fzzy-config).
+- **Mod Menu:** optional. Fzzy Config provides the config screen for the Mod Menu config button. LSO's `fabric.mod.json` supplies the icon, links, and wiki entry.
+- **Forge Config API Port:** used by 1.x only; no longer needed from 2.0.0.
 - **Cardinal Components:** stores player survival component data on Fabric.
 - **Thermoo:** not required. LSO's model and data-driven configuration are being kept intact; optional interoperability may be considered later.
 - **Balm:** not required; the inspected source branch targeted a substantially newer Minecraft/Java stack and was not a compatible drop-in.
+
+## Configuration (Fzzy Config)
+
+As of 2.0.0, the seven LSO configs (`common`, `temperature`, `seasons`, `thirst`, `health`, `body_damage`, `client`) are Fzzy Config classes in `sfiomn.legendarysurvivaloverhaul.config`.
+
+**Editing in-game**
+- All 230 options can be edited from the Mod Menu config button or with `/configure legendarysurvivaloverhaul`.
+- `client` is client-only. The other six are registered as synced (`RegisterType.BOTH`), so the server's values are pushed to clients, and operators can edit them in-game.
+- Options keep their original names. Labels and descriptions come from `en_us.json`, using the keys `legendarysurvivaloverhaul.<config>.<field>` and `.desc`.
+- Related options are grouped as they were in the Forge sections, e.g. "HUD - Temperature".
+- Numeric options keep their original ranges. Small ranges are edited with sliders.
+
+**Applying changes**
+- Each config's `onSyncClient`, `onSyncServer`, `onUpdateClient`, and `onUpdateServer` hooks call `Config.bake(...)`, which refreshes the `Config.Baked` values the rest of the mod reads.
+- Changes take effect without a restart, except for settings that are only read at startup.
+
+**Migrating 1.x configs**
+- Fzzy uses the same paths as Forge Config API Port: `config/legendarysurvivaloverhaul/<name>.toml`.
+- `ForgeConfigMigration` detects a legacy file by its quoted Forge key names, renames it to `<name>.toml.forge-backup`, and lets Fzzy write defaults.
+- It then copies each legacy value onto the matching field using `assets/legendarysurvivaloverhaul/forge_config_migration.json`.
+- Values are validated: out-of-range numbers are clamped, and invalid enum values are skipped with a warning.
+- Verified on a dedicated dev server: legacy enum, int, double, boolean, and string/double-list values migrated, and an out-of-range radius (99) was clamped to its maximum (32).
 
 ## Build and test
 

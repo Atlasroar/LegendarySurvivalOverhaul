@@ -1,119 +1,138 @@
 package sfiomn.legendarysurvivaloverhaul.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-
+import me.fzzyhmstrs.fzzy_config.annotations.Comment;
+import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
+import me.fzzyhmstrs.fzzy_config.event.api.ServerUpdateContext;
+import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
+import net.minecraft.resources.ResourceLocation;
+import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
+import java.util.Collections;
 import java.util.List;
 
-public class SeasonsConfig
+/**
+ * Seasons settings, editable in-game through Fzzy Config (Mod Menu / {@code /configure}).
+ * Generated from the former ForgeConfigSpec definition; field names are referenced by {@link Config.Baked}.
+ */
+@SuppressWarnings("unused")
+public class SeasonsConfig extends me.fzzyhmstrs.fzzy_config.config.Config
 {
-	public final ForgeConfigSpec.BooleanValue sereneSeasonsEnabled;
-	public final ForgeConfigSpec.BooleanValue ssTropicalSeasonsEnabled;
-	public final ForgeConfigSpec.BooleanValue ssSeasonCardsEnabled;
-	public final ForgeConfigSpec.BooleanValue ssDefaultSeasonEnabled;
-
-	public final ForgeConfigSpec.DoubleValue ssEarlySpringModifier;
-	public final ForgeConfigSpec.DoubleValue ssMidSpringModifier;
-	public final ForgeConfigSpec.DoubleValue ssLateSpringModifier;
-
-	public final ForgeConfigSpec.DoubleValue ssEarlySummerModifier;
-	public final ForgeConfigSpec.DoubleValue ssMidSummerModifier;
-	public final ForgeConfigSpec.DoubleValue ssLateSummerModifier;
-
-	public final ForgeConfigSpec.DoubleValue ssEarlyAutumnModifier;
-	public final ForgeConfigSpec.DoubleValue ssMidAutumnModifier;
-	public final ForgeConfigSpec.DoubleValue ssLateAutumnModifier;
-
-	public final ForgeConfigSpec.DoubleValue ssEarlyWinterModifier;
-	public final ForgeConfigSpec.DoubleValue ssMidWinterModifier;
-	public final ForgeConfigSpec.DoubleValue ssLateWinterModifier;
-
-	public final ForgeConfigSpec.DoubleValue ssEarlyWetSeasonModifier;
-	public final ForgeConfigSpec.DoubleValue ssMidWetSeasonModifier;
-	public final ForgeConfigSpec.DoubleValue ssLateWetSeasonModifier;
-
-	public final ForgeConfigSpec.DoubleValue ssEarlyDrySeasonModifier;
-	public final ForgeConfigSpec.DoubleValue ssMidDrySeasonModifier;
-	public final ForgeConfigSpec.DoubleValue ssLateDrySeasonModifier;
-
-	public final ForgeConfigSpec.BooleanValue eclipticSeasonsEnabled;
-	public final ForgeConfigSpec.ConfigValue<List<? extends Double>> esSpringModifier;
-	public final ForgeConfigSpec.ConfigValue<List<? extends Double>> esSummerModifier;
-	public final ForgeConfigSpec.ConfigValue<List<? extends Double>> esAutumnModifier;
-	public final ForgeConfigSpec.ConfigValue<List<? extends Double>> esWinterModifier;
-
-	SeasonsConfig(ForgeConfigSpec.Builder builder)
+	public SeasonsConfig()
 	{
-		builder.comment(" Temperature options for the Serene Seasons integration.").push("serene-seasons");
-		sereneSeasonsEnabled = builder
-				.comment(" If Serene Seasons is installed, whether the seasons have an effect on the player's temperature.")
-				.define("Serene Seasons Enabled", true);
-		ssTropicalSeasonsEnabled = builder
-				.comment(" If enabled, tropical biomes use Serene Seasons wet and dry seasons instead of the normal seasons.")
-				.define("Tropical Seasons Enabled", false);
-		ssSeasonCardsEnabled = builder
-				.comment(" If season cards are enabled, season cards will appear at every season changes.")
-				.define("Season Cards Enabled", false);
-		ssDefaultSeasonEnabled = builder
-				.comment(" If default season is enabled, when serene season defines no season effect in a biome, the normal season temperature will be applied.",
-						" If disabled, when serene season defines no season effects, no season temperature will be applied.")
-				.define("Default Season Enabled", true);
-
-		builder.comment(" Temperature modifiers per season in temperate biomes." +
-						" The value is reached at the middle of the sub season, and smoothly transition from one to another.")
-				.push("temperate");
-		builder.push("spring");
-		ssEarlySpringModifier = builder.defineInRange("Early Spring Modifier", -3.0, -1000, 1000);
-		ssMidSpringModifier = builder.defineInRange("Mid Spring Modifier", 0.0, -1000, 1000);
-		ssLateSpringModifier = builder.defineInRange("Late Spring Modifier", 3.0, -1000, 1000);
-		builder.pop();
-
-		builder.push("summer");
-		ssEarlySummerModifier = builder.defineInRange("Early Summer Modifier", 6.0, -1000, 1000);
-		ssMidSummerModifier = builder.defineInRange("Mid Summer Modifier", 10.0, -1000, 1000);
-		ssLateSummerModifier = builder.defineInRange("Late Summer Modifier", 6.0, -1000, 1000);
-		builder.pop();
-
-		builder.push("autumn");
-		ssEarlyAutumnModifier = builder.defineInRange("Early Autumn Modifier", 3.0, -1000, 1000);
-		ssMidAutumnModifier = builder.defineInRange("Mid Autumn Modifier", 0.0, -1000, 1000);
-		ssLateAutumnModifier = builder.defineInRange("Late Autumn Modifier", -3.0, -1000, 1000);
-		builder.pop();
-
-		builder.push("winter");
-		ssEarlyWinterModifier = builder.defineInRange("Early Winter Modifier", -7.0, -1000, 1000);
-		ssMidWinterModifier = builder.defineInRange("Mid Winter Modifier", -12.0, -1000, 1000);
-		ssLateWinterModifier = builder.defineInRange("Late Winter Modifier", -7.0, -1000, 1000);
-		builder.pop();
-		builder.pop();
-
-		builder.comment(" Temperature modifiers per season in tropical biomes.").push("tropical");
-		builder.push("wet-season");
-		ssEarlyWetSeasonModifier = builder.defineInRange("Early Wet Season Modifier", -1.0, -1000, 1000);
-		ssMidWetSeasonModifier = builder.defineInRange("Mid Wet Season Modifier", -5.0, -1000, 1000);
-		ssLateWetSeasonModifier = builder.defineInRange("Late Wet Season Modifier", -1.0, -1000, 1000);
-		builder.pop();
-
-		builder.push("dry-season");
-		ssEarlyDrySeasonModifier = builder.defineInRange("Early Dry Season Modifier", 3.0, -1000, 1000);
-		ssMidDrySeasonModifier = builder.defineInRange("Mid Dry Season Modifier", 7.0, -1000, 1000);
-		ssLateDrySeasonModifier = builder.defineInRange("Late Dry Season Modifier", 3.0, -1000, 1000);
-		builder.pop();
-		builder.pop();
-		builder.pop();
-
-		builder.comment(" Temperature options for the Ecliptic Seasons integration.").push("ecliptic-seasons");
-		eclipticSeasonsEnabled = builder
-				.comment(" If Ecliptic Seasons is installed, whether the seasons have an effect on the player's temperature.")
-				.define("Ecliptic Seasons Enabled", true);
-
-		builder.comment(" Temperature modifiers per season. Each season is subdivided in 6 sub seasons." +
-						" The value is reached at the middle of the sub season, and smoothly transition from one to another.")
-				.push("temperature");
-		esSpringModifier = builder.defineList("Spring Modifier", List.of(-10.0, -7.0, -5.0, -3.0, -1.0, 0.0), Config::validateDouble);
-		esSummerModifier = builder.defineList("Summer Modifier", List.of(1.0, 3.0, 5.0, 7.0, 9.0, 10.0), Config::validateDouble);
-		esAutumnModifier = builder.defineList("Autumn Modifier", List.of(9.0, 7.0, 5.0, 3.0, 1.0, 0.0), Config::validateDouble);
-		esWinterModifier = builder.defineList("Winter Modifier", List.of(-1.0, -3.0, -5.0, -7.0, -10.0, -12.0), Config::validateDouble);
-		builder.pop();
-		builder.pop();
+		super(new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "seasons"));
 	}
+
+	@Override
+	public void onSyncClient()
+	{
+		Config.bake(this);
+	}
+
+	@Override
+	public void onSyncServer()
+	{
+		Config.bake(this);
+	}
+
+	@Override
+	public void onUpdateClient()
+	{
+		Config.bake(this);
+	}
+
+	@Override
+	public void onUpdateServer(ServerUpdateContext context)
+	{
+		Config.bake(this);
+	}
+
+	public ConfigGroup group_serene_seasons = new ConfigGroup("group_serene_seasons");
+
+	@Comment("If Serene Seasons is installed, whether the seasons have an effect on the player's temperature.")
+	public ValidatedBoolean sereneSeasonsEnabled = new ValidatedBoolean(true);
+
+	@Comment("If enabled, tropical biomes use Serene Seasons wet and dry seasons instead of the normal seasons.")
+	public ValidatedBoolean ssTropicalSeasonsEnabled = new ValidatedBoolean(false);
+
+	@Comment("If season cards are enabled, season cards will appear at every season changes.")
+	public ValidatedBoolean ssSeasonCardsEnabled = new ValidatedBoolean(false);
+
+	@Comment("If default season is enabled, when serene season defines no season effect in a biome, the normal season temperature will be applied. If disabled, when serene season defines no season effects, no season temperature will be applied.")
+	@ConfigGroup.Pop
+	public ValidatedBoolean ssDefaultSeasonEnabled = new ValidatedBoolean(true);
+
+	public ConfigGroup group_serene_seasons_temperate_spring = new ConfigGroup("group_serene_seasons_temperate_spring");
+
+	public ValidatedDouble ssEarlySpringModifier = new ValidatedDouble(-3.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ValidatedDouble ssMidSpringModifier = new ValidatedDouble(0.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@ConfigGroup.Pop
+	public ValidatedDouble ssLateSpringModifier = new ValidatedDouble(3.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_serene_seasons_temperate_summer = new ConfigGroup("group_serene_seasons_temperate_summer");
+
+	public ValidatedDouble ssEarlySummerModifier = new ValidatedDouble(6.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ValidatedDouble ssMidSummerModifier = new ValidatedDouble(10.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@ConfigGroup.Pop
+	public ValidatedDouble ssLateSummerModifier = new ValidatedDouble(6.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_serene_seasons_temperate_autumn = new ConfigGroup("group_serene_seasons_temperate_autumn");
+
+	public ValidatedDouble ssEarlyAutumnModifier = new ValidatedDouble(3.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ValidatedDouble ssMidAutumnModifier = new ValidatedDouble(0.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@ConfigGroup.Pop
+	public ValidatedDouble ssLateAutumnModifier = new ValidatedDouble(-3.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_serene_seasons_temperate_winter = new ConfigGroup("group_serene_seasons_temperate_winter");
+
+	public ValidatedDouble ssEarlyWinterModifier = new ValidatedDouble(-7.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ValidatedDouble ssMidWinterModifier = new ValidatedDouble(-12.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@ConfigGroup.Pop
+	public ValidatedDouble ssLateWinterModifier = new ValidatedDouble(-7.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_serene_seasons_tropical_wet_season = new ConfigGroup("group_serene_seasons_tropical_wet_season");
+
+	public ValidatedDouble ssEarlyWetSeasonModifier = new ValidatedDouble(-1.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ValidatedDouble ssMidWetSeasonModifier = new ValidatedDouble(-5.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@ConfigGroup.Pop
+	public ValidatedDouble ssLateWetSeasonModifier = new ValidatedDouble(-1.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_serene_seasons_tropical_dry_season = new ConfigGroup("group_serene_seasons_tropical_dry_season");
+
+	public ValidatedDouble ssEarlyDrySeasonModifier = new ValidatedDouble(3.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ValidatedDouble ssMidDrySeasonModifier = new ValidatedDouble(7.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@ConfigGroup.Pop
+	public ValidatedDouble ssLateDrySeasonModifier = new ValidatedDouble(3.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_ecliptic_seasons = new ConfigGroup("group_ecliptic_seasons");
+
+	@Comment("If Ecliptic Seasons is installed, whether the seasons have an effect on the player's temperature.")
+	@ConfigGroup.Pop
+	public ValidatedBoolean eclipticSeasonsEnabled = new ValidatedBoolean(true);
+
+	public ConfigGroup group_ecliptic_seasons_temperature = new ConfigGroup("group_ecliptic_seasons_temperature");
+
+	public ValidatedList<Double> esSpringModifier = new ValidatedDouble(0.0, Double.MAX_VALUE, -Double.MAX_VALUE).toList(List.of(-10.0, -7.0, -5.0, -3.0, -1.0, 0.0));
+
+	public ValidatedList<Double> esSummerModifier = new ValidatedDouble(0.0, Double.MAX_VALUE, -Double.MAX_VALUE).toList(List.of(1.0, 3.0, 5.0, 7.0, 9.0, 10.0));
+
+	public ValidatedList<Double> esAutumnModifier = new ValidatedDouble(0.0, Double.MAX_VALUE, -Double.MAX_VALUE).toList(List.of(9.0, 7.0, 5.0, 3.0, 1.0, 0.0));
+
+	@ConfigGroup.Pop
+	public ValidatedList<Double> esWinterModifier = new ValidatedDouble(0.0, Double.MAX_VALUE, -Double.MAX_VALUE).toList(List.of(-1.0, -3.0, -5.0, -7.0, -10.0, -12.0));
 }
