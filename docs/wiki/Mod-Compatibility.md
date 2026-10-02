@@ -17,6 +17,9 @@ Forge Config API Port is only needed by older LSO versions, or by other installe
 | Overflowing Bars | Shared HUD heights, shield/armor separation, broken-heart rendering, and vehicle-row gap correction; tested in-game. |
 | Serene Seasons | Season cards (including tropical Wet/Dry), temperature integration, and out-of-season bonemeal warning. Cards and warning were tested in-game. |
 | Supplementaries | Ordinary consumable finish-use flow uses LSO's existing hook; this is not a claim of a complete custom integration. |
+| Item Descriptions / Mod Descriptions | LSO ships its own `lore.legendarysurvivaloverhaul.*` entries for every item and block; no dependency required. See "Item Descriptions, Mod Descriptions and Field Guide" below. |
+| Field Guide | Purely client-side spyglass scanning of entities/blocks; no conflicts. LSO adds no custom entities, so there is nothing to scan by default, but any LSO item referenced from a Field Guide entry picks up LSO's Item Descriptions lore automatically. |
+| Immersive Overlays | Not currently reachable on Fabric 1.20.1 — see "Item Descriptions, Mod Descriptions and Field Guide" below for details and the upstream limitation. |
 
 For tropical Serene Seasons cards, enable **Tropical Seasons Enabled** as well as season cards. The bonemeal warning was checked with seasonal crops enabled and the out-of-season behavior set to disallow growth.
 
@@ -72,6 +75,14 @@ Inspired by [HardcoreLite](https://github.com/MC-Mods-Pete/HardcoreLite/tree/1.2
 **LevelZ precedence (by design):** when LevelZ is installed, its level-based `generic.max_health` bonus is treated as the baseline on top of which LSO's own heart-loss delta is applied. In practice this means a player's level-based LevelZ health floor takes precedence over LSO's `permanentHearts` floor — e.g. a level-0 LevelZ character starting at 3 Heart Containers (6 health) will not be brought lower than that by LSO's death heart-loss, even if `permanentHearts` is configured as low as `1`. This is intentional for compatibility between the two mods; raising a player's LevelZ level still raises how far they can be brought down by subsequent deaths. Like the full-heal path above, the heart-loss floor check is deferred to the player's next server tick on death so it always reads the final, LevelZ-combined max health rather than a pre-LevelZ snapshot.
 
 Both features are fully config-driven (Fzzy Config) and can be disabled or tuned per world, including reverting to the pre-v2.5.0 defaults (`heartsLostOnDeath = 0`, `permanentHearts = 10`).
+
+## Item Descriptions, Mod Descriptions, Field Guide, and Immersive Overlays (v2.6.0)
+
+[Item Descriptions](https://github.com/cassiancc/Item-Descriptions) shows a per-item/block description when holding Ctrl, driven entirely by lang-file entries in the form `lore.<namespace>.<id>`. LSO ships its own `lore.legendarysurvivaloverhaul.*` entries for every item and block it registers, so descriptions appear automatically with just Item Descriptions installed — no LSO-specific dependency, patch, or [Mod Descriptions](https://github.com/cassiancc/Mod-Descriptions) resource pack entry is required (Item Descriptions prefers a mod's own translations when present).
+
+[Field Guide](https://github.com/evanbones/Field-Guide) is a purely client-side spyglass-scanning mod for entities, blocks and multiblock structures; it does not hook into LSO at all, so there is no conflict. LSO does not register any custom `EntityType`, so none of its content is scanned by default. Any LSO item that does appear inside a Field Guide entry (e.g. referenced by a datapack-defined category) automatically picks up LSO's new Item Descriptions lore as its prefilled note, per Field Guide's own "Take notes" feature. Adding LSO's unique flora (Sun Fern/Ice Fern crops) as first-class Field Guide categories would require an LSO-authored Field Guide datapack and is tracked as optional future work, not a compatibility requirement.
+
+[Immersive Overlays](https://github.com/cassiancc/Immersive-Overlays) already ships a `LegendarySurvivalOverhaulCompat` class that sources its thermometer overlay from `sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil#getPlayerTargetTemperature`/`#getTemperatureEnum` — LSO's existing public API fully supports this call on Fabric 1.20.1. However, in Immersive Overlays' own multi-loader build, that compat class is currently compiled only for Forge and NeoForge 1.21.1 (gated by a Stonecutter `//? if (forge) || (neoforge && =1.21.1)` block); on Fabric the method unconditionally returns `null`, so the thermometer overlay never queries LSO there today. This is an upstream build-configuration gap in Immersive Overlays, not something fixable from LSO's codebase — LSO's API is already a complete, stable match. Widening that Stonecutter condition to include the Fabric 1.20.1 target in Immersive Overlays would be sufficient to enable it.
 
 ## Optional VanillaBackport sulfur support
 
