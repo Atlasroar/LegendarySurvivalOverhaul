@@ -18,6 +18,18 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v2.6.4
+====
+v2.6.3 shipped the "added_desc" tooltip keybind unbound by default, but
+that alone did not fix the Left Shift hijack for existing installs:
+Minecraft persists bound keys by name in options.txt, so anyone who
+had already launched the game kept the old saved "Left Shift"
+binding regardless of the new default. v2.6.4 adds a one-time
+client-side migration (gated by a marker file) that detects the
+saved added_desc keybind still pointing at Left Shift, clears it to
+unbound, and resaves options.txt, so the hijack is actually lifted on
+upgrade without requiring players to manually rebind it in Controls.
+
 v2.6.3
 ====
 Fixed Left Shift being hijacked: the "added_desc" tooltip keybind

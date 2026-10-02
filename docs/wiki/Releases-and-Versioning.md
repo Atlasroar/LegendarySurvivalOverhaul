@@ -2,14 +2,14 @@
 
 ## Latest full release
 
-[**v2.6.3**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.6.3) targets Minecraft 1.20.1, Fabric, and Java 17.
+[**v2.6.4**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.6.4) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
-legendarysurvivaloverhaul-fabric-1.20.1-2.6.3.jar
-SHA-256: F150140CD153B34087AC001722E164F0654AFB55095B4309DBE555BDD4907E35
+legendarysurvivaloverhaul-fabric-1.20.1-2.6.4.jar
+SHA-256: ACD24E047BFFFE88BC73BCFA2C3232296FA0705DF58C76E234CC6876987D9E5F
 ```
 
-v2.6.3 fixes the "added_desc" tooltip keybind (Thermometer/Coat item descriptions) hijacking Left Shift: Minecraft's KeyMapping system routes key events to only one binding per physical key, so defaulting this keybind to Left Shift silently blocked vanilla sneak and any other mod/custom keybind sharing that key. It now ships unbound by default. v2.6.2 adds "Uses:" crafting-purpose text to the flora item descriptions (Sun Fern, Ice Fern, Water Plant seeds/leaves/crops), surfaced via Item Descriptions and Field Guide. v2.6.1 sepia-toned the Field Guide "LSO Flora" tab icon from the real Sun Fern Leaf sprite. v2.6.0 added Field Guide "LSO Flora" datapack category plus Item Descriptions/Mod Descriptions compatibility lore. v2.5.0 added HardcoreLite-inspired Enchanted Golden Apple shield-health/heart-container-repair and death heart-loss mechanics, with a non-spectator floor and LevelZ precedence. v2.4.0 added LevelZ/LibZ health compatibility. v2.3.0 enabled datapack-only biome overrides while preserving native climates, added optional VanillaBackport sulfur-cave air, and made equipped Respirators prevent new Nausea effects from any source. **LSO - Air** has 27 controls; there are **259+ settings across nine configs**. Backport/Platform remain optional.
+v2.6.4 fixes the Left Shift hijack for players upgrading from pre-2.6.3 builds: v2.6.3 unbound the "added_desc" tooltip keybind's default, but Minecraft persists bound keys by name in options.txt, so already-saved installs kept the old Left Shift binding regardless of the new default. v2.6.4 adds a one-time client-side migration that detects a saved added_desc binding still on Left Shift, clears it, and resaves options.txt, so vanilla sneak and other keybinds sharing Shift work again without the player needing to manually rebind in Controls. v2.6.3 fixed the "added_desc" tooltip keybind (Thermometer/Coat item descriptions) hijacking Left Shift: Minecraft's KeyMapping system routes key events to only one binding per physical key, so defaulting this keybind to Left Shift silently blocked vanilla sneak and any other mod/custom keybind sharing that key. v2.6.2 adds "Uses:" crafting-purpose text to the flora item descriptions (Sun Fern, Ice Fern, Water Plant seeds/leaves/crops), surfaced via Item Descriptions and Field Guide. v2.6.1 sepia-toned the Field Guide "LSO Flora" tab icon from the real Sun Fern Leaf sprite. v2.6.0 added Field Guide "LSO Flora" datapack category plus Item Descriptions/Mod Descriptions compatibility lore. v2.5.0 added HardcoreLite-inspired Enchanted Golden Apple shield-health/heart-container-repair and death heart-loss mechanics, with a non-spectator floor and LevelZ precedence. v2.4.0 added LevelZ/LibZ health compatibility. v2.3.0 enabled datapack-only biome overrides while preserving native climates, added optional VanillaBackport sulfur-cave air, and made equipped Respirators prevent new Nausea effects from any source. **LSO - Air** has 27 controls; there are **259+ settings across nine configs**. Backport/Platform remain optional.
 
 The user confirmed in-game: the LevelZ health bonus remains stable after death, and the Enchanted Golden Apple/death heart-loss mechanics work as intended with and without LevelZ installed. Revised Respirator Nausea protection (from v2.3.0) still needs an in-game retest; broader multiplayer/dedicated-server validation remains open.
 
@@ -17,6 +17,7 @@ The user confirmed in-game: the LevelZ health bonus remains stable after death, 
 
 | Version | Milestone |
 | --- | --- |
+| v2.6.4 | One-time migration clears a saved added_desc keybind still on Left Shift, so the Shift-hijack fix actually applies to upgrading players, not just fresh installs. |
 | v2.6.3 | Fixed "added_desc" tooltip keybind hijacking Left Shift (vanilla KeyMapping.MAP only routes events to one binding per key); now unbound by default. |
 | v2.6.2 | "Uses:" crafting-purpose text added to flora item descriptions (Item Descriptions/Field Guide). |
 | v2.6.1 | Field Guide "LSO Flora" tab icon sepia-toned from the real Sun Fern Leaf sprite, replacing a placeholder design. |
