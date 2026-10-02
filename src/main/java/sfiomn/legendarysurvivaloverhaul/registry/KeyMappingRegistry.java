@@ -11,7 +11,11 @@ public class KeyMappingRegistry {
     public static KeyMapping showBodyHealth;
 
     public static void register() {
-        showAddedDesc = KeyBindingHelper.registerKeyBinding(create("added_desc", GLFW.GLFW_KEY_LEFT_SHIFT));
+        // Unbound by default: Minecraft's KeyMapping.MAP holds only one binding per physical
+        // key, so defaulting this to GLFW_KEY_LEFT_SHIFT silently stole Shift's key events from
+        // vanilla sneak and any other mod/custom keybind sharing that key. Players can bind it
+        // themselves in Controls if they want the tooltip-expand feature.
+        showAddedDesc = KeyBindingHelper.registerKeyBinding(create("added_desc", InputConstants.UNKNOWN.getValue()));
         showBodyHealth = KeyBindingHelper.registerKeyBinding(create("body_health", GLFW.GLFW_KEY_H));
     }
 

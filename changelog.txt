@@ -18,6 +18,17 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v2.6.3
+====
+Fixed Left Shift being hijacked: the "added_desc" tooltip keybind
+(used by Thermometer/Coat item descriptions) defaulted to Left Shift,
+but Minecraft's KeyMapping system only routes key-down/up events to a
+single binding per physical key. That silently starved vanilla sneak
+and any other mod/custom keybind also bound to Left Shift. The
+keybind now ships unbound by default; assign it yourself in Controls
+if you want the Shift-to-expand tooltip behavior. No other behavior
+changes.
+
 v2.6.2
 ====
 Added "Uses:" text to the Sun Fern, Ice Fern and Water Plant
