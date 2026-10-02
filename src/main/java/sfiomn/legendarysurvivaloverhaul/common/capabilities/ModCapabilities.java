@@ -25,8 +25,23 @@ import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
 import sfiomn.legendarysurvivaloverhaul.network.FabricDataSyncHandler;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class ModCapabilities
 {
+	/**
+	 * Players whose current health should be forced back to their max health attribute value
+	 * on their next server tick. Death respawns queue onto this instead of healing immediately
+	 * in {@link #copyPlayerState}, because other mods (e.g. LevelZ) recompute max-health
+	 * attribute modifiers from their own {@code AFTER_RESPAWN} listener, and Fabric does not
+	 * guarantee that listener runs before or after ours. Waiting for the next tick lets every
+	 * mod's respawn-time attribute math finish first, regardless of registration order, so the
+	 * player is healed to their true combined max health instead of a stale LSO-only snapshot.
+	 */
+	private static final Set<UUID> PENDING_RESPAWN_FULL_HEAL = ConcurrentHashMap.newKeySet();
+
 	public static void registerServerEvents()
 	{
 		ServerTickEvents.START_SERVER_TICK.register(server -> server.getPlayerList().getPlayers()
@@ -38,6 +53,7 @@ public class ModCapabilities
 			syncPlayerState(handler.player);
 			FabricDataSyncHandler.syncAll(handler.player);
 		});
+		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> PENDING_RESPAWN_FULL_HEAL.remove(handler.player.getUUID()));
 		ServerPlayerEvents.COPY_FROM.register(ModCapabilities::copyPlayerState);
 		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, player, alive) -> {
 			applyTemperatureImmunityOnDeathRespawn(player, alive);
@@ -97,6 +113,9 @@ public class ModCapabilities
 		{
 			// Server Side
 			Level level = player.level();
+
+			if (phase == TickPhase.START && PENDING_RESPAWN_FULL_HEAL.remove(player.getUUID()))
+				player.setHealth(player.getMaxHealth());
 
 			if (shouldSkipTick(player)) return;
 
@@ -207,7 +226,16 @@ public class ModCapabilities
 				HealthUtil.loseHearth(player, Config.Baked.heartsLostOnDeath);
 			else
 				HealthUtil.updatePlayerMaxHealthAttribute(player);
-			player.setHealth(player.getMaxHealth());
+
+			if (alive) {
+				// World/dimension change: no other mod re-derives max health here, safe to heal now.
+				player.setHealth(player.getMaxHealth());
+			} else {
+				// Death respawn: other mods (e.g. LevelZ) may still apply their own max-health
+				// attribute changes from their AFTER_RESPAWN listener. Defer the full heal to
+				// this player's next tick instead of healing to a possibly-stale max health now.
+				PENDING_RESPAWN_FULL_HEAL.add(player.getUUID());
+			}
 		}
 
 		if (Config.Baked.localizedBodyDamageEnabled && !alive)

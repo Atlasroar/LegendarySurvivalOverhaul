@@ -13,6 +13,7 @@ Forge Config API Port is only needed by older LSO versions, or by other installe
 | Mod | Implemented support and limits |
 | --- | --- |
 | Mod Menu | Config button supplied through Fzzy Config; LSO supplies icon, project/contact links, and wiki metadata. |
+| LevelZ | No conflict with level-based max-health bonuses; death-respawn heal deferred so it never overwrites LevelZ's attribute bonus. See "LevelZ health compatibility" below. |
 | Overflowing Bars | Shared HUD heights, shield/armor separation, broken-heart rendering, and vehicle-row gap correction; tested in-game. |
 | Serene Seasons | Season cards (including tropical Wet/Dry), temperature integration, and out-of-season bonemeal warning. Cards and warning were tested in-game. |
 | Supplementaries | Ordinary consumable finish-use flow uses LSO's existing hook; this is not a claim of a complete custom integration. |
@@ -50,6 +51,14 @@ Thin Air mechanics are built into LSO, with the dependencies/defaults listed in 
 No hand-tuned Terralith temperature presets are shipped. Biome JSON temperature is a Minecraft climate value, not Celsius. Existing altitude, season, weather, nearby-block and underground modifiers continue to contribute.
 
 v2.3.0 does not change the default Overworld air-height limits: Tectonic's taller terrain can still encounter high-altitude YELLOW air. Adjust Air profiles deliberately if your pack should differ.
+
+## LevelZ health compatibility
+
+[LevelZ](https://github.com/Globox1997/LevelZ/tree/1.20) (requires its [LibZ](https://github.com/Globox1997/LibZ/tree/1.20) library) can grant a level-based bonus to the `generic.max_health` attribute via its own `EntityAttributeModifier`. LSO's health overhaul already adds its own max-health delta as a single fixed-UUID modifier without touching the attribute's base value or other mods' modifiers, so the two mods' bonuses stack correctly regardless of load order.
+
+The one point of contention was the respawn-time "heal to full" step: on death, LevelZ reapplies its level attribute bonus from its own `AFTER_RESPAWN` listener, which is not guaranteed to run before or after LSO's. LSO's death-respawn heal is now deferred to the player's next server tick (instead of healing immediately during `COPY_FROM`), so it always reads the final, fully-combined max health — LevelZ's bonus is never clobbered or read too early. The world/dimension-change heal path is unaffected, since LevelZ does not recompute attributes synchronously there.
+
+LibZ itself only supplies shared GUI/network/config/registry utilities for LevelZ; it has no attribute or health logic of its own, so no additional adapter is needed for it.
 
 ## Optional VanillaBackport sulfur support
 
