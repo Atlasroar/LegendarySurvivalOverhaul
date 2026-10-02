@@ -5,7 +5,13 @@
   "name": "Legendary Survival Overhaul",
   "description": "Making survival harder. Highly configurable, so you can play the way you want.",
   "authors": ["Sfiomn"],
+  "contact": {
+    "homepage": "https://github.com/Atlasroar/LegendarySurvivalOverhaul",
+    "sources": "https://github.com/Atlasroar/LegendarySurvivalOverhaul",
+    "issues": "https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues"
+  },
   "license": "GPL-3.0-only",
+  "icon": "logo.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -21,7 +27,13 @@
   "custom": {
     "cardinal-components": [
       "legendarysurvivaloverhaul:player_survival"
-    ]
+    ],
+    "modmenu": {
+      "links": {
+        "modmenu.wiki": "https://github.com/Atlasroar/LegendarySurvivalOverhaul/blob/lso-fabric-1-20-1/docs/Fabric-Port-Wiki.md"
+      },
+      "update_checker": false
+    }
   },
   "mixins": [
     "legendarysurvivaloverhaul.mixins.json"
@@ -33,10 +45,12 @@
     "fabric-api": "*",
     "cardinal-components-base": ">=5.2.2",
     "cardinal-components-entity": ">=5.2.2",
-    "forgeconfigapiport": "*",
+    "fzzy_config": ">=0.7.7",
+    "fabric-language-kotlin": ">=1.10.18",
     "trinkets": ">=3.7.2"
   },
   "suggests": {
+    "modmenu": "*",
     "sereneseasons": "*",
     "betterdays": "*",
     "sereneseasonsplus": "*",

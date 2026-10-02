@@ -1,320 +1,259 @@
 package sfiomn.legendarysurvivaloverhaul.config;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-
+import me.fzzyhmstrs.fzzy_config.annotations.Comment;
+import me.fzzyhmstrs.fzzy_config.config.ConfigGroup;
+import me.fzzyhmstrs.fzzy_config.event.api.ServerUpdateContext;
+import me.fzzyhmstrs.fzzy_config.validation.collection.ValidatedList;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedBoolean;
+import me.fzzyhmstrs.fzzy_config.validation.misc.ValidatedEnum;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedDouble;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedInt;
+import me.fzzyhmstrs.fzzy_config.validation.number.ValidatedNumber;
+import net.minecraft.resources.ResourceLocation;
+import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
+import java.util.Collections;
 import java.util.List;
 
-public class TemperatureConfig
+/**
+ * Temperature settings, editable in-game through Fzzy Config (Mod Menu / {@code /configure}).
+ * Generated from the former ForgeConfigSpec definition; field names are referenced by {@link Config.Baked}.
+ */
+@SuppressWarnings("unused")
+public class TemperatureConfig extends me.fzzyhmstrs.fzzy_config.config.Config
 {
-	public final ForgeConfigSpec.BooleanValue temperatureEnabled;
-	public final ForgeConfigSpec.IntValue tempTickTime;
-	public final ForgeConfigSpec.DoubleValue minTemperatureModification;
-	public final ForgeConfigSpec.DoubleValue maxTemperatureModification;
-	public final ForgeConfigSpec.BooleanValue dangerousHeatTemperature;
-	public final ForgeConfigSpec.BooleanValue dangerousColdTemperature;
-	public final ForgeConfigSpec.DoubleValue goldFernChance;
-	public final ForgeConfigSpec.BooleanValue temperatureImmunityOnDeathEnabled;
-	public final ForgeConfigSpec.IntValue temperatureImmunityOnDeathTime;
-	public final ForgeConfigSpec.BooleanValue temperatureImmunityOnFirstSpawnEnabled;
-	public final ForgeConfigSpec.IntValue temperatureImmunityOnFirstSpawnTime;
-
-	public final ForgeConfigSpec.BooleanValue heatTemperatureSecondaryEffects;
-	public final ForgeConfigSpec.BooleanValue coldTemperatureSecondaryEffects;
-	public final ForgeConfigSpec.DoubleValue heatThirstEffectModifier;
-	public final ForgeConfigSpec.DoubleValue coldHungerEffectModifier;
-
-	public final ForgeConfigSpec.BooleanValue biomeEffectsEnabled;
-	public final ForgeConfigSpec.DoubleValue biomeDrynessMultiplier;
-	public final ForgeConfigSpec.DoubleValue biomeTemperatureMultiplier;
-
-	public final ForgeConfigSpec.DoubleValue timeModifier;
-	public final ForgeConfigSpec.DoubleValue biomeTimeMultiplier;
-	public final ForgeConfigSpec.DoubleValue shadeTimeModifier;
-	public final ForgeConfigSpec.DoubleValue shadeTimeModifierThreshold;
-
-	public final ForgeConfigSpec.DoubleValue altitudeModifier;
-	public final ForgeConfigSpec.DoubleValue sprintModifier;
-	public final ForgeConfigSpec.DoubleValue onFireModifier;
-
-	public final ForgeConfigSpec.BooleanValue wetnessEnabled;
-	public final ForgeConfigSpec.ConfigValue<List<? extends String>> wetnessImmunityMounts;
-	public final ForgeConfigSpec.DoubleValue wetMultiplier;
-	public final ForgeConfigSpec.IntValue wetnessTickTimer;
-	public final ForgeConfigSpec.IntValue wetnessDecrease;
-	public final ForgeConfigSpec.IntValue wetnessRainIncrease;
-	public final ForgeConfigSpec.IntValue wetnessFluidIncrease;
-
-	public final ForgeConfigSpec.IntValue tempInfluenceMaximumDist;
-	public final ForgeConfigSpec.DoubleValue tempInfluenceUpDistMultiplier;
-	public final ForgeConfigSpec.DoubleValue tempInfluenceInWaterDistMultiplier;
-	public final ForgeConfigSpec.DoubleValue tempInfluenceOutsideDistMultiplier;
-
-	public final ForgeConfigSpec.DoubleValue undergroundBiomeTemperatureMultiplier;
-	public final ForgeConfigSpec.IntValue undergroundEffectStartDistanceToWS;
-	public final ForgeConfigSpec.IntValue undergroundEffectEndDistanceToWS;
-
-	public final ForgeConfigSpec.DoubleValue rainTemperatureModifier;
-	public final ForgeConfigSpec.DoubleValue snowTemperatureModifier;
-
-	public final ForgeConfigSpec.BooleanValue vanillaFreezeEnabled;
-	public final ForgeConfigSpec.DoubleValue maxFreezeTemperatureModifier;
-	public final ForgeConfigSpec.IntValue maxFreezeEffectTick;
-
-	public final ForgeConfigSpec.DoubleValue playerHuddlingModifier;
-	public final ForgeConfigSpec.IntValue playerHuddlingRadius;
-
-	public final ForgeConfigSpec.DoubleValue heatingCoat1Modifier;
-	public final ForgeConfigSpec.DoubleValue heatingCoat2Modifier;
-	public final ForgeConfigSpec.DoubleValue heatingCoat3Modifier;
-
-	public final ForgeConfigSpec.DoubleValue coolingCoat1Modifier;
-	public final ForgeConfigSpec.DoubleValue coolingCoat2Modifier;
-	public final ForgeConfigSpec.DoubleValue coolingCoat3Modifier;
-
-	public final ForgeConfigSpec.DoubleValue thermalCoat1Modifier;
-	public final ForgeConfigSpec.DoubleValue thermalCoat2Modifier;
-	public final ForgeConfigSpec.DoubleValue thermalCoat3Modifier;
-
-	public final ForgeConfigSpec.DoubleValue tfcItemHeatMultiplier;
-	public final ForgeConfigSpec.DoubleValue tfcTemperatureMultiplier;
-
-	TemperatureConfig(ForgeConfigSpec.Builder builder)
+	public TemperatureConfig()
 	{
-		temperatureEnabled = builder
-				.comment(" Whether the temperature system is enabled.",
-						" Season related temperature options are in seasons.toml.")
-				.define("Temperature Enabled", true);
-		dangerousHeatTemperature = builder
-				.comment(" If enabled, players will take damage from the effects of high temperature.")
-				.define("Dangerous Heat Temperature Effects", true);
-		dangerousColdTemperature = builder
-				.comment(" If enabled, players will take damage from the effects of low temperature.")
-				.define("Dangerous Cold Temperature Effects", true);
-		goldFernChance = builder
-				.comment(" Chance of the ferns to become a gold fern when grow mature.")
-				.defineInRange("Gold Fern Chance", 0.01, 0, 1);
-		onFireModifier = builder
-				.comment(" How much of an effect being on fire has on a player's temperature.")
-				.defineInRange("Player On Fire Modifier", 12.5, -1000, 1000);
-		sprintModifier = builder
-				.comment(" How much of an effect sprinting has on a player's temperature.")
-				.defineInRange("Player Sprint Modifier", 1.5, -1000, 1000);
-		altitudeModifier = builder
-				.comment(" How much of an effect altitude has on player's temperature.",
-						" Each 64 blocks further from sea level will impact player's temperature by this value.",
-						" The sea level can be defined via datapack under the dimension's temperature.",
-						" As an example, a value of -6 will reduce the player's temperature by 6 for each 64 blocks (the calculus is done linearly).")
-				.defineInRange("Altitude Modifier", -6.0, -1000, 1000);
-
-		builder.push("temperature-immunity");
-		temperatureImmunityOnDeathEnabled = builder
-				.comment(" If enabled, players will be immune to temperature effects after death.")
-				.define("Temperature Immunity On Death Enabled", true);
-		temperatureImmunityOnDeathTime = builder
-				.comment(" Temperature immunity period in ticks while the player is immune to temperature effects after death.")
-				.defineInRange("Temperature Immunity On Death Time", 1800, 0, 100000);
-		temperatureImmunityOnFirstSpawnEnabled = builder
-				.comment(" If enabled, players will be immune to temperature effects on first spawn in a world.")
-				.define("Temperature Immunity On First Spawn Enabled", true);
-		temperatureImmunityOnFirstSpawnTime = builder
-				.comment(" Temperature immunity period in ticks while the player is immune to temperature effects on first spawn.")
-				.defineInRange("Temperature Immunity On First Spawn Time", 1800, 0, 100000);
-		builder.pop();
-
-		builder.push("secondary_effects");
-		heatTemperatureSecondaryEffects = builder
-				.comment(" If enabled, players will also receive other effects from their current temperature state.",
-						" If the player is too hot, hydration will deplete faster.")
-				.define("Heat Temperature Secondary Effects", true);
-		coldTemperatureSecondaryEffects = builder
-				.comment(" If enabled, players will also receive other effects from their current temperature state.",
-						" If the player is too cold, hunger will deplete faster.")
-				.define("Cold Temperature Secondary Effects", true);
-		heatThirstEffectModifier = builder
-				.comment(" How much thirst exhaustion will be added every 50 ticks with no amplification effect, when the player suffers from heat.")
-				.defineInRange("Heat Thirst Effect Modifier", 0.2d, 0, 1000.0d);
-		coldHungerEffectModifier = builder
-				.comment(" How much food exhaustion will be added every 50 ticks with no amplification effect, when the player suffers from frostbite.",
-						" As reference, the hunger effect add 0.025 food exhaustion every 50 ticks.")
-				.defineInRange("Cold Hunger Modifier", 0.1d, 0, 1000.0d);
-		builder.pop();
-
-		builder.push("wetness");
-		wetnessEnabled = builder
-				.comment(" Enable the wetness mechanic.")
-				.define("Wetness Enabled", true);
-		wetnessImmunityMounts = builder
-				.comment(" List of mounts that provide a wetness immunity.")
-				.defineList("Wetness Immunity Mounts", List.of("alexscaves:submarine", "immersive_machinery:bamboo_bee", "immersive_machinery:tunnel_digger", "immersive_machinery:redstone_sheep", "immersive_machinery:copperfin"), Config::validateEntityType);
-		wetMultiplier = builder
-				.comment(" How much being wet influences the player's temperature.",
-						" It means that for a value of -10, the body temperature of the player is reduced by 10.")
-				.defineInRange("Wetness Modifier", -10.0, -1000, 1000);
-		wetnessTickTimer = builder
-				.comment(" How frequently the wetness is modified.",
-						" By default, every 10 ticks, the wetness will either increase or decrease, based on the conditions.")
-				.defineInRange("Wetness Tick Timer", 10, 1, 100000);
-		wetnessDecrease = builder
-				.comment(" How much the wetness decrease when out of water.")
-				.defineInRange("Wetness Decrease", -3, -1000, 0);
-		wetnessRainIncrease = builder
-				.comment(" How much the wetness increase when under rain.")
-				.defineInRange("Wetness Under Rain Increase", 7, 0, 1000);
-		wetnessFluidIncrease = builder
-				.comment(" How much the wetness increase when the player is in a fluid, scale by the amount of fluid in the block.",
-						" The defined value is for a full block of fluid, and goes up to 2 times this value when fully immerge.")
-				.defineInRange("Wetness In Fluid Increase", 10, 0, 1000);
-		builder.pop();
-
-		builder.push("huddling");
-		playerHuddlingModifier = builder
-				.comment(" How much nearby players increase the ambient temperature by.", " Note that this value stacks!")
-				.defineInRange("Player Huddling Modifier", 0.5, -1000, 1000);
-		playerHuddlingRadius = builder
-				.comment(" The radius, in blocks, around which players will add to each other's temperature.")
-				.defineInRange("Player Huddling Radius", 1, 0, 10);
-		builder.pop();
-
-		builder.push("biomes");
-		biomeTemperatureMultiplier = builder
-				.comment(" How much a biome's temperature effects are multiplied.")
-				.defineInRange("Biome Temperature Multiplier", 18.0d, 0.0d, 1000);
-		biomeEffectsEnabled = builder
-				.comment(" Whether biomes will have an effect on a player's temperature.")
-				.define("Biomes affect Temperature", true);
-		biomeDrynessMultiplier = builder
-				.comment(" How much hot biome's dryness will make nights really cold.",
-						" Affects only dry (minecraft down fall <0.2) and hot biome.",
-						" 1 means no dryness effect; 0.5 means the biome temp will be divided by 2 at the middle of the night.")
-				.defineInRange("Biome's Dryness Multiplier", 0.2d, 0, 1);
-		builder.pop();
-
-		builder.comment(" The underground effect starts apply at Start Distance to the world surface.",
-				" The underground effect will linearly apply a multiplier on the biome temperature, and averages the time and season temperature effects.").push("underground");
-		undergroundBiomeTemperatureMultiplier = builder
-				.comment(" How much a biomes temperature effects are multiplied when player is underground")
-				.defineInRange("Underground Biome Temperature Multiplier", 0.8d, 0.0d, 1000);
-		undergroundEffectStartDistanceToWS = builder
-				.comment(" Distance to the World Surface where underground effect will start to be applied.",
-						" Smaller distance, no underground effect are applied.")
-				.defineInRange("Start Distance To World Surface For Underground Effect", 10, 0, 400);
-		undergroundEffectEndDistanceToWS = builder
-				.comment(" Distance to the World Surface where underground effect will be maximal.",
-						" Bigger distance, the underground effect is maximal. Between the Start and End Distance, the increase of underground effect is linear.")
-				.defineInRange("End Distance To World Surface For Underground Effect", 16, 0, 400);
-		builder.pop();
-
-		builder.push("weather");
-		rainTemperatureModifier = builder
-				.comment(" How much of an effect rain has on temperature.",
-						" It means that for a value of -2, the body temperature of the player is reduced by 2.")
-				.defineInRange("Rain Temperature Modifier", -2.0, -1000, 1000);
-		snowTemperatureModifier = builder
-				.comment(" How much of an effect snow has on temperature.",
-						" It means that for a value of -6, the body temperature of the player is reduced by 6.")
-				.defineInRange("Snow Temperature Modifier", -6.0, -1000, 1000);
-		builder.pop();
-
-		builder.comment(" Freeze effect increases while inside snow powder.").push("freeze");
-		vanillaFreezeEnabled = builder
-				.comment(" If enabled, the player suffers vanilla freeze when inside powder snow.")
-				.define("Vanilla Freeze Enabled", false);
-		maxFreezeTemperatureModifier = builder
-				.comment(" How much of an effect freeze has on temperature when reaching maximum tick time. Starts at 0 and increases linearly.")
-				.defineInRange("Max Freeze Temperature Modifier", -10.0, -1000, 1000);
-		maxFreezeEffectTick = builder
-				.comment(" How long in tick before freeze modifier reaches its maximum effect.")
-				.defineInRange("Max Freeze Effect Tick", 400, 0, 100000);
-		builder.pop();
-
-		builder.push("time");
-		timeModifier = builder
-				.comment(" How much Time has effect on Temperature.",
-						" Maximum effect at noon (positive) and midnight (negative), following a sinusoidal")
-				.defineInRange("Time Based Temperature Modifier", 2.0d, 0.0d, Double.POSITIVE_INFINITY);
-		biomeTimeMultiplier = builder
-				.comment(" How strongly time in extreme temperature biomes affect player's temperature.",
-						" Extreme temperature biomes (like snowy taiga, deserts, ...) will multiply the time based temperature by this value, while temperate biome won't be affected by this value, following a linear.")
-				.defineInRange("Biome Time Multiplier", 1.75d, 1.0d, Double.POSITIVE_INFINITY);
-		shadeTimeModifier = builder
-				.comment(" Staying in the shade or during cloudy weather will reduce player's temperature by this amount based on time of the day (maximum effect at noon, following sinusoidal).",
-						" It means that for a value of -6, the body temperature of the player is reduced by 6.",
-						" Only effective when reaching the threshold and during day time!")
-				.defineInRange("Shade Time Modifier", -6.0, -1000, 1000);
-		shadeTimeModifierThreshold = builder
-				.comment(" Defines when the biome temperature added by the season temperature (if seasons mod loaded) will trigger a shade effect.")
-				.defineInRange("Shade Time Modifier Threshold", 9.0, 0, 10000);
-		builder.pop();
-
-		builder.comment(" Temperature coat adds temperature effects on armors by using the sewing table.",
-						" Adaptive means the coating will maintain the player's temperature temperate.")
-				.push("coat");
-
-		builder.comment(" Add a heating resistance on armors.").push("heating");
-		heatingCoat1Modifier = builder.defineInRange("Heating Coat I", 2.0d, 0, 1000.0d);
-		heatingCoat2Modifier = builder.defineInRange("Heating Coat II", 3.0d, 0, 1000.0d);
-		heatingCoat3Modifier = builder.defineInRange("Heating Coat III", 4.0d, 0, 1000.0d);
-		builder.pop();
-
-		builder.comment(" Add a cooling resistance on armors.").push("cooling");
-		coolingCoat1Modifier = builder.defineInRange("Cooling Coat I", 2.0d, 0, 1000.0d);
-		coolingCoat2Modifier = builder.defineInRange("Cooling Coat II", 3.0d, 0, 1000.0d);
-		coolingCoat3Modifier = builder.defineInRange("Cooling Coat III", 4.0d, 0, 1000.0d);
-		builder.pop();
-
-		builder.comment(" Add a temperature resistance on armors that can both heat and cool the player.")
-				.push("thermal");
-		thermalCoat1Modifier = builder.defineInRange("Thermal Coat I", 2.0d, 0, 1000.0d);
-		thermalCoat2Modifier = builder.defineInRange("Thermal Coat II", 3.0d, 0, 1000.0d);
-		thermalCoat3Modifier = builder.defineInRange("Thermal Coat III", 4.0d, 0, 1000.0d);
-		builder.pop();
-		builder.pop();
-
-		builder.push("advanced");
-		tempInfluenceMaximumDist = builder
-				.comment(" Maximum influence distance, in blocks, where thermal sources will have an effect on temperature.")
-				.defineInRange("Temperature Influence Maximum Distance", 20, 1, 40);
-		tempInfluenceUpDistMultiplier = builder
-				.comment(" How strongly influence distance above the player is reduced for thermal sources to have an effect on temperature.")
-				.comment(" Example max dist is 10, up mult is 0.75 -> max distance is 10 * 0.75 = 7.5 blocks above the player.",
-						" Logic is that heat goes up, the strength of the heat source above the player is decreased faster with distance.")
-				.defineInRange("Temperature Influence Up Distance Multiplier", 0.75, 0.0, 1.0);
-		tempInfluenceInWaterDistMultiplier = builder
-				.comment(" How strongly influence distance in water is reduced for thermal sources to have an effect on temperature.",
-						" The under water maximum distance is defined as the maximum distance * this value")
-				.defineInRange("Temperature Influence In Water Distance Multiplier", 0.25, 0.0, 1.0);
-		tempInfluenceOutsideDistMultiplier = builder
-				.comment(" How strongly influence distance outside a structure is reduced for thermal sources to have an effect on temperature.",
-						" The outside maximum distance is defined as the maximum distance * this value")
-				.defineInRange("Temperature Influence Outside Distance Multiplier", 0.5, 0.0, 1.0);
-		builder
-				.comment(" The player's temperature will be adjusted at each temperature tick time,",
-						" by an amount of temperature defined between the minimum and the maximum temperature modification adjusted linearly.")
-				.push("temperature-modification");
-		tempTickTime = builder
-				.comment(" Amount of time in ticks between 2 player temperature modification. The bigger is this value, the more time it takes between temperature adjustments.")
-				.defineInRange("Temperature Tick Time", 20, 5, Integer.MAX_VALUE);
-		maxTemperatureModification = builder
-				.comment(" Maximum amount of temperature the player's temperature can be modified at each temperature tick time.",
-						" Correspond to the amount of temperature given when temperature difference is maximum, meaning 40.")
-				.defineInRange("Maximum Temperature Modification", 1, 0.1, Integer.MAX_VALUE);
-		minTemperatureModification = builder
-				.comment(" Minimum amount of temperature the player's temperature can be modified at each temperature tick time.",
-						" Correspond to the amount of temperature given when there is no temperature difference")
-				.defineInRange("Minimum Temperature Modification", 0.2, 0.1, Integer.MAX_VALUE);
-		builder.pop();
-		builder.pop();
-
-		builder.push("integration");
-		builder.comment(" If TerraFirmaCraft is installed, then biome, time, season (if serene seasons installed) and altitude modifiers will be disabled, and TerraFirmaCraft calculation used instead.",
-				" All other modifiers remain to calculate Player temperature.").push("terrafirmacraft");
-		tfcItemHeatMultiplier = builder
-				.comment(" How much the heat of the item provided by TerraFirmaCraft is multiplied. 0 deactivates the impact on temperature.")
-				.defineInRange("TerraFirmaCraft Item Heat Multiplier", 0.01d, 0, 1000);
-		tfcTemperatureMultiplier = builder
-				.comment(" How much the temperature given from TerraFirmaCraft is multiplied. 0 deactivates the impact on temperature.")
-				.defineInRange("TerraFirmaCraft Temperature Multiplier", 1.0d, 0, 1000);
-		builder.pop();
-		builder.pop();
+		super(new ResourceLocation(LegendarySurvivalOverhaul.MOD_ID, "temperature"));
 	}
+
+	@Override
+	public void onSyncClient()
+	{
+		Config.bake(this);
+	}
+
+	@Override
+	public void onSyncServer()
+	{
+		Config.bake(this);
+	}
+
+	@Override
+	public void onUpdateClient()
+	{
+		Config.bake(this);
+	}
+
+	@Override
+	public void onUpdateServer(ServerUpdateContext context)
+	{
+		Config.bake(this);
+	}
+
+	@Comment("Whether the temperature system is enabled. Season related temperature options are in seasons.toml.")
+	public ValidatedBoolean temperatureEnabled = new ValidatedBoolean(true);
+
+	@Comment("If enabled, players will take damage from the effects of high temperature.")
+	public ValidatedBoolean dangerousHeatTemperature = new ValidatedBoolean(true);
+
+	@Comment("If enabled, players will take damage from the effects of low temperature.")
+	public ValidatedBoolean dangerousColdTemperature = new ValidatedBoolean(true);
+
+	@Comment("Chance of the ferns to become a gold fern when grow mature.")
+	public ValidatedDouble goldFernChance = new ValidatedDouble(0.01, 1.0, 0.0, ValidatedNumber.WidgetType.SLIDER);
+
+	@Comment("How much of an effect being on fire has on a player's temperature.")
+	public ValidatedDouble onFireModifier = new ValidatedDouble(12.5, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How much of an effect sprinting has on a player's temperature.")
+	public ValidatedDouble sprintModifier = new ValidatedDouble(1.5, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How much of an effect altitude has on player's temperature. Each 64 blocks further from sea level will impact player's temperature by this value. The sea level can be defined via datapack under the dimension's temperature. As an example, a value of -6 will reduce the player's temperature by 6 for each 64 blocks (the calculus is done linearly).")
+	public ValidatedDouble altitudeModifier = new ValidatedDouble(-6.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_temperature_immunity = new ConfigGroup("group_temperature_immunity");
+
+	@Comment("If enabled, players will be immune to temperature effects after death.")
+	public ValidatedBoolean temperatureImmunityOnDeathEnabled = new ValidatedBoolean(true);
+
+	@Comment("Temperature immunity period in ticks while the player is immune to temperature effects after death.")
+	public ValidatedInt temperatureImmunityOnDeathTime = new ValidatedInt(1800, 100000, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	@Comment("If enabled, players will be immune to temperature effects on first spawn in a world.")
+	public ValidatedBoolean temperatureImmunityOnFirstSpawnEnabled = new ValidatedBoolean(true);
+
+	@Comment("Temperature immunity period in ticks while the player is immune to temperature effects on first spawn.")
+	@ConfigGroup.Pop
+	public ValidatedInt temperatureImmunityOnFirstSpawnTime = new ValidatedInt(1800, 100000, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	public ConfigGroup group_secondary_effects = new ConfigGroup("group_secondary_effects");
+
+	@Comment("If enabled, players will also receive other effects from their current temperature state. If the player is too hot, hydration will deplete faster.")
+	public ValidatedBoolean heatTemperatureSecondaryEffects = new ValidatedBoolean(true);
+
+	@Comment("If enabled, players will also receive other effects from their current temperature state. If the player is too cold, hunger will deplete faster.")
+	public ValidatedBoolean coldTemperatureSecondaryEffects = new ValidatedBoolean(true);
+
+	@Comment("How much thirst exhaustion will be added every 50 ticks with no amplification effect, when the player suffers from heat.")
+	public ValidatedDouble heatThirstEffectModifier = new ValidatedDouble(0.2d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How much food exhaustion will be added every 50 ticks with no amplification effect, when the player suffers from frostbite. As reference, the hunger effect add 0.025 food exhaustion every 50 ticks.")
+	@ConfigGroup.Pop
+	public ValidatedDouble coldHungerEffectModifier = new ValidatedDouble(0.1d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_wetness = new ConfigGroup("group_wetness");
+
+	@Comment("Enable the wetness mechanic.")
+	public ValidatedBoolean wetnessEnabled = new ValidatedBoolean(true);
+
+	@Comment("List of mounts that provide a wetness immunity.")
+	public ValidatedList<String> wetnessImmunityMounts = ValidatedList.ofString(List.of("alexscaves:submarine", "immersive_machinery:bamboo_bee", "immersive_machinery:tunnel_digger", "immersive_machinery:redstone_sheep", "immersive_machinery:copperfin"));
+
+	@Comment("How much being wet influences the player's temperature. It means that for a value of -10, the body temperature of the player is reduced by 10.")
+	public ValidatedDouble wetMultiplier = new ValidatedDouble(-10.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How frequently the wetness is modified. By default, every 10 ticks, the wetness will either increase or decrease, based on the conditions.")
+	public ValidatedInt wetnessTickTimer = new ValidatedInt(10, 100000, 1, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	@Comment("How much the wetness decrease when out of water.")
+	public ValidatedInt wetnessDecrease = new ValidatedInt(-3, 0, -1000, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	@Comment("How much the wetness increase when under rain.")
+	public ValidatedInt wetnessRainIncrease = new ValidatedInt(7, 1000, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	@Comment("How much the wetness increase when the player is in a fluid, scale by the amount of fluid in the block. The defined value is for a full block of fluid, and goes up to 2 times this value when fully immerge.")
+	@ConfigGroup.Pop
+	public ValidatedInt wetnessFluidIncrease = new ValidatedInt(10, 1000, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	public ConfigGroup group_huddling = new ConfigGroup("group_huddling");
+
+	@Comment("How much nearby players increase the ambient temperature by. Note that this value stacks!")
+	public ValidatedDouble playerHuddlingModifier = new ValidatedDouble(0.5, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("The radius, in blocks, around which players will add to each other's temperature.")
+	@ConfigGroup.Pop
+	public ValidatedInt playerHuddlingRadius = new ValidatedInt(1, 10, 0, ValidatedNumber.WidgetType.SLIDER);
+
+	public ConfigGroup group_biomes = new ConfigGroup("group_biomes");
+
+	@Comment("How much a biome's temperature effects are multiplied.")
+	public ValidatedDouble biomeTemperatureMultiplier = new ValidatedDouble(18.0d, 1000.0, 0.0d, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("Whether biomes will have an effect on a player's temperature.")
+	public ValidatedBoolean biomeEffectsEnabled = new ValidatedBoolean(true);
+
+	@Comment("How much hot biome's dryness will make nights really cold. Affects only dry (minecraft down fall <0.2) and hot biome. 1 means no dryness effect; 0.5 means the biome temp will be divided by 2 at the middle of the night.")
+	@ConfigGroup.Pop
+	public ValidatedDouble biomeDrynessMultiplier = new ValidatedDouble(0.2d, 1.0, 0.0, ValidatedNumber.WidgetType.SLIDER);
+
+	public ConfigGroup group_underground = new ConfigGroup("group_underground");
+
+	@Comment("How much a biomes temperature effects are multiplied when player is underground")
+	public ValidatedDouble undergroundBiomeTemperatureMultiplier = new ValidatedDouble(0.8d, 1000.0, 0.0d, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("Distance to the World Surface where underground effect will start to be applied. Smaller distance, no underground effect are applied.")
+	public ValidatedInt undergroundEffectStartDistanceToWS = new ValidatedInt(10, 400, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	@Comment("Distance to the World Surface where underground effect will be maximal. Bigger distance, the underground effect is maximal. Between the Start and End Distance, the increase of underground effect is linear.")
+	@ConfigGroup.Pop
+	public ValidatedInt undergroundEffectEndDistanceToWS = new ValidatedInt(16, 400, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	public ConfigGroup group_weather = new ConfigGroup("group_weather");
+
+	@Comment("How much of an effect rain has on temperature. It means that for a value of -2, the body temperature of the player is reduced by 2.")
+	public ValidatedDouble rainTemperatureModifier = new ValidatedDouble(-2.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How much of an effect snow has on temperature. It means that for a value of -6, the body temperature of the player is reduced by 6.")
+	@ConfigGroup.Pop
+	public ValidatedDouble snowTemperatureModifier = new ValidatedDouble(-6.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_freeze = new ConfigGroup("group_freeze");
+
+	@Comment("If enabled, the player suffers vanilla freeze when inside powder snow.")
+	public ValidatedBoolean vanillaFreezeEnabled = new ValidatedBoolean(false);
+
+	@Comment("How much of an effect freeze has on temperature when reaching maximum tick time. Starts at 0 and increases linearly.")
+	public ValidatedDouble maxFreezeTemperatureModifier = new ValidatedDouble(-10.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How long in tick before freeze modifier reaches its maximum effect.")
+	@ConfigGroup.Pop
+	public ValidatedInt maxFreezeEffectTick = new ValidatedInt(400, 100000, 0, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	public ConfigGroup group_time = new ConfigGroup("group_time");
+
+	@Comment("How much Time has effect on Temperature. Maximum effect at noon (positive) and midnight (negative), following a sinusoidal")
+	public ValidatedDouble timeModifier = new ValidatedDouble(2.0d, Double.POSITIVE_INFINITY, 0.0d, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How strongly time in extreme temperature biomes affect player's temperature. Extreme temperature biomes (like snowy taiga, deserts, ...) will multiply the time based temperature by this value, while temperate biome won't be affected by this value, following a linear.")
+	public ValidatedDouble biomeTimeMultiplier = new ValidatedDouble(1.75d, Double.POSITIVE_INFINITY, 1.0d, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("Staying in the shade or during cloudy weather will reduce player's temperature by this amount based on time of the day (maximum effect at noon, following sinusoidal). It means that for a value of -6, the body temperature of the player is reduced by 6. Only effective when reaching the threshold and during day time!")
+	public ValidatedDouble shadeTimeModifier = new ValidatedDouble(-6.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("Defines when the biome temperature added by the season temperature (if seasons mod loaded) will trigger a shade effect.")
+	@ConfigGroup.Pop
+	public ValidatedDouble shadeTimeModifierThreshold = new ValidatedDouble(9.0, 10000.0, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_coat_heating = new ConfigGroup("group_coat_heating");
+
+	public ValidatedDouble heatingCoat1Modifier = new ValidatedDouble(2.0d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ValidatedDouble heatingCoat2Modifier = new ValidatedDouble(3.0d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@ConfigGroup.Pop
+	public ValidatedDouble heatingCoat3Modifier = new ValidatedDouble(4.0d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_coat_cooling = new ConfigGroup("group_coat_cooling");
+
+	public ValidatedDouble coolingCoat1Modifier = new ValidatedDouble(2.0d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ValidatedDouble coolingCoat2Modifier = new ValidatedDouble(3.0d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@ConfigGroup.Pop
+	public ValidatedDouble coolingCoat3Modifier = new ValidatedDouble(4.0d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_coat_thermal = new ConfigGroup("group_coat_thermal");
+
+	public ValidatedDouble thermalCoat1Modifier = new ValidatedDouble(2.0d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ValidatedDouble thermalCoat2Modifier = new ValidatedDouble(3.0d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@ConfigGroup.Pop
+	public ValidatedDouble thermalCoat3Modifier = new ValidatedDouble(4.0d, 1000.0d, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_advanced = new ConfigGroup("group_advanced");
+
+	@Comment("Maximum influence distance, in blocks, where thermal sources will have an effect on temperature.")
+	public ValidatedInt tempInfluenceMaximumDist = new ValidatedInt(20, 40, 1, ValidatedNumber.WidgetType.SLIDER);
+
+	@Comment("How strongly influence distance above the player is reduced for thermal sources to have an effect on temperature.")
+	public ValidatedDouble tempInfluenceUpDistMultiplier = new ValidatedDouble(0.75, 1.0, 0.0, ValidatedNumber.WidgetType.SLIDER);
+
+	@Comment("How strongly influence distance in water is reduced for thermal sources to have an effect on temperature. The under water maximum distance is defined as the maximum distance * this value")
+	public ValidatedDouble tempInfluenceInWaterDistMultiplier = new ValidatedDouble(0.25, 1.0, 0.0, ValidatedNumber.WidgetType.SLIDER);
+
+	@Comment("How strongly influence distance outside a structure is reduced for thermal sources to have an effect on temperature. The outside maximum distance is defined as the maximum distance * this value")
+	@ConfigGroup.Pop
+	public ValidatedDouble tempInfluenceOutsideDistMultiplier = new ValidatedDouble(0.5, 1.0, 0.0, ValidatedNumber.WidgetType.SLIDER);
+
+	public ConfigGroup group_advanced_temperature_modification = new ConfigGroup("group_advanced_temperature_modification");
+
+	@Comment("Amount of time in ticks between 2 player temperature modification. The bigger is this value, the more time it takes between temperature adjustments.")
+	public ValidatedInt tempTickTime = new ValidatedInt(20, Integer.MAX_VALUE, 5, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
+
+	@Comment("Maximum amount of temperature the player's temperature can be modified at each temperature tick time. Correspond to the amount of temperature given when temperature difference is maximum, meaning 40.")
+	public ValidatedDouble maxTemperatureModification = new ValidatedDouble(1.0, Integer.MAX_VALUE, 0.1, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("Minimum amount of temperature the player's temperature can be modified at each temperature tick time. Correspond to the amount of temperature given when there is no temperature difference")
+	@ConfigGroup.Pop
+	public ValidatedDouble minTemperatureModification = new ValidatedDouble(0.2, Integer.MAX_VALUE, 0.1, ValidatedNumber.WidgetType.TEXTBOX);
+
+	public ConfigGroup group_integration_terrafirmacraft = new ConfigGroup("group_integration_terrafirmacraft");
+
+	@Comment("How much the heat of the item provided by TerraFirmaCraft is multiplied. 0 deactivates the impact on temperature.")
+	public ValidatedDouble tfcItemHeatMultiplier = new ValidatedDouble(0.01d, 1000.0, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
+
+	@Comment("How much the temperature given from TerraFirmaCraft is multiplied. 0 deactivates the impact on temperature.")
+	@ConfigGroup.Pop
+	public ValidatedDouble tfcTemperatureMultiplier = new ValidatedDouble(1.0d, 1000.0, 0.0, ValidatedNumber.WidgetType.TEXTBOX);
 }

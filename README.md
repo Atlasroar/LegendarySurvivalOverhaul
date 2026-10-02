@@ -42,7 +42,7 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest release is [**v1.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.0.0), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**. Starting with 1.0.0, the Fabric port is versioned as its own project using [Semantic Versioning](https://semver.org/); see the [versioning policy](docs/Fabric-Port-Wiki.md#versioning-policy). Older `v1.20.1-2.4.7-fabric.N` builds remain on the releases page for history.
+The latest release is [**v2.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.0.0), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**. It replaces Forge Config API Port with Fzzy Config and Fabric Language Kotlin, with in-game config editing and Mod Menu support. Starting with 1.0.0, the Fabric port is versioned as its own project using [Semantic Versioning](https://semver.org/); see the [versioning policy](docs/Fabric-Port-Wiki.md#versioning-policy). Older `v1.20.1-2.4.7-fabric.N` builds remain on the releases page for history.
 
 Current highlights:
 
@@ -85,11 +85,21 @@ Install the latest Fabric release from the [GitHub releases page](https://github
 - Minecraft **1.20.1**
 - Fabric Loader
 - Fabric API
-- Forge Config API Port **8.0.3** for Minecraft 1.20.1
+- [Fzzy Config](https://modrinth.com/mod/fzzy-config) **0.7.7+1.20.1** or newer (required as of 2.0.0)
+- [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) (required by Fzzy Config)
 - Trinkets **3.7.2+** for Minecraft 1.20.1
 - Cardinal Components API (base and entity; included in the published mod jar)
 
-Overflowing Bars is optional. The mod remains playable without it.
+Forge Config API Port is no longer needed as of 2.0.0. [Mod Menu](https://modrinth.com/mod/modmenu) is optional but recommended. Overflowing Bars is optional, and the mod remains playable without it.
+
+## Configuration
+
+As of 2.0.0, all settings use [Fzzy Config](https://github.com/fzzyhmstrs/fconfig). Every option in the seven config files can be edited in-game: Common, Temperature, Seasons, Thirst, Health, Body Damage, and Client.
+
+- Open the editor from the **Mod Menu** config button, or run `/configure legendarysurvivaloverhaul`.
+- Server-side settings are synced to clients, and operators can change them in-game.
+- The files are stored in `config/legendarysurvivaloverhaul/<name>.toml`.
+- Configs from 1.x (Forge Config API Port format) are migrated automatically on first launch. The original file is kept as `<name>.toml.forge-backup`.
 
 ## Build from source
 

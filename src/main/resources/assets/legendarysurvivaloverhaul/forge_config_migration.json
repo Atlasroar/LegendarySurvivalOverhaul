@@ -1,0 +1,1166 @@
+{
+ "common": [
+  [
+   "core",
+   "Temperature Difficulty Mode",
+   "difficultyMode"
+  ],
+  [
+   "core.advanced",
+   "Routine Packet Sync",
+   "routinePacketSync"
+  ],
+  [
+   "misc",
+   "Compass Info Mode",
+   "compassInfoMode"
+  ],
+  [
+   "misc",
+   "Show Coordinate On Filled Map",
+   "showCoordinateOnMap"
+  ],
+  [
+   "misc",
+   "Hide Info From Debug",
+   "hideInfoFromDebug"
+  ],
+  [
+   "food",
+   "Base Food Exhaustion",
+   "baseFoodExhaustion"
+  ],
+  [
+   "food",
+   "Sprinting Food Exhaustion",
+   "sprintingFoodExhaustion"
+  ],
+  [
+   "food",
+   "On Attack Food Exhaustion",
+   "onAttackFoodExhaustion"
+  ],
+  [
+   "air_quality",
+   "Air Quality Enabled",
+   "airQualityEnabled"
+  ],
+  [
+   "air_quality",
+   "Enable Signal Torches",
+   "enableSignalTorches"
+  ],
+  [
+   "air_quality",
+   "Drowned Choking",
+   "drownedChoking"
+  ],
+  [
+   "air_quality.air_provider_ranges",
+   "Yellow Air Provider Radius",
+   "yellowAirProviderRadius"
+  ],
+  [
+   "air_quality.air_provider_ranges",
+   "Blue Air Provider Radius",
+   "blueAirProviderRadius"
+  ],
+  [
+   "air_quality.air_provider_ranges",
+   "Red Air Provider Radius",
+   "redAirProviderRadius"
+  ],
+  [
+   "air_quality.air_provider_ranges",
+   "Green Air Provider Radius",
+   "greenAirProviderRadius"
+  ]
+ ],
+ "temperature": [
+  [
+   "",
+   "Temperature Enabled",
+   "temperatureEnabled"
+  ],
+  [
+   "",
+   "Dangerous Heat Temperature Effects",
+   "dangerousHeatTemperature"
+  ],
+  [
+   "",
+   "Dangerous Cold Temperature Effects",
+   "dangerousColdTemperature"
+  ],
+  [
+   "",
+   "Gold Fern Chance",
+   "goldFernChance"
+  ],
+  [
+   "",
+   "Player On Fire Modifier",
+   "onFireModifier"
+  ],
+  [
+   "",
+   "Player Sprint Modifier",
+   "sprintModifier"
+  ],
+  [
+   "",
+   "Altitude Modifier",
+   "altitudeModifier"
+  ],
+  [
+   "temperature-immunity",
+   "Temperature Immunity On Death Enabled",
+   "temperatureImmunityOnDeathEnabled"
+  ],
+  [
+   "temperature-immunity",
+   "Temperature Immunity On Death Time",
+   "temperatureImmunityOnDeathTime"
+  ],
+  [
+   "temperature-immunity",
+   "Temperature Immunity On First Spawn Enabled",
+   "temperatureImmunityOnFirstSpawnEnabled"
+  ],
+  [
+   "temperature-immunity",
+   "Temperature Immunity On First Spawn Time",
+   "temperatureImmunityOnFirstSpawnTime"
+  ],
+  [
+   "secondary_effects",
+   "Heat Temperature Secondary Effects",
+   "heatTemperatureSecondaryEffects"
+  ],
+  [
+   "secondary_effects",
+   "Cold Temperature Secondary Effects",
+   "coldTemperatureSecondaryEffects"
+  ],
+  [
+   "secondary_effects",
+   "Heat Thirst Effect Modifier",
+   "heatThirstEffectModifier"
+  ],
+  [
+   "secondary_effects",
+   "Cold Hunger Modifier",
+   "coldHungerEffectModifier"
+  ],
+  [
+   "wetness",
+   "Wetness Enabled",
+   "wetnessEnabled"
+  ],
+  [
+   "wetness",
+   "Wetness Immunity Mounts",
+   "wetnessImmunityMounts"
+  ],
+  [
+   "wetness",
+   "Wetness Modifier",
+   "wetMultiplier"
+  ],
+  [
+   "wetness",
+   "Wetness Tick Timer",
+   "wetnessTickTimer"
+  ],
+  [
+   "wetness",
+   "Wetness Decrease",
+   "wetnessDecrease"
+  ],
+  [
+   "wetness",
+   "Wetness Under Rain Increase",
+   "wetnessRainIncrease"
+  ],
+  [
+   "wetness",
+   "Wetness In Fluid Increase",
+   "wetnessFluidIncrease"
+  ],
+  [
+   "huddling",
+   "Player Huddling Modifier",
+   "playerHuddlingModifier"
+  ],
+  [
+   "huddling",
+   "Player Huddling Radius",
+   "playerHuddlingRadius"
+  ],
+  [
+   "biomes",
+   "Biome Temperature Multiplier",
+   "biomeTemperatureMultiplier"
+  ],
+  [
+   "biomes",
+   "Biomes affect Temperature",
+   "biomeEffectsEnabled"
+  ],
+  [
+   "biomes",
+   "Biome's Dryness Multiplier",
+   "biomeDrynessMultiplier"
+  ],
+  [
+   "underground",
+   "Underground Biome Temperature Multiplier",
+   "undergroundBiomeTemperatureMultiplier"
+  ],
+  [
+   "underground",
+   "Start Distance To World Surface For Underground Effect",
+   "undergroundEffectStartDistanceToWS"
+  ],
+  [
+   "underground",
+   "End Distance To World Surface For Underground Effect",
+   "undergroundEffectEndDistanceToWS"
+  ],
+  [
+   "weather",
+   "Rain Temperature Modifier",
+   "rainTemperatureModifier"
+  ],
+  [
+   "weather",
+   "Snow Temperature Modifier",
+   "snowTemperatureModifier"
+  ],
+  [
+   "freeze",
+   "Vanilla Freeze Enabled",
+   "vanillaFreezeEnabled"
+  ],
+  [
+   "freeze",
+   "Max Freeze Temperature Modifier",
+   "maxFreezeTemperatureModifier"
+  ],
+  [
+   "freeze",
+   "Max Freeze Effect Tick",
+   "maxFreezeEffectTick"
+  ],
+  [
+   "time",
+   "Time Based Temperature Modifier",
+   "timeModifier"
+  ],
+  [
+   "time",
+   "Biome Time Multiplier",
+   "biomeTimeMultiplier"
+  ],
+  [
+   "time",
+   "Shade Time Modifier",
+   "shadeTimeModifier"
+  ],
+  [
+   "time",
+   "Shade Time Modifier Threshold",
+   "shadeTimeModifierThreshold"
+  ],
+  [
+   "coat.heating",
+   "Heating Coat I",
+   "heatingCoat1Modifier"
+  ],
+  [
+   "coat.heating",
+   "Heating Coat II",
+   "heatingCoat2Modifier"
+  ],
+  [
+   "coat.heating",
+   "Heating Coat III",
+   "heatingCoat3Modifier"
+  ],
+  [
+   "coat.cooling",
+   "Cooling Coat I",
+   "coolingCoat1Modifier"
+  ],
+  [
+   "coat.cooling",
+   "Cooling Coat II",
+   "coolingCoat2Modifier"
+  ],
+  [
+   "coat.cooling",
+   "Cooling Coat III",
+   "coolingCoat3Modifier"
+  ],
+  [
+   "coat.thermal",
+   "Thermal Coat I",
+   "thermalCoat1Modifier"
+  ],
+  [
+   "coat.thermal",
+   "Thermal Coat II",
+   "thermalCoat2Modifier"
+  ],
+  [
+   "coat.thermal",
+   "Thermal Coat III",
+   "thermalCoat3Modifier"
+  ],
+  [
+   "advanced",
+   "Temperature Influence Maximum Distance",
+   "tempInfluenceMaximumDist"
+  ],
+  [
+   "advanced",
+   "Temperature Influence Up Distance Multiplier",
+   "tempInfluenceUpDistMultiplier"
+  ],
+  [
+   "advanced",
+   "Temperature Influence In Water Distance Multiplier",
+   "tempInfluenceInWaterDistMultiplier"
+  ],
+  [
+   "advanced",
+   "Temperature Influence Outside Distance Multiplier",
+   "tempInfluenceOutsideDistMultiplier"
+  ],
+  [
+   "advanced.temperature-modification",
+   "Temperature Tick Time",
+   "tempTickTime"
+  ],
+  [
+   "advanced.temperature-modification",
+   "Maximum Temperature Modification",
+   "maxTemperatureModification"
+  ],
+  [
+   "advanced.temperature-modification",
+   "Minimum Temperature Modification",
+   "minTemperatureModification"
+  ],
+  [
+   "integration.terrafirmacraft",
+   "TerraFirmaCraft Item Heat Multiplier",
+   "tfcItemHeatMultiplier"
+  ],
+  [
+   "integration.terrafirmacraft",
+   "TerraFirmaCraft Temperature Multiplier",
+   "tfcTemperatureMultiplier"
+  ]
+ ],
+ "seasons": [
+  [
+   "serene-seasons",
+   "Serene Seasons Enabled",
+   "sereneSeasonsEnabled"
+  ],
+  [
+   "serene-seasons",
+   "Tropical Seasons Enabled",
+   "ssTropicalSeasonsEnabled"
+  ],
+  [
+   "serene-seasons",
+   "Season Cards Enabled",
+   "ssSeasonCardsEnabled"
+  ],
+  [
+   "serene-seasons",
+   "Default Season Enabled",
+   "ssDefaultSeasonEnabled"
+  ],
+  [
+   "serene-seasons.temperate.spring",
+   "Early Spring Modifier",
+   "ssEarlySpringModifier"
+  ],
+  [
+   "serene-seasons.temperate.spring",
+   "Mid Spring Modifier",
+   "ssMidSpringModifier"
+  ],
+  [
+   "serene-seasons.temperate.spring",
+   "Late Spring Modifier",
+   "ssLateSpringModifier"
+  ],
+  [
+   "serene-seasons.temperate.summer",
+   "Early Summer Modifier",
+   "ssEarlySummerModifier"
+  ],
+  [
+   "serene-seasons.temperate.summer",
+   "Mid Summer Modifier",
+   "ssMidSummerModifier"
+  ],
+  [
+   "serene-seasons.temperate.summer",
+   "Late Summer Modifier",
+   "ssLateSummerModifier"
+  ],
+  [
+   "serene-seasons.temperate.autumn",
+   "Early Autumn Modifier",
+   "ssEarlyAutumnModifier"
+  ],
+  [
+   "serene-seasons.temperate.autumn",
+   "Mid Autumn Modifier",
+   "ssMidAutumnModifier"
+  ],
+  [
+   "serene-seasons.temperate.autumn",
+   "Late Autumn Modifier",
+   "ssLateAutumnModifier"
+  ],
+  [
+   "serene-seasons.temperate.winter",
+   "Early Winter Modifier",
+   "ssEarlyWinterModifier"
+  ],
+  [
+   "serene-seasons.temperate.winter",
+   "Mid Winter Modifier",
+   "ssMidWinterModifier"
+  ],
+  [
+   "serene-seasons.temperate.winter",
+   "Late Winter Modifier",
+   "ssLateWinterModifier"
+  ],
+  [
+   "serene-seasons.tropical.wet-season",
+   "Early Wet Season Modifier",
+   "ssEarlyWetSeasonModifier"
+  ],
+  [
+   "serene-seasons.tropical.wet-season",
+   "Mid Wet Season Modifier",
+   "ssMidWetSeasonModifier"
+  ],
+  [
+   "serene-seasons.tropical.wet-season",
+   "Late Wet Season Modifier",
+   "ssLateWetSeasonModifier"
+  ],
+  [
+   "serene-seasons.tropical.dry-season",
+   "Early Dry Season Modifier",
+   "ssEarlyDrySeasonModifier"
+  ],
+  [
+   "serene-seasons.tropical.dry-season",
+   "Mid Dry Season Modifier",
+   "ssMidDrySeasonModifier"
+  ],
+  [
+   "serene-seasons.tropical.dry-season",
+   "Late Dry Season Modifier",
+   "ssLateDrySeasonModifier"
+  ],
+  [
+   "ecliptic-seasons",
+   "Ecliptic Seasons Enabled",
+   "eclipticSeasonsEnabled"
+  ],
+  [
+   "ecliptic-seasons.temperature",
+   "Spring Modifier",
+   "esSpringModifier"
+  ],
+  [
+   "ecliptic-seasons.temperature",
+   "Summer Modifier",
+   "esSummerModifier"
+  ],
+  [
+   "ecliptic-seasons.temperature",
+   "Autumn Modifier",
+   "esAutumnModifier"
+  ],
+  [
+   "ecliptic-seasons.temperature",
+   "Winter Modifier",
+   "esWinterModifier"
+  ]
+ ],
+ "thirst": [
+  [
+   "",
+   "Thirst Enabled",
+   "thirstEnabled"
+  ],
+  [
+   "",
+   "Dangerous Dehydration",
+   "dangerousDehydration"
+  ],
+  [
+   "",
+   "Cumulative Thirst Effect Duration",
+   "cumulativeThirstEffectDuration"
+  ],
+  [
+   "",
+   "Dehydration Damage Scaling",
+   "dehydrationDamageScaling"
+  ],
+  [
+   "",
+   "Thirst Effect Modifier",
+   "thirstEffectModifier"
+  ],
+  [
+   "exhaustion",
+   "Base Hydration Exhaustion",
+   "baseHydrationExhaustion"
+  ],
+  [
+   "exhaustion",
+   "Sprinting Hydration Exhaustion",
+   "sprintingHydrationExhaustion"
+  ],
+  [
+   "exhaustion",
+   "On Jump Hydration Exhaustion",
+   "onJumpHydrationExhaustion"
+  ],
+  [
+   "exhaustion",
+   "On Block Break Hydration Exhaustion",
+   "onBlockBreakHydrationExhaustion"
+  ],
+  [
+   "exhaustion",
+   "On Attack Hydration Exhaustion",
+   "onAttackHydrationExhaustion"
+  ],
+  [
+   "canteen",
+   "Self Watering Canteen Enabled",
+   "selfWateringCanteenEnabled"
+  ],
+  [
+   "canteen",
+   "Self Watering Canteen Wetness",
+   "selfWateringCanteenWetnessIncrease"
+  ],
+  [
+   "canteen",
+   "Canteen Capacity",
+   "canteenCapacity"
+  ],
+  [
+   "canteen",
+   "Large Canteen Capacity",
+   "largeCanteenCapacity"
+  ],
+  [
+   "canteen",
+   "Allow Override Purified Water",
+   "allowOverridePurifiedWater"
+  ],
+  [
+   "nether_chalice",
+   "Lava Hydration",
+   "hydrationLava"
+  ],
+  [
+   "nether_chalice",
+   "Lava Saturation",
+   "saturationLava"
+  ],
+  [
+   "juices",
+   "Glass Bottle Loot After Drinking A Juice",
+   "glassBottleLootAfterDrink"
+  ],
+  [
+   "vampirism",
+   "Thirst Enabled If Vampire",
+   "thirstEnabledIfVampire"
+  ]
+ ],
+ "health": [
+  [
+   "",
+   "Health Overhaul Enabled",
+   "healthOverhaulEnabled"
+  ],
+  [
+   "",
+   "Initial Player Health",
+   "initialHealth"
+  ],
+  [
+   "",
+   "Maximum Additional Health",
+   "maxAdditionalHealth"
+  ],
+  [
+   "",
+   "Health Ratio Recovered",
+   "healthRatioRecoveredFromSleep"
+  ],
+  [
+   "regeneration",
+   "Natural Regeneration Enabled",
+   "naturalRegenerationEnabled"
+  ],
+  [
+   "regeneration",
+   "Custom Health Regen Enabled",
+   "customHealthRegenEnabled"
+  ],
+  [
+   "regeneration",
+   "Custom Health Regen Rate",
+   "customHealthRegenRate"
+  ],
+  [
+   "regeneration",
+   "Custom Health Regen Tick Rate",
+   "customHealthRegenTickRate"
+  ],
+  [
+   "regeneration",
+   "Custom Health Regen Food Exhaustion",
+   "customHealthRegenFoodExhaustion"
+  ],
+  [
+   "shield-health",
+   "Maximum Shield Health",
+   "maxShieldHealth"
+  ],
+  [
+   "shield-health",
+   "Absorption Effect Override",
+   "absorptionEffectOverride"
+  ],
+  [
+   "heart-loss",
+   "Hearts Lost On Death",
+   "heartsLostOnDeath"
+  ],
+  [
+   "heart-loss",
+   "Permanent Hearts",
+   "permanentHearts"
+  ],
+  [
+   "broken-hearts",
+   "Minimum Amount Of Player's Heart With Broken Hearts (Broken Heart Resilience)",
+   "resilientHeartsWithBrokenHearts"
+  ],
+  [
+   "broken-hearts",
+   "Added Broken Hearts Per Injured Limb",
+   "brokenHeartsPerInjuredLimb"
+  ],
+  [
+   "broken-hearts",
+   "Broken Hearts Per Injured Limb Mode",
+   "brokenHeartsPerInjuredLimbMode"
+  ]
+ ],
+ "body_damage": [
+  [
+   "",
+   "Localized Body Damage Enabled",
+   "localizedBodyDamageEnabled"
+  ],
+  [
+   "",
+   "Headshot Multiplier",
+   "headCriticalShotMultiplier"
+  ],
+  [
+   "",
+   "Body Damage Multiplier",
+   "bodyDamageMultiplier"
+  ],
+  [
+   "",
+   "Body Part Health Ratio Recovered",
+   "bodyHealthRatioRecoveredFromSleep"
+  ],
+  [
+   "",
+   "Body Healing Food Exhaustion",
+   "bodyHealingFoodExhaustion"
+  ],
+  [
+   "",
+   "Minimum Food On Body Healing",
+   "minFoodOnBodyHealing"
+  ],
+  [
+   "",
+   "Painkiller Addiction Duration",
+   "painkillerAddictionDuration"
+  ],
+  [
+   "healing-limbs.passive-regeneration",
+   "Passive Limb Regeneration On Full Health",
+   "passiveLimbRegenerationOnFullHealth"
+  ],
+  [
+   "healing-limbs.passive-regeneration",
+   "Passive Limb Regeneration On Effects",
+   "passiveLimbRegenerationEffects"
+  ],
+  [
+   "healing-limbs.passive-regeneration",
+   "Passive Limb Regeneration Amplification Enabled",
+   "passiveLimbRegenerationAmplificationEnabled"
+  ],
+  [
+   "healing-limbs.passive-regeneration",
+   "Passive Limb Health Regenerated",
+   "passiveLimbHealthRegenerated"
+  ],
+  [
+   "healing-limbs.passive-regeneration",
+   "Passive Limb Regeneration Tick Timer",
+   "passiveLimbRegenerationTickTimer"
+  ],
+  [
+   "healing-limbs.proportional-regeneration",
+   "Proportional Limb Regen Min Threshold",
+   "proportionalLimbRegenMinThreshold"
+  ],
+  [
+   "healing-limbs.proportional-regeneration",
+   "Proportional Limb Regen Min Heal Value",
+   "proportionalLimbRegenMinHealValue"
+  ],
+  [
+   "healing-limbs.proportional-regeneration",
+   "Proportional Limb Regen Max Heal Value",
+   "proportionalLimbRegenMaxHealValue"
+  ],
+  [
+   "healing-limbs.proportional-regeneration",
+   "Proportional Limb Regen Tick Rate",
+   "proportionalLimbRegenTickRate"
+  ],
+  [
+   "healing-limbs.proportional-regeneration",
+   "Proportional Limb Regen Increase Rate",
+   "proportionalLimbRegenIncreaseRate"
+  ],
+  [
+   "healing-limbs.first-aid-supplies",
+   "First Aid Supplies Limb Health Regenerated",
+   "firstAidSuppliesLimbHealthRegenerated"
+  ],
+  [
+   "healing-limbs.first-aid-supplies",
+   "First Aid Supplies Limb Regeneration Mode",
+   "firstAidSuppliesLimbRegenerationMode"
+  ],
+  [
+   "healing-limbs.first-aid-supplies",
+   "First Aid Supplies Healing Overflow",
+   "firstAidSuppliesHealingOverflow"
+  ],
+  [
+   "healing-limbs.first-aid-supplies",
+   "First Aid Supplies Tick Timer",
+   "firstAidSuppliesTickTimer"
+  ],
+  [
+   "healing-limbs.first-aid-supplies",
+   "First Aid Supplies Exhausts Food",
+   "firstAidSuppliesExhaustsFood"
+  ],
+  [
+   "healing-limbs.first-aid-supplies",
+   "First Aid Supplies Boosted On Effects",
+   "firstAidSuppliesBoostedOnEffects"
+  ],
+  [
+   "healing-limbs.first-aid-supplies",
+   "First Aid Supplies Tick Timer Multiplier",
+   "firstAidSuppliesBoostedTickTimerMultiplier"
+  ],
+  [
+   "healing-limbs.healing-items",
+   "Recovery Effect Healing Amount",
+   "recoveryEffectHealingValue"
+  ],
+  [
+   "healing-limbs.healing-items",
+   "Healing Herbs Use Time",
+   "healingHerbsUseTime"
+  ],
+  [
+   "healing-limbs.healing-items",
+   "Plaster Use Time",
+   "plasterUseTime"
+  ],
+  [
+   "healing-limbs.healing-items",
+   "Bandage Use Time",
+   "bandageUseTime"
+  ],
+  [
+   "healing-limbs.healing-items",
+   "Tonic Use Time",
+   "tonicUseTime"
+  ],
+  [
+   "healing-limbs.healing-items",
+   "Medkit Use Time",
+   "medkitUseTime"
+  ],
+  [
+   "healing-limbs.morphine",
+   "Morphine Use Time",
+   "morphineUseTime"
+  ],
+  [
+   "healing-limbs.morphine",
+   "Morphine Painkiller Duration",
+   "morphinePainkillerTickDuration"
+  ],
+  [
+   "body-parts-health",
+   "Body Part Health Mode",
+   "bodyPartHealthMode"
+  ],
+  [
+   "body-parts-health",
+   "Head Part Health",
+   "headPartHealth"
+  ],
+  [
+   "body-parts-health",
+   "Arms Part Health",
+   "armsPartHealth"
+  ],
+  [
+   "body-parts-health",
+   "Chest Part Health",
+   "chestPartHealth"
+  ],
+  [
+   "body-parts-health",
+   "Legs Part Health",
+   "legsPartHealth"
+  ],
+  [
+   "body-parts-health",
+   "Feet Part Health",
+   "feetPartHealth"
+  ],
+  [
+   "body-parts-effects.head",
+   "Head Part Effects",
+   "headPartEffects"
+  ],
+  [
+   "body-parts-effects.head",
+   "Head Part Effect Amplifiers",
+   "headPartEffectAmplifiers"
+  ],
+  [
+   "body-parts-effects.head",
+   "Head Part Effect Thresholds",
+   "headPartEffectThresholds"
+  ],
+  [
+   "body-parts-effects.arms",
+   "Arms Part Effects",
+   "armsPartEffects"
+  ],
+  [
+   "body-parts-effects.arms",
+   "Arms Part Effect Amplifiers",
+   "armsPartEffectAmplifiers"
+  ],
+  [
+   "body-parts-effects.arms",
+   "Arms Part Effect Thresholds",
+   "armsPartEffectThresholds"
+  ],
+  [
+   "body-parts-effects.arms",
+   "Both Arms Part Effects",
+   "bothArmsPartEffects"
+  ],
+  [
+   "body-parts-effects.arms",
+   "Both Arms Part Effect Amplifiers",
+   "bothArmsPartEffectAmplifiers"
+  ],
+  [
+   "body-parts-effects.arms",
+   "Both Arms Part Effect Thresholds",
+   "bothArmsPartEffectThresholds"
+  ],
+  [
+   "body-parts-effects.chest",
+   "Chest Part Effects",
+   "chestPartEffects"
+  ],
+  [
+   "body-parts-effects.chest",
+   "Chest Part Effect Amplifier",
+   "chestPartEffectAmplifiers"
+  ],
+  [
+   "body-parts-effects.chest",
+   "Chest Part Effect Thresholds",
+   "chestPartEffectThresholds"
+  ],
+  [
+   "body-parts-effects.legs",
+   "Legs Part Effects",
+   "legsPartEffects"
+  ],
+  [
+   "body-parts-effects.legs",
+   "Legs Part Effect Amplifiers",
+   "legsPartEffectAmplifiers"
+  ],
+  [
+   "body-parts-effects.legs",
+   "Legs Part Effect Thresholds",
+   "legsPartEffectThresholds"
+  ],
+  [
+   "body-parts-effects.legs",
+   "Both Legs Part Effects",
+   "bothLegsPartEffects"
+  ],
+  [
+   "body-parts-effects.legs",
+   "Both Legs Part Effect Amplifiers",
+   "bothLegsPartEffectAmplifiers"
+  ],
+  [
+   "body-parts-effects.legs",
+   "Both Legs Part Effect Thresholds",
+   "bothLegsPartEffectThresholds"
+  ],
+  [
+   "body-parts-effects.feet",
+   "Feet Part Effects",
+   "feetPartEffects"
+  ],
+  [
+   "body-parts-effects.feet",
+   "Feet Part Effect Amplifiers",
+   "feetPartEffectAmplifiers"
+  ],
+  [
+   "body-parts-effects.feet",
+   "Feet Part Effect Thresholds",
+   "feetPartEffectThresholds"
+  ],
+  [
+   "body-parts-effects.feet",
+   "Both Feet Part Effects",
+   "bothFeetPartEffects"
+  ],
+  [
+   "body-parts-effects.feet",
+   "Both Feet Part Effect Amplifiers",
+   "bothFeetPartEffectAmplifiers"
+  ],
+  [
+   "body-parts-effects.feet",
+   "Both Feet Part Effect Thresholds",
+   "bothFeetPartEffectThresholds"
+  ],
+  [
+   "integration.meds_and_herbs",
+   "Syringe Morphine Apply Painkiller Addiction",
+   "morphineSyringeApplyPainkillerAddiction"
+  ]
+ ],
+ "client": [
+  [
+   "hud.general",
+   "Show Food Saturation Bar",
+   "foodSaturationDisplayed"
+  ],
+  [
+   "hud.general",
+   "Show Vanilla Bar Animation Overlay",
+   "showVanillaBarAnimationOverlay"
+  ],
+  [
+   "hud.temperature",
+   "Temperature Display Mode",
+   "temperatureDisplayMode"
+  ],
+  [
+   "hud.temperature",
+   "Temperature Display X Offset",
+   "temperatureDisplayOffsetX"
+  ],
+  [
+   "hud.temperature",
+   "Temperature Display Y Offset",
+   "temperatureDisplayOffsetY"
+  ],
+  [
+   "hud.temperature",
+   "Body Temperature Display X Offset",
+   "bodyTemperatureDisplayOffsetX"
+  ],
+  [
+   "hud.temperature",
+   "Body Temperature Display Y Offset",
+   "bodyTemperatureDisplayOffsetY"
+  ],
+  [
+   "hud.temperature",
+   "Heat Temperature Overlay",
+   "heatTemperatureOverlay"
+  ],
+  [
+   "hud.temperature",
+   "Cold Temperature Overlay",
+   "coldTemperatureOverlay"
+  ],
+  [
+   "hud.temperature",
+   "Breathing Sound Enabled",
+   "breathingSoundEnabled"
+  ],
+  [
+   "hud.temperature",
+   "Cold Breath Temperature Threshold",
+   "coldBreathEffectThreshold"
+  ],
+  [
+   "hud.temperature",
+   "Temperature In Fahrenheit",
+   "renderTemperatureInFahrenheit"
+  ],
+  [
+   "hud.temperature.wetness",
+   "Wetness Indicator X Offset",
+   "wetnessIndicatorOffsetX"
+  ],
+  [
+   "hud.temperature.wetness",
+   "Wetness Indicator Y Offset",
+   "wetnessIndicatorOffsetY"
+  ],
+  [
+   "body-damage",
+   "Body Damage Indicator X Offset",
+   "bodyDamageIndicatorOffsetX"
+  ],
+  [
+   "body-damage",
+   "Body Damage Indicator Y Offset",
+   "bodyDamageIndicatorOffsetY"
+  ],
+  [
+   "body-damage",
+   "Body Damage Indicator Limb Health Threshold",
+   "bodyDamageIndicatorRenderHealthLimit"
+  ],
+  [
+   "season-cards",
+   "Season Cards Display X Offset",
+   "seasonCardsDisplayOffsetX"
+  ],
+  [
+   "season-cards",
+   "Season Cards Display Y Offset",
+   "seasonCardsDisplayOffsetY"
+  ],
+  [
+   "season-cards",
+   "Season Cards Delay In Ticks",
+   "seasonCardsSpawnDimensionDelayInTicks"
+  ],
+  [
+   "season-cards",
+   "Season Cards Display Time In Ticks",
+   "seasonCardsDisplayTimeInTicks"
+  ],
+  [
+   "season-cards",
+   "Season Cards Fade in In Ticks",
+   "seasonCardsFadeInInTicks"
+  ],
+  [
+   "season-cards",
+   "Season Cards Fade Out In Ticks",
+   "seasonCardsFadeOutInTicks"
+  ],
+  [
+   "thirst.tooltip",
+   "Show Hydration Tooltip",
+   "showHydrationTooltip"
+  ],
+  [
+   "thirst.tooltip",
+   "Merge Hydration And Saturation Tooltip",
+   "mergeHydrationAndSaturationTooltip"
+  ],
+  [
+   "thirst",
+   "Render the hydration saturation",
+   "hydrationSaturationDisplayed"
+  ],
+  [
+   "thirst",
+   "Low Hydration Effect",
+   "lowHydrationEffect"
+  ],
+  [
+   "thirst.hydration-bar",
+   "Show Hydration Bar",
+   "showHydrationBar"
+  ],
+  [
+   "thirst.hydration-bar",
+   "Render the hydration exhaustion",
+   "showHydrationExhaustion"
+  ],
+  [
+   "thirst.hydration-bar",
+   "Show Drink Preview",
+   "showDrinkPreview"
+  ],
+  [
+   "thirst.hydration-bar",
+   "Hydration Bar Offset X",
+   "hydrationBarOffsetX"
+  ],
+  [
+   "thirst.hydration-bar",
+   "Hydration Bar Offset Y",
+   "hydrationBarOffsetY"
+  ],
+  [
+   "health-overhaul",
+   "Append Broken/Shield Hearts To Health Bar",
+   "appendBrokenShieldHeartsToHealthBar"
+  ]
+ ]
+}

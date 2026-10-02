@@ -1,13 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.config;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.IConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
-import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
-import fuzs.forgeconfigapiport.api.config.v2.ModConfigEvents;
-import org.apache.commons.lang3.tuple.Pair;
+import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
+import me.fzzyhmstrs.fzzy_config.api.RegisterType;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.config.json_old.JsonConfigRegistration;
 import sfiomn.legendarysurvivaloverhaul.util.EnumUtil;
@@ -17,63 +11,22 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
+/**
+ * Registers the mod's Fzzy Config configs (editable in-game through Mod Menu or {@code /configure}) and bakes
+ * their values into {@link Baked}. Every config is stored in {@code config/legendarysurvivaloverhaul/<name>.toml}.
+ */
 public class Config
 {
-	// Every config file is stored in config/legendarysurvivaloverhaul/
-	private static final String CONFIG_FOLDER = LegendarySurvivalOverhaul.MOD_ID + "/";
-
-	public static final ForgeConfigSpec COMMON_SPEC;
-	public static final CommonConfig COMMON;
-
-	public static final ForgeConfigSpec TEMPERATURE_SPEC;
-	public static final TemperatureConfig TEMPERATURE;
-
-	public static final ForgeConfigSpec SEASONS_SPEC;
-	public static final SeasonsConfig SEASONS;
-
-	public static final ForgeConfigSpec THIRST_SPEC;
-	public static final ThirstConfig THIRST;
-
-	public static final ForgeConfigSpec HEALTH_SPEC;
-	public static final HealthConfig HEALTH;
-
-	public static final ForgeConfigSpec BODY_DAMAGE_SPEC;
-	public static final BodyDamageConfig BODY_DAMAGE;
-
-	public static final ForgeConfigSpec CLIENT_SPEC;
-	public static final ClientConfig CLIENT;
-
-	static
-	{
-		final Pair<CommonConfig, ForgeConfigSpec> common = new ForgeConfigSpec.Builder().configure(CommonConfig::new);
-		COMMON_SPEC = common.getRight();
-		COMMON = common.getLeft();
-
-		final Pair<TemperatureConfig, ForgeConfigSpec> temperature = new ForgeConfigSpec.Builder().configure(TemperatureConfig::new);
-		TEMPERATURE_SPEC = temperature.getRight();
-		TEMPERATURE = temperature.getLeft();
-
-		final Pair<SeasonsConfig, ForgeConfigSpec> seasons = new ForgeConfigSpec.Builder().configure(SeasonsConfig::new);
-		SEASONS_SPEC = seasons.getRight();
-		SEASONS = seasons.getLeft();
-
-		final Pair<ThirstConfig, ForgeConfigSpec> thirst = new ForgeConfigSpec.Builder().configure(ThirstConfig::new);
-		THIRST_SPEC = thirst.getRight();
-		THIRST = thirst.getLeft();
-
-		final Pair<HealthConfig, ForgeConfigSpec> health = new ForgeConfigSpec.Builder().configure(HealthConfig::new);
-		HEALTH_SPEC = health.getRight();
-		HEALTH = health.getLeft();
-
-		final Pair<BodyDamageConfig, ForgeConfigSpec> bodyDamage = new ForgeConfigSpec.Builder().configure(BodyDamageConfig::new);
-		BODY_DAMAGE_SPEC = bodyDamage.getRight();
-		BODY_DAMAGE = bodyDamage.getLeft();
-
-		final Pair<ClientConfig, ForgeConfigSpec> client = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
-		CLIENT_SPEC = client.getRight();
-		CLIENT = client.getLeft();
-	}
+	public static CommonConfig COMMON;
+	public static TemperatureConfig TEMPERATURE;
+	public static SeasonsConfig SEASONS;
+	public static ThirstConfig THIRST;
+	public static HealthConfig HEALTH;
+	public static BodyDamageConfig BODY_DAMAGE;
+	public static ClientConfig CLIENT;
 
 	public static void register()
 	{
@@ -87,76 +40,58 @@ public class Config
 			}
 		}
 
-		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.CLIENT, CLIENT_SPEC, CONFIG_FOLDER + "client.toml");
-		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, COMMON_SPEC, CONFIG_FOLDER + "common.toml");
-		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, TEMPERATURE_SPEC, CONFIG_FOLDER + "temperature.toml");
-		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, SEASONS_SPEC, CONFIG_FOLDER + "seasons.toml");
-		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, THIRST_SPEC, CONFIG_FOLDER + "thirst.toml");
-		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, HEALTH_SPEC, CONFIG_FOLDER + "health.toml");
-		ForgeConfigRegistry.INSTANCE.register(LegendarySurvivalOverhaul.MOD_ID, ModConfig.Type.COMMON, BODY_DAMAGE_SPEC, CONFIG_FOLDER + "body_damage.toml");
-		ModConfigEvents.loading(LegendarySurvivalOverhaul.MOD_ID).register(config -> bake(config.getSpec()));
-		ModConfigEvents.reloading(LegendarySurvivalOverhaul.MOD_ID).register(config -> {
-			bake(config.getSpec());
-		});
+		CLIENT = load("client", ClientConfig::new, RegisterType.CLIENT);
+		COMMON = load("common", CommonConfig::new, RegisterType.BOTH);
+		TEMPERATURE = load("temperature", TemperatureConfig::new, RegisterType.BOTH);
+		SEASONS = load("seasons", SeasonsConfig::new, RegisterType.BOTH);
+		THIRST = load("thirst", ThirstConfig::new, RegisterType.BOTH);
+		HEALTH = load("health", HealthConfig::new, RegisterType.BOTH);
+		BODY_DAMAGE = load("body_damage", BodyDamageConfig::new, RegisterType.BOTH);
 
-		bake(CLIENT_SPEC);
-		bake(COMMON_SPEC);
-		bake(TEMPERATURE_SPEC);
-		bake(SEASONS_SPEC);
-		bake(THIRST_SPEC);
-		bake(HEALTH_SPEC);
-		bake(BODY_DAMAGE_SPEC);
+		bake(CLIENT);
+		bake(COMMON);
+		bake(TEMPERATURE);
+		bake(SEASONS);
+		bake(THIRST);
+		bake(HEALTH);
+		bake(BODY_DAMAGE);
 
 		JsonConfigRegistration.init(LegendarySurvivalOverhaul.modConfigJsons.toFile());
 	}
 
-	/**
-	 * Bakes the values of the given spec into {@link Baked}. Does nothing if the spec doesn't belong to this mod.
-	 */
-	public static void bake(IConfigSpec<?> spec)
+	private static <T extends me.fzzyhmstrs.fzzy_config.config.Config> T load(String name, Supplier<T> supplier, RegisterType type)
 	{
-		if (spec == CLIENT_SPEC)
+		// Read (and back up) a pre-1.1 Forge Config API Port file before Fzzy Config replaces it with its own format.
+		Map<String, String> legacyValues = ForgeConfigMigration.readLegacyFile(LegendarySurvivalOverhaul.modConfigPath, name);
+		T config = ConfigApiJava.registerAndLoadConfig(supplier, type);
+		if (legacyValues != null)
+			ForgeConfigMigration.apply(name, config, legacyValues);
+		return config;
+	}
+
+	/**
+	 * Bakes the values of the given config into {@link Baked}. Called on startup and whenever Fzzy Config
+	 * syncs or updates a config (in-game edits, server sync on login, datapack reloads).
+	 */
+	public static void bake(me.fzzyhmstrs.fzzy_config.config.Config config)
+	{
+		if (config instanceof ClientConfig)
 			Baked.bakeClient();
-		else if (spec == COMMON_SPEC)
+		else if (config instanceof CommonConfig)
 			Baked.bakeCommon();
-		else if (spec == TEMPERATURE_SPEC)
+		else if (config instanceof TemperatureConfig)
 			Baked.bakeTemperature();
-		else if (spec == SEASONS_SPEC) {
+		else if (config instanceof SeasonsConfig) {
 			Baked.bakeSeasons();
 			if (LegendarySurvivalOverhaul.sereneSeasonsLoaded)
 				sfiomn.legendarysurvivaloverhaul.common.integration.sereneseasons.SereneSeasonsUtil.initAverageTemperatures();
 		}
-		else if (spec == THIRST_SPEC)
+		else if (config instanceof ThirstConfig)
 			Baked.bakeThirst();
-		else if (spec == HEALTH_SPEC)
+		else if (config instanceof HealthConfig)
 			Baked.bakeHealth();
-		else if (spec == BODY_DAMAGE_SPEC)
+		else if (config instanceof BodyDamageConfig)
 			Baked.bakeBodyDamage();
-	}
-
-	static boolean validateDouble(final Object obj)
-	{
-		return obj instanceof Double;
-	}
-
-	static boolean validatePositiveInt(final Object obj)
-	{
-		return obj instanceof final Integer intValue && intValue >= 0;
-	}
-
-	static boolean validatePercentDouble(final Object obj)
-	{
-		return obj instanceof final Double doubleValue && doubleValue >= 0 && doubleValue <= 1;
-	}
-
-	static boolean validateEffectName(final Object obj)
-	{
-		return obj instanceof final String effectName && BuiltInRegistries.MOB_EFFECT.containsKey(new ResourceLocation(effectName));
-	}
-
-	static boolean validateEntityType(final Object obj)
-	{
-		return obj instanceof final String entityName && BuiltInRegistries.ENTITY_TYPE.containsKey(new ResourceLocation(entityName));
 	}
 
 	public static class Baked

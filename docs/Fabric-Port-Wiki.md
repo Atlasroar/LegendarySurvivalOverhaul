@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The latest release is [**v1.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.0.0), the first full release containing the Thin Air air-quality integration. The Fabric port now follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
+The latest release is [**v2.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.0.0), adding Fzzy Config in-game editing and Mod Menu support while retaining the Thin Air air-quality integration. Fzzy Config and Fabric Language Kotlin replace Forge Config API Port as required dependencies. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
 
 The port is considered feature-complete pending further in-game testing, particularly multiplayer/dedicated-server validation. Every tracked gameplay slice — survival systems, HUD/tooltip rendering, sewing table and coat application, heater/cooler multiblocks, and the Forge event-subscriber audit — is user-verified in a single-player/integrated-server world as of `.14`. A full audit of the three Forge-only event files found no remaining behavioral gaps: all differences from Forge are either intentional feature drops (Origins, Meds and Herbs), necessary platform adaptations forced by different Fabric hook points (bonemeal, damage pipeline), or pre-existing Forge behavior that was never different on Fabric (the armor coat tooltip, which never showed a numeric resistance delta on Forge either). Forge-only datagen execution and selected optional integrations remain intentionally omitted.
 
@@ -291,7 +291,7 @@ The legacy `v1.20.1-2.4.7-fabric.N` tags below predate this policy and are kept 
 
 ### Legacy builds
 
-`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release. `.16` adds the Thin Air integration, with `.17`, `.19`, `.20`, `.22`–`.30` follow-up fixes, all superseded by `v1.0.0`. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
+`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release. `.16` adds the Thin Air integration, with `.17`, `.19`, `.20`, `.22`–`.30` follow-up fixes, all superseded by `v1.0.0`. Those builds require Forge Config API Port 8.0.3. For current releases, use Java 17 and the dependencies specified in `fabric.mod.json`; from 2.0.0, Fzzy Config and Fabric Language Kotlin replace Forge Config API Port.
 
 | Version | Notes |
 | --- | --- |
@@ -331,13 +331,13 @@ The legacy `v1.20.1-2.4.7-fabric.N` tags below predate this policy and are kept 
 | Version | Notes |
 | --- | --- |
 | `v1.0.0` | First SemVer release and first full release with the Thin Air air-quality system (from `.16`–`.30`): height/dimension-based air quality, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, Respirator, and Turtle Helmet protection. The Nether is ambient YELLOW, the End is RED, lava creates RED air within 3 blocks, portals/gateways provide GREEN air, and soul blocks provide BLUE air. User-validated in-game across the Overworld, Nether, and End. No gameplay changes from `.30`; only the version scheme and jar name changed. The vanilla Water Breathing effect, potions, splash/lingering potions, and tipped arrows are renamed to **Free Breathing** (English), since the effect also protects against bad air; user-validated Turtle Helmet protection in all dimensions. |
-
+| `v2.0.0` | **Breaking:** the configuration system moves from Forge Config API Port to Fzzy Config, which requires Fabric Language Kotlin. All 230 options are editable in-game via Mod Menu or `/configure`. Server configs are synced to clients and editable by operators. Mod Menu metadata (icon, links) is added. Existing 1.x config files are migrated automatically, with `.forge-backup` copies kept. No gameplay changes. |
 ### Latest released artifact
 
-- File: `legendarysurvivaloverhaul-fabric-1.20.1-1.0.0.jar`
-- Tag: `v1.0.0`
-- SHA-256: `C942EE507993FC2EE6A6E2D486EE6D8E3F003459EAAC9C2AB4D0FB8B55256EE7`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.0.0>
+- File: `legendarysurvivaloverhaul-fabric-1.20.1-2.0.0.jar`
+- Tag: `v2.0.0`
+- SHA-256: `BC65555303CA316995465449DB6FFE3F95D626572A8D818B06B130622BE1991F`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.0.0>
 
 ## Feature and compatibility notes
 
@@ -369,10 +369,34 @@ Do not describe excluded features as supported. Check `build.gradle` source excl
 ### Optional integrations and library choices
 
 - **Overflowing Bars:** optional; interoperate through its Fabric shared HUD-height values. Do not add it as a required dependency.
-- **Forge Config API Port:** required by the current configuration implementation; use the 1.20.1-compatible 8.0.3 release.
+- **Fzzy Config:** required as of 2.0.0 and replaces Forge Config API Port. It needs Fabric Language Kotlin. Its license forbids jar-in-jar, so users install it separately. See [Configuration (Fzzy Config)](#configuration-fzzy-config).
+- **Mod Menu:** optional. Fzzy Config provides the config screen for the Mod Menu config button. LSO's `fabric.mod.json` supplies the icon, links, and wiki entry.
+- **Forge Config API Port:** used by 1.x only; no longer needed from 2.0.0.
 - **Cardinal Components:** stores player survival component data on Fabric.
 - **Thermoo:** not required. LSO's model and data-driven configuration are being kept intact; optional interoperability may be considered later.
 - **Balm:** not required; the inspected source branch targeted a substantially newer Minecraft/Java stack and was not a compatible drop-in.
+
+## Configuration (Fzzy Config)
+
+As of 2.0.0, the seven LSO configs (`common`, `temperature`, `seasons`, `thirst`, `health`, `body_damage`, `client`) are Fzzy Config classes in `sfiomn.legendarysurvivaloverhaul.config`.
+
+**Editing in-game**
+- All 230 options can be edited from the Mod Menu config button or with `/configure legendarysurvivaloverhaul`.
+- `client` is client-only. The other six are registered as synced (`RegisterType.BOTH`), so the server's values are pushed to clients, and operators can edit them in-game.
+- Options keep their original names. Labels and descriptions come from `en_us.json`, using the keys `legendarysurvivaloverhaul.<config>.<field>` and `.desc`.
+- Related options are grouped as they were in the Forge sections, e.g. "HUD - Temperature".
+- Numeric options keep their original ranges. Small ranges are edited with sliders.
+
+**Applying changes**
+- Each config's `onSyncClient`, `onSyncServer`, `onUpdateClient`, and `onUpdateServer` hooks call `Config.bake(...)`, which refreshes the `Config.Baked` values the rest of the mod reads.
+- Changes take effect without a restart, except for settings that are only read at startup.
+
+**Migrating 1.x configs**
+- Fzzy uses the same paths as Forge Config API Port: `config/legendarysurvivaloverhaul/<name>.toml`.
+- `ForgeConfigMigration` detects a legacy file by its quoted Forge key names, renames it to `<name>.toml.forge-backup`, and lets Fzzy write defaults.
+- It then copies each legacy value onto the matching field using `assets/legendarysurvivaloverhaul/forge_config_migration.json`.
+- Values are validated: out-of-range numbers are clamped, and invalid enum values are skipped with a warning.
+- Verified on a dedicated dev server: legacy enum, int, double, boolean, and string/double-list values migrated, and an out-of-range radius (99) was clamped to its maximum (32).
 
 ## Build and test
 
