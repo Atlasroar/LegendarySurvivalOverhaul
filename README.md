@@ -76,7 +76,7 @@ Cold Hunger is a temperature-managed secondary effect: LSO applies it during dan
 
 ### Thin Air air-quality test builds
 
-The `.16` prerelease added Thin Air's air-quality mechanics and content, including height/dimension-based air, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, and a Trinkets Respirator. The `.17` prerelease fixes air-quality cache invalidation at block/dimension changes and moves the armor row when air bubbles are displayed. These test builds still need in-game validation; see the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration).
+The `.16` prerelease added Thin Air's air-quality mechanics and content, including height/dimension-based air, Safety Lanterns, Signal Torches, Air Bladders, Soulfire Bottles, and a Trinkets Respirator. Follow-up test builds fix cache invalidation and HUD spacing; `.19` keeps the armor row tied to the heart tiers and moves the thirst bar up while air bubbles are displayed. These builds still need in-game validation; see the [air-quality integration notes](docs/Fabric-Port-Wiki.md#29-thin-air-air-quality-integration).
 
 ## Installation
 

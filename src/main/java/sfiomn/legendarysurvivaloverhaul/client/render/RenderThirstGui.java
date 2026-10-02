@@ -107,7 +107,8 @@ public class RenderThirstGui
 
 		// Same as hunger bar
 		int left = width / 2 + 91 + Config.Baked.hydrationBarOffsetX;
-		int top = height - rightHeight + HYDRATION_BAR_VERTICAL_OFFSET + Config.Baked.hydrationBarOffsetY;
+		int airBarOffset = player.getAirSupply() < player.getMaxAirSupply() ? 10 : 0;
+		int top = height - rightHeight - airBarOffset + HYDRATION_BAR_VERTICAL_OFFSET + Config.Baked.hydrationBarOffsetY;
 
 		boolean hasThirstEffect = player.hasEffect(MobEffectRegistry.THIRST.get());
 		boolean hasHeatThirstEffect = player.hasEffect(MobEffectRegistry.HEAT_THIRST.get());

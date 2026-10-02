@@ -48,11 +48,7 @@ abstract class GuiHudLayersMixin {
 
     private static int legendarysurvivaloverhaul$raiseArmorRow(int y) {
         Player player = Minecraft.getInstance().player;
-        if (player == null)
-            return y;
-
-        int airRows = player.getAirSupply() < player.getMaxAirSupply() ? 1 : 0;
-        return y - (RenderHealthGui.additionalHeartRows(player) + airRows) * 10;
+        return player == null ? y : y - RenderHealthGui.additionalHeartRows(player) * 10;
     }
 
     @Inject(method = "renderHearts(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/entity/player/Player;IIIIFIIIZ)V",
