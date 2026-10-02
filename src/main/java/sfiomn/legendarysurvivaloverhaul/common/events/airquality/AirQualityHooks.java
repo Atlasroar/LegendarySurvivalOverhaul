@@ -9,7 +9,12 @@ public final class AirQualityHooks {
     }
 
     public static void onAirSupplyTick(LivingEntity entity, int originalAirSupply) {
-        if (!Config.Baked.airQualityEnabled || entity.level().isClientSide || !AirQualityUtil.isSensitiveToAirQuality(entity)) {
+        if (!Config.Baked.airQualityEnabled || !AirQualityUtil.isSensitiveToAirQuality(entity)) {
+            return;
+        }
+
+        if (entity.level().isClientSide) {
+            entity.setAirSupply(originalAirSupply);
             return;
         }
 
