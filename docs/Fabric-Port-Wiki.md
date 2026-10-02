@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The latest public artifact is the [Fabric 1.20.1 `.19` prerelease](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.19), which keeps armor placement tied to the heart tiers and moves the thirst bar upward when air bubbles are visible. The first full (non-prerelease) release remains [`v1.20.1-2.4.7-fabric.15`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.15). The `.16`–`.19` builds are test prereleases; the Thin Air integration and follow-up fixes still require in-game verification.
+The latest public artifact is the [Fabric 1.20.1 `.20` prerelease](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.20), which adds flowing lava to RED air-provider detection. Nether ambient air remains YELLOW and drains gradually by design. The first full (non-prerelease) release remains [`v1.20.1-2.4.7-fabric.15`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.15). The `.16`–`.20` builds are test prereleases; the Thin Air integration and follow-up fixes still require in-game verification.
 
 The port is considered feature-complete pending further in-game testing, particularly multiplayer/dedicated-server validation. Every tracked gameplay slice — survival systems, HUD/tooltip rendering, sewing table and coat application, heater/cooler multiblocks, and the Forge event-subscriber audit — is user-verified in a single-player/integrated-server world as of `.14`. A full audit of the three Forge-only event files found no remaining behavioral gaps: all differences from Forge are either intentional feature drops (Origins, Meds and Herbs), necessary platform adaptations forced by different Fabric hook points (bonemeal, damage pipeline), or pre-existing Forge behavior that was never different on Fabric (the armor coat tooltip, which never showed a numeric resistance delta on Forge either). Forge-only datagen execution and selected optional integrations remain intentionally omitted.
 
@@ -258,22 +258,24 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 - Confirmed, by comparing against the original Forge `TooltipHandler`, that the armor coat tooltip only ever showed flavor text (e.g. "Warm Coat Applied") rather than a numeric resistance delta on Forge as well — this was not a port regression. The underlying `AttributeModifier` is recomputed every server tick in `FabricEquipmentAttributeHooks` and updates correctly when a coat is applied.
 - No remaining code changes were required; this audit closes out the last tracked "remaining Forge event edge cases" item. The port is considered complete pending further in-game testing (particularly multiplayer/dedicated-server scenarios), and `.15` is published as the first full (non-prerelease) release.
 
-### 29. Thin Air air-quality integration (released in `.16`; fixes in `.17`–`.19`)
+### 29. Thin Air air-quality integration (released in `.16`; fixes in `.17`–`.20`)
 
 - Adapts the MIT-licensed 1.20.1 Thin Air code and its assets into LSO's Fabric module. Asset reuse is separately All Rights Reserved and was expressly authorized; both notices are included under `src/main/resources/META-INF/licenses/`.
 - Adds Green, Blue, Yellow, and Red air quality, configurable air-provider radii, data-driven dimension/height profiles, breathing-equipment protection, Drowned attack choking, and air-supply hooks in `LivingEntity.baseTick`.
 - Default profiles make Overworld air Green from Y=0 through Y=255 and Yellow outside that range, Nether air Yellow, and End air Red. Unconfigured dimensions default to Green.
+- The `.20` update adds `minecraft:flowing_lava` alongside `minecraft:lava` in the RED provider tag so nearby flowing lava receives the same provider-radius behavior. Directly occupying any fluid at eye level remains RED.
+- Nether ambient air intentionally remains YELLOW (gradual air loss); RED lava/fire providers near the player override the ambient dimension profile.
 - Adds Safety Lanterns with dye-locking and axe-unlocking, Signal Torches, Air Bladders (including durability/tag-preserving reinforcement), a Soulfire Bottle, and a Trinkets Respirator with a custom head render layer. Core air-provider/item/entity tags, crafting recipes, models, textures, and structure loot injections are included.
 - Deliberately replaces Thin Air's acknowledged-unreliable per-chunk provider-position capability with an on-demand nearby-block scan cached briefly per entity. Curios, Create, Aether, and Dimensional Doors compatibility is out of scope.
 - The `.16` prerelease introduced the integration; `.17` updates the per-entity cache to refresh on eye-block and dimension changes and rejects cache data from a later world tick. This prevents stale results across provider/air-profile boundaries and dimension transitions.
 - The `.17` cache fix refreshes results when the entity changes eye block or dimension and rejects entries from a later world tick.
 - The `.19` HUD fix leaves armor/health-tier placement alone when air bubbles appear and moves the thirst bar upward by one row while the air bar is visible. This corrects `.17`'s armor-row adjustment, which the user observed shifting armor rather than the thirst bar.
-- These changes have not yet had in-game validation; verify breathing/draining across height bands and dimensions, provider bubbles (especially near provider boundaries), armor/air/thirst-bar spacing, respirator slot/equipment rendering and durability, air bladder recharge/refill, lantern appearance/locking, signal torch toggling, and chest loot.
-- The integration is included in `.16`; follow-up fixes are included in `.17` and `.19`. These are prereleases pending in-game testing.
+- These changes have not yet had in-game validation; verify breathing/draining across height bands and dimensions, RED air around still and flowing lava, provider bubbles (especially near provider boundaries), armor/air/thirst-bar spacing, respirator slot/equipment rendering and durability, air bladder recharge/refill, lantern appearance/locking, signal torch toggling, and chest loot.
+- The integration is included in `.16`; follow-up fixes are included in `.17`, `.19`, and `.20`. These are prereleases pending in-game testing.
 
 ## Release and edit notes
 
-`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release. `.16` adds the Thin Air integration, with `.17` and `.19` follow-up fixes; these remain prereleases pending in-game testing. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
+`v1.20.1-2.4.7-fabric` through `.14` were prereleases for testing. `.15` is the first full release. `.16` adds the Thin Air integration, with `.17`, `.19`, and `.20` follow-up fixes; these remain prereleases pending in-game testing. Use Java 17 and install the required Fabric dependencies specified in `fabric.mod.json`, including Forge Config API Port 8.0.3 and Cardinal Components.
 
 | Version | Notes |
 | --- | --- |
@@ -297,13 +299,14 @@ Forge datagen task execution remains omitted; checked-in generated runtime resou
 | `v1.20.1-2.4.7-fabric.17` | Refreshes cached air quality when the entity changes eye block or dimension and rejects stale cache entries after a world-time reset; raises the armor row while the air bar is visible. Prerelease pending in-game validation. |
 | `v1.20.1-2.4.7-fabric.18` | Follow-up air-quality HUD test build; its armor-row adjustment was superseded by `.19` after in-game feedback showed it moved armor rather than the thirst bar. |
 | `v1.20.1-2.4.7-fabric.19` | Keeps armor-row movement exclusive to additional health rows and moves the thirst bar upward while air bubbles are displayed. Prerelease pending in-game validation. |
+| `v1.20.1-2.4.7-fabric.20` | Adds flowing lava as a RED air provider; Nether ambient air remains YELLOW for gradual air loss. Prerelease pending in-game validation. |
 
 ### Latest released artifact
 
 - File: `legendarysurvivaloverhaul-1.20.1-2.4.7-fabric.jar`
-- Tag: `v1.20.1-2.4.7-fabric.19`
-- SHA-256: `AB13570A2278FC3BA764E2597B3B0E5A39A02DDFF74E15BC53DCD212B012428C`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.19>
+- Tag: `v1.20.1-2.4.7-fabric.20`
+- SHA-256: `565F916073B8343F815094E2BB6CAF7A7C68C090A159F3DDBA302743480B758E`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.20.1-2.4.7-fabric.20>
 
 ## Feature and compatibility notes
 
