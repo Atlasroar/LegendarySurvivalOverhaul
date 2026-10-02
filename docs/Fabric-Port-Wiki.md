@@ -15,7 +15,7 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The latest release is [**v2.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.0.0), adding Fzzy Config in-game editing and Mod Menu support while retaining the Thin Air air-quality integration. Fzzy Config and Fabric Language Kotlin replace Forge Config API Port as required dependencies. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
+The latest release is [**v2.1.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0), adding the dedicated Air config to Fzzy Config in-game editing and Mod Menu support while retaining the Thin Air integration. Fzzy Config and Fabric Language Kotlin replace Forge Config API Port as required dependencies. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
 
 The port is considered feature-complete pending further in-game testing, particularly multiplayer/dedicated-server validation. Every tracked gameplay slice — survival systems, HUD/tooltip rendering, sewing table and coat application, heater/cooler multiblocks, and the Forge event-subscriber audit — is user-verified in a single-player/integrated-server world as of `.14`. A full audit of the three Forge-only event files found no remaining behavioral gaps: all differences from Forge are either intentional feature drops (Origins, Meds and Herbs), necessary platform adaptations forced by different Fabric hook points (bonemeal, damage pipeline), or pre-existing Forge behavior that was never different on Fabric (the armor coat tooltip, which never showed a numeric resistance delta on Forge either). Forge-only datagen execution and selected optional integrations remain intentionally omitted.
 
@@ -249,6 +249,7 @@ These changes are in `v1.20.1-2.4.7-fabric.2`. The user confirmed the released H
 
 ### Next development phase
 
+- Local 2.2.0-beta.1 adds LSO - Trinkets slot lists for eight LSO accessories; the Respirator is excluded. In-game GUI/multiplayer validation remains pending, and the preview is not in v2.1.0.
 - Add support for additional mods once the user selects the targets and desired behavior.
 - Keep new adapters optional where possible, preserve vanilla/current-mod behavior, and validate each integration independently.
 - No new integration is implemented or claimed by this planning update.
@@ -424,6 +425,15 @@ As of 2.0.0, the seven LSO configs (`common`, `temperature`, `seasons`, `thirst`
 - Existing Fzzy Common values migrate with a `common.toml.air-backup`; pre-2.0 Forge Common values migrate through the existing mapping with `.forge-backup`. Existing `air.toml` values take precedence.
 - Updates rebake the Air facade and clear the lookup cache. Numeric validation prevents zero drain intervals. A reversed Overworld height range logs a warning and uses the minimum as its effective maximum.
 - Real-server assertions checked both Common formats, retained non-air Common values, default dimension profiles, inclusive override boundaries, Nether/End overrides, rebaking/cache invalidation, drain/refill amounts and intervals, range validation, equipment wear/protection, Free Breathing protection, and bladder durability boundaries. In-game GUI and broader multiplayer testing remain pending.
+
+### Trinkets config development preview (2.2.0-beta.1)
+
+- Adds synced `TrinketsConfig` with nine controls: a tag-override switch and eight allowed-slot lists. Total: 257 controls across nine configs.
+- Defaults preserve LSO's shipped item slots. Custom `group/slot` IDs and multiple entries are supported; empty lists disable new insertion. No new slot definitions/capacity are created.
+- Wraps Trinkets' existing `trinkets:tag` predicate only for the eight configured LSO items. Other items, including the Respirator, retain the original predicate. `WearableTrinketItem.canEquip` also enforces configured restrictions for slots using other validator predicates.
+- Turning off Use Configured Slots restores datapack tag assignments. Other slot predicates and normal unequip restrictions remain intact. Existing items are not deleted or forcibly moved.
+- Config updates rebuild an immutable baked lookup, used by insertion, quick-move predicate evaluation, and right-click auto-equip. Missing player slots log warnings at server startup, successful reload, and config updates.
+- Real-server assertions checked defaults, relocation/multiple slots, empty lists, tag fallback, auto-equip, removal, existing stack retention, malformed/custom IDs, other-item isolation, and unchanged Respirator face-slot behavior.
 
 ### Build commands
 

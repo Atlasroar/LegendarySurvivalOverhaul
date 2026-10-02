@@ -18,7 +18,7 @@ Fzzy Config is installed separately, not embedded in LSO. [Mod Menu](https://mod
 ## Install
 
 1. Create a Fabric 1.20.1 instance with Java 17.
-2. Download the mod jar from the [latest full release](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.0.0).
+2. Download the mod jar from the [latest full release](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0).
 3. Place it and the required dependency jars in your instance's `mods` directory.
 4. Launch the game. With Mod Menu installed, open LSO's config button to customize the settings.
 

@@ -6,7 +6,7 @@
 
 [Modrinth project](https://modrinth.com/mod/legendary-survival-overhaul) · [Fabric releases](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) · [Wiki](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) · [Port and release notes](docs/Fabric-Port-Wiki.md) · [Community Discord](https://discord.gg/XPHtcP89P3) · [Guide](https://minecraft-legendary-edition.gitbook.io/minecraft-legendary-edition)
 
-> **Fabric port status:** v2.0.0 is a full release for Fabric 1.20.1. The tracked gameplay port and air-quality fixes are complete, with single-player gameplay tested in-game. Broader multiplayer/dedicated-server validation remains open. Back up worlds and configs before updating.
+> **Fabric port status:** v2.1.0 is a full release for Fabric 1.20.1. The tracked gameplay port and air-quality fixes are complete, with single-player gameplay tested in-game. Broader multiplayer/dedicated-server validation remains open. Back up worlds and configs before updating.
 
 ## Screenshots
 
@@ -42,11 +42,11 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest release is [**v2.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.0.0), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**. It replaces Forge Config API Port with Fzzy Config and Fabric Language Kotlin, with in-game config editing and Mod Menu support. Starting with 1.0.0, the Fabric port is versioned as its own project using [Semantic Versioning](https://semver.org/); see the [versioning policy](docs/Fabric-Port-Wiki.md#versioning-policy). Older `v1.20.1-2.4.7-fabric.N` builds remain on the releases page for history.
+The latest release is [**v2.1.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**. It adds the dedicated Air config to the Fzzy Config and Mod Menu support introduced in v2.0.0. Fzzy Config and Fabric Language Kotlin replace Forge Config API Port. Starting with 1.0.0, the Fabric port is versioned as its own project using [Semantic Versioning](https://semver.org/); see the [versioning policy](docs/Fabric-Port-Wiki.md#versioning-policy). Older `v1.20.1-2.4.7-fabric.N` builds remain on the releases page for history.
 
 Current highlights:
 
-- Fzzy Config in-game editing for all 230 options across seven configs, with short titles such as **LSO - Client**, server synchronization, and optional Mod Menu integration.
+- Fzzy Config in-game editing for all 248 options across eight configs, including **LSO - Air**, with server synchronization and optional Mod Menu integration.
 - Automatic migration of 1.x configuration files, retaining `.forge-backup` copies.
 - Integrated air-quality mechanics, survival equipment, and **Free Breathing** effects; no separate Thin Air installation is required.
 - Temperature, thirst, wetness, and body-damage HUD indicators.
@@ -97,13 +97,13 @@ Replace the old LSO jar rather than keeping multiple versions installed. Forge C
 
 ## Configuration
 
-As of 2.0.0, all settings use [Fzzy Config](https://github.com/fzzyhmstrs/fconfig). Every option in the seven config files can be edited in-game: Common, Temperature, Seasons, Thirst, Health, Body Damage, and Client.
+All settings use [Fzzy Config](https://github.com/fzzyhmstrs/fconfig). v2.1.0 provides eight in-game configs: Common, Air, Temperature, Seasons, Thirst, Health, Body Damage, and Client.
 
 - Open the editor from the **Mod Menu** config button, or run `/configure legendarysurvivaloverhaul`.
 - Server-side settings are synced to clients, and operators can change them in-game.
 - The files are stored in `config/legendarysurvivaloverhaul/<name>.toml`.
 - Configs from 1.x (Forge Config API Port format) are migrated automatically on first launch. The original file is kept as `<name>.toml.forge-backup`.
-- Client settings stay local; the other six configs use the server's synchronized values.
+- Client settings stay local; the other seven configs use the server's synchronized values.
 - In-game edits refresh the settings used by gameplay and HUD code. Settings read only during startup still require a restart.
 
 ### Air configuration (v2.1.0)
@@ -117,6 +117,14 @@ Defaults preserve existing behavior. Enable **Override Vanilla Dimension Profile
 Existing Common air values migrate on first launch when `air.toml` does not exist. Fzzy Common files are backed up as `common.toml.air-backup`; older Forge files retain their `.forge-backup`. An existing `air.toml` takes precedence and is not overwritten by Common settings. New edits rebake settings and invalidate cached air-quality results.
 
 ## Mod compatibility
+
+### Trinkets config development preview (2.2.0-beta.1)
+
+The local development build adds **LSO - Trinkets** (`trinkets.toml`) with allowed-slot lists for the Thermometer, Nether Chalice, Sponge, three resistance rings, First Aid Supplies, and Water Purifier. **The Respirator is excluded.** This preview is not included in the published v2.1.0 release.
+
+Enter existing `group/slot` IDs such as `hand/ring`, `chest/necklace`, or `legs/belt`. Multiple entries allow multiple locations; an empty list blocks new equipping for that item. Custom slots supplied by mods/datapacks are accepted, but this config does not create slots.
+
+**Use Configured Slots** defaults to enabled and overrides those eight items' slot tags. Disable it to retain Trinkets/datapack tag assignments. Defaults match LSO's shipped slot assignments. Server settings apply to all players; this is not a client-only permission to choose different slots. Edits affect new insertion/auto-equip; already equipped items remain in place and can still be removed subject to normal Trinkets restrictions.
 
 | Mod | Current support |
 | --- | --- |

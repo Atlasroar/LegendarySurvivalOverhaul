@@ -1,6 +1,6 @@
 # Configuration
 
-v2.0.0 uses [Fzzy Config](https://github.com/fzzyhmstrs/fconfig/tree/1.20.1) for all **230 options**.
+v2.1.0 uses [Fzzy Config](https://github.com/fzzyhmstrs/fconfig/tree/1.20.1) for all **248 options**.
 
 ## Open the editor
 
@@ -10,11 +10,12 @@ Use LSO's config button in **Mod Menu**, or run:
 /configure legendarysurvivaloverhaul
 ```
 
-The seven config titles use the short **LSO - ...** format.
+The eight config titles use the short **LSO - ...** format.
 
 | Config | Scope |
 | --- | --- |
-| LSO - Common | Shared/core settings, difficulty, air quality, provider ranges |
+| LSO - Common | Shared/core settings and difficulty |
+| LSO - Air | Air quality, providers, profiles, breathing and bladder controls |
 | LSO - Temperature | Temperature mechanics and related effects |
 | LSO - Seasons | Seasonal integration settings |
 | LSO - Thirst | Hydration and exhaustion |
@@ -22,7 +23,7 @@ The seven config titles use the short **LSO - ...** format.
 | LSO - Body Damage | Body-part health, damage, and secondary effects |
 | LSO - Client | HUD, visual, and client preferences |
 
-`client` settings remain local. The other six configs synchronize the server's values to clients. Operators can edit server settings in-game. Real multiplayer permission/synchronization testing remains an open validation task.
+`client` settings remain local. The other seven configs synchronize the server's values to clients. Operators can edit server settings in-game. Real multiplayer permission/synchronization testing remains an open validation task.
 
 Related options are grouped, with descriptions and validated numeric ranges. Small numeric ranges use sliders. Read the description before changing a setting.
 
@@ -34,7 +35,30 @@ Files are stored at:
 config/legendarysurvivaloverhaul/<name>.toml
 ```
 
-Names are `common`, `temperature`, `seasons`, `thirst`, `health`, `body_damage`, and `client`.
+Names are `common`, `air`, `temperature`, `seasons`, `thirst`, `health`, `body_damage`, and `client`.
+
+## Development preview: LSO - Trinkets (2.2.0-beta.1)
+
+The next build adds a synced **LSO - Trinkets** config (`trinkets.toml`) with nine controls: a slot-tag override switch and eight allowed-slot lists. This preview is not in the published v2.1.0 release.
+
+| Item | Default allowed slot |
+| --- | --- |
+| Thermometer | `legs/belt` |
+| Nether Chalice | `chest/necklace` |
+| Sponge | `chest/back` |
+| Heat Resistance Ring | `hand/ring` |
+| Cold Resistance Ring | `hand/ring` |
+| Thermal Resistance Ring | `hand/ring` |
+| First Aid Supplies | `hand/glove` |
+| Water Purifier | `head/face` |
+
+The **Respirator is not configurable here** and retains its existing face-slot behavior.
+
+Lists accept existing lowercase `group/slot` IDs, including custom slots from mods/datapacks. Multiple IDs permit multiple locations; an empty list blocks new equipping. This does not create slots or increase their capacity. Common LSO-enabled player slots include `chest/back`, `chest/necklace`, `feet/aglet`, `feet/shoes`, `hand/glove`, `hand/ring`, `head/face`, `head/hat`, and `legs/belt`.
+
+**Use Configured Slots** defaults to enabled, overriding the eight accessories' slot item tags. Disable it to restore tag-based Trinkets/datapack assignments. Server/operator settings govern all players, and sync to clients.
+
+Insertion and right-click auto-equip use the same rules. Other slot validators and the item's equip restrictions are retained. Already equipped items are not moved, deleted, or forcibly removed when the config changes; normal removal rules still apply.
 
 In-game update/sync hooks refresh `Config.Baked`, which gameplay and HUD code read. Settings take effect without restarting unless the affected behavior only reads them at startup. For manual file editing, stop the instance first and restart afterward; do not assume external edits hot-reload.
 

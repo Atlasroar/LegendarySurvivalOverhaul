@@ -2,7 +2,7 @@
 
 **Make survival matter.** LSO adds temperature, hydration, localized body damage, expanded health, and air quality to Minecraft.
 
-This wiki documents the **Fabric 1.20.1 port**, not the original Forge release. The latest full release is [v2.0.0](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.0.0), requiring Java 17.
+This wiki documents the **Fabric 1.20.1 port**, not the original Forge release. The latest full release is [v2.1.0](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0), requiring Java 17.
 
 ## Getting started
 
@@ -24,6 +24,6 @@ This wiki documents the **Fabric 1.20.1 port**, not the original Forge release. 
 
 The tracked Fabric gameplay port and air-quality fixes are complete. Single-player survival and air equipment were tested in-game across the Overworld, Nether, and End. Dedicated-server config loading and legacy migration were exercised; exhaustive multiplayer gameplay and every config edit are not claimed as validated.
 
-Fzzy Config replaces Forge Config API Port in v2.0.0. All 230 options across seven configs have an in-game editor, with short titles such as **LSO - Client**. Additional mod integrations are the next development phase, not existing support.
+Fzzy Config replaces Forge Config API Port in v2.0.0. v2.1.0 has 248 options across eight in-game configs, including **LSO - Air**. Additional mod integrations are the next development phase, not existing support.
 
 [Downloads](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues) | [Source](https://github.com/Atlasroar/LegendarySurvivalOverhaul/tree/lso-fabric-1-20-1)

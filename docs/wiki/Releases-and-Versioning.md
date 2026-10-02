@@ -2,19 +2,21 @@
 
 ## Latest full release
 
-[**v2.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.0.0) targets Minecraft 1.20.1, Fabric, and Java 17.
+[**v2.1.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
-legendarysurvivaloverhaul-fabric-1.20.1-2.0.0.jar
-SHA-256: BC65555303CA316995465449DB6FFE3F95D626572A8D818B06B130622BE1991F
+legendarysurvivaloverhaul-fabric-1.20.1-2.1.0.jar
+SHA-256: C53842FFE541E9CD6E472788F6B4E1BC06288FBD8A324645F765E2268C1336E5
 ```
 
-**Breaking dependency/config change:** Fzzy Config and Fabric Language Kotlin replace Forge Config API Port. Legacy configs migrate automatically with backups. All 230 options have an in-game editor, Mod Menu support is available, and config titles use the short `LSO - ...` form.
+v2.1.0 adds **LSO - Air** with 25 air controls and automatic migration from Common. There are 248 options across eight configs. Dependencies remain unchanged from v2.0.0: Fzzy Config and Fabric Language Kotlin replace Forge Config API Port; Mod Menu is optional.
 
 ## Release milestones
 
 | Version | Milestone |
 | --- | --- |
+| v2.1.0 | Dedicated Air config, opt-in dimension/height overrides, breathing rates, equipment wear, bladder controls, and automatic Common migration. |
+| v2.1.0-beta.1 | Air configuration testing prerelease; superseded by v2.1.0. |
 | v2.0.0 | Full Fzzy Config migration, Mod Menu support, legacy backups, short config titles. |
 | v2.0.0-beta.1 | Testing prerelease for config migration; superseded by v2.0.0. |
 | v1.0.0 | First SemVer release; validated Thin Air mechanics, Turtle Helmet protection, and Free Breathing names. |
