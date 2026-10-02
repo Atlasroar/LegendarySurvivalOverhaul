@@ -1,6 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -36,6 +37,7 @@ public final class LegendarySurvivalOverhaulClient implements ClientModInitializ
 		FabricClientCallbacks.register();
 		FabricDataSyncReceiver.register();
 		KeyMappingRegistry.register();
+		ClientLifecycleEvents.CLIENT_STARTED.register(KeyMappingRegistry::migrateLegacyShiftBinding);
 		ClientTickEvents.START_CLIENT_TICK.register(client -> {
 			OverflowingBarsHealthRenderer.INSTANCE.onStartTick();
 			if (client.player != null)
