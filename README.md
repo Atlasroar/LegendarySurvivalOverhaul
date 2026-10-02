@@ -42,7 +42,7 @@ The health systems include additional, broken, resilient, permanent, and shield 
 
 ## Current Fabric release
 
-The latest release is [**v1.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v1.0.0), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**. Starting with 1.0.0, the Fabric port is versioned as its own project using [Semantic Versioning](https://semver.org/); see the [versioning policy](docs/Fabric-Port-Wiki.md#versioning-policy). Older `v1.20.1-2.4.7-fabric.N` builds remain on the releases page for history.
+The latest release is [**v2.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.0.0), targeting **Minecraft 1.20.1**, **Fabric**, and **Java 17**. It replaces Forge Config API Port with Fzzy Config and Fabric Language Kotlin, with in-game config editing and Mod Menu support. Starting with 1.0.0, the Fabric port is versioned as its own project using [Semantic Versioning](https://semver.org/); see the [versioning policy](docs/Fabric-Port-Wiki.md#versioning-policy). Older `v1.20.1-2.4.7-fabric.N` builds remain on the releases page for history.
 
 Current highlights:
 
