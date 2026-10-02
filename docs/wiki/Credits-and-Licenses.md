@@ -13,6 +13,7 @@ Credits identify upstream work; they do not grant permission to redistribute eve
 | **AlphaMode** | Upstream Thin Air 1.19.2 port credit | Historical upstream contribution |
 | **Petra / Miner's Lung** | Upstream Thin Air inspiration | Attribution, not an LSO runtime dependency |
 | **Fuzs / Overflowing Bars** | Health-bar rendering adaptation and authorized icon reuse | Renderer MPL-2.0; assets have a separate authorized-use notice |
+| **PeteMC / HardcoreLite** | Feature inspiration for the Enchanted Golden Apple shield-health/heart-container-repair bonus and death heart-loss mechanics (v2.5.0+) | Attribution/inspiration only — LSO implements its own logic on its existing heart-container/shield-health systems, not a reuse of HardcoreLite's code; see [HardcoreLite (1.20.1-Fabric)](https://github.com/MC-Mods-Pete/HardcoreLite/tree/1.20.1-Fabric) |
 
 LSO includes license texts and asset-use notices under [`src/main/resources/META-INF/licenses`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/tree/lso-fabric-1-20-1/src/main/resources/META-INF/licenses). These are shipped in the jar. Preserve them when redistributing the mod.
 

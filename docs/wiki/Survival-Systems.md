@@ -44,6 +44,8 @@ The health overhaul supports additional, broken, resilient, permanent, and shiel
 
 Broken hearts occupy health containers; shield hearts use separate yellow/orange rows and reserve space above them for armor. Optional Overflowing Bars spacing was tested. Sleeping can restore configured player and body-part health.
 
+**Enchanted Golden Apple and death (inspired by [HardcoreLite](https://github.com/MC-Mods-Pete/HardcoreLite/tree/1.20.1-Fabric)):** eating specifically an Enchanted Golden Apple grants a Shield Health bonus (2 Shield Hearts by default) and repairs a Heart Container, on top of its vanilla effects. Dying removes one Heart Container, down to a configurable floor (1 Heart Container / 2 health by default) — LSO never forces Spectator mode at that floor, unlike the mod that inspired it. If LevelZ is installed, its level-based max-health bonus takes precedence: a LevelZ character's level-based health floor is never lowered by LSO's death heart-loss. Tune or disable both mechanics in **LSO - Health** (`enchantedGoldenAppleOverrideEnabled`, `heartsLostOnDeath`, `permanentHearts`); see [Mod Compatibility](Mod-Compatibility) for full field-by-field behavior.
+
 ## Equipment and survival blocks
 
 Wearable accessories use Trinkets. Vanilla equipment and LSO accessories can receive datapack-driven temperature and body-part resistance.
