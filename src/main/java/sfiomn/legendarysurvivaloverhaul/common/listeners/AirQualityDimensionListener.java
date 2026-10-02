@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.serialization.JsonOps;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -35,8 +34,7 @@ public class AirQualityDimensionListener extends SimpleJsonResourceReloadListene
             try {
                 var parsedJson = JsonAirQualityDimension.CODEC.parse(JsonOps.INSTANCE, json);
                 JsonAirQualityDimension airQualityDimension = parsedJson.getOrThrow(false, error -> LegendarySurvivalOverhaul.LOGGER.error("Failed parsing air quality dimension : {}", error));
-                if (FabricLoader.getInstance().isModLoaded(key.getNamespace()))
-                    AIR_QUALITY_DIMENSIONS.put(key, airQualityDimension);
+                AIR_QUALITY_DIMENSIONS.put(key, airQualityDimension);
             } catch (JsonParseException error) {
                 LegendarySurvivalOverhaul.LOGGER.error("Failed to parse air quality dimension json {}", key);
             }
