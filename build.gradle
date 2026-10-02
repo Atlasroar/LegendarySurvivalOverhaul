@@ -3,11 +3,18 @@ plugins {
     id 'maven-publish'
 }
 
-version = "${minecraft_version}-${mod_version}"
+// Semantic Versioning (https://semver.org): mod_version is MAJOR.MINOR.PATCH[-prerelease];
+// the Minecraft version is SemVer build metadata and does not affect precedence.
+version = "${mod_version}+${minecraft_version}"
 group = mod_group_id
 
 base {
-    archivesName = mod_id
+    archivesName = "${mod_id}-fabric-${minecraft_version}"
+}
+
+// '+' is rewritten in GitHub release asset names, so jar files use only mod_version.
+tasks.withType(AbstractArchiveTask).configureEach {
+    archiveVersion = mod_version
 }
 
 repositories {
