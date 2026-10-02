@@ -113,6 +113,14 @@ public class AirConfig extends me.fzzyhmstrs.fzzy_config.config.Config {
     @ConfigGroup.Pop
     public ValidatedInt airBladderCooldown = integer(150, 72000, 0);
 
+    public ConfigGroup group_compatibility = new ConfigGroup("group_compatibility");
+
+    @Comment("When VanillaBackport is installed, sulfur caves have YELLOW ambient air with the Nether drain interval. Fluids and nearby providers take precedence. Disable to use the normal dimension profile.")
+    public ValidatedBoolean sulfurCaveAirEnabled = new ValidatedBoolean(true);
+    @Comment("An equipped Respirator prevents VanillaBackport Potent Sulfur gas from applying nausea. Held masks and other nausea sources are not protected. Independent of Enable Air Quality.")
+    @ConfigGroup.Pop
+    public ValidatedBoolean respiratorBlocksSulfurNausea = new ValidatedBoolean(true);
+
     private static ValidatedInt integer(int value, int max, int min) {
         return new ValidatedInt(value, max, min, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
     }

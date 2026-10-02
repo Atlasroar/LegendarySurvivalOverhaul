@@ -1,5 +1,6 @@
 package sfiomn.legendarysurvivaloverhaul.api.airquality;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
+import sfiomn.legendarysurvivaloverhaul.common.integration.vanillabackport.VanillaBackportCompat;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.AirQualityTagRegistry;
 import com.mojang.serialization.Codec;
@@ -58,6 +60,7 @@ public enum AirQualityLevel implements StringRepresentable {
         @Override
         int getAirAmount(LivingEntity entity) {
             long drainInterval = entity.level().dimension() == Level.NETHER
+                    || VanillaBackportCompat.hasSulfurAir(entity.level(), BlockPos.containing(entity.getEyePosition()))
                     ? Config.Baked.netherYellowDrainInterval : Config.Baked.yellowDrainInterval;
             return entity.level().getGameTime() % drainInterval == 0 ? super.getAirAmount(entity) : 0;
         }

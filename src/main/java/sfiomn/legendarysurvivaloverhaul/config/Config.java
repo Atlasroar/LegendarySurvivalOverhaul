@@ -155,6 +155,7 @@ public class Config
 				greenAirRefillAmount, breathingEquipmentDamageInterval;
 		public static double suffocationDamage;
 		public static int airBladderRechargeAmount, airBladderRefillAmount, airBladderCooldown;
+		public static boolean sulfurCaveAirEnabled, respiratorBlocksSulfurNausea;
 		public static volatile Map<net.minecraft.resources.ResourceLocation, java.util.Set<String>> trinketSlots = Map.of();
 
 		// Temperature
@@ -498,6 +499,8 @@ public class Config
 			airBladderRechargeAmount = AIR.airBladderRechargeAmount.get();
 			airBladderRefillAmount = AIR.airBladderRefillAmount.get();
 			airBladderCooldown = AIR.airBladderCooldown.get();
+			sulfurCaveAirEnabled = AIR.sulfurCaveAirEnabled.get();
+			respiratorBlocksSulfurNausea = AIR.respiratorBlocksSulfurNausea.get();
 			sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityUtil.invalidateCache();
 		}
 
