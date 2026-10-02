@@ -52,6 +52,7 @@ Before restoring an excluded integration, inspect build exclusions and registrat
 | Respirator Nausea prevention | Revised for v2.3.0 to block new Nausea from any source, with tooltip and toggle; isolated server assertions passed |
 | SemVer and obsolete branch/PR cleanup | Completed |
 | LevelZ health compatibility | Implemented; death-respawn heal deferred by one tick so LevelZ's max-health attribute bonus is never overwritten or read early; confirmed in-game: health bonus remains stable after death |
+| HardcoreLite-inspired Enchanted Golden Apple / death heart-loss | Implemented in v2.5.0; item-specific Shield Health bonus + Heart Container repair for Enchanted Golden Apple, death heart-loss with a non-spectator floor; LevelZ's level-based health floor intentionally takes precedence; confirmed in-game with and without LevelZ installed |
 
 ## Open validation
 
