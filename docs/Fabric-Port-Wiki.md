@@ -350,10 +350,10 @@ The legacy `v1.20.1-2.4.7-fabric.N` tags below predate this policy and are kept 
 | `v2.0.0` | **Breaking:** the configuration system moves from Forge Config API Port to Fzzy Config, which requires Fabric Language Kotlin. All 230 options are editable in-game via Mod Menu or `/configure`. Server configs are synced to clients and editable by operators. Mod Menu metadata (icon, links) is added. Existing 1.x config files are migrated automatically, with `.forge-backup` copies kept. No gameplay changes. |
 ### Latest released artifact
 
-- File: `legendarysurvivaloverhaul-fabric-1.20.1-2.0.0.jar`
-- Tag: `v2.0.0`
-- SHA-256: `BC65555303CA316995465449DB6FFE3F95D626572A8D818B06B130622BE1991F`
-- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.0.0>
+- File: `legendarysurvivaloverhaul-fabric-1.20.1-2.1.0.jar`
+- Tag: `v2.1.0`
+- SHA-256: `C53842FFE541E9CD6E472788F6B4E1BC06288FBD8A324645F765E2268C1336E5`
+- Release page: <https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0>
 
 ## Feature and compatibility notes
 
@@ -416,7 +416,7 @@ As of 2.0.0, the seven LSO configs (`common`, `temperature`, `seasons`, `thirst`
 
 ## Build and test
 
-### Air config development preview (2.1.0-beta.1)
+### Air config (released in v2.1.0)
 
 - Adds a synced `AirConfig` (`LSO - Air`, `air.toml`) containing 25 options: the seven former Common air fields plus 18 new controls. Total: 248 options across eight configs.
 - Default behavior remains unchanged. Vanilla-dimension ambient overrides are opt-in; custom dimension datapacks remain supported. Height boundaries are inclusive eye-block Y.

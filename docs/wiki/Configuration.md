@@ -52,9 +52,9 @@ Dedicated-server checks verified enum, boolean, integer, double, string-list, an
 
 Keep the backup until you have checked your settings. If conversion looks wrong, preserve both files and the log when [reporting an issue](Troubleshooting).
 
-## Development preview: LSO - Air (2.1.0-beta.1)
+## LSO - Air (v2.1.0)
 
-The next build adds an eighth synced config, **LSO - Air**, stored in `air.toml`. Its 25 options move the seven existing Common air controls and add 18 controls. The total becomes 248 options. These additions are not present in the published v2.0.0 jar.
+v2.1.0 adds an eighth synced config, **LSO - Air**, stored in `air.toml`. Its 25 options move the seven existing Common air controls and add 18 controls. The total is 248 options.
 
 | Group | Controls |
 | --- | --- |

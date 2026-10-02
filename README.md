@@ -106,9 +106,9 @@ As of 2.0.0, all settings use [Fzzy Config](https://github.com/fzzyhmstrs/fconfi
 - Client settings stay local; the other six configs use the server's synchronized values.
 - In-game edits refresh the settings used by gameplay and HUD code. Settings read only during startup still require a restart.
 
-### Air config development preview (2.1.0-beta.1)
+### Air configuration (v2.1.0)
 
-The next build adds a separate **LSO - Air** editor and `air.toml`, with **25 air options** (248 total across eight configs). This is not part of the published v2.0.0 release.
+The latest full release, [v2.1.0](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.1.0), adds a separate **LSO - Air** editor and `air.toml`, with **25 air options** (248 total across eight configs). The dependency requirements are unchanged from v2.0.0.
 
 It moves the seven existing Common air controls and adds opt-in Overworld height/quality, Nether/End quality overrides, an unconfigured-dimension fallback, drain intervals/amount, GREEN refill rate, equipment wear, outside-water suffocation damage, and air-bladder recharge/refill/cooldown.
 
