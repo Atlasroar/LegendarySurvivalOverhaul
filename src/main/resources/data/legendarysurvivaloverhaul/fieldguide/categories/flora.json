@@ -1,0 +1,10 @@
+{
+	"sort_index": 100,
+	"icon": "legendarysurvivaloverhaul:textures/gui/fieldguide/flora_icon.png",
+	"contents": [
+		{
+			"type": "auto_populate",
+			"strategy": "mod_plants:legendarysurvivaloverhaul"
+		}
+	]
+}
