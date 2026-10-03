@@ -13,7 +13,7 @@ Forge Config API Port is only needed by older LSO versions, or by other installe
 | Mod | Implemented support and limits |
 | --- | --- |
 | Mod Menu | Config button supplied through Fzzy Config; LSO supplies icon, project/contact links, and wiki metadata. |
-| LevelZ | No conflict with level-based max-health bonuses; death-respawn heal deferred so it never overwrites LevelZ's attribute bonus. Confirmed in-game: the bonus remains stable across death/respawn. See "LevelZ health compatibility" below. |
+| LevelZ / WandererZ | No conflict with level-based max-health bonuses; death-respawn heal deferred so it never overwrites the mod's attribute bonus. Confirmed in-game: the bonus remains stable across death/respawn. See "LevelZ/WandererZ health compatibility" below. WandererZ's bundled food-spoilage system (SpoiledZ) is explicitly excluded from LSO's own drink items. |
 | Overflowing Bars | Shared HUD heights, shield/armor separation, broken-heart rendering, and vehicle-row gap correction; tested in-game. |
 | Serene Seasons | Season cards (including tropical Wet/Dry), temperature integration, and out-of-season bonemeal warning. Cards and warning were tested in-game. |
 | Supplementaries | Ordinary consumable finish-use flow uses LSO's existing hook; this is not a claim of a complete custom integration. |
@@ -55,7 +55,7 @@ No hand-tuned Terralith temperature presets are shipped. Biome JSON temperature 
 
 v2.3.0 does not change the default Overworld air-height limits: Tectonic's taller terrain can still encounter high-altitude YELLOW air. Adjust Air profiles deliberately if your pack should differ.
 
-## LevelZ health compatibility
+## LevelZ/WandererZ health compatibility
 
 [LevelZ](https://github.com/Globox1997/LevelZ/tree/1.20) (requires its [LibZ](https://github.com/Globox1997/LibZ/tree/1.20) library) can grant a level-based bonus to the `generic.max_health` attribute via its own `EntityAttributeModifier`. LSO's health overhaul already adds its own max-health delta as a single fixed-UUID modifier without touching the attribute's base value or other mods' modifiers, so the two mods' bonuses stack correctly regardless of load order.
 
@@ -64,6 +64,10 @@ The one real conflict: on death, `ModCapabilities.copyPlayerState` healed the pl
 Confirmed in-game (v2.4.0): the LevelZ health bonus remains stable across death and respawn, operating as intended.
 
 LibZ itself only supplies shared GUI/network/config/registry utilities for LevelZ; it has no attribute or health logic of its own, so no additional adapter is needed for it.
+
+**[WandererZ](https://github.com/Atlasroar/WandererZ)** is the continuation of LevelZ, merging LevelZ's own level/skill system together with Jobs, RPG Difficulty, Tiered, Party and a food-spoilage system (internally named SpoiledZ) into a single mod (`wandererz` mod id). The max-health timing fix above is implemented generically — it reacts to any mod's `AFTER_RESPAWN`-timed attribute recomputation rather than gating on a specific mod ID — so it applies to WandererZ's level-based max-health bonus exactly the same way it applies to standalone LevelZ, with no separate adapter required.
+
+**Food spoilage exclusion (by design):** WandererZ's bundled SpoiledZ system tracks spoilage NBT on any item that is vanilla "food" (`Item#isFood()`) or explicitly added to the `spoiledz:spoiling_items` tag, unless it is listed in `spoiledz:non_spoiling_items`. None of LSO's thirst/drink items (Canteen, Large Canteen, the Juice line, Purified Water Bottle, Water Plant Bag) declare vanilla `FoodProperties` — they are driven entirely by LSO's own Thirst capability and custom use/finish-use logic — so they are not swept up by SpoiledZ automatically. LSO still ships `data/spoiledz/tags/items/non_spoiling_items.json`, explicitly adding all of its drink items to that tag, as a defensive guarantee that WandererZ's food-spoilage mechanic never applies to LSO's drinks regardless of future changes on either side.
 
 ## Enchanted Golden Apple and death heart-loss (v2.5.0, HardcoreLite-inspired)
 

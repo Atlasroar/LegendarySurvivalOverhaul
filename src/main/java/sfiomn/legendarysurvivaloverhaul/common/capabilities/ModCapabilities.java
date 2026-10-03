@@ -34,7 +34,7 @@ public class ModCapabilities
 	/**
 	 * Players whose current health should be forced back to their max health attribute value
 	 * on their next server tick. Death respawns queue onto this instead of healing immediately
-	 * in {@link #copyPlayerState}, because other mods (e.g. LevelZ) recompute max-health
+	 * in {@link #copyPlayerState}, because other mods (e.g. LevelZ/WandererZ) recompute max-health
 	 * attribute modifiers from their own {@code AFTER_RESPAWN} listener, and Fabric does not
 	 * guarantee that listener runs before or after ours. Waiting for the next tick lets every
 	 * mod's respawn-time attribute math finish first, regardless of registration order, so the
@@ -47,7 +47,7 @@ public class ModCapabilities
 	 * next server tick instead of immediately in {@link #copyPlayerState}. The loseHearth floor
 	 * check reads the player's current max-health attribute as an absolute reference point (how
 	 * many hearts they currently have), which is only accurate once every other mod's respawn
-	 * attribute math (e.g. LevelZ's level-based max health) has also finished, for the same
+	 * attribute math (e.g. LevelZ's/WandererZ's level-based max health) has also finished, for the same
 	 * ordering reasons documented on {@link #PENDING_RESPAWN_FULL_HEAL}.
 	 */
 	private static final Set<UUID> PENDING_RESPAWN_HEART_LOSS = ConcurrentHashMap.newKeySet();
@@ -245,7 +245,7 @@ public class ModCapabilities
 				HealthUtil.updatePlayerMaxHealthAttribute(player);
 				player.setHealth(player.getMaxHealth());
 			} else {
-				// Death respawn: other mods (e.g. LevelZ) may still apply their own max-health
+				// Death respawn: other mods (e.g. LevelZ/WandererZ) may still apply their own max-health
 				// attribute changes from their AFTER_RESPAWN listener. Defer both the heart-loss
 				// floor check (which reads the player's current max health as an absolute
 				// reference point) and the full heal to this player's next tick, so they run
