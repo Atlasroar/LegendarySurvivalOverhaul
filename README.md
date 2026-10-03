@@ -4,7 +4,7 @@
 
 **Make survival matter.** This Fabric 1.20.1 port of Legendary Survival Overhaul adds configurable environmental survival, hydration, injuries, health, and air quality.
 
-[**Download v2.3.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.3.0) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
+[**Download v2.8.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.8.0) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
 
 ## Features
 
@@ -17,6 +17,7 @@
 - **Biome compatibility:** native climates for modded biomes, datapack-only temperature overrides, and optional VanillaBackport sulfur-cave air. Equipped Respirators prevent new Nausea effects.
 - **Accessory slot customization:** choose allowed slots for eight LSO accessories; the Respirator remains excluded.
 - **Datapack customization:** tune consumables, equipment resistance, environment profiles, and body-damage rules.
+- **Hydration mod support:** pure-datapack Thirst hydration for Farmer's Delight Refabricated, HerbalBrews, Vinery, Meadow, Farm & Charm, Bakery, Candlelight, and Brewery drinks (and related foods) — no dependency required, inactive unless the target mod is installed.
 
 ## Install
 

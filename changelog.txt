@@ -18,6 +18,24 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v2.8.0
+====
+Added hydration datapack support for drinks (and a few related
+foods) from eight optional mods: Farmer's Delight Refabricated,
+HerbalBrews, Vinery, Meadow, Farm & Charm, Bakery, Candlelight, and
+Brewery. Each mod's values are shipped as plain reloadable JSON
+under data/<mod id>/thirst/consumables/ (and data/<mod id>/thirst/blocks/
+for drinkable blocks like Brewery's kegs/taps and Candlelight's
+kitchen sinks), matching LSO's existing cross-mod Thirst data
+format. This is a pure datapack: there is no compile-time dependency
+on any of the eight mods, and every entry is only read when LSO
+detects the matching mod namespace is loaded (FabricLoader
+isModLoaded), so nothing changes with those mods absent. Values were
+ported from LSO's own pre-existing (compatibility) value set for
+these same mods. Bakery has no dedicated beverages, so it only
+receives a small hydration amount on its Pudding Slice, its moistest
+item.
+
 v2.7.0
 ====
 Added explicit compatibility for WandererZ, the LevelZ continuation

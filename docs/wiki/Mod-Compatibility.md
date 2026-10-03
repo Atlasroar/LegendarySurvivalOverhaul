@@ -20,6 +20,7 @@ Forge Config API Port is only needed by older LSO versions, or by other installe
 | Item Descriptions / Mod Descriptions | LSO ships its own `lore.legendarysurvivaloverhaul.*` entries for every item and block; no dependency required. See "Item Descriptions, Mod Descriptions and Field Guide" below. |
 | Field Guide | Purely client-side spyglass scanning of entities/blocks; no conflicts. LSO ships a built-in Field Guide "Flora" category for Sun Fern/Ice Fern/Water Plant crops, and any LSO item referenced from a Field Guide entry picks up LSO's Item Descriptions lore automatically. |
 | Immersive Overlays | Not currently reachable on Fabric 1.20.1 — see "Item Descriptions, Mod Descriptions and Field Guide" below for details and the upstream limitation. |
+| Farmer's Delight Refabricated, HerbalBrews, Vinery, Meadow, Farm & Charm, Bakery, Candlelight, Brewery | Drink/beverage items (and a few relevant foods) from each installed mod grant LSO Thirst hydration via a pure datapack — no code dependency on any of these mods. See "Hydration datapack support for Let's Do + Farmer's Delight" below. |
 
 For tropical Serene Seasons cards, enable **Tropical Seasons Enabled** as well as season cards. The bonemeal warning was checked with seasonal crops enabled and the out-of-season behavior set to disallow growth.
 
@@ -97,6 +98,25 @@ With the Air toggle on, that biome has YELLOW ambient air using the Nether drain
 An equipped Respirator now prevents new vanilla Nausea effects from any source, independently of Backport. Both `LivingEntity.addEffect` overloads pass through the existing LSO effect hook. No fragile upstream gas-method mixin or direct Platform dependency is required. This does not cure existing Nausea or protect a merely held mask.
 
 The user tested beta.1 biome/air behavior in-game successfully. Mask protection was revised after a reported failure and passed isolated server assertions; revised in-game protection remains pending. The synthetic upstream-shape fixture is not full real-mod/client validation.
+
+## Hydration datapack support for Let's Do + Farmer's Delight (v2.8.0)
+
+LSO's Thirst system already loads cross-mod hydration/saturation values from reloadable JSON resources at `data/<mod id>/thirst/consumables/<item id>.json` (and `data/<mod id>/thirst/blocks/<block id>.json` for drinkable blocks like kegs or sinks). Each file is a plain data array — `[{"hydration": <int>, "saturation": <float>, "effects": [...], "properties": {...}}]` — keyed by the target mod's own namespace and item/block path, so it only activates when that mod is actually installed (`FabricLoader.isModLoaded(namespace)`), and is otherwise inert. No Java dependency, mixin, or compile-time reference to the target mod is required; this is why the feature is described as a "datapack" — it ships as resources, not code.
+
+v2.8.0 adds hydration coverage, ported from LSO's existing (pre-Fabric-port) value set for these same mods, for:
+
+| Mod | Namespace | Coverage |
+| --- | --- | --- |
+| [Farmer's Delight Refabricated](https://github.com/MehVahdJukaar/FarmersDelightRefabricated/tree/fabric/lts/1.20.1) | `farmersdelight` | Tomato, milk bottle, apple cider, hot cocoa, melon juice, tomato sauce, melon popsicle, fruit salad, and the chicken/vegetable/pumpkin soups. |
+| [HerbalBrews](https://github.com/Let-s-Do-Collection/HerbalBrews/tree/1.20.1) | `herbalbrews` | All brewed teas (green, black, hibiscus, lavender, rooibos, oolong, yerba mate), coffee, milk coffee, and the flask. |
+| [Vinery](https://github.com/Let-s-Do-Collection/Vinery/tree/1.20.1) | `vinery` | Grapes/grape juices, cider, and the full wine lineup; higher-effort wines (Mead, Jellie Wine, Nether/End wines, etc.) grant progressively larger Thirst-effect buffers. Rotten cherry is a small hydration penalty, matching spoiled food behavior. |
+| [Meadow](https://github.com/Let-s-Do-Collection/Meadow/tree/1.20.1) | `meadow` | Wooden milk buckets (sheep/buffalo/goat/warped/grain/amethyst variants) and the wooden water cauldron block. |
+| [Farm & Charm](https://github.com/Let-s-Do-Collection/FarmAndCharm/tree/1.20.1) | `farm_and_charm` | Tomato, strawberry, the strawberry/nettle/ribwort teas (cup and non-cup forms), and its soups. |
+| [Bakery](https://github.com/Let-s-Do-Collection/Bakery/tree/1.20.1) | `bakery` | No dedicated beverages exist in Bakery; its moistest item (Pudding Slice) grants a small hydration amount. |
+| [Candlelight](https://github.com/Let-s-Do-Collection/Candlelight/tree/1.20.1) | `candlelight` | Mozzarella, tomato/mushroom soups, and its full set of kitchen sink blocks (filled state) as a drinkable water source. |
+| [Brewery](https://github.com/Let-s-Do-Collection/Brewery/tree/1.20.1) | `brewery` | All whiskey and beer variants, both as consumed items and as their keg/tap blocks, so drinking directly from a placed keg hydrates the same as drinking a bottled serving. |
+
+None of these mods' items declare vanilla `FoodProperties`-driven Thirst by themselves — LSO's values are additive data, not an override of anything the target mod ships. Uninstalling any of these mods makes its datapack entries simply unused; nothing in LSO depends on them being present.
 
 ## Future integrations
 
