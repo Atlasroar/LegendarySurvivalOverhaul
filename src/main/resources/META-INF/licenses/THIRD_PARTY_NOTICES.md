@@ -17,11 +17,22 @@ Upstream source: https://github.com/Fuzss/OverflowingBars/tree/1.20.1
 
 ## Thin Air
 
-The air-quality subsystem is adapted from Thin Air by Petra and licensed under
-the MIT License; the full license text is included as `thinair-MIT.txt`.
+The air-quality subsystem is adapted from Thin Air by Petra (gamma-delta),
+originally published as Miner's Lung, and licensed under the MIT License; the
+full license text is included as `thinair-MIT.txt`.
 
 Thin Air assets are separately All Rights Reserved. Their use in this project
 was expressly authorized by the asset rights holder; see
 `thinair-assets-notice.txt`.
 
-Upstream source: https://github.com/Fuzss/thinair
+Original source: https://github.com/gamma-delta/MinersLung
+Continued upstream maintenance: https://github.com/Fuzss/thinair
+
+## Thinner Air (credit only, no code reused)
+
+Penguin_Spy's Thinner Air, licensed under the Mozilla Public License 2.0,
+inspired some of LSO's air-quality ideas. No source from Thinner Air is
+included or adapted in this project, so no MPL-2.0 obligation applies here;
+this entry exists solely to credit the inspiration.
+
+Upstream source: https://codeberg.org/Penguin_Spy/thinner_air

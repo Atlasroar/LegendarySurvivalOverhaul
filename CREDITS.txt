@@ -1,65 +1,60 @@
-Minecraft Forge: Credits/Thank You
+Legendary Survival Overhaul: Credits
 
-Forge is a set of tools and modifications to the Minecraft base game code to assist 
-mod developers in creating new and exciting content. It has been in development for 
-several years now, but I would like to take this time thank a few people who have 
-helped it along it's way.
+This file lists the people and projects Legendary Survival Overhaul (LSO)
+builds on or was inspired by. It replaces the previous CREDITS.txt, which
+was the unedited default Minecraft Forge MDK template credits file and had
+no connection to this mod. See LICENSE.txt for license terms and
+docs/wiki/Credits-and-Licenses.md for the full, versioned attribution and
+license-boundary breakdown (which license covers code vs. which assets are
+separately authorized, etc.).
 
-First, the people who originally created the Forge projects way back in Minecraft 
-alpha. Eloraam of RedPower, and SpaceToad of Buildcraft, without their acceptiance 
-of me taking over the project, who knows what Minecraft modding would be today.
+== Original author and maintenance ==
 
-Secondly, someone who has worked with me, and developed some of the core features
-that allow modding to be as functional, and as simple as it is, cpw. For developing
-FML, which stabelized the client and server modding ecosystem. As well as the base
-loading system that allows us to modify Minecraft's code as elegently as possible.
+Sfiomn created the original Legendary Survival Overhaul. This repository
+is a Fabric 1.20.1 port maintained by Atlasroar, built on that original
+work and licensed under LGPL-2.1 per LICENSE.txt.
 
-Mezz, who has stepped up as the issue and pull request manager. Helping to keep me
-sane as well as guiding the community into creating better additions to Forge.
+== Air quality subsystem ==
 
-Searge, Bspks, Fesh0r, ProfMobious, and all the rest over on the MCP team {of which 
-I am a part}. For creating some of the core tools needed to make Minecraft modding 
-both possible, and as stable as can be.
-  On that note, here is some specific information of the MCP data we use:
-    * Minecraft Coder Pack (MCP) *
-      Forge Mod Loader and Minecraft Forge have permission to distribute and automatically 
-      download components of MCP and distribute MCP data files. This permission is not 
-      transitive and others wishing to redistribute the Minecraft Forge source independently
-      should seek permission of MCP or remove the MCP data files and request their users 
-      to download MCP separately.
-      
-And lastly, the countless community members who have spent time submitting bug reports, 
-pull requests, and just helping out the community in general. Thank you.
+- Petra (gamma-delta) authored the original Thin Air mod and Miner's Lung,
+  both MIT licensed.
+  https://github.com/gamma-delta/MinersLung
+- Fuzs (@heyitsfuzs) maintains the continued Thin Air project and its
+  assets; LSO's integrated air-quality assets were used here under express
+  authorization from Fuzs, independent of the MIT source license.
+  https://github.com/Fuzss/thinair
+- Penguin_Spy's Thinner Air (Mozilla Public License 2.0) is credited for
+  inspiring some of LSO's air-quality ideas. No code from Thinner Air is
+  reused in this project, so its MPL-2.0 terms impose no redistribution
+  obligation here; this is an attribution-only credit.
+  https://codeberg.org/Penguin_Spy/thinner_air
 
---LexManos
+== Health and progression ==
 
-=========================================================================
+- PeteMC's HardcoreLite inspired the Enchanted Golden Apple shield-health/
+  heart-container-repair bonus and death heart-loss mechanics (v2.5.0+).
+  LSO implements its own logic on its existing systems; no HardcoreLite
+  code is reused.
+  https://github.com/MC-Mods-Pete/HardcoreLite
 
-This is Forge Mod Loader.
+== Health bar rendering ==
 
-You can find the source code at all times at https://github.com/MinecraftForge/MinecraftForge/tree/1.12.x/src/main/java/net/minecraftforge/fml
+- Fuzs (@heyitsfuzs)'s Overflowing Bars (Mozilla Public License 2.0) is
+  adapted for LSO's optional Overflowing Bars HUD spacing support, with
+  authorized reuse of its icon sheet.
+  https://github.com/Fuzss/OverflowingBars
 
-This minecraft mod is a clean open source implementation of a mod loader for minecraft servers
-and minecraft clients.
+== Accessories/trinkets ==
 
-The code is authored by cpw.
+- Emily (emilyploszaj) and contributors author Trinkets (MIT License),
+  which LSO's accessory slots integrate with.
+  https://github.com/emilyploszaj/trinkets
 
-It began by partially implementing an API defined by the client side ModLoader, authored by Risugami.
-http://www.minecraftforum.net/topic/75440-
-This support has been dropped as of Minecraft release 1.7, as Risugami no longer maintains ModLoader.
+== Libraries ==
 
-It also contains suggestions and hints and generous helpings of code from LexManos, author of MinecraftForge.
-http://www.minecraftforge.net/
+- Cardinal Components API (OnyxStudios and contributors)
+- Fzzy Config (fzzyhmstrs)
+- Fabric Loader, Fabric API, Fabric Language Kotlin (FabricMC)
 
-Additionally, it contains an implementation of topological sort based on that 
-published at http://keithschwarz.com/interesting/code/?dir=topological-sort
-
-It also contains code from the Maven project for performing versioned dependency
-resolution. http://maven.apache.org/
-
-It also contains a partial repackaging of the javaxdelta library from http://sourceforge.net/projects/javaxdelta/
-with credit to it's authors.
-
-Forge Mod Loader downloads components from the Minecraft Coder Pack
-(http://mcp.ocean-labs.de/index.php/Main_Page) with kind permission from the MCP team.
-
+Thanks to everyone above, and to the players and contributors who have
+filed issues, tested releases, and helped improve this project.
