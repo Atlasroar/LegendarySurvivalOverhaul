@@ -20,9 +20,7 @@ for the full attribution and license breakdown, including:
 
   - Thin Air / Miner's Lung source (Petra / gamma-delta, MIT License)
     https://github.com/gamma-delta/MinersLung
-  - Thin Air continued maintenance and assets (Fuzs / @heyitsfuzs),
-    used in this project under express authorization; assets remain
-    All Rights Reserved beyond that grant
+  - Thin Air continued maintenance (Fuzs / @heyitsfuzs)
     https://github.com/Fuzss/thinair
   - Thinner Air (Penguin_Spy), credited for inspired ideas only; no code
     from this project is reused, so its Mozilla Public License 2.0 does

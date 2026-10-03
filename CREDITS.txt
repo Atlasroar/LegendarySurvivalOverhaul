@@ -19,9 +19,8 @@ work and licensed under LGPL-2.1 per LICENSE.txt.
 - Petra (gamma-delta) authored the original Thin Air mod and Miner's Lung,
   both MIT licensed.
   https://github.com/gamma-delta/MinersLung
-- Fuzs (@heyitsfuzs) maintains the continued Thin Air project and its
-  assets; LSO's integrated air-quality assets were used here under express
-  authorization from Fuzs, independent of the MIT source license.
+- Fuzs (@heyitsfuzs) maintains the continued Thin Air project; the assets
+  integrated into LSO originate from Miner's Lung (Petra/gamma-delta, MIT).
   https://github.com/Fuzss/thinair
 - Penguin_Spy's Thinner Air (Mozilla Public License 2.0) is credited for
   inspiring some of LSO's air-quality ideas. No code from Thinner Air is

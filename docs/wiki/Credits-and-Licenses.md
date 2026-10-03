@@ -15,7 +15,7 @@ Note for history: the root `LICENSE.txt` previously shipped in this repository (
 | **Sfiomn** | Original Legendary Survival Overhaul | LGPL-2.1; retain authorship notices |
 | **Atlasroar** | Fabric port maintenance, release/testing coordination | LGPL-2.1; port changes retain applicable project and third-party notices |
 | **Petra (gamma-delta) / Thin Air \| Miner's Lung** | Original air-quality mechanics and assets | Code MIT (copyright 2022 Petra); see [gamma-delta/MinersLung](https://github.com/gamma-delta/MinersLung). Assets separately All Rights Reserved with express authorization recorded for this project |
-| **Fuzs / Thin Air** | Continued upstream maintenance/distribution, assets | See [Fuzss/thinair](https://github.com/Fuzss/thinair) and notices; asset reuse in LSO expressly authorized |
+| **Fuzs / Thin Air** | Continued upstream maintenance/distribution | See [Fuzss/thinair](https://github.com/Fuzss/thinair) and notices |
 | **AlphaMode** | Upstream Thin Air 1.19.2 port credit | Historical upstream contribution |
 | **Penguin_Spy / Thinner Air** | Inspired some air-quality ideas | Attribution-only credit; MPL-2.0 upstream at [Penguin_Spy/thinner_air](https://codeberg.org/Penguin_Spy/thinner_air/src/branch/1.20.1) — no code reused, so no MPL obligation applies to LSO |
 | **Fuzs / Overflowing Bars** | Health-bar rendering adaptation and authorized icon reuse | Renderer MPL-2.0; assets have a separate authorized-use notice |
