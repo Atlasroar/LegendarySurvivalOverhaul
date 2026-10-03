@@ -18,6 +18,42 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v2.7.0
+====
+Added explicit compatibility for WandererZ, the LevelZ continuation
+mod (merges LevelZ's level/skill system with Jobs, RPG Difficulty,
+Tiered, Party, and a bundled food-spoilage system internally named
+SpoiledZ, under the single "wandererz" mod id). LSO's existing
+LevelZ death-respawn max-health timing fix was already implemented
+generically (it reacts to any mod's AFTER_RESPAWN-timed attribute
+recomputation rather than a specific mod ID), so it already covered
+WandererZ's level-based max-health bonus with no code changes
+required; this is now documented explicitly. Also shipped a
+defensive datapack tag (data/spoiledz/tags/items/non_spoiling_items.json)
+explicitly excluding all of LSO's drink items (Canteen, Large
+Canteen, the Juice line, Purified Water Bottle, Water Plant Bag)
+from WandererZ's bundled SpoiledZ food-spoilage system, guaranteeing
+LSO's own Thirst-driven drinks never integrate with that spoilage
+mechanic.
+
+Replaced the repo's stock, unedited Minecraft Forge MDK
+LICENSE.txt/CREDITS.txt template with a project-specific LGPL-2.1
+license and accurate credits: Sfiomn (original author) and Atlasroar
+(Fabric port maintainer) under LGPL-2.1, Miner's Lung
+(Petra/gamma-delta, MIT) as the original source of the integrated
+Thin Air assets, Fuzs for continued Thin Air maintenance, and
+Penguin_Spy's Thinner Air (MPL-2.0) credited for inspiration only
+(no code reused). Updated THIRD_PARTY_NOTICES.md and the wiki
+Credits and Licenses page to match.
+
+Modernized the GitHub issue templates: bug report, feature request,
+and compatibility request templates now explicitly state that
+support is only provided for Minecraft 1.20.1 on Fabric, use
+current Fabric-appropriate fields instead of stale Forge-era ones,
+and include a dedicated screenshots/video section. Added a
+config.yml disabling blank issues and linking the supported-version
+note.
+
 v2.6.4
 ====
 v2.6.3 shipped the "added_desc" tooltip keybind unbound by default, but
