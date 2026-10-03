@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "legendarysurvivaloverhaul:canteen",
+    "legendarysurvivaloverhaul:large_canteen",
+    "legendarysurvivaloverhaul:apple_juice",
+    "legendarysurvivaloverhaul:beetroot_juice",
+    "legendarysurvivaloverhaul:cactus_juice",
+    "legendarysurvivaloverhaul:carrot_juice",
+    "legendarysurvivaloverhaul:chorus_fruit_juice",
+    "legendarysurvivaloverhaul:golden_apple_juice",
+    "legendarysurvivaloverhaul:golden_carrot_juice",
+    "legendarysurvivaloverhaul:glistering_melon_juice",
+    "legendarysurvivaloverhaul:melon_juice",
+    "legendarysurvivaloverhaul:pumpkin_juice",
+    "legendarysurvivaloverhaul:sweet_berries_juice",
+    "legendarysurvivaloverhaul:glow_berries_juice",
+    "legendarysurvivaloverhaul:purified_water_bottle",
+    "legendarysurvivaloverhaul:water_plant_bag"
+  ]
+}
