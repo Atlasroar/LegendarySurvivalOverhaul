@@ -133,6 +133,9 @@ public class ModCapabilities
 			if (phase == TickPhase.START && PENDING_RESPAWN_FULL_HEAL.remove(player.getUUID()))
 				player.setHealth(player.getMaxHealth());
 
+			if (phase == TickPhase.END && (!Config.Baked.temperatureEnabled || shouldSkipTick(player)))
+				CapabilityUtil.getTempCapability(player).clearStormEffects(player);
+
 			if (shouldSkipTick(player)) return;
 
 			if (phase == TickPhase.END)

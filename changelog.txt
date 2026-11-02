@@ -18,6 +18,27 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v3.1.0
+====
+Added optional support for Atlasroar's Immersive Weathering 2.5.0+ storms.
+Exposed snowstorms drive temperature toward frostbite at twice the normal
+rate and apply Cold Hunger; Hot Drink blocks these storm penalties.
+Sandstorms drive temperature toward heatstroke at twice the normal rate
+and apply Heat Thirst; Cold Drink blocks these storm penalties.
+
+Shelter requires all nine columns in a centered 3x3 area to have
+sky-blocking cover within 10 blocks above the player's eye block.
+Higher roofs and uncovered corners do not count. Freezing-wind hits
+separately apply Cold Hunger for 200 ticks (10 seconds), even with Hot Drink.
+Existing cold/heat immunity remains respected. Finite wind hunger survives
+normal temperature cleanup and overlapping storm exposure.
+
+The integration has its own default-enabled temperature config toggle,
+immersiveWeatheringStormsEnabled, and requires the temperature system.
+It is inert without the supported IW build; no weather mod is bundled or
+required. Existing ambient temperature secondary-effect toggles remain
+separate from the integration's storm penalties.
+
 v3.0.0
 ====
 Removed the requested obsolete mod compatibility datapacks and Quark asset
@@ -31,8 +52,9 @@ All three are treasure enchantments: available as loot books, not through
 the enchanting table or villager trades. Level-based loot generation no
 longer applies these enchants to unrelated breakable equipment.
 
-Trinkets, Fzzy Config and Fabric Language Kotlin are optional. Trinkets adds
-accessory slots when installed; held-item effects still work without it.
+Trinkets and Fzzy Config are strongly recommended, not required. Fabric
+Language Kotlin is also optional for LSO. Trinkets adds accessory slots
+when installed; supported held-item effects still work without it.
 Existing head-equipment checks remain, but no new vanilla equip path for
 the Respirator is added. Configuration files work without Fzzy Config;
 installing Fzzy Config adds its editor and requires its own Kotlin dependency.

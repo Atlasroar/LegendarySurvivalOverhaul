@@ -2,6 +2,8 @@
 
 **LSO - Trinkets**, introduced in v2.2.0, provides nine server-synchronized settings in `config/legendarysurvivaloverhaul/trinkets.toml`: one mode switch and eight item-specific slot lists.
 
+In v3.0.0+, Trinkets is strongly recommended but optional. These rules only affect accessory slots when it is installed. The config file remains available without Trinkets; it does not create slots or add a vanilla Respirator equip path.
+
 ## Defaults
 
 | Field | Item | Default list |
@@ -20,7 +22,7 @@ The **Respirator has no field** and retains its existing Trinkets/datapack rules
 
 ## Edit lists in-game
 
-Open LSO - Trinkets using Mod Menu or `/configure legendarysurvivaloverhaul`. Edit a list, add/remove entries, and save/apply.
+With Fzzy Config and its Kotlin dependency installed, open LSO - Trinkets using Mod Menu or `/configure legendarysurvivaloverhaul`. Edit a list, add/remove entries, and save/apply. Without the optional editor, edit `trinkets.toml` while the instance is stopped, then restart.
 
 Entries are lowercase `group/slot` strings matching:
 

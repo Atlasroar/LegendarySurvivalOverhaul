@@ -1,6 +1,6 @@
 # Trinkets and Accessories
 
-LSO uses [Trinkets](https://modrinth.com/mod/trinkets) for accessory inventory slots. These are separate from vanilla armor/hand slots.
+LSO uses [Trinkets](https://modrinth.com/mod/trinkets) for accessory inventory slots. **Trinkets is strongly recommended, not required, in v3.0.0+.** These slots are separate from vanilla armor/hand slots and are unavailable without Trinkets. LSO still loads and supported held-item effects remain available; the settings do not create an accessory UI or a new vanilla Respirator equip path.
 
 ![Upstream Trinkets accessory inventory](https://cdn.modrinth.com/data/5aaWibi9/images/56224f13887cdd914a9624a18eb845dae0bcdfc0.png)
 
@@ -26,7 +26,7 @@ The v2.3.0 Respirator tooltip reads “Good for breathing clean air. Keeps your 
 
 ## Equip and relocate
 
-Use the accessory inventory UI or right-click auto-equip where supported by the item. The Thermometer displays its temperature reading and then delegates to normal Trinkets item use, retaining auto-equip.
+With Trinkets installed, use the accessory inventory UI or right-click auto-equip where supported by the item. The Thermometer displays its temperature reading and then delegates to the optional Trinkets auto-equip path.
 
 v2.2.0 adds [LSO - Trinkets](Trinkets-Configuration), allowing server-authorized changes to the first eight items' allowed slots. Defaults match the table. Multiple entries allow different locations; empty lists prevent new equipping.
 

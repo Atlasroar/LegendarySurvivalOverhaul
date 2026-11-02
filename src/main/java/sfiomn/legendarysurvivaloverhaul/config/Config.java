@@ -175,6 +175,7 @@ public class Config
 
 		// Temperature
 		public static boolean temperatureEnabled;
+		public static boolean immersiveWeatheringStormsEnabled;
 		public static int tempTickTime;
 		public static double minTemperatureModification;
 		public static double maxTemperatureModification;
@@ -530,6 +531,7 @@ public class Config
 			{
 				vanillaFreezeEnabled = TEMPERATURE.vanillaFreezeEnabled.get();
 				temperatureEnabled = TEMPERATURE.temperatureEnabled.get();
+				immersiveWeatheringStormsEnabled = TEMPERATURE.immersiveWeatheringStormsEnabled.get();
 				tempTickTime = TEMPERATURE.tempTickTime.get();
 				minTemperatureModification = TEMPERATURE.minTemperatureModification.get();
 				maxTemperatureModification = TEMPERATURE.maxTemperatureModification.get();

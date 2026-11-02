@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "lso_weathering_storm_check",
+  "version": "1.0.0",
+  "name": "LSO Weathering Storm Assertions",
+  "environment": "server",
+  "entrypoints": {
+    "main": ["WeatheringStormCheck"]
+  },
+  "depends": {
+    "legendarysurvivaloverhaul": "*"
+  }
+}

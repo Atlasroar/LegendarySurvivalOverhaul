@@ -18,6 +18,13 @@ tasks.withType(AbstractArchiveTask).configureEach {
 }
 
 repositories {
+    ivy {
+        name = 'ImmersiveWeatheringReleases'
+        url = 'https://github.com/Atlasroar/Immersive-Weathering/releases/download'
+        patternLayout { artifact '[revision]/[artifact]-[revision].[ext]' }
+        metadataSources { artifact() }
+        content { includeGroup 'com.github.Atlasroar' }
+    }
     maven {
         name = 'Fzzyhmstrs'
         url = 'https://maven.fzzyhmstrs.me/'
@@ -43,6 +50,8 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modCompileOnly "dev.emi:trinkets:${trinkets_version}"
+    modCompileOnly("com.github.Atlasroar:immersive_weathering:2.5.0") { transitive = false }
+    modCompileOnly("curse.maven:selene-499980:5619072") { transitive = false }
     // Optional integrations are available in development, but are never bundled or required by LSO.
     modCompileOnly "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}"
     modCompileOnly "net.fabricmc:fabric-language-kotlin:${fabric_kotlin_version}"

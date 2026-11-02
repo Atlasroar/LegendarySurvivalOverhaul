@@ -1,10 +1,12 @@
 {
   "required": true,
   "package": "sfiomn.legendarysurvivaloverhaul.mixin",
+  "plugin": "sfiomn.legendarysurvivaloverhaul.mixin.OptionalIntegrationMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AnvilMenuMixin",
     "EnchantmentHelperMixin",
+    "WeatheringFreezingWindMixin",
     "ItemCombinerMenuAccessor",
     "PlayerAttributeMixin",
     "PlayerJumpMixin",

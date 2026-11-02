@@ -1,6 +1,6 @@
 # Datapack Schema Reference
 
-These are the **v2.3.0 Fabric 1.20.1** codecs in `api/data/json`, not examples for the Forge original. Start with [Datapack Customization](Datapack-Customization) for pack structure and target IDs.
+These are the **v3.1.0 Fabric 1.20.1** codecs in `api/data/json`, not examples for the Forge original. Start with [Datapack Customization](Datapack-Customization) for pack structure and target IDs. The compatibility cleanup and storm integration do not change these runtime resource paths or JSON formats.
 
 ## Dataset directory index
 

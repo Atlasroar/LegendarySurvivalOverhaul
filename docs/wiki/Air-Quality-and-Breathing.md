@@ -49,6 +49,8 @@ Provider radii and breathing behavior are now configurable under **[LSO - Air](A
 
 Breathing equipment prevents drain; it does not imply instant refilling of depleted oxygen. Refill in suitable air or use an air-restoring item.
 
+Trinkets is strongly recommended but optional in v3.0.0+. The Respirator normally equips through its Trinkets face slot; LSO does not add a vanilla mask-equip path without it. Vanilla Turtle Helmet protection, held air-support items, and Free Breathing remain available without Trinkets.
+
 The Safety Lantern reports the local query rather than guaranteeing safety around it. Dye-locking can intentionally fix its visible appearance. Signal Torches are cosmetic, not a new clean-air source. Recharge an Air Bladder by using it in GREEN air; use it in hazardous air to transfer its remaining capacity into your air bar.
 
 The vanilla Water Breathing effect, potions (including splash/lingering variants), and tipped arrows are named **Free Breathing** in English because the effect also protects against bad air. This is a display-name change, not a replacement of vanilla registry IDs.

@@ -21,6 +21,8 @@ public class TemperatureConfig extends ConfigData
 
 	public ValidatedBoolean temperatureEnabled = new ValidatedBoolean(true);
 
+	public ValidatedBoolean immersiveWeatheringStormsEnabled = new ValidatedBoolean(true);
+
 	public ValidatedBoolean dangerousHeatTemperature = new ValidatedBoolean(true);
 
 	public ValidatedBoolean dangerousColdTemperature = new ValidatedBoolean(true);

@@ -3,6 +3,7 @@ package sfiomn.legendarysurvivaloverhaul.common.capabilities.temperature;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
@@ -15,6 +16,8 @@ import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
 import sfiomn.legendarysurvivaloverhaul.common.effects.FrostbiteEffect;
 import sfiomn.legendarysurvivaloverhaul.common.effects.HeatStrokeEffect;
+import sfiomn.legendarysurvivaloverhaul.common.integration.weathering.WeatheringStorms;
+import sfiomn.legendarysurvivaloverhaul.common.integration.weathering.WeatheringStorms.Exposure;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
 
@@ -32,6 +35,9 @@ public class TemperatureCapability implements ITemperatureCapability
 	private Set<Integer> temperatureImmunities;
 	private int temperatureTickTimer;
 	private int freezeTickTimer;
+	private int freezingWindHungerTicks;
+	private boolean stormColdHunger;
+	private boolean stormHeatThirst;
 	
 	//Unsaved data
 	private float oldTemperature;
@@ -55,6 +61,9 @@ public class TemperatureCapability implements ITemperatureCapability
 		this.targetTemp = 0;
 		this.manualDirty = false;
 		this.packetTimer = 0;
+		this.freezingWindHungerTicks = 0;
+		this.stormColdHunger = false;
+		this.stormHeatThirst = false;
 	}
 	
 	@Override
@@ -142,6 +151,9 @@ public class TemperatureCapability implements ITemperatureCapability
 		}
 
 		addTemperatureTickTimer(1);
+		if (freezingWindHungerTicks > 0)
+			freezingWindHungerTicks--;
+		Exposure storm = WeatheringStorms.exposure(player);
 
 		if (player.isFreezing())
 			addFreezeTickTimer(1);
@@ -152,9 +164,15 @@ public class TemperatureCapability implements ITemperatureCapability
 			setTemperatureTickTimer(0);
 
 			this.targetTemp = TemperatureUtil.getPlayerTargetTemperature(player);
+			if (storm == Exposure.SNOW)
+				this.targetTemp = Math.min(this.targetTemp, TemperatureEnum.FROSTBITE.getValue());
+			else if (storm == Exposure.SAND)
+				this.targetTemp = Math.max(this.targetTemp, TemperatureEnum.HEAT_STROKE.getValue());
 
 			if (getTemperatureLevel() != this.targetTemp) {
-				tickTemperature(getTemperatureLevel(), this.targetTemp);
+				boolean accelerated = (storm == Exposure.SNOW && getTemperatureLevel() > this.targetTemp)
+						|| (storm == Exposure.SAND && getTemperatureLevel() < this.targetTemp);
+				tickTemperature(getTemperatureLevel(), this.targetTemp, accelerated ? 2.0 : 1.0);
 			}
 
 			TemperatureEnum tempEnum = getTemperatureEnum();
@@ -164,9 +182,8 @@ public class TemperatureCapability implements ITemperatureCapability
 			}
 
 			applyDangerousEffects(player, tempEnum);
-
-			applySecondaryEffects(player, tempEnum);
 		}
+		applySecondaryEffects(player, getTemperatureEnum(), storm);
 	}
 
 	@Override
@@ -201,26 +218,44 @@ public class TemperatureCapability implements ITemperatureCapability
 			player.removeEffect(MobEffectRegistry.FROSTBITE.get());
 	}
 
-	private void applySecondaryEffects(Player player, TemperatureEnum tempEnum) {
-		if (Config.Baked.heatTemperatureSecondaryEffects && tempEnum == TemperatureEnum.HEAT_STROKE) {
-			if (!HeatStrokeEffect.playerIsImmuneToHeat(player)) {
-				// Apply secondary effect hyperthermia
-				if (!player.hasEffect(MobEffectRegistry.HEAT_THIRST.get()))
-					player.addEffect(new MobEffectInstance(MobEffectRegistry.HEAT_THIRST.get(), -1, 0, false, false));
-				return;
-			}
-		} else if (Config.Baked.coldTemperatureSecondaryEffects && tempEnum == TemperatureEnum.FROSTBITE) {
-			if (!FrostbiteEffect.playerIsImmuneToFrost(player)) {
-				// Apply secondary effect hypothermia
-				if (!player.hasEffect(MobEffectRegistry.COLD_HUNGER.get()))
-					player.addEffect(new MobEffectInstance(MobEffectRegistry.COLD_HUNGER.get(), -1, 0, false, false));
-				return;
-			}
+	private void applySecondaryEffects(Player player, TemperatureEnum tempEnum, Exposure storm) {
+		boolean heat = Config.Baked.heatTemperatureSecondaryEffects
+				&& tempEnum == TemperatureEnum.HEAT_STROKE && !HeatStrokeEffect.playerIsImmuneToHeat(player);
+		boolean cold = Config.Baked.coldTemperatureSecondaryEffects
+				&& tempEnum == TemperatureEnum.FROSTBITE && !FrostbiteEffect.playerIsImmuneToFrost(player);
+		stormHeatThirst = storm == Exposure.SAND && !heat;
+		stormColdHunger = storm == Exposure.SNOW && !cold;
+		reconcileSecondaryEffect(player, MobEffectRegistry.HEAT_THIRST.get(), heat || stormHeatThirst, 0);
+		reconcileSecondaryEffect(player, MobEffectRegistry.COLD_HUNGER.get(), cold || stormColdHunger, freezingWindHungerTicks);
+	}
+
+	public void clearStormEffects(Player player) {
+		if (stormHeatThirst)
+			reconcileSecondaryEffect(player, MobEffectRegistry.HEAT_THIRST.get(), false, 0);
+		if (stormColdHunger)
+			reconcileSecondaryEffect(player, MobEffectRegistry.COLD_HUNGER.get(), false, freezingWindHungerTicks);
+		stormHeatThirst = false;
+		stormColdHunger = false;
+		freezingWindHungerTicks = 0;
+	}
+
+	private void reconcileSecondaryEffect(Player player, MobEffect effect, boolean continuous, int remainingTicks) {
+		MobEffectInstance current = player.getEffect(effect);
+		if (continuous) {
+			if (current == null || !current.isInfiniteDuration())
+				player.addEffect(new MobEffectInstance(effect, -1, 0, false, false));
+		} else if (current != null && current.isInfiniteDuration()) {
+			player.removeEffect(effect);
+			if (remainingTicks > 0)
+				player.addEffect(new MobEffectInstance(effect, remainingTicks, 0, false, false));
 		}
-		if (player.hasEffect(MobEffectRegistry.HEAT_THIRST.get()))
-			player.removeEffect(MobEffectRegistry.HEAT_THIRST.get());
-		if (player.hasEffect(MobEffectRegistry.COLD_HUNGER.get()))
-			player.removeEffect(MobEffectRegistry.COLD_HUNGER.get());
+	}
+
+	public void onFreezingWindHit(Player player) {
+		freezingWindHungerTicks = 200;
+		MobEffectInstance current = player.getEffect(MobEffectRegistry.COLD_HUNGER.get());
+		if (current == null || !current.isInfiniteDuration())
+			player.addEffect(new MobEffectInstance(MobEffectRegistry.COLD_HUNGER.get(), 200, 0, false, false));
 	}
 
 	private void shakePlayer(Player player) {
@@ -228,13 +263,13 @@ public class TemperatureCapability implements ITemperatureCapability
 		player.setYBodyRot(player.getYRot() + (float) (Math.cos((double) player.tickCount * 3.25D) * 1.25663706144));
 	}
 	
-	private void tickTemperature(float currentTemp, float destination)
+	private void tickTemperature(float currentTemp, float destination, double rate)
 	{
 		float diff = Math.abs(destination - currentTemp);
 		
 		double temperatureTowards = ((diff * (Config.Baked.maxTemperatureModification - Config.Baked.minTemperatureModification)) / (TemperatureEnum.getMax() - TemperatureEnum.getMin())) + Config.Baked.minTemperatureModification;
 
-		temperatureTowards = Math.min(temperatureTowards, diff);
+		temperatureTowards = Math.min(temperatureTowards * rate, diff);
 		
 		if (currentTemp > destination)
 		{
@@ -285,6 +320,9 @@ public class TemperatureCapability implements ITemperatureCapability
 		compound.putInt("ticktimer", this.getTemperatureTickTimer());
 		compound.putInt("freezeticktimer", this.getFreezeTickTimer());
 		compound.putIntArray("immunities", this.getTemperatureImmunities());
+		compound.putInt("freezingwindhunger", freezingWindHungerTicks);
+		compound.putBoolean("stormcoldhunger", stormColdHunger);
+		compound.putBoolean("stormheatthirst", stormHeatThirst);
 		
 		return compound;
 	}
@@ -303,5 +341,8 @@ public class TemperatureCapability implements ITemperatureCapability
 		if (compound.contains("immunities"))
 			for (int immunityId: compound.getIntArray("immunities"))
 				this.addTemperatureImmunityId(immunityId);
+		freezingWindHungerTicks = Mth.clamp(compound.getInt("freezingwindhunger"), 0, 200);
+		stormColdHunger = compound.getBoolean("stormcoldhunger");
+		stormHeatThirst = compound.getBoolean("stormheatthirst");
 	}
 }

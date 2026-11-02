@@ -16,6 +16,8 @@ Temperature responds to the environment and equipment. Insulated armor, coats, t
 
 The HUD includes temperature and wetness indicators. Dangerous temperatures can trigger warning overlays, sounds, and secondary effects. Heat-driven thirst and Heat Stroke are implemented, as are frostbite warnings and Cold Hunger.
 
+v2.8.1 fixed the opaque white/yellow freezing and heat overlays by enabling alpha blending. The user confirmed the fix in-game; v3.0.0 includes it.
+
 **Cold Hunger is temperature-managed:** applying it with `/effect` outside dangerous cold does not keep it active for the requested duration; LSO clears it when the temperature condition ends.
 
 Death respawn grants configured temperature immunity (90 seconds by default), including across dimension transitions.
@@ -50,7 +52,7 @@ Broken hearts occupy health containers; shield hearts use separate yellow/orange
 
 ## Equipment and survival blocks
 
-Wearable accessories use Trinkets. Vanilla equipment and LSO accessories can receive datapack-driven temperature and body-part resistance.
+Wearable accessory slots use the strongly recommended, optional Trinkets integration. Without Trinkets there are no accessory slots or auto-equip, while supported held-item effects remain available. Vanilla equipment and equipped LSO accessories can receive datapack-driven temperature and body-part resistance.
 
 The sewing table supports warm/cold string recipes and coat application to armor. Heater/chiller fuel operation and fuel persistence across save/reload were tested; heater multiblock drops were also checked.
 
@@ -60,6 +62,6 @@ For the eight configurable accessories and their defaults, see [Trinkets and Acc
 
 ## Customize difficulty and presentation
 
-[Configuration](Configuration) explains all nine menus. Use Client for local presentation and the mechanic-specific screens for balance. On a server, server-owned settings determine gameplay; a local Client HUD preference does not change server difficulty.
+[Configuration](Configuration) explains all nine TOML files and their optional Fzzy editor screens. Use Client for local presentation and the mechanic-specific settings for balance. On a server, server-owned settings determine gameplay; a local Client HUD preference does not change server difficulty.
 
 Test one change at a time. An effect that is temperature-managed may disappear when its triggering condition ends; command duration alone is not a reliable mechanic test.
