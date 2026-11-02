@@ -9,9 +9,10 @@ Examples use **Mojang mappings**, matching `loom.officialMojangMappings()` in th
 | Fabric Loader | 0.19.2 | Entry points, config directory, mod presence checks (metadata minimum 0.15.0) |
 | Fabric API | 0.92.6+1.20.1 | Lifecycle/ticks, networking, interactions, resources, biome modification and client hooks |
 | Cardinal Components | 5.2.2 base/entity | Persistent player survival component |
-| Trinkets | 3.7.2 | Accessory slots, item registration, predicates, equipped lookup and attributes |
-| Fzzy Config | 0.7.7+1.20.1 | Validated fields, editor, config sync/update callbacks |
-| Fabric Language Kotlin | 1.12.1+kotlin.2.0.20 | Kotlin runtime dependency |
+| Trinkets | 3.7.2 | Optional accessory slots, item adapters, predicates, equipped lookup and attributes |
+| Fzzy Config | 0.7.7+1.20.1 | Optional editor and config sync/update callbacks |
+| Fabric Language Kotlin | 1.12.1+kotlin.2.0.20 | Required by optional Fzzy Config, not by LSO itself |
+| NightConfig | 3.6.7 core/toml | Bundled standalone TOML persistence |
 | Mod Menu | 7.2.2 local runtime | Optional editor discovery/metadata |
 | Minecraft/DFU codecs | Minecraft 1.20.1 | `ResourceLocation`, registries/tags, NBT and JSON codec parsing |
 
@@ -19,7 +20,7 @@ Cardinal Components base/entity are embedded in the published jar. Fzzy Config i
 
 ## Initialization lifecycle
 
-`LegendarySurvivalOverhaul.onInitialize()` establishes paths and loaded-mod flags, registers/bakes configs, registers server request channels, registers content, installs the Trinkets predicate wrapper, wires survival managers/reload listeners, and then registers gameplay/tick/lifecycle hooks.
+`LegendarySurvivalOverhaul.onInitialize()` establishes paths and loaded-mod flags, registers/bakes configs, registers server request channels, registers content, installs the Trinkets adapters/predicate wrapper if present, wires survival managers/reload listeners, and then registers gameplay/tick/lifecycle hooks.
 
 `TemperatureUtil.internal`, `ThirstUtil.internal`, `BodyDamageUtil.internal`, `WetnessUtil.internal` and `HealthUtil.internal` are assigned implementations during runtime initialization. Do not call facade methods during premature static initialization.
 
@@ -49,18 +50,13 @@ These state objects are not immutable DTOs. Avoid direct mutation that bypasses 
 
 ## Config layer
 
-Nine configs register through `ConfigApiJava.registerAndLoadConfig`. `ClientConfig` uses `RegisterType.CLIENT`; the remaining eight use `RegisterType.BOTH`. Each config is a Fzzy `Config` with ID `legendarysurvivaloverhaul:<name>`.
+In v3.0.0, nine dependency-free `ConfigData` schemas define defaults and validation through `ConfigValue`. `FileConfigStore` reads/writes their existing flat TOML files using bundled NightConfig. Optional API types must stay outside this path.
 
-Representative hook pattern:
+When Fzzy Config and Kotlin are installed, isolated `config.fzzy` adapters register through `ConfigApiJava.registerAndLoadConfig`. Their fields derive defaults and constraints from the same schemas rather than maintaining a second set of values. The client editor uses `RegisterType.CLIENT`; the other eight use `RegisterType.BOTH`, with the same `legendarysurvivaloverhaul:<name>` IDs and translations.
 
-```java
-@Override
-public void onUpdateServer(ServerUpdateContext context) {
-    Config.bake(this);
-}
-```
+Editor updates copy into the schemas and call `Config.bake`. Runtime consumers continue to read `Config.Baked`. Air additionally clears its location cache; Trinkets replaces a volatile immutable map.
 
-The dispatcher updates `Config.Baked`, which runtime consumers read. Air additionally clears its location cache. Trinkets replaces a volatile immutable map. Fzzy manages the editor and server config synchronization; LSO does not invent a second config packet protocol.
+LSO's `config_sync` channel synchronizes the eight gameplay configs even when client and server have different optional UI libraries. Client-only settings are excluded; received values are validated before application, and local preferences are restored on disconnect. The optional editor's own synchronization remains supported. Real multiplayer/UI interaction still needs an in-game check.
 
 Field labels use `legendarysurvivaloverhaul.<config>.<field>`, descriptions use `.desc` or `@Comment`, and group labels follow the config/group key. Keep translations aligned with field names.
 

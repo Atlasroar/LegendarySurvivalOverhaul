@@ -73,7 +73,8 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		Config.register();
 		FabricServerNetworkHandler.register();
 		registerContent();
-		sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketSlotConfig.register();
+		if (trinketsLoaded)
+			sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketsIntegration.register();
 		initializeRuntimeLogic();
 		ModCapabilities.registerServerEvents();
 		CanteenInteractionHandler.register();

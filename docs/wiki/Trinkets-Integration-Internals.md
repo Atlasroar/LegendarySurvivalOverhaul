@@ -1,10 +1,10 @@
 # Trinkets Integration Internals
 
-LSO depends on Trinkets 3.7.2 for Minecraft 1.20.1. The upstream [1.20.1 source](https://github.com/emilyploszaj/trinkets/tree/1.20.1) uses Yarn mappings; snippets here use the port's Mojang mappings.
+v3.0.0 optionally integrates with Trinkets 3.7.2 for Minecraft 1.20.1. The upstream [1.20.1 source](https://github.com/emilyploszaj/trinkets/tree/1.20.1) uses Yarn mappings; snippets here use the port's Mojang mappings.
 
 ## Registration and item types
 
-`WearableTrinketItem` extends `TrinketItem`, whose constructor registers the item with `TrinketsApi`. Thermometer and Nether Chalice inherit this class; the resistance rings, Sponge, First Aid Supplies and Water Purifier also use it.
+`WearableTrinketItem` extends vanilla `Item`, so content registration does not load Trinkets classes. Thermometer and Nether Chalice inherit this class; the resistance rings, Sponge, First Aid Supplies and Water Purifier also use it. After content registration, a presence-guarded `TrinketsIntegration.register()` attaches a `WearableTrinket` adapter to these items and installs the slot predicate wrapper.
 
 The Respirator is registered as a plain `Item` and is not in the configurable eight-item map. Its existing tag/renderer behavior remains untouched.
 
@@ -33,10 +33,10 @@ TrinketsApi.registerTrinketPredicate(tagId, (stack, slot, entity) -> {
 
 This excerpt is from `TrinketSlotConfig`. For unconfigured items the original predicate is invoked. For configured LSO items the list can grant the new slot or deny the old tag-based slot.
 
-`WearableTrinketItem.canEquip` additionally enforces the same map, preserving superclass checks:
+`WearableTrinket.canEquip` additionally enforces the same map, preserving interface defaults:
 
 ```java
-return super.canEquip(stack, slot, entity)
+return Trinket.super.canEquip(stack, slot, entity)
         && TrinketSlotConfig.canEquip(stack, slot);
 ```
 
@@ -50,7 +50,7 @@ This restriction matters for slots with other validators such as `trinkets:all`.
 
 Lists validate syntax with `[a-z0-9_.-]+/[a-z0-9_.-]+`. This permits custom names but does not prove the slot exists. Startup, successful server reload and config updates warn about requested IDs absent from player slot definitions.
 
-Fzzy registration is `RegisterType.BOTH`, so server config sync drives the client-side insertion checks too. Actual remote-client permissions/synchronization should be tested rather than inferred from single-player.
+LSO-owned config synchronization drives client insertion checks with or without the optional Fzzy editor. Fzzy registration remains `RegisterType.BOTH` when installed. Actual remote-client permissions/synchronization should be tested rather than inferred from single-player.
 
 ## Equip paths
 
@@ -60,11 +60,13 @@ The Thermometer's override displays a temperature message, then calls `super.use
 
 ## Effects and attribute modifiers
 
-`WearableTrinketItem.getModifiers` uses `TemperatureDataManager.getItem(itemId)` and `BodyDamageDataManager.getBodyResistanceItem(itemId)`. It adds temperature and resistance `AttributeModifier`s using Trinkets' per-slot UUID.
+`WearableTrinket.getModifiers` uses `TemperatureDataManager.getItem(itemId)` and `BodyDamageDataManager.getBodyResistanceItem(itemId)`. It adds temperature and resistance `AttributeModifier`s using Trinkets' per-slot UUID.
 
 Vanilla equipment has a separate server-tick reconciliation path in `FabricEquipmentAttributeHooks`, using persistent per-equipment-slot UUIDs and removing modifiers when gear/data/config no longer apply.
 
 `TrinketsUtil.findEquippedItem` searches equipped stacks by tag; `isTrinketItemEquipped` checks both hands and equipped components. Keep those semantics in mind: an accessory's effect can have held-item support even though its inventory slot is configured.
+
+`TrinketsUtil` is an absence-safe facade: without Trinkets it retains hand/head checks, returns no accessory equipment, and does not attempt auto-equip. It does not create vanilla accessory slots or a new way to equip the Respirator.
 
 Do not add modifiers with a random new UUID each tick, or reimplement the whole modifier path just to relocate an item.
 

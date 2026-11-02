@@ -5,8 +5,8 @@
   "experience": 1.0,
   "group": "purification",
   "ingredient": {
-    "type": "forge:partial_nbt",
-    "item": "legendarysurvivaloverhaul:canteen",
+    "fabric:type": "fabric:nbt",
+    "base": {"item": "legendarysurvivaloverhaul:canteen"},
     "nbt": "{\"legendarysurvivaloverhaul:HydrationPurity\":\"normal\"}"
   },
   "result": "legendarysurvivaloverhaul:canteen"

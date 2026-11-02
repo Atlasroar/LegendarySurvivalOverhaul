@@ -12,8 +12,8 @@
       "item": "legendarysurvivaloverhaul:cold_string"
     },
     "t": {
-      "type": "forge:partial_nbt",
-      "item": "minecraft:potion",
+      "fabric:type": "fabric:nbt",
+      "base": {"item": "minecraft:potion"},
       "nbt": "{Potion:\"legendarysurvivaloverhaul:temperature_immunity\"}"
     },
     "w": {

@@ -44,12 +44,12 @@
     "java": ">=17",
     "fabric-api": "*",
     "cardinal-components-base": ">=5.2.2",
-    "cardinal-components-entity": ">=5.2.2",
-    "fzzy_config": ">=0.7.7",
-    "fabric-language-kotlin": ">=1.10.18",
-    "trinkets": ">=3.7.2"
+    "cardinal-components-entity": ">=5.2.2"
   },
   "suggests": {
+    "fzzy_config": ">=0.7.7",
+    "fabric-language-kotlin": ">=1.10.18",
+    "trinkets": ">=3.7.2",
     "modmenu": "*",
     "sereneseasons": "*",
     "betterdays": "*",

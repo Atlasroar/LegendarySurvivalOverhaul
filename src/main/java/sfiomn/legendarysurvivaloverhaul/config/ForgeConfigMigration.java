@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import me.fzzyhmstrs.fzzy_config.validation.ValidatedField;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 
 import java.io.IOException;
@@ -85,12 +84,12 @@ final class ForgeConfigMigration
 		}
 	}
 
-	static void apply(String name, me.fzzyhmstrs.fzzy_config.config.Config config, Map<String, String> legacyValues)
+	static void apply(String name, ConfigData config, Map<String, String> legacyValues)
 	{
 		apply(name, config, legacyValues, field -> !(config instanceof CommonConfig) || !AirConfig.LEGACY_FIELDS.contains(field));
 	}
 
-	static void apply(String name, me.fzzyhmstrs.fzzy_config.config.Config config, Map<String, String> legacyValues,
+	static void apply(String name, ConfigData config, Map<String, String> legacyValues,
 					  Predicate<String> includeField)
 	{
 		JsonArray mappings = loadMappings(name);
@@ -110,7 +109,7 @@ final class ForgeConfigMigration
 			try
 			{
 				Field field = config.getClass().getField(fieldName);
-				ValidatedField<Object> validated = castField(field.get(config));
+				ConfigValue<Object> validated = castField(field.get(config));
 				Object value = parse(raw, validated.get());
 				if (value != null)
 				{
@@ -128,9 +127,9 @@ final class ForgeConfigMigration
 	}
 
 	@SuppressWarnings("unchecked")
-	private static ValidatedField<Object> castField(Object field)
+	private static ConfigValue<Object> castField(Object field)
 	{
-		return (ValidatedField<Object>) field;
+		return (ConfigValue<Object>) field;
 	}
 
 	private static JsonArray loadMappings(String name)

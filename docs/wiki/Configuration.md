@@ -1,16 +1,18 @@
 # Configuration
 
-v2.3.0 uses **Fzzy Config** for **259 settings across nine configs**. Mod Menu supplies a convenient entry to the editor; it is not required for the configuration files themselves.
+v3.0.0 supports **259+ settings across nine configs** without extra configuration libraries. **Fzzy Config** is an optional in-game editor; Mod Menu supplies a convenient entry to it. Installing Fzzy Config still requires its Fabric Language Kotlin dependency. v2.8.1 and earlier require both libraries.
 
 ## Open and save
 
-Open LSO's config button in **Mod Menu**, or use:
+With Fzzy Config installed, open LSO's config button in **Mod Menu**, or use:
 
 ```text
 /configure legendarysurvivaloverhaul
 ```
 
 Read descriptions before editing and apply/save changes using the editor. Titles use **LSO - ...**.
+
+Without Fzzy Config, edit the same TOML files while the instance is stopped and restart to apply changes. Installing or removing the optional editor should not require deleting configuration files.
 
 | Title | File | Main purpose |
 | --- | --- | --- |

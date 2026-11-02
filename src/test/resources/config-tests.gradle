@@ -1,0 +1,27 @@
+// Run: .\gradlew.bat -PwithoutOptionalIntegrations -I src\test\resources\config-tests.gradle configRegression
+allprojects {
+    afterEvaluate {
+        tasks.register('configRegression', JavaExec) {
+            dependsOn tasks.named('testClasses')
+            classpath = sourceSets.test.runtimeClasspath
+            mainClass = 'sfiomn.legendarysurvivaloverhaul.config.ConfigFallbackTest'
+        }
+        tasks.register('configAdapterRegression', JavaExec) {
+            dependsOn tasks.named('testClasses')
+            classpath = sourceSets.test.runtimeClasspath + sourceSets.main.compileClasspath
+            mainClass = 'sfiomn.legendarysurvivaloverhaul.config.FzzyAdapterTest'
+            doFirst {
+                // Plain JavaExec does not get Fabric Loader's nested-jar discovery.
+                def nested = layout.buildDirectory.dir('config-adapter-libraries').get().asFile
+                sourceSets.main.compileClasspath.filter { it.name.startsWith('fzzy_config-') && it.name.endsWith('.jar') }.each { jar ->
+                    copy {
+                        from zipTree(jar)
+                        include 'META-INF/jars/*.jar'
+                        into nested
+                    }
+                }
+                classpath += files(fileTree(nested) { include '**/*.jar' })
+            }
+        }
+    }
+}

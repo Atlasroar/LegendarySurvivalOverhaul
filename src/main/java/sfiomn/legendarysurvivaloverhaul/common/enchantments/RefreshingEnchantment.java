@@ -1,16 +1,9 @@
 package sfiomn.legendarysurvivaloverhaul.common.enchantments;
 
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import org.jetbrains.annotations.NotNull;
-import sfiomn.legendarysurvivaloverhaul.common.items.drink.CanteenItem;
-
-public class RefreshingEnchantment extends Enchantment {
+public class RefreshingEnchantment extends CanteenEnchantment {
     
     public RefreshingEnchantment() {
-        super(Rarity.UNCOMMON, EnchantmentCategory.BREAKABLE, new EquipmentSlot[]{});
+        super(Rarity.UNCOMMON);
     }
     
     @Override
@@ -26,11 +19,6 @@ public class RefreshingEnchantment extends Enchantment {
     @Override
     public int getMaxLevel() {
         return 3;
-    }
-    
-    @Override
-    public boolean canEnchant(@NotNull ItemStack stack) {
-        return stack.getItem() instanceof CanteenItem;
     }
     
 }

@@ -1,7 +1,7 @@
 package sfiomn.legendarysurvivaloverhaul.config;
 
-import me.fzzyhmstrs.fzzy_config.api.ConfigApiJava;
-import me.fzzyhmstrs.fzzy_config.api.RegisterType;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.config.json_old.JsonConfigRegistration;
 import sfiomn.legendarysurvivaloverhaul.util.EnumUtil;
@@ -12,10 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 /**
- * Registers the mod's Fzzy Config configs (editable in-game through Mod Menu or {@code /configure}) and bakes
+ * Registers the mod's configs, optionally editable through Fzzy Config, and bakes
  * their values into {@link Baked}. Every config is stored in {@code config/legendarysurvivaloverhaul/<name>.toml}.
  */
 public class Config
@@ -46,8 +45,8 @@ public class Config
 		Map<String, String> legacyCommon = ForgeConfigMigration.readLegacyFile(LegendarySurvivalOverhaul.modConfigPath, "common");
 		Map<String, String> commonAir = legacyCommon == null
 				? AirConfigMigration.readCommon(LegendarySurvivalOverhaul.modConfigPath) : Map.of();
-		CLIENT = load("client", ClientConfig::new, RegisterType.CLIENT);
-		AIR = load("air", AirConfig::new, RegisterType.BOTH);
+		CLIENT = load(new ClientConfig());
+		AIR = load(new AirConfig());
 		if (migrateAir) {
 			if (legacyCommon != null)
 				ForgeConfigMigration.apply("common", AIR, legacyCommon, AirConfig.LEGACY_FIELDS::contains);
@@ -56,13 +55,19 @@ public class Config
 		}
 		if (!commonAir.isEmpty())
 			AirConfigMigration.removeMigratedFields(LegendarySurvivalOverhaul.modConfigPath);
-		COMMON = load("common", CommonConfig::new, RegisterType.BOTH, legacyCommon);
-		TEMPERATURE = load("temperature", TemperatureConfig::new, RegisterType.BOTH);
-		SEASONS = load("seasons", SeasonsConfig::new, RegisterType.BOTH);
-		THIRST = load("thirst", ThirstConfig::new, RegisterType.BOTH);
-		HEALTH = load("health", HealthConfig::new, RegisterType.BOTH);
-		BODY_DAMAGE = load("body_damage", BodyDamageConfig::new, RegisterType.BOTH);
-		TRINKETS = load("trinkets", TrinketsConfig::new, RegisterType.BOTH);
+		COMMON = load(new CommonConfig(), legacyCommon);
+		TEMPERATURE = load(new TemperatureConfig());
+		SEASONS = load(new SeasonsConfig());
+		THIRST = load(new ThirstConfig());
+		HEALTH = load(new HealthConfig());
+		BODY_DAMAGE = load(new BodyDamageConfig());
+		TRINKETS = load(new TrinketsConfig());
+
+		if (fzzyAvailable())
+			sfiomn.legendarysurvivaloverhaul.config.fzzy.FzzyConfigBridge.register();
+		ConfigNetworking.register();
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
+			ClientConfigNetworking.register();
 
 		bake(CLIENT);
 		bake(COMMON);
@@ -77,19 +82,29 @@ public class Config
 		JsonConfigRegistration.init(LegendarySurvivalOverhaul.modConfigJsons.toFile());
 	}
 
-	private static <T extends me.fzzyhmstrs.fzzy_config.config.Config> T load(String name, Supplier<T> supplier, RegisterType type)
+	public static boolean fzzyAvailable()
 	{
-		// Read and back up legacy Forge files before Fzzy Config replaces their format.
-		Map<String, String> legacyValues = ForgeConfigMigration.readLegacyFile(LegendarySurvivalOverhaul.modConfigPath, name);
-		return load(name, supplier, type, legacyValues);
+		return FabricLoader.getInstance().isModLoaded("fzzy_config")
+				&& FabricLoader.getInstance().isModLoaded("fabric-language-kotlin");
 	}
 
-	private static <T extends me.fzzyhmstrs.fzzy_config.config.Config> T load(String name, Supplier<T> supplier,
-			RegisterType type, Map<String, String> legacyValues)
+	public static List<ConfigData> all()
 	{
-		T config = ConfigApiJava.registerAndLoadConfig(supplier, type);
+		return List.of(CLIENT, COMMON, AIR, TEMPERATURE, SEASONS, THIRST, HEALTH, BODY_DAMAGE, TRINKETS);
+	}
+
+	private static <T extends ConfigData> T load(T config)
+	{
+		// Read and back up legacy Forge files before Fzzy Config replaces their format.
+		Map<String, String> legacyValues = ForgeConfigMigration.readLegacyFile(LegendarySurvivalOverhaul.modConfigPath, config.name);
+		return load(config, legacyValues);
+	}
+
+	private static <T extends ConfigData> T load(T config, Map<String, String> legacyValues)
+	{
+		FileConfigStore.load(config);
 		if (legacyValues != null)
-			ForgeConfigMigration.apply(name, config, legacyValues);
+			ForgeConfigMigration.apply(config.name, config, legacyValues);
 		return config;
 	}
 
@@ -97,7 +112,7 @@ public class Config
 	 * Bakes the values of the given config into {@link Baked}. Called on startup and whenever Fzzy Config
 	 * syncs or updates a config (in-game edits, server sync on login, datapack reloads).
 	 */
-	public static void bake(me.fzzyhmstrs.fzzy_config.config.Config config)
+	public static void bake(ConfigData config)
 	{
 		if (config instanceof ClientConfig)
 			Baked.bakeClient();
@@ -461,7 +476,8 @@ public class Config
 					trinketId("thermal_resistance_ring"), java.util.Set.copyOf(TRINKETS.thermalResistanceRingSlots.get()),
 					trinketId("first_aid_supplies"), java.util.Set.copyOf(TRINKETS.firstAidSuppliesSlots.get()),
 					trinketId("water_purifier"), java.util.Set.copyOf(TRINKETS.waterPurifierSlots.get()));
-			sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketSlotConfig.warnUnavailableSlots();
+			if (LegendarySurvivalOverhaul.trinketsLoaded)
+				sfiomn.legendarysurvivaloverhaul.common.integration.trinkets.TrinketSlotConfig.warnUnavailableSlots();
 		}
 
 		private static net.minecraft.resources.ResourceLocation trinketId(String path)

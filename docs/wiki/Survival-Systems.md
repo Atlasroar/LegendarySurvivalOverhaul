@@ -30,6 +30,8 @@ Consumable tooltips show hydration/saturation and effects. Low hydration can app
 
 Blocking the Thirst effect is not an unlimited hydration refill. Use the drinking/purification tools and verify the tooltip for the actual item, especially in modpacks with changed consumable data.
 
+**Canteen enchantments (v3.0.0):** Refreshing, Purity, and Reservoir apply only to Canteens and Large Canteens. Find enchanted books in loot and apply them with an anvil; these enchantments are not offered by enchanting tables or villager trades. Their existing levels and effects are unchanged.
+
 ## Localized body damage
 
 Damage can affect individual body parts and trigger configured secondary effects. Open the limb-health screen with **H** by default, or rebind it in Controls. Healing items can target injuries; First Aid Supplies held or equipped are recognized.

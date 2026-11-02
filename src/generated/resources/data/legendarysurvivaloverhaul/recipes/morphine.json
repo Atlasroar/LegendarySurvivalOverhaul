@@ -4,7 +4,7 @@
   "group": "healing",
   "key": {
     "g": {
-      "tag": "forge:glass"
+      "tag": "c:glass_blocks"
     },
     "n": {
       "item": "minecraft:iron_nugget"

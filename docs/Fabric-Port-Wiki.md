@@ -15,11 +15,21 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The latest release is [**v2.8.1**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.8.1), fixing the freezing and heat overlays washing out the screen by explicitly enabling alpha blending. Texture transparency and the existing fade levels are preserved; the release builds successfully, with in-game visual confirmation of this fix still pending. See [Releases and Versioning](wiki/Releases-and-Versioning.md) for recent release milestones. There are 259 settings across nine configs. Fzzy Config and Fabric Language Kotlin replace Forge Config API Port as required dependencies. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
+The latest release is [**v3.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.0.0), removing the explicitly dropped compatibility data, restricting canteen enchantments to loot, and making Trinkets, Fzzy Config, and Fabric Language Kotlin optional. Farmer's Delight Refabricated support is retained. The v2.8.1 temperature-overlay blending fix is included and user-confirmed in-game. See [Releases and Versioning](wiki/Releases-and-Versioning.md) for recent release milestones. There are 259+ settings across nine configs; TOML configuration works without extra configuration mods. Installing the optional Fzzy editor still requires its Kotlin dependency. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
 
 The port is considered feature-complete pending further in-game testing, particularly multiplayer/dedicated-server validation. Every tracked gameplay slice — survival systems, HUD/tooltip rendering, sewing table and coat application, heater/cooler multiblocks, and the Forge event-subscriber audit — is user-verified in a single-player/integrated-server world as of `.14`. A full audit of the three Forge-only event files found no remaining behavioral gaps: all differences from Forge are either intentional feature drops (Origins, Meds and Herbs), necessary platform adaptations forced by different Fabric hook points (bonemeal, damage pipeline), or pre-existing Forge behavior that was never different on Fabric (the armor coat tooltip, which never showed a numeric resistance delta on Forge either). Forge-only datagen execution and selected optional integrations remain intentionally omitted.
 
 ## Step-by-step port history
+
+### v3.0.0: optional libraries and compatibility cleanup
+
+Removed the explicitly dropped compatibility datapacks/Quark overrides and their obsolete integration generators/default registrations while retaining Farmer's Delight Refabricated and Fabric BetterEnd. Retained recipes now use Fabric-compatible tags and NBT ingredients rather than Forge types.
+
+Refreshing, Purity and Reservoir are canteen-only treasure enchantments, unavailable from enchanting tables and villager trades. Level-based loot generation excludes them from unrelated equipment.
+
+Trinkets, Fzzy Config and Fabric Language Kotlin are optional in this build. Dependency-free configuration schemas share defaults/validation with optional Fzzy editor adapters; bundled NightConfig handles existing TOML files without those mods. LSO-owned synchronization preserves server authority across mixed editor installations and restores local preferences after disconnect. Fzzy Config still requires its own Kotlin dependency if installed. Without Trinkets, there are no accessory slots; existing held-item and head-equipment checks remain, without adding a new mask equip path.
+
+Dedicated-server assertions pass with all three libraries absent and installed, including saved non-default TOML values, canteen-only anvil behavior, loot/table/trade restrictions, retained recipes, and Refabricated data loading through a synthetic loader alias. Configuration persistence/validation/migration/snapshot tests and all 262 editor bindings pass. Actual multiplayer packet flow, editor interaction, and a real Refabricated installation still need in-game checks.
 
 ### 1. Port foundation and Java target
 
@@ -460,7 +470,7 @@ $env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
 
 Run a development client with `.\gradlew.bat runClient`. Before opening it for user feedback, state the exact visual or behavioral checks requested (for example: “In Survival, gain LSO shield health and check the shield/broken-heart icons above vanilla hearts; confirm the thirst and temperature indicators remain visible”). Do not treat reaching the title screen as proof that a visual feature behaves correctly.
 
-The project has no automated Java test sources at present; builds are the primary automated check. For each slice, record build/runtime evidence, artifact name and SHA-256, supported features, known omissions, and the specific player feedback requested.
+Configuration regression tests are under `src/test`, and opt-in dedicated-server/resource checks are under `test-runtime/optional-integrations`. For each slice, record build/runtime evidence, artifact name and SHA-256, supported features, known omissions, and the specific player feedback requested.
 
 ## Change log for port maintainers
 

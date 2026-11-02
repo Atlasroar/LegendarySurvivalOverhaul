@@ -1,5 +1,21 @@
 # Third-party notices
 
+## NightConfig
+
+The unmodified NightConfig `core` and `toml` 3.6.7 libraries by TheElectronWill
+and contributors are bundled as separate JARs under `META-INF/jars` to provide
+standalone TOML configuration without Fzzy Config or Kotlin. They are licensed
+under GNU LGPL v3.0; the license and accompanying GPL terms are included as
+`nightconfig-LGPL-3.0.txt` and `nightconfig-GPL-3.0.txt`.
+
+Upstream source and releases: https://github.com/TheElectronWill/Night-Config
+Versioned source: https://github.com/TheElectronWill/Night-Config/tree/v3.6.7
+Maven coordinates: `com.electronwill.night-config:core:3.6.7` and
+`com.electronwill.night-config:toml:3.6.7`.
+
+The libraries remain separate and may be replaced with modified compatible
+versions under their license; LSO does not modify their source.
+
 ## Overflowing Bars
 
 The health-bar rendering adaptation in
