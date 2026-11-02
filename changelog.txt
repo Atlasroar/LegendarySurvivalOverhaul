@@ -18,6 +18,12 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v2.8.1
+====
+Fixed freezing and heat overlays washing out the screen white or yellow.
+Both effects now explicitly enable alpha blending so texture transparency
+and the existing fade levels are respected.
+
 v2.8.0
 ====
 Added hydration datapack support for drinks (and a few related

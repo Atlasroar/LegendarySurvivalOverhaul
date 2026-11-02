@@ -61,6 +61,8 @@ public final class RenderUtil
 	public static void renderTextureOverlay(GuiGraphics gui, ResourceLocation resourceLocation, int screenWidth, int screenHeight, float alpha) {
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
 		gui.setColor(1.0F, 1.0F, 1.0F, alpha);
 
 		gui.blit(resourceLocation, 0, 0, -90, 0.0F, 0.0F, screenWidth, screenHeight, screenWidth, screenHeight);
@@ -68,5 +70,6 @@ public final class RenderUtil
 		RenderSystem.depthMask(true);
 		RenderSystem.enableDepthTest();
 		gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.disableBlend();
 	}
 }
