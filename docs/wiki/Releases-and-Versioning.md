@@ -2,14 +2,18 @@
 
 ## Latest full release
 
-[**v2.8.1**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.8.1) targets Minecraft 1.20.1, Fabric, and Java 17.
+[**v3.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.0.0) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
-legendarysurvivaloverhaul-fabric-1.20.1-2.8.1.jar
-SHA-256: FA29CEC4917392701FC44D2F854EA2DBADB0077CA2432B3F9F39ADB8279F20A2
+legendarysurvivaloverhaul-fabric-1.20.1-3.0.0.jar
+SHA-256: 808F5BF57B48E06DFC1D9F2DAE514A6023F9744695B2F8B04B04E988F492C55B
 ```
 
-v2.8.1 fixes freezing and heat overlays washing out the screen white or yellow by explicitly enabling alpha blending in their shared renderer. Texture transparency and the existing fade levels are preserved. The release builds successfully; in-game visual confirmation of this fix remains pending.
+v3.0.0 removes the explicitly dropped compatibility datapacks and Quark overrides while retaining Farmer's Delight Refabricated and Fabric BetterEnd support. Refreshing, Purity, and Reservoir are canteen-only loot enchantments, unavailable from enchanting tables and villager trades. Trinkets, Fzzy Config, and Fabric Language Kotlin are optional; standalone TOML configuration uses bundled NightConfig. Installing Fzzy still requires Kotlin for Fzzy itself. Without Trinkets, there are no accessory slots or new vanilla Respirator equip path. The major version follows the policy for changed dependency requirements and removed integrations. See [Installation and Upgrading](Installation-and-Upgrading) before updating.
+
+Configuration regressions, all 262 optional editor bindings, packaged-resource checks, and dedicated-server assertions with the optional libraries absent and installed pass. Actual multiplayer packet flow, in-game editor interaction, and a real Farmer's Delight Refabricated installation still need in-game checks; the resource fixture uses a synthetic loader alias.
+
+v2.8.1 fixes freezing and heat overlays washing out the screen white or yellow by explicitly enabling alpha blending in their shared renderer. Texture transparency and the existing fade levels are preserved. The user confirmed both fixes work in-game; v3.0.0 includes them.
 
 v2.8.0 adds hydration datapack support for drinks (and a few related foods) from eight optional mods: Farmer's Delight Refabricated, HerbalBrews, Vinery, Meadow, Farm & Charm, Bakery, Candlelight, and Brewery. Values are shipped as plain reloadable JSON under `data/<mod id>/thirst/consumables/` and `data/<mod id>/thirst/blocks/`, matching LSO's existing cross-mod Thirst data format; there is no compile-time dependency on any of the eight mods, and entries are inert unless LSO detects the matching mod is loaded. Bakery has no dedicated beverages, so it only receives a small hydration amount on its Pudding Slice. v2.7.0 adds explicit WandererZ compatibility: LSO's existing LevelZ death-respawn max-health timing fix already covered WandererZ's level-based max-health bonus generically (no mod-ID gating), and a new defensive datapack tag excludes all of LSO's drink items from WandererZ's bundled SpoiledZ food-spoilage system. v2.7.0 also replaces the repo's stock, unedited Forge MDK LICENSE.txt/CREDITS.txt template with a project-specific LGPL-2.1 license and accurate credits (Sfiomn, Atlasroar, Miner's Lung/MIT, Fuzs, Thinner Air/MPL-2.0 inspiration-only), and modernizes the GitHub issue templates to state 1.20.1-Fabric-only support and add a screenshots/video section. v2.6.4 fixes the Left Shift hijack for players upgrading from pre-2.6.3 builds: v2.6.3 unbound the "added_desc" tooltip keybind's default, but Minecraft persists bound keys by name in options.txt, so already-saved installs kept the old Left Shift binding regardless of the new default. v2.6.4 adds a one-time client-side migration that detects a saved added_desc binding still on Left Shift, clears it, and resaves options.txt, so vanilla sneak and other keybinds sharing Shift work again without the player needing to manually rebind in Controls. v2.6.3 fixed the "added_desc" tooltip keybind (Thermometer/Coat item descriptions) hijacking Left Shift: Minecraft's KeyMapping system routes key events to only one binding per physical key, so defaulting this keybind to Left Shift silently blocked vanilla sneak and any other mod/custom keybind sharing that key. v2.6.2 adds "Uses:" crafting-purpose text to the flora item descriptions (Sun Fern, Ice Fern, Water Plant seeds/leaves/crops), surfaced via Item Descriptions and Field Guide. v2.6.1 sepia-toned the Field Guide "LSO Flora" tab icon from the real Sun Fern Leaf sprite. v2.6.0 added Field Guide "LSO Flora" datapack category plus Item Descriptions/Mod Descriptions compatibility lore. v2.5.0 added HardcoreLite-inspired Enchanted Golden Apple shield-health/heart-container-repair and death heart-loss mechanics, with a non-spectator floor and LevelZ precedence. v2.4.0 added LevelZ/LibZ health compatibility. v2.3.0 enabled datapack-only biome overrides while preserving native climates, added optional VanillaBackport sulfur-cave air, and made equipped Respirators prevent new Nausea effects from any source. **LSO - Air** has 27 controls; there are **259+ settings across nine configs**. Backport/Platform remain optional.
 
@@ -19,6 +23,7 @@ The user confirmed in-game: the LevelZ health bonus remains stable after death, 
 
 | Version | Milestone |
 | --- | --- |
+| v3.0.0 | Removed explicitly dropped compatibility data; retained Refabricated/BetterEnd; canteen-only loot enchantments; optional Trinkets, Fzzy Config, and Kotlin with standalone TOML configuration. |
 | v2.8.1 | Fixed opaque white/yellow freezing and heat overlays by enabling alpha blending. |
 | v2.8.0 | Hydration datapack support for Farmer's Delight Refabricated, HerbalBrews, Vinery, Meadow, Farm & Charm, Bakery, Candlelight, and Brewery drinks; no compile-time dependency, pure data. |
 | v2.7.0 | WandererZ compatibility (LevelZ max-health timing already generic; SpoiledZ spoilage opt-out for LSO drinks); LGPL-2.1 LICENSE.txt/CREDITS.txt replacing the stock Forge MDK template; modernized issue templates. |

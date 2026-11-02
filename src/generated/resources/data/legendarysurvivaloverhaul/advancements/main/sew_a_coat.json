@@ -5,40 +5,31 @@
       "conditions": {
         "ingredients": [
           {
-            "nbt": "{Coat:\"thermal1\"}",
-            "tag": "forge:armors"
+            "nbt": "{Coat:\"thermal1\"}"
           },
           {
-            "nbt": "{Coat:\"thermal2\"}",
-            "tag": "forge:armors"
+            "nbt": "{Coat:\"thermal2\"}"
           },
           {
-            "nbt": "{Coat:\"thermal3\"}",
-            "tag": "forge:armors"
+            "nbt": "{Coat:\"thermal3\"}"
           },
           {
-            "nbt": "{Coat:\"cooling1\"}",
-            "tag": "forge:armors"
+            "nbt": "{Coat:\"cooling1\"}"
           },
           {
-            "nbt": "{Coat:\"cooling2\"}",
-            "tag": "forge:armors"
+            "nbt": "{Coat:\"cooling2\"}"
           },
           {
-            "nbt": "{Coat:\"cooling3\"}",
-            "tag": "forge:armors"
+            "nbt": "{Coat:\"cooling3\"}"
           },
           {
-            "nbt": "{Coat:\"heating1\"}",
-            "tag": "forge:armors"
+            "nbt": "{Coat:\"heating1\"}"
           },
           {
-            "nbt": "{Coat:\"heating2\"}",
-            "tag": "forge:armors"
+            "nbt": "{Coat:\"heating2\"}"
           },
           {
-            "nbt": "{Coat:\"heating3\"}",
-            "tag": "forge:armors"
+            "nbt": "{Coat:\"heating3\"}"
           }
         ],
         "recipe_id": "legendarysurvivaloverhaul:sewing"

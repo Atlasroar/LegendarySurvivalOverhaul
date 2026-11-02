@@ -1,6 +1,6 @@
 # Installation and Upgrading
 
-## Requirements for v2.3.0
+## Requirements for v3.0.0
 
 | Component | Requirement |
 | --- | --- |
@@ -8,27 +8,35 @@
 | Java | 17 |
 | Fabric Loader | 0.15.0 or newer |
 | Fabric API | A build for Minecraft 1.20.1 |
-| [Fzzy Config](https://modrinth.com/mod/fzzy-config) | 0.7.7+1.20.1 or a newer compatible 1.20.1 build |
-| [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) | Required by Fzzy Config; use a version satisfying its dependency requirements |
-| [Trinkets](https://modrinth.com/mod/trinkets) | 3.7.2 or newer, for 1.20.1 |
+| [Fzzy Config](https://modrinth.com/mod/fzzy-config) | Optional in-game editor: 0.7.7+1.20.1 or a newer compatible 1.20.1 build |
+| [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) | Not required by LSO; required if Fzzy Config is installed |
+| [Trinkets](https://modrinth.com/mod/trinkets) | Optional accessory slots: 3.7.2 or newer, for 1.20.1 |
 | Cardinal Components | Base/entity modules are bundled in the published LSO jar |
 
-Fzzy Config is installed separately, not embedded in LSO. [Mod Menu](https://modrinth.com/mod/modmenu) is optional but recommended for the config button. Overflowing Bars is optional.
+LSO can run without Trinkets, Fzzy Config, or Fabric Language Kotlin. Configuration files remain available without Fzzy Config. Fzzy Config is installed separately, not embedded in LSO; if installed, its own Kotlin dependency is still mandatory. [Mod Menu](https://modrinth.com/mod/modmenu) is optional but recommended for the Fzzy config button. Overflowing Bars is optional. **Published v2.8.1 and earlier still require all three integrations.**
 
 ## Install
 
 1. Create a Fabric 1.20.1 instance with Java 17.
-2. Download the mod jar from the [latest full release](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v2.3.0).
+2. Download the mod jar from the [latest full release](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/latest).
 3. Place it and the required dependency jars in your instance's `mods` directory.
-4. Launch the game. With Mod Menu installed, open LSO's config button to customize the settings.
+4. Launch the game. With Fzzy Config and Mod Menu installed, open LSO's config button; otherwise edit the configuration files while the instance is stopped.
 
 For a dedicated server, install LSO and its required server-compatible dependencies there as well. Do not install the client-only Mod Menu on the server. Broader dedicated-server gameplay testing remains open.
+
+## Upgrade to 3.0.0
+
+Back up worlds and configs, then replace the old LSO jar. Existing TOML files are retained. The major version marks changed dependency requirements and removed bundled integrations; see [Mod Compatibility](Mod-Compatibility) for the full removal list. Farmer's Delight Refabricated and Fabric BetterEnd data remain.
+
+Trinkets, Fzzy Config, and Fabric Language Kotlin are no longer required by LSO. Unequip accessories before removing Trinkets, and keep any library that another installed mod still requires. Keeping Fzzy Config requires keeping Kotlin as well. Without Trinkets, LSO does not supply accessory slots or a new vanilla Respirator equip path.
+
+Refreshing, Purity, and Reservoir now apply only to regular/large canteens, using books found in loot. Enchanting tables and villager trades no longer offer them.
 
 ## Upgrade from 1.x
 
 Back up the world and `config/legendarysurvivaloverhaul` directory first. Replace the old LSO jar; do not leave multiple LSO versions installed.
 
-Install **Fzzy Config and Fabric Language Kotlin**. Forge Config API Port is no longer needed by LSO, but keep it if another installed mod requires it.
+For in-game config editing, optionally install **Fzzy Config and Fabric Language Kotlin**. Forge Config API Port is no longer needed by LSO, but keep it if another installed mod requires it.
 
 On first launch, legacy Forge-format config files are converted automatically. Original files are retained as `<name>.toml.forge-backup`. Invalid enum values generate warnings; numeric values outside supported ranges are clamped. See [Configuration](Configuration) for details.
 

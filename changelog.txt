@@ -18,6 +18,25 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v3.0.0
+====
+Removed the requested obsolete mod compatibility datapacks and Quark asset
+overrides, along with their generators and legacy default registrations.
+Removed unused Forge loot/biome modifiers and migrated retained recipes to
+Fabric-compatible tags and NBT ingredients. Farmer's Delight Refabricated
+and Fabric BetterEnd data are retained.
+
+Refreshing, Purity and Reservoir apply only to regular and large canteens.
+All three are treasure enchantments: available as loot books, not through
+the enchanting table or villager trades. Level-based loot generation no
+longer applies these enchants to unrelated breakable equipment.
+
+Trinkets, Fzzy Config and Fabric Language Kotlin are optional. Trinkets adds
+accessory slots when installed; held-item effects still work without it.
+Existing head-equipment checks remain, but no new vanilla equip path for
+the Respirator is added. Configuration files work without Fzzy Config;
+installing Fzzy Config adds its editor and requires its own Kotlin dependency.
+
 v2.8.1
 ====
 Fixed freezing and heat overlays washing out the screen white or yellow.

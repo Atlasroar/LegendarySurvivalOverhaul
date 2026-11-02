@@ -50,7 +50,7 @@ Do not patch generated files and Java bootstrap definitions independently when b
 
 LSO's `api` package is useful for integrations, but package naming alone is not a promise of a separately versioned stable SDK. Compile against the exact release, inspect signatures, and test after upgrades. Classes in `util/internal`, `common` and mixins are implementation details.
 
-Use a mandatory dependency only when your mod truly requires LSO. Optional adapters must not load LSO-linked classes when LSO is absent. In this port, Trinkets is a required dependency; optional integrations such as Serene Seasons use separate presence checks.
+Use a mandatory dependency only when your mod truly requires LSO. Optional adapters must not load LSO-linked classes when LSO is absent. Starting with v3.0.0, Trinkets and Fzzy Config are optional too: keep their API-linked classes behind presence checks, as with Serene Seasons. Use `-PwithoutOptionalIntegrations` to run a development instance without Trinkets, Fzzy Config, or Kotlin.
 
 ## Review checklist
 

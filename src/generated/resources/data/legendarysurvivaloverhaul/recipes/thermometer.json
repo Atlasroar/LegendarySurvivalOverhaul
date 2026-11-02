@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "#": {
-      "tag": "forge:glass"
+      "tag": "c:glass_blocks"
     },
     "g": {
       "item": "minecraft:gold_ingot"

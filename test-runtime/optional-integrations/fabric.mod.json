@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "lso_optional_integrations_check",
+  "version": "1.0.0",
+  "provides": ["farmersdelight"],
+  "environment": "server",
+  "entrypoints": {
+    "main": ["OptionalIntegrationsCheck"]
+  }
+}

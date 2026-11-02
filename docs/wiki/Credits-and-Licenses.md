@@ -34,6 +34,7 @@ The Overflowing Bars adaptation is `client/render/OverflowingBarsHealthRenderer.
 | Fabric Loader / Fabric API | [FabricMC](https://fabricmc.net/) | Respective upstream licenses |
 | Trinkets | [Emily and contributors](https://github.com/emilyploszaj/trinkets/tree/1.20.1) | MIT |
 | Cardinal Components | [OnyxStudios and contributors](https://github.com/OnyxStudios/Cardinal-Components-API) | Upstream license, bundled base/entity modules |
+| NightConfig | [TheElectronWill and contributors](https://github.com/TheElectronWill/Night-Config/tree/v3.6.7) | LGPL-3.0; unmodified core/toml 3.6.7 bundled for standalone configuration |
 | Fzzy Config | [fzzyhmstrs](https://github.com/fzzyhmstrs/fconfig/tree/1.20.1) | TDL-M; do not jar-in-jar Fzzy Config |
 | Fabric Language Kotlin | [FabricMC](https://github.com/FabricMC/fabric-language-kotlin) | Upstream runtime/library licenses |
 | Mod Menu | [TerraformersMC](https://github.com/TerraformersMC/ModMenu/tree/1.20.1) | Upstream license; optional integration |

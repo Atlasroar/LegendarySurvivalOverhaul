@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AnvilMenuMixin",
+    "EnchantmentHelperMixin",
     "ItemCombinerMenuAccessor",
     "PlayerAttributeMixin",
     "PlayerJumpMixin",

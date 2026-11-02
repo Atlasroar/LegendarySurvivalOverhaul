@@ -4,7 +4,7 @@ This page distinguishes implemented paths from general compatibility assumptions
 
 ## Libraries
 
-Fabric API, Fzzy Config, Fabric Language Kotlin, and Trinkets are required. Cardinal Components base/entity modules are bundled. See [Installation and Upgrading](Installation-and-Upgrading) for versions.
+Fabric API is required. Cardinal Components base/entity modules are bundled. Starting with v3.0.0, Fzzy Config, Fabric Language Kotlin, and Trinkets are optional; v2.8.1 and earlier still require them. Fzzy Config's own Kotlin dependency must still be installed if you choose to install Fzzy Config. See [Installation and Upgrading](Installation-and-Upgrading) for versions.
 
 Forge Config API Port is only needed by older LSO versions, or by other installed mods that still depend on it.
 
@@ -26,6 +26,8 @@ For tropical Serene Seasons cards, enable **Tropical Seasons Enabled** as well a
 
 ## Explicitly excluded or not required
 
+v3.0.0 removes bundled datapack compatibility for Alex's Mobs, Atmospheric, Better End Forge, Born in Chaos, BYG, Call of Yucatan (`call_of_yucutan`), Cataclysm, Crabber's Delight, Create, Create Confectionery, Crockpot, Curios, Decorative Blocks, Endergetic, Farmer's Respite, Hearth and Harvest, Seasonals, Survival Instinct, TerraFirmaCraft, Upgrade Aquatic, Valhelsia Structures, Wardrobe, and Quark, including Quark's asset overrides. Unused Forge loot modifiers and biome modifiers are removed; retained recipes use Fabric-compatible tags and NBT ingredients. Farmer's Delight **Refabricated** (`farmersdelight`) and Fabric BetterEnd (`betterend`) data remain supported.
+
 | Mod/workflow | Status |
 | --- | --- |
 | Origins | Original adapter intentionally unsupported in this Fabric port. |
@@ -38,7 +40,7 @@ For tropical Serene Seasons cards, enable **Tropical Seasons Enabled** as well a
 
 ## Trinkets and integrated Thin Air
 
-Trinkets is the accessory API, not Curios. **LSO - Trinkets** customizes allowed slots for eight LSO accessories. It does not create slot types or change other mods' items. The Respirator/face mask is excluded; its existing face-slot behavior remains.
+When installed, Trinkets is the accessory API, not Curios. **LSO - Trinkets** customizes allowed slots for eight LSO accessories. It does not create slot types or change other mods' items. Without Trinkets there are no accessory slots or auto-equipping; held-item effects still work. Existing head-slot breathing-equipment checks are retained, but this does not add a vanilla equip path for the Respirator. The Respirator/face mask is excluded from configurable accessory slots; its existing face-slot behavior remains when Trinkets is installed.
 
 Custom Trinkets slot datapacks work only when the type exists and is assigned to players. While Use Configured Slots is enabled, the configured lists own those eight items' acceptance rather than their normal item tags. Disable it for tag-based pack control. See [Trinkets Configuration](Trinkets-Configuration) and [slot recipes](Datapack-Air-and-Slot-Recipes).
 

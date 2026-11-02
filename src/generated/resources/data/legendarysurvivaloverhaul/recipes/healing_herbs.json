@@ -7,7 +7,7 @@
       "tag": "minecraft:flowers"
     },
     "s": {
-      "tag": "forge:seeds"
+      "tag": "c:seeds"
     }
   },
   "pattern": [

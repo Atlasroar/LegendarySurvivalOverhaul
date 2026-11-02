@@ -1,16 +1,9 @@
 package sfiomn.legendarysurvivaloverhaul.common.enchantments;
 
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import org.jetbrains.annotations.NotNull;
-import sfiomn.legendarysurvivaloverhaul.common.items.drink.CanteenItem;
-
-public class PurityEnchantment extends Enchantment {
+public class PurityEnchantment extends CanteenEnchantment {
     
     public PurityEnchantment() {
-        super(Rarity.RARE, EnchantmentCategory.BREAKABLE, new EquipmentSlot[]{});
+        super(Rarity.RARE);
     }
     
     @Override
@@ -28,13 +21,4 @@ public class PurityEnchantment extends Enchantment {
         return 1;
     }
     
-    @Override
-    public boolean canEnchant(@NotNull ItemStack stack) {
-        return stack.getItem() instanceof CanteenItem;
-    }
-    
-    @Override
-    public boolean isTreasureOnly() {
-        return true;
-    }
 }

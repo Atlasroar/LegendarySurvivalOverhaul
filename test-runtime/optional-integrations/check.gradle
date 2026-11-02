@@ -1,0 +1,19 @@
+allprojects {
+    afterEvaluate {
+        tasks.register('compileOptionalIntegrationsCheck', JavaCompile) {
+            dependsOn tasks.named('classes')
+            source = fileTree(layout.projectDirectory.dir('test-runtime/optional-integrations')) { include '*.java' }
+            classpath = sourceSets.main.compileClasspath + sourceSets.main.output
+            destinationDirectory = layout.buildDirectory.dir('optional-integrations-check/classes')
+            options.release = 17
+        }
+        tasks.register('jarOptionalIntegrationsCheck', Jar) {
+            dependsOn tasks.named('compileOptionalIntegrationsCheck')
+            from layout.buildDirectory.dir('optional-integrations-check/classes')
+            from(layout.projectDirectory.dir('test-runtime/optional-integrations')) { include 'fabric.mod.json' }
+            archiveFileName = 'lso-optional-integrations-check.jar'
+            destinationDirectory = layout.buildDirectory.dir('optional-integrations-server/mods')
+        }
+        loom.runs.server.runDir('build/optional-integrations-server')
+    }
+}

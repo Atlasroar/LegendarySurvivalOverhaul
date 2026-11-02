@@ -23,28 +23,18 @@ public final class IntegrationController
 	{
 		FabricModList mods = new FabricModList();
 		
-		if (mods.isLoaded("create"))
-			initCreate();
 		if (mods.isLoaded("farmersdelight"))
 			initFarmersDelight();
 		if (mods.isLoaded("realistictorches"))
 			initRealisticTorches();
-		if (mods.isLoaded("byg"))
-			initBYG();
 		if (mods.isLoaded("artifacts"))
 			initArtifacts();
-		if (mods.isLoaded("endergetic"))
-			initEndergeticExpansion();
 		if (mods.isLoaded("infernalexp"))
 			initInfernalExpansion();
 		if (mods.isLoaded("biomesoplenty"))
 			initBiomesOPlenty();
-		if (mods.isLoaded("betterendforge"))
-			initBetterEndForge();
 		if (mods.isLoaded("betterend"))
 			initBetterEnd();
-		if (mods.isLoaded("atmospheric"))
-			initAtmospheric();
 		if (mods.isLoaded("legendarycreatures"))
 			initLegendaryCreatures();
 		
@@ -52,46 +42,24 @@ public final class IntegrationController
 		{
 			initNeapolitan();
 			
-			// Since Seasonals and Peculiars depend on Neapolitan,
+			// Since Peculiars depends on Neapolitan,
 			// we can skip checking them if Neapolitan isn't installed
-			if (mods.isLoaded("seasonals"))
-				initSeasonals();
 			if (mods.isLoaded("peculiars"))
 				initPeculiars();
 		}
 
 		if (mods.isLoaded("supplementaries"))
 			initSupplementaries();
-		if (mods.isLoaded("crockpot"))
-			initCrockpot();
-		if (mods.isLoaded("quark"))
-			initQuark();
 		if (mods.isLoaded("beachparty"))
 			initBeachParty();
-		if (mods.isLoaded("create_confectionery"))
-			initCreateConfectionery();
-		if (mods.isLoaded("wardrobe"))
-			initWardrobe();
 		if (mods.isLoaded("iceandfire"))
 			initIceAndFire();
-		if (mods.isLoaded("alexsmobs"))
-			initAlexsMobs();
 		if (mods.isLoaded("aquamirae"))
 			initAquamirae();
-		if (mods.isLoaded("call_of_yucutan"))
-			initCallOfYucutan();
-		if (mods.isLoaded("cataclysm"))
-			initCataclysm();
 		if (mods.isLoaded("endermanoverhaul"))
 			initEndermanOverhaul();
 		if (mods.isLoaded("irons_spellbooks"))
 			initIronsSpellbooks();
-		if (mods.isLoaded("born_in_chaos_v1"))
-			initBornInChaos();
-		if (mods.isLoaded("upgrade_aquatic"))
-			initUpgradeAquatic();
-		if (LegendarySurvivalOverhaul.terraFirmaCraftLoaded)
-			initTerraFirmaCraft();
 		if (mods.isLoaded("legendary_additions"))
 			initLegendaryAdditions();
 		if (mods.isLoaded("hardcore_torches"))
@@ -102,13 +70,6 @@ public final class IntegrationController
 		private boolean isLoaded(String modId) {
 			return FabricLoader.getInstance().isModLoaded(modId);
 		}
-	}
-
-	private static void initCreate()
-	{
-		JsonConfig.registerDefaultBlockFluidTemperature("create:blaze_burner", 2.5f, new JsonPropertyValue("blaze", "smouldering"));
-		JsonConfig.registerDefaultBlockFluidTemperature("create:blaze_burner", 5.0f, new JsonPropertyValue("blaze", "kindled"));
-		JsonConfig.registerDefaultBlockFluidTemperature("create:blaze_burner", 7.5f, new JsonPropertyValue("blaze", "seething"));
 	}
 	
 	private static void initFarmersDelight()
@@ -143,30 +104,11 @@ public final class IntegrationController
 		JsonConfig.registerDefaultBlockFluidTemperature("realistictorches:torch_wall", 0.0f, new JsonPropertyValue("litstate", "0"));
 	}
 	
-	private static void initBYG()
-	{
-		JsonConfig.registerDefaultBlockFluidTemperature("byg:boric_fire", 5.0f);
-		JsonConfig.registerDefaultBlockFluidTemperature("byg:boric_campfire", 10.0f, new JsonPropertyValue("lit", "true"));
-		JsonConfig.registerDefaultBlockFluidTemperature("byg:boric_campfire", 0.0f, new JsonPropertyValue("lit", "false"));
-
-		JsonConfig.registerDefaultBlockFluidTemperature("byg:cryptic_fire", 5.0f);
-		JsonConfig.registerDefaultBlockFluidTemperature("byg:cryptic_campfire", 7.5f, new JsonPropertyValue("lit", "true"));
-		JsonConfig.registerDefaultBlockFluidTemperature("byg:cryptic_campfire", 0.0f, new JsonPropertyValue("lit", "false"));
-	}
-	
 	private static void initArtifacts()
 	{
 		JsonConfig.registerDefaultItemTemperature("artifacts:villager_hat", 0.0f, 2.5f, 0.0f, 0.0f);
 		JsonConfig.registerDefaultItemTemperature("artifacts:lucky_scarf", 0.0f, 0.0f, 2.5f, 0.0f);
 		JsonConfig.registerDefaultItemTemperature("artifacts:scarf_of_invisibility", 0.0f, 0.0f, 2.5f, 0.0f);
-	}
-	
-	private static void initEndergeticExpansion() 
-	{
-		JsonConfig.registerDefaultBlockFluidTemperature("endergetic:ender_fire", -7.0f);
-		JsonConfig.registerDefaultBlockFluidTemperature("endergetic:ender_campfire", -10.0f);
-		JsonConfig.registerDefaultBlockFluidTemperature("endergetic:ender_torch", -1.5f);
-		JsonConfig.registerDefaultBlockFluidTemperature("endergetic:ender_wall_torch", -1.5f);
 	}
 	
 	private static void initInfernalExpansion()
@@ -205,17 +147,6 @@ public final class IntegrationController
 		JsonConfig.registerDefaultConsumableThirst("neapolitan:vanilla_milkshake", 4, 1.0f);
 		JsonConfig.registerDefaultConsumableThirst("neapolitan:strawberry_milkshake", 4, 1.0f);
 		JsonConfig.registerDefaultConsumableThirst("neapolitan:banana_milkshake", 4, 1.0f);
-	}
-	
-	private static void initSeasonals()
-	{
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "seasonals:pumpkin_ice_cream", -3, 3600);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "seasonals:sweet_berry_ice_cream", -3, 3600);
-		
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.DRINK, "seasonals:pumpkin_milkshake", -3, 3600);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.DRINK, "seasonals:sweet_berry_milkshake", -3, 3600);
-		JsonConfig.registerDefaultConsumableThirst("seasonals:pumpkin_milkshake", 4, 1.0f);
-		JsonConfig.registerDefaultConsumableThirst("seasonals:sweet_berry_milkshake", 4, 1.0f);
 	}
 	
 	private static void initPeculiars() {
@@ -263,23 +194,6 @@ public final class IntegrationController
 		JsonConfig.registerDefaultItemTemperature("betternether:flaming_ruby_leggings", 0, 0, 2.5f, 0);
 		JsonConfig.registerDefaultItemTemperature("betternether:flaming_ruby_boots", 0, 0, 1.5f, 0);
 	}
-	
-	private static void initBetterEndForge() {
-		JsonConfig.registerDefaultBiomeOverride("betterendforge:sulphur_springs", 1.1f);
-		JsonConfig.registerDefaultBiomeOverride("betterendforge:ice_starfield", 0.1f);
-
-		JsonConfig.registerDefaultFuelItems("betterendforge:coal_block", ThermalTypeEnum.HEATING, 270);
-		JsonConfig.registerDefaultFuelItems("betterendforge:charcoal_block", ThermalTypeEnum.HEATING, 270);
-	}
-
-	private static void initAtmospheric() {
-		JsonConfig.registerDefaultDamageSourceBodyParts("atmospheric.yuccaSapling", DamageDistributionEnum.ONE_OF, Arrays.asList(BodyPartEnum.LEFT_FOOT, BodyPartEnum.RIGHT_FOOT, BodyPartEnum.LEFT_LEG, BodyPartEnum.RIGHT_LEG));
-		JsonConfig.registerDefaultDamageSourceBodyParts("atmospheric.yuccaFlower", DamageDistributionEnum.ONE_OF, Arrays.asList(BodyPartEnum.LEFT_FOOT, BodyPartEnum.RIGHT_FOOT, BodyPartEnum.LEFT_LEG, BodyPartEnum.RIGHT_LEG));
-		JsonConfig.registerDefaultDamageSourceBodyParts("atmospheric.yuccaBranch", DamageDistributionEnum.ONE_OF, Arrays.asList(BodyPartEnum.LEFT_FOOT, BodyPartEnum.RIGHT_FOOT, BodyPartEnum.LEFT_LEG, BodyPartEnum.RIGHT_LEG));
-		JsonConfig.registerDefaultDamageSourceBodyParts("atmospheric.yuccaLeaves", DamageDistributionEnum.ONE_OF, Arrays.asList(BodyPartEnum.LEFT_FOOT, BodyPartEnum.RIGHT_FOOT, BodyPartEnum.LEFT_LEG, BodyPartEnum.RIGHT_LEG));
-		JsonConfig.registerDefaultDamageSourceBodyParts("atmospheric.barrelCactus", DamageDistributionEnum.ONE_OF, Arrays.asList(BodyPartEnum.LEFT_FOOT, BodyPartEnum.RIGHT_FOOT, BodyPartEnum.LEFT_LEG, BodyPartEnum.RIGHT_LEG));
-		JsonConfig.registerDefaultDamageSourceBodyParts("atmospheric.aloeLeaves", DamageDistributionEnum.ONE_OF, Arrays.asList(BodyPartEnum.LEFT_FOOT, BodyPartEnum.RIGHT_FOOT, BodyPartEnum.LEFT_LEG, BodyPartEnum.RIGHT_LEG));
-	}
 
 	private static void initLegendaryCreatures() {
 		JsonConfig.registerDefaultDamageSourceBodyParts("legendarycreatures.root_attack", DamageDistributionEnum.ONE_OF, Arrays.asList(BodyPartEnum.LEFT_FOOT, BodyPartEnum.RIGHT_FOOT, BodyPartEnum.LEFT_LEG, BodyPartEnum.RIGHT_LEG));
@@ -289,49 +203,6 @@ public final class IntegrationController
 
 	private static void initSupplementaries() {
 		JsonConfig.registerDefaultDamageSourceBodyParts("supplementaries.bamboo_spikes", DamageDistributionEnum.ALL, Arrays.asList(BodyPartEnum.LEFT_FOOT, BodyPartEnum.RIGHT_FOOT));
-	}
-
-	private static void initCrockpot() {
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.DRINK, "crockpot:asparagus_soup", 2, 1200);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.DRINK, "crockpot:iced_tea", -2, 4800);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:ice_cream", -3, 1200);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.DRINK, "crockpot:tea", 3, 4800);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:bacon_eggs", 1, 1200);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:bone_stew", 3, 2400);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:bunny_stew", 1, 1200);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:bone_soup", 2, 1800);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:california_roll", -1, 1200);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:flower_salad", -3, 6000);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.DRINK, "crockpot:fruit_medley", -1, 1200);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.DRINK, "crockpot:gazpacho", -2, 2400);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:hot_chili", 2, 2400);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.DRINK, "crockpot:hot_cocoa", 3, 2400);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:kabobs", 1, 2400);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:meat_balls", 1, 1200);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:moqueca", 1, 1800);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:plain_omelette", 1, 1200);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:pepper_popper", 3, 6000);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:pierogi", 2, 1200);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:ratatouille", 3, 6000);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:salmon_sushi", -1, 1800);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:salsa", -2, 2400);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:turkey_dinner", 2, 2400);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.DRINK, "crockpot:veg_stinger", -1, 1200);
-		JsonConfig.registerDefaultConsumableTemperature(TemporaryModifierGroupEnum.FOOD, "crockpot:watermelon_icle", -4, 1800);
-
-		JsonConfig.registerDefaultConsumableThirst("crockpot:asparagus_soup", 4, 2.0f);
-		JsonConfig.registerDefaultConsumableThirst("crockpot:bone_soup", 4, 2.0f);
-		JsonConfig.registerDefaultConsumableThirst("crockpot:iced_tea", 8, 5.0f);
-		JsonConfig.registerDefaultConsumableThirst("crockpot:tea", 5, 2.0f);
-		JsonConfig.registerDefaultConsumableThirst("crockpot:gazpacho", 4, 2.0f);
-		JsonConfig.registerDefaultConsumableThirst("crockpot:hot_cocoa", 2, 1.0f);
-		JsonConfig.registerDefaultConsumableThirst("crockpot:fruit_medley", 3, 1.0f);
-		JsonConfig.registerDefaultConsumableThirst("crockpot:veg_stinger", 5, 2.0f);
-	}
-
-	private static void initQuark() {
-		JsonConfig.registerDefaultFuelItems("quark:coal_block", ThermalTypeEnum.HEATING, 270);
-		JsonConfig.registerDefaultFuelItems("quark:charcoal_block", ThermalTypeEnum.HEATING, 270);
 	}
 
 	private static void initBeachParty() {
@@ -374,34 +245,6 @@ public final class IntegrationController
 		JsonConfig.registerDefaultItemTemperature("beachparty:crocs", 0, 0.5f, 0, 0);
 		JsonConfig.registerDefaultItemTemperature("beachparty:palm_torch_item", 1, 0.0f, 0, 0);
 		JsonConfig.registerDefaultItemTemperature("beachparty:palm_tall_torch", 1, 0.0f, 0, 0);
-	}
-
-	private static void initCreateConfectionery() {
-		JsonConfig.registerDefaultConsumableThirst("create_confectionery:hot_chocolate_bottle", 3, 2.0f);
-	}
-
-	private static void initWardrobe() {
-		JsonConfig.registerDefaultItemTemperature("wardrobe:taiga_helmet", 0, 0, 2.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:taiga_chestplate", 0, 0, 3.5f, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:taiga_leggings", 0, 0, 3.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:taiga_boots", 0, 0, 1.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:snowy_helmet", 0, 0, 2.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:snowy_chestplate", 0, 0, 3.5f, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:snowy_leggings", 0, 0, 3.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:snowy_boots", 0, 0, 1.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:desert_helmet", 0, 2.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:desert_chestplate", 0, 3.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:desert_leggings", 0, 2.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:desert_boots", 0, 1.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:jungle_chestplate", 0, 5.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:jungle_leggings", 0, 3.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:jungle_boots", 0, 2.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:savanna_chestplate", 0, 4.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:savanna_leggings", 0, 2.5f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:savanna_boots", 0, 1.5f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:wool_vest_chestplate", 0, 0, 2.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:chiton", 0, 2.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("wardrobe:farmers_hat_helmet", 0, 3.5f, 0, 0);
 	}
 
 	private static void initIceAndFire() {
@@ -526,17 +369,6 @@ public final class IntegrationController
 		JsonConfig.registerDefaultItemTemperature("iceandfire:tide_teal_boots", 0, 0, 1.5f, 0);
 	}
 
-	private static void initAlexsMobs() {
-		JsonConfig.registerDefaultItemTemperature("alexsmobs:roadrunner_boots", 0, 1.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("alexsmobs:crocodile_chestplate", 0, 0, 1.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("alexsmobs:centipede_leggings", 0, 1.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("alexsmobs:frontier_cap", 0, 0, 4.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("alexsmobs:sombrero", 0, 4.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("alexsmobs:emu_leggings", 0, 1.5f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("alexsmobs:froststalker_helmet", 0, 3.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("alexsmobs:unsettling_kimono", 0, 2.0f, 0, 0);
-	}
-
 	private static void initAquamirae() {
 		JsonConfig.registerDefaultItemTemperature("aquamirae:terrible_helmet", 0, 1.0f, 0, 0);
 		JsonConfig.registerDefaultItemTemperature("aquamirae:terrible_chestplate", 0, 1.5f, 0, 0);
@@ -550,25 +382,6 @@ public final class IntegrationController
 		JsonConfig.registerDefaultItemTemperature("aquamirae:three_bolt_suit", 0, 0, 1.0f, 0);
 		JsonConfig.registerDefaultItemTemperature("aquamirae:three_bolt_leggings", 0, 0, 1.0f, 0);
 		JsonConfig.registerDefaultItemTemperature("aquamirae:three_bolt_boots", 0, 0, 1.0f, 0);
-	}
-
-	private static void initCallOfYucutan() {
-		JsonConfig.registerDefaultItemTemperature("call_of_yucutan:jades_helmet", 0, 0.5f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("call_of_yucutan:jades_chestplate", 0, 1.5f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("call_of_yucutan:jades_leggings", 0, 1.5f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("call_of_yucutan:jades_boots", 0, 0.5f, 0, 0);
-	}
-
-	private static void initCataclysm() {
-		JsonConfig.registerDefaultItemTemperature("cataclysm:bone_reptile_helmet", 0, 0, 1.5f, 0);
-		JsonConfig.registerDefaultItemTemperature("cataclysm:bone_reptile_chestplate", 0, 0, 2.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("cataclysm:ignitium_helmet", 0, 0, 1.5f, 0);
-		JsonConfig.registerDefaultItemTemperature("cataclysm:ignitium_chestplate", 0, 0, 3.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("cataclysm:ignitium_elytra_chestplate", 0, 0, 3.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("cataclysm:ignitium_leggings", 0, 0, 2.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("cataclysm:ignitium_boots", 0, 0, 1.5f, 0);
-		JsonConfig.registerDefaultItemTemperature("cataclysm:monstrous_helm", 0, 0, 1.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("cataclysm:bloom_stone_pauldrons", 0, 1.0f, 0, 0);
 	}
 
 	private static void initEndermanOverhaul() {
@@ -590,36 +403,6 @@ public final class IntegrationController
 		JsonConfig.registerDefaultItemTemperature("irons_spellbooks:netherite_mage_chestplate", 0, 0, 3.5f, 0);
 		JsonConfig.registerDefaultItemTemperature("irons_spellbooks:netherite_mage_leggings", 0, 0, 2.5f, 0);
 		JsonConfig.registerDefaultItemTemperature("irons_spellbooks:netherite_mage_boots", 0, 0, 2.0f, 0);
-	}
-
-	private static void initBornInChaos() {
-		JsonConfig.registerDefaultItemTemperature("born_in_chaos_v1:dark_metal_armor_helmet", 0, 1.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("born_in_chaos_v1:dark_metal_armor_chestplate", 0, 2.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("born_in_chaos_v1:dark_metal_armor_leggings", 0, 1.0f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("born_in_chaos_v1:dark_metal_armor_boots", 0, 0.5f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("born_in_chaos_v1:spiritual_guide_sombrero_helmet", 0, 3.5f, 0, 0);
-		JsonConfig.registerDefaultItemTemperature("born_in_chaos_v1:nightmare_mantleofthe_night_helmet", 0, 0, 1.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("born_in_chaos_v1:nightmare_mantleofthe_night_chestplate", 0, 0, 2.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("born_in_chaos_v1:nightmare_mantleofthe_night_leggings", 0, 0, 1.0f, 0);
-		JsonConfig.registerDefaultItemTemperature("born_in_chaos_v1:nightmare_mantleofthe_night_boots", 0, 0, 0.5f, 0);
-	}
-
-	private static void initUpgradeAquatic() {
-		JsonConfig.registerDefaultConsumableThirst("upgrade_aquatic:mulberry", 4, 0);
-	}
-
-	private static void initTerraFirmaCraft() {
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:firepit", 8.0f, new JsonPropertyValue("lit", "true"));
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:firepit", 0.0f, new JsonPropertyValue("lit", "false"));
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:pot", 8.0f, new JsonPropertyValue("lit", "true"));
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:pot", 0.0f, new JsonPropertyValue("lit", "false"));
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:charcoal_forge", 15.0f, new JsonPropertyValue("heat_level", "6"));
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:charcoal_forge", 13.0f, new JsonPropertyValue("heat_level", "5"));
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:charcoal_forge", 11.0f, new JsonPropertyValue("heat_level", "4"));
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:charcoal_forge", 9.0f, new JsonPropertyValue("heat_level", "3"));
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:charcoal_forge", 6.0f, new JsonPropertyValue("heat_level", "2"));
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:charcoal_forge", 3.0f, new JsonPropertyValue("heat_level", "1"));
-		JsonConfig.registerDefaultBlockFluidTemperature("tfc:charcoal_forge", 0.0f, new JsonPropertyValue("heat_level", "0"));
 	}
 
 	private static void initLegendaryAdditions() {
