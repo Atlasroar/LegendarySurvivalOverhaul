@@ -1,6 +1,6 @@
 # Installation and Upgrading
 
-## Requirements for v3.0.0
+## Requirements for v3.1.0
 
 | Component | Requirement |
 | --- | --- |
@@ -8,10 +8,11 @@
 | Java | 17 |
 | Fabric Loader | 0.15.0 or newer |
 | Fabric API | A build for Minecraft 1.20.1 |
-| [Fzzy Config](https://modrinth.com/mod/fzzy-config) | Optional in-game editor: 0.7.7+1.20.1 or a newer compatible 1.20.1 build |
+| [Fzzy Config](https://modrinth.com/mod/fzzy-config) | Strongly recommended, not required: in-game editor, 0.7.7+1.20.1 or a newer compatible 1.20.1 build |
 | [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) | Not required by LSO; required if Fzzy Config is installed |
-| [Trinkets](https://modrinth.com/mod/trinkets) | Optional accessory slots: 3.7.2 or newer, for 1.20.1 |
+| [Trinkets](https://modrinth.com/mod/trinkets) | Strongly recommended, not required: accessory slots, 3.7.2 or newer for 1.20.1 |
 | Cardinal Components | Base/entity modules are bundled in the published LSO jar |
+| NightConfig | Core/TOML 3.6.7 are bundled; no separate download needed |
 
 LSO can run without Trinkets, Fzzy Config, or Fabric Language Kotlin. Configuration files remain available without Fzzy Config. Fzzy Config is installed separately, not embedded in LSO; if installed, its own Kotlin dependency is still mandatory. [Mod Menu](https://modrinth.com/mod/modmenu) is optional but recommended for the Fzzy config button. Overflowing Bars is optional. **Published v2.8.1 and earlier still require all three integrations.**
 
@@ -24,7 +25,13 @@ LSO can run without Trinkets, Fzzy Config, or Fabric Language Kotlin. Configurat
 
 For a dedicated server, install LSO and its required server-compatible dependencies there as well. Do not install the client-only Mod Menu on the server. Broader dedicated-server gameplay testing remains open.
 
-## Upgrade to 3.0.0
+## Upgrade to 3.1.0
+
+Back up worlds and configs, then replace the old LSO jar. No new required dependencies are added. To enable the optional storm mechanics, install Atlasroar's Immersive Weathering 2.5.0+ for Fabric 1.20.1 with IW's own required dependencies, including Moonlight. Older IW builds leave the adapter disabled with a warning.
+
+Existing temperature configs acquire the default-enabled `immersiveWeatheringStormsEnabled` setting; set it to `false` to keep IW's own weather behavior without LSO storm/wind penalties. The integration also requires `temperatureEnabled`. See [storm compatibility](Mod-Compatibility#immersive-weathering-storms-v310) for shelter and drink protection.
+
+## Upgrade to 3.0.0 or later from 2.x
 
 Back up worlds and configs, then replace the old LSO jar. Existing TOML files are retained. The major version marks changed dependency requirements and removed bundled integrations; see [Mod Compatibility](Mod-Compatibility) for the full removal list. Farmer's Delight Refabricated and Fabric BetterEnd data remain.
 
@@ -50,7 +57,7 @@ v2.1.0 introduced `air.toml`. If that file does not yet exist, LSO migrates the 
 
 v2.2.0 adds `trinkets.toml`. Default accessory lists match previous tag assignments, so installing the update does not intentionally relocate equipped items. Do not delete configs to upgrade; let the defaults/migration fill new fields.
 
-Verify the nine [config screens](Configuration), especially [Air](Air-Configuration) and [Trinkets](Trinkets-Configuration). Keep only one LSO jar, and back up before altering datapacks or actual inventory slot capacities.
+Verify the nine [config files](Configuration), especially [Air](Air-Configuration) and [Trinkets](Trinkets-Configuration); their in-game screens are available with Fzzy Config installed. Keep only one LSO jar, and back up before altering datapacks or actual inventory slot capacities.
 
 ## Upgrade to 2.3.0
 

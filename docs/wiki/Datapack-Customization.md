@@ -10,7 +10,7 @@ Create `MySurvivalPack` inside the world's `datapacks` folder. Its root contains
 {
   "pack": {
     "pack_format": 15,
-    "description": "Survival balance overrides for LSO 2.3.0"
+    "description": "Survival balance overrides for LSO 3.0.0"
   }
 }
 ```

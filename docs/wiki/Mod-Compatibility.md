@@ -4,7 +4,7 @@ This page distinguishes implemented paths from general compatibility assumptions
 
 ## Libraries
 
-Fabric API is required. Cardinal Components base/entity modules are bundled. Starting with v3.0.0, Fzzy Config, Fabric Language Kotlin, and Trinkets are optional; v2.8.1 and earlier still require them. Fzzy Config's own Kotlin dependency must still be installed if you choose to install Fzzy Config. See [Installation and Upgrading](Installation-and-Upgrading) for versions.
+Fabric API is required. Cardinal Components base/entity and NightConfig core/TOML are bundled. Starting with v3.0.0, **Fzzy Config and Trinkets are strongly recommended, not required**; Fabric Language Kotlin is also optional for LSO. v2.8.1 and earlier still require all three. Fzzy Config's own Kotlin dependency must still be installed if you choose to install Fzzy Config. See [Installation and Upgrading](Installation-and-Upgrading) for versions.
 
 Forge Config API Port is only needed by older LSO versions, or by other installed mods that still depend on it.
 
@@ -27,6 +27,8 @@ For tropical Serene Seasons cards, enable **Tropical Seasons Enabled** as well a
 ## Explicitly excluded or not required
 
 v3.0.0 removes bundled datapack compatibility for Alex's Mobs, Atmospheric, Better End Forge, Born in Chaos, BYG, Call of Yucatan (`call_of_yucutan`), Cataclysm, Crabber's Delight, Create, Create Confectionery, Crockpot, Curios, Decorative Blocks, Endergetic, Farmer's Respite, Hearth and Harvest, Seasonals, Survival Instinct, TerraFirmaCraft, Upgrade Aquatic, Valhelsia Structures, Wardrobe, and Quark, including Quark's asset overrides. Unused Forge loot modifiers and biome modifiers are removed; retained recipes use Fabric-compatible tags and NBT ingredients. Farmer's Delight **Refabricated** (`farmersdelight`) and Fabric BetterEnd (`betterend`) data remain supported.
+
+The `data/forge` compatibility namespace is also removed. This cleanup removes LSO's bundled survival-value/asset support; it does not mean every listed mod is categorically incompatible or unavailable on Fabric.
 
 | Mod/workflow | Status |
 | --- | --- |
@@ -103,7 +105,7 @@ The user tested beta.1 biome/air behavior in-game successfully. Mask protection 
 
 ## Hydration datapack support for Let's Do + Farmer's Delight (v2.8.0)
 
-LSO's Thirst system already loads cross-mod hydration/saturation values from reloadable JSON resources at `data/<mod id>/thirst/consumables/<item id>.json` (and `data/<mod id>/thirst/blocks/<block id>.json` for drinkable blocks like kegs or sinks). Each file is a plain data array — `[{"hydration": <int>, "saturation": <float>, "effects": [...], "properties": {...}}]` — keyed by the target mod's own namespace and item/block path, so it only activates when that mod is actually installed (`FabricLoader.isModLoaded(namespace)`), and is otherwise inert. No Java dependency, mixin, or compile-time reference to the target mod is required; this is why the feature is described as a "datapack" — it ships as resources, not code.
+LSO's Thirst system loads cross-mod hydration/saturation values from reloadable JSON resources at `data/<mod id>/legendarysurvivaloverhaul/thirst/consumables/<item id>.json` (and `data/<mod id>/legendarysurvivaloverhaul/thirst/blocks/<block id>.json` for drinkable blocks like kegs or sinks). Each file is a plain data array — `[{"hydration": <int>, "saturation": <float>, "effects": [...], "properties": {...}}]` — keyed by the target mod's own namespace and item/block path, so it only activates when that mod is actually installed (`FabricLoader.isModLoaded(namespace)`), and is otherwise inert. No Java dependency, mixin, or compile-time reference to the target mod is required; this is why the feature is described as a "datapack" — it ships as resources, not code.
 
 v2.8.0 adds hydration coverage, ported from LSO's existing (pre-Fabric-port) value set for these same mods, for:
 
@@ -119,6 +121,26 @@ v2.8.0 adds hydration coverage, ported from LSO's existing (pre-Fabric-port) val
 | [Brewery](https://github.com/Let-s-Do-Collection/Brewery/tree/1.20.1) | `brewery` | All whiskey and beer variants, both as consumed items and as their keg/tap blocks, so drinking directly from a placed keg hydrates the same as drinking a bottled serving. |
 
 None of these mods' items declare vanilla `FoodProperties`-driven Thirst by themselves — LSO's values are additive data, not an override of anything the target mod ships. Uninstalling any of these mods makes its datapack entries simply unused; nothing in LSO depends on them being present.
+
+## Immersive Weathering storms (v3.1.0)
+
+v3.1.0 optionally supports **Atlasroar's [Immersive Weathering 2.5.0+ Fabric 1.20.1 fork](https://github.com/Atlasroar/Immersive-Weathering)**. IW is neither bundled nor required; install its own Moonlight/Fabric dependencies if choosing it. Older IW versions leave the adapter disabled with a warning.
+
+Enable `temperatureEnabled` and the independent, default-enabled `immersiveWeatheringStormsEnabled` in `temperature.toml`. The optional Fzzy editor exposes the same toggle. v3.1.0 has 263 settings across nine configs; v3.0.0 had 262.
+
+| Exposure | LSO behavior | Drink protection |
+| --- | --- | --- |
+| Snowstorm | Drive the target to frostbite (5) or colder, with cooling steps at 2x the normal rate; apply Cold Hunger during exposure | Hot Drink (`legendarysurvivaloverhaul:hot_drink`) blocks both storm penalties |
+| Sandstorm, regular or red | Drive the target to heatstroke (35) or hotter, with heating steps at 2x the normal rate; apply Heat Thirst during exposure | Cold Drink (`legendarysurvivaloverhaul:cold_drink`) blocks both storm penalties |
+| Actual freezing-wind hit | Apply/refresh Cold Hunger for 200 game ticks (10 seconds) from the last hit; keep IW's push/Slowness behavior | Hot Drink does not block this separate hit penalty |
+
+Storm detection uses IW's real weather/biome/config predicates, not particles. Snow requires IW-enabled snowstorms during snowy-biome thunder; ordinary snowfall does not qualify. Sand uses IW's tagged dry-biome rain conditions and yields when IW yields to Scorchful. IW's presentation yielding to Immersive Storms does not disable snowstorm gameplay.
+
+**Shelter:** every column in a centered 3x3 horizontal area needs a block that obstructs skylight within the first 10 block positions above the player's eye block. All nine columns must qualify; heights can differ. A single uncovered corner, a roof above that limit, or skylight-transparent glass does not count. This deliberately replaces IW's single-column sky-exposure check for LSO's storm penalties. It does not prevent an actual freezing-wind collision from causing its separate penalty.
+
+Storm penalties stop when sheltered, out of the storm, or protected by the matching drink. General temperature and matching cold/heat immunity are respected; Creative/Spectator are excluded. Existing body temperature does not reset: ordinary frostbite/heatstroke effects can still apply after leaving a storm. Ambient secondary-effect toggles do not disable this independent integration. Finite wind hunger survives temperature updates, storm overlap, and capability saves instead of being removed early.
+
+Dedicated-server assertions pass with IW absent and with the real 2.5.0/Moonlight mods installed, covering the rate, targets, shelter boundaries, drinks, toggles, and a real wind hit. See `test-runtime/weathering-storms/README.md`. Client visuals and separate-client multiplayer remain unverified.
 
 ## Future integrations
 

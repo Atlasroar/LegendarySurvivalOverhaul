@@ -1,6 +1,6 @@
 # Configuration
 
-v3.0.0 supports **259+ settings across nine configs** without extra configuration libraries. **Fzzy Config** is an optional in-game editor; Mod Menu supplies a convenient entry to it. Installing Fzzy Config still requires its Fabric Language Kotlin dependency. v2.8.1 and earlier require both libraries.
+v3.1.0 supports **263 settings across nine configs** without extra configuration libraries. **Fzzy Config is strongly recommended, not required**, for in-game editing; Mod Menu supplies a convenient entry to it. Installing Fzzy Config still requires its Fabric Language Kotlin dependency. v2.8.1 and earlier require both libraries.
 
 ## Open and save
 
@@ -32,16 +32,19 @@ Files live in `config/legendarysurvivaloverhaul`. Manual editing should be done 
 
 `client` is local. The other eight configs use server-synchronized values; operators can edit server settings. In single-player, the integrated server governs these gameplay settings. A non-operator client cannot use a local Trinkets or Air file to override a server's rules.
 
-Edit/sync hooks refresh the baked values used by gameplay. Air changes clear cached quality results; Trinkets changes replace the insertion lookup. Some other options are only consulted during startup, so they still require a restart. Exhaustive real-multiplayer permissions/sync validation remains open.
+LSO's own config-sync channel sends gameplay settings independently of Fzzy Config, so clients and servers can have different optional editor installations. Client-only settings are excluded, received values are validated before application, and local preferences are restored on disconnect.
+
+Edit/sync hooks refresh the baked values used by gameplay. Air changes clear cached quality results; with Trinkets installed, its changes replace the insertion lookup. Some other options are only consulted during startup, so they still require a restart. Actual multiplayer packet flow and exhaustive in-game edit/permission validation remain open.
 
 ## Upgrading existing files
 
 | Upgrade | Behavior and backup |
 | --- | --- |
-| Forge Config API Port format to Fzzy | Quoted legacy keys map onto validated fields; original `<name>.toml.forge-backup` is kept |
-| Common air settings to Air | Imported only if `air.toml` does not exist; Fzzy Common backed up as `common.toml.air-backup` |
+| Forge Config API Port format to current TOML | Quoted legacy keys map onto validated schema fields, with or without Fzzy; original `<name>.toml.forge-backup` is kept |
+| Common air settings to Air | Imported only if `air.toml` does not exist; Common backed up as `common.toml.air-backup` |
 | Existing Air file | Takes precedence; Common values do not overwrite it |
 | First Trinkets launch | Writes defaults matching shipped LSO slot tags; there is no previous Trinkets config to migrate |
+| 2.x to 3.0.0 | Existing flat TOML files remain usable; no config deletion or optional editor installation is needed |
 
 Out-of-range numbers are clamped by validators; invalid legacy enums generate warnings. Keep backups until you verify the result.
 
@@ -49,11 +52,13 @@ Out-of-range numbers are clamped by validators; invalid legacy enums generate wa
 
 The Air menu controls ambient vanilla profiles and breathing behavior, not the identities of every provider block. Provider and equipment membership remain datapack tags.
 
-The Trinkets menu changes allowed locations for eight accessories. It does **not** create inventory slots, increase capacity, relocate existing stacks, or change the Respirator. Custom slots must already be provided by a mod/datapack.
+The Trinkets settings change allowed locations for eight accessories only when Trinkets is installed. They do **not** create inventory slots, increase capacity, relocate existing stacks, or change the Respirator. Custom slots must already be provided by a mod/datapack.
 
 For per-item data and environment rules, use the [datapack guides](Datapack-Customization).
 
 ## Detailed settings
+
+**Added in v3.1.0:** `temperature.toml` has the default-enabled `immersiveWeatheringStormsEnabled` switch. It independently controls optional Atlasroar IW 2.5.0+ storm/wind penalties, requires `temperatureEnabled`, and has no effect without IW. Existing configs receive the new default without deleting files. Ambient cold/heat secondary-effect switches do not disable it. See [storm compatibility](Mod-Compatibility#immersive-weathering-storms-v310) for drink protection and shelter rules.
 
 - [Air Configuration](Air-Configuration): every field/default/range and profile priority.
 - [Trinkets Configuration](Trinkets-Configuration): slot-list syntax, examples and tag fallback.

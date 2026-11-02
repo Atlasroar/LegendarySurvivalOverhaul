@@ -32,11 +32,11 @@ The Overflowing Bars adaptation is `client/render/OverflowingBarsHealthRenderer.
 | Project | Credits/source | Terms reference |
 | --- | --- | --- |
 | Fabric Loader / Fabric API | [FabricMC](https://fabricmc.net/) | Respective upstream licenses |
-| Trinkets | [Emily and contributors](https://github.com/emilyploszaj/trinkets/tree/1.20.1) | MIT |
+| Trinkets | [Emily and contributors](https://github.com/emilyploszaj/trinkets/tree/1.20.1) | MIT; strongly recommended optional accessory integration |
 | Cardinal Components | [OnyxStudios and contributors](https://github.com/OnyxStudios/Cardinal-Components-API) | Upstream license, bundled base/entity modules |
 | NightConfig | [TheElectronWill and contributors](https://github.com/TheElectronWill/Night-Config/tree/v3.6.7) | LGPL-3.0; unmodified core/toml 3.6.7 bundled for standalone configuration |
-| Fzzy Config | [fzzyhmstrs](https://github.com/fzzyhmstrs/fconfig/tree/1.20.1) | TDL-M; do not jar-in-jar Fzzy Config |
-| Fabric Language Kotlin | [FabricMC](https://github.com/FabricMC/fabric-language-kotlin) | Upstream runtime/library licenses |
+| Fzzy Config | [fzzyhmstrs](https://github.com/fzzyhmstrs/fconfig/tree/1.20.1) | TDL-M; strongly recommended optional editor, never jar-in-jar |
+| Fabric Language Kotlin | [FabricMC](https://github.com/FabricMC/fabric-language-kotlin) | Upstream runtime/library licenses; required by Fzzy if installed, not LSO |
 | Mod Menu | [TerraformersMC](https://github.com/TerraformersMC/ModMenu/tree/1.20.1) | Upstream license; optional integration |
 | Serene Seasons / GlitchCore | [Glitchfiend](https://github.com/Glitchfiend) | Optional integration, upstream terms |
 | Minecraft | Mojang/Microsoft | Proprietary game; follow applicable distribution rules |

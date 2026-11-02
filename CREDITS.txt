@@ -46,14 +46,18 @@ work and licensed under LGPL-2.1 per LICENSE.txt.
 == Accessories/trinkets ==
 
 - Emily (emilyploszaj) and contributors author Trinkets (MIT License),
-  which LSO's accessory slots integrate with.
+  which LSO's strongly recommended, optional accessory slots integrate with.
   https://github.com/emilyploszaj/trinkets
 
 == Libraries ==
 
 - Cardinal Components API (OnyxStudios and contributors)
-- Fzzy Config (fzzyhmstrs)
-- Fabric Loader, Fabric API, Fabric Language Kotlin (FabricMC)
+- NightConfig core/TOML (TheElectronWill and contributors), LGPL-3.0,
+  bundled for standalone TOML configuration.
+- Fzzy Config (fzzyhmstrs), strongly recommended optional in-game editor.
+- Fabric Loader and Fabric API (FabricMC).
+- Fabric Language Kotlin (FabricMC), required by Fzzy Config if installed,
+  but not required by LSO.
 
 Thanks to everyone above, and to the players and contributors who have
 filed issues, tested releases, and helped improve this project.

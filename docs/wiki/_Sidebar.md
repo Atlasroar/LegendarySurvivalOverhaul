@@ -17,11 +17,15 @@
 
 - [Developer Hub](Developer-Hub)
 - [Architecture and APIs](Architecture-and-APIs)
+- [Internal Jars and Dependencies](Internal-Jars-and-Dependencies)
 - [Air Internals](Air-System-Internals)
 - [Trinkets Internals](Trinkets-Integration-Internals)
+- [Client Input and Keybindings](Client-Input-and-Keybindings)
+- [Compatibility Hook Internals](Compatibility-Hook-Internals)
 - [Datapack Getting Started](Datapack-Customization)
 - [Datapack Schema Reference](Datapack-Schema-Reference)
 - [Air and Slot Recipes](Datapack-Air-and-Slot-Recipes)
+- [Pull Request Changelog](Pull-Request-Changelog)
 - [Build and Work Plan](Development-and-Work-Plan)
 - [Credits and Licenses](Credits-and-Licenses)
 

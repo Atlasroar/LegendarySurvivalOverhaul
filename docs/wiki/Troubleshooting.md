@@ -4,11 +4,11 @@
 
 Check Minecraft **1.20.1**, Fabric Loader **0.15.0+**, and Java **17**. Install every [required dependency](Installation-and-Upgrading) using compatible builds.
 
-From v2.0.0 onward, Fzzy Config and Fabric Language Kotlin replace Forge Config API Port. Check for duplicate LSO jars or an accidental Forge build. Preserve the crash report and `logs/latest.log`.
+For v3.0.0+, Fzzy Config, Fabric Language Kotlin, and Trinkets are optional. If Fzzy Config is installed, its Kotlin dependency is still required; other mods may also require libraries that LSO no longer needs. v2.0.0 through v2.8.1 require Fzzy Config and Kotlin in place of Forge Config API Port, plus Trinkets. Check for duplicate LSO jars or an accidental Forge build. Preserve the crash report and `logs/latest.log`.
 
 ## Config button missing or labels too long
 
-Install compatible **Mod Menu** and **Fzzy Config** builds. The screen is provided by Fzzy Config, not by a separate LSO screen factory. You can also try `/configure legendarysurvivaloverhaul`.
+Install compatible **Mod Menu**, **Fzzy Config**, and Fzzy's **Fabric Language Kotlin** dependency. The screen is provided by Fzzy Config, not by a separate LSO screen factory. You can also try `/configure legendarysurvivaloverhaul` with Fzzy installed. Without it, edit `config/legendarysurvivaloverhaul/*.toml` while the instance is stopped, then restart.
 
 The full v2.0.0 release uses **LSO - Client**, **LSO - Common**, etc. Beta.1 used the longer titles; update to the full release.
 
@@ -34,7 +34,7 @@ Use v2.1.0 or later. Open **LSO - Air**, not Common. The file is `config/legenda
 
 ## Accessory will not enter its configured slot
 
-Use v2.2.0 and open **LSO - Trinkets**. IDs must be lower-case `group/slot` (for example `chest/necklace`), without a namespace. The slot must exist and be assigned to players. Config does not create it.
+Install **Trinkets** for accessory slots; it is strongly recommended but optional in v3.0.0+. Without it, there is no accessory UI or auto-equip. In v2.2.0 or later, edit **LSO - Trinkets** through the optional Fzzy editor or `trinkets.toml`. IDs must be lower-case `group/slot` (for example `chest/necklace`), without a namespace. The slot must exist and be assigned to players. Config does not create it.
 
 Check Use Configured Slots, the correct item's list, empty lists, other slot predicates, and logs for missing-slot warnings. With override on, old tags do not independently grant another slot to those eight items; with override off, the original tags control acceptance.
 
@@ -54,7 +54,7 @@ Check actual target namespace/path, array versus object roots, feature toggles, 
 
 ## Respirator does not prevent Nausea
 
-Use v2.3.0, not beta.1's upstream-specific gas interception. Equip the mask in its Trinkets face slot; holding it does not protect. Confirm **LSO - Air > Respirator Blocks Nausea** is enabled on the server. Its stored field name remains `respiratorBlocksSulfurNausea`.
+Use v2.3.0 or later, not beta.1's upstream-specific gas interception. Equip the mask in its Trinkets face slot; holding it does not protect. In v3.0.0+, Trinkets is optional, but LSO does not add a vanilla Respirator equip path without it. Confirm **LSO - Air > Respirator Blocks Nausea** is enabled on the server, or check `respiratorBlocksSulfurNausea` in `air.toml` without the editor.
 
 The protection prevents **new** applications; wait for an existing effect to expire or remove it before testing. The tooltip's “Prevents Nausea while equipped” line appears only when the setting is enabled. VanillaBackport is not required for this protection.
 
@@ -71,6 +71,18 @@ Default Overworld air is YELLOW outside eye-block Y=0..255. This is separate fro
 ## HUD overlaps
 
 Check Client offsets and optional HUD mods. Overflowing Bars support includes tested shield/armor separation and vehicle-row correction; other HUD mods may use different layouts. Include a screenshot and the complete HUD-mod list.
+
+## Freezing or heat overlay washes out the screen
+
+Use v2.8.1 or later; v3.0.0 includes the alpha-blending fix, confirmed in-game. If it persists on a current build, include the exact LSO version, shaders/resource packs, other rendering mods, and a screenshot.
+
+## Canteen enchantments are missing from the enchanting table
+
+Expected in v3.0.0+: Refreshing, Purity, and Reservoir are loot-only treasure enchantments, not enchanting-table or villager-trade offers. Find their books in loot and apply them to a regular or large canteen with an anvil; ordinary tools and armor are not valid targets.
+
+## Removed mod compatibility no longer applies
+
+v3.0.0 intentionally removes the [listed bundled integrations](Mod-Compatibility#explicitly-excluded-or-not-required), including Quark asset overrides. Farmer's Delight Refabricated and Fabric BetterEnd data remain. Custom hydration data must use `data/<namespace>/legendarysurvivaloverhaul/thirst/...`, not the shorter `data/<namespace>/thirst/...` path.
 
 ## Cold Hunger disappears after `/effect`
 

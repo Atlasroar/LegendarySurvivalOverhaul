@@ -52,6 +52,9 @@ public class FzzyTemperatureConfig extends me.fzzyhmstrs.fzzy_config.config.Conf
 	@Comment("Whether the temperature system is enabled. Season related temperature options are in seasons.toml.")
 	public ValidatedBoolean temperatureEnabled = FzzyConfigBridge.field("temperature", "temperatureEnabled");
 
+	@Comment("Optional Immersive Weathering 2.5.0+ storms: exposed snow/sand drives dangerous temperature at twice the normal rate. Hot/Cold Drink blocks the matching storm. A 3x3 sky-blocking roof within 10 blocks above eye level shelters players. Freezing-wind hits cause 10 seconds of Cold Hunger.")
+	public ValidatedBoolean immersiveWeatheringStormsEnabled = FzzyConfigBridge.field("temperature", "immersiveWeatheringStormsEnabled");
+
 	@Comment("If enabled, players will take damage from the effects of high temperature.")
 	public ValidatedBoolean dangerousHeatTemperature = FzzyConfigBridge.field("temperature", "dangerousHeatTemperature");
 

@@ -1,0 +1,25 @@
+allprojects {
+    afterEvaluate {
+        if (project.hasProperty('withWeathering')) {
+            dependencies {
+                modLocalRuntime("com.github.Atlasroar:immersive_weathering:2.5.0") { transitive = false }
+                modLocalRuntime("curse.maven:selene-499980:5619072") { transitive = false }
+            }
+        }
+        tasks.register('compileWeatheringStormCheck', JavaCompile) {
+            dependsOn tasks.named('classes')
+            source = fileTree(layout.projectDirectory.dir('test-runtime/weathering-storms')) { include '*.java' }
+            classpath = sourceSets.main.compileClasspath + sourceSets.main.output
+            destinationDirectory = layout.buildDirectory.dir('weathering-storm-check/classes')
+            options.release = 17
+        }
+        tasks.register('jarWeatheringStormCheck', Jar) {
+            dependsOn tasks.named('compileWeatheringStormCheck')
+            from layout.buildDirectory.dir('weathering-storm-check/classes')
+            from(layout.projectDirectory.dir('test-runtime/weathering-storms')) { include 'fabric.mod.json' }
+            archiveFileName = 'lso-weathering-storm-check.jar'
+            destinationDirectory = layout.buildDirectory.dir('weathering-storm-server/mods')
+        }
+        loom.runs.server.runDir('build/weathering-storm-server')
+    }
+}

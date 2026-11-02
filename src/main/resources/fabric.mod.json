@@ -47,6 +47,7 @@
     "cardinal-components-entity": ">=5.2.2"
   },
   "suggests": {
+    "immersive_weathering": ">=2.5.0",
     "fzzy_config": ">=0.7.7",
     "fabric-language-kotlin": ">=1.10.18",
     "trinkets": ">=3.7.2",

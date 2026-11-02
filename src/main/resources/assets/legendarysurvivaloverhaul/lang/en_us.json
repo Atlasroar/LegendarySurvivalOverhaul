@@ -430,6 +430,8 @@
 	"legendarysurvivaloverhaul.common.greenAirProviderRadius.desc": "Radius in blocks for providers in the green air tag.",
 	"legendarysurvivaloverhaul.temperature": "LSO - Temperature",
 	"legendarysurvivaloverhaul.temperature.temperatureEnabled": "Temperature Enabled",
+	"legendarysurvivaloverhaul.temperature.immersiveWeatheringStormsEnabled": "Immersive Weathering Storms",
+	"legendarysurvivaloverhaul.temperature.immersiveWeatheringStormsEnabled.desc": "Optional Immersive Weathering 2.5.0+ storms drive exposed players toward dangerous cold/heat at 2x normal speed and apply Cold Hunger/Heat Thirst. Hot Drink/Cold Drink blocks the matching storm. All nine columns in a centered 3x3 area need sky-blocking cover within 10 blocks above eye level for shelter. Freezing-wind hits cause 10 seconds of Cold Hunger.",
 	"legendarysurvivaloverhaul.temperature.temperatureEnabled.desc": "Whether the temperature system is enabled. Season related temperature options are in seasons.toml.",
 	"legendarysurvivaloverhaul.temperature.dangerousHeatTemperature": "Dangerous Heat Temperature Effects",
 	"legendarysurvivaloverhaul.temperature.dangerousHeatTemperature.desc": "If enabled, players will take damage from the effects of high temperature.",

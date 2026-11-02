@@ -100,4 +100,4 @@ Recharge clamps damage to zero. Dispensing stops at remaining capacity. Filling 
 
 Test eye-height boundaries and provider overlap separately. Check source and flowing lava, lit/unlit soul blocks, water/bubble columns, dimension transitions, equipment wear, Respiration, and depleted oxygen. Compare server/client behavior on a separate process. Do not change provider precedence accidentally while optimizing scanning.
 
-[Air settings](Air-Configuration) | [Air datapacks](Datapack-Air-and-Slot-Recipes) | [Architecture](Architecture-and-APIs)
+[Air settings](Air-Configuration) | [Air datapacks](Datapack-Air-and-Slot-Recipes) | [Architecture](Architecture-and-APIs) | [Internal Jars](Internal-Jars-and-Dependencies) | [PR Changelog](Pull-Request-Changelog)

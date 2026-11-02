@@ -113,4 +113,4 @@ HUD/render code is registered from client code. Dedicated-server validation must
 
 Review actual packet, lifecycle and mixin paths when adding integrations. Single-player tests share a JVM and can hide missing remote-client sync or side errors. Test a dedicated server with a separate client before claiming remote synchronization parity.
 
-[Source](https://github.com/Atlasroar/LegendarySurvivalOverhaul/tree/lso-fabric-1-20-1/src/main/java/sfiomn/legendarysurvivaloverhaul) | [Datapacks](Datapack-Customization) | [Air Internals](Air-System-Internals)
+[Source](https://github.com/Atlasroar/LegendarySurvivalOverhaul/tree/lso-fabric-1-20-1/src/main/java/sfiomn/legendarysurvivaloverhaul) | [Internal Jars and Dependencies](Internal-Jars-and-Dependencies) | [Datapacks](Datapack-Customization) | [Air Internals](Air-System-Internals) | [Client Input and Keybindings](Client-Input-and-Keybindings) | [Compatibility Hook Internals](Compatibility-Hook-Internals) | [Pull Request Changelog](Pull-Request-Changelog)

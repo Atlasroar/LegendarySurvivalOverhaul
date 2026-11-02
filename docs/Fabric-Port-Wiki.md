@@ -15,11 +15,17 @@ This is the working reference for the Fabric port of Legendary Survival Overhaul
 
 ## Current status
 
-The latest release is [**v3.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.0.0), removing the explicitly dropped compatibility data, restricting canteen enchantments to loot, and making Trinkets, Fzzy Config, and Fabric Language Kotlin optional. Farmer's Delight Refabricated support is retained. The v2.8.1 temperature-overlay blending fix is included and user-confirmed in-game. See [Releases and Versioning](wiki/Releases-and-Versioning.md) for recent release milestones. There are 259+ settings across nine configs; TOML configuration works without extra configuration mods. Installing the optional Fzzy editor still requires its Kotlin dependency. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
+The latest release is [**v3.1.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.1.0), adding optional Atlasroar Immersive Weathering storm/wind integration, drink protection, and 3x3 shelter detection. It includes v3.0.0's compatibility-data cleanup, canteen-only loot enchantments, and optional Trinkets, Fzzy Config, and Fabric Language Kotlin. Farmer's Delight Refabricated support is retained. The v2.8.1 temperature-overlay blending fix is included and user-confirmed in-game. See [Releases and Versioning](wiki/Releases-and-Versioning.md) for recent release milestones. There are 263 settings across nine configs; TOML configuration works without extra configuration mods. Fzzy Config and Trinkets are strongly recommended, not required. Installing the optional Fzzy editor still requires its Kotlin dependency. The Fabric port follows [Semantic Versioning](https://semver.org/) as its own project, starting at 1.0.0; earlier `v1.20.1-2.4.7-fabric.N` builds are kept for history. See the [versioning policy](#versioning-policy).
 
 The port is considered feature-complete pending further in-game testing, particularly multiplayer/dedicated-server validation. Every tracked gameplay slice — survival systems, HUD/tooltip rendering, sewing table and coat application, heater/cooler multiblocks, and the Forge event-subscriber audit — is user-verified in a single-player/integrated-server world as of `.14`. A full audit of the three Forge-only event files found no remaining behavioral gaps: all differences from Forge are either intentional feature drops (Origins, Meds and Herbs), necessary platform adaptations forced by different Fabric hook points (bonemeal, damage pipeline), or pre-existing Forge behavior that was never different on Fabric (the armor coat tooltip, which never showed a numeric resistance delta on Forge either). Forge-only datagen execution and selected optional integrations remain intentionally omitted.
 
 ## Step-by-step port history
+
+### v3.1.0: optional Immersive Weathering storms
+
+Atlasroar IW 2.5.0+ snow/sand exposure forces frostbite/heatstroke targets and doubles the harmful temperature step, with continuous Cold Hunger/Heat Thirst. Hot Drink/Cold Drink block the matching storm penalties; complete centered 3x3 sky-blocking cover within 10 blocks above the eye block provides shelter. Actual freezing-wind hits separately apply 200 ticks of Cold Hunger. Ordinary temperature effects and cold/heat immunity remain independent.
+
+The adapter and wind mixin are availability/version-gated; IW and Moonlight are compile-only, never bundled or required. A default-enabled temperature config switch controls the integration, bringing the total to 263 settings. Real dedicated-server assertions pass with IW/Moonlight present and absent, including saved effects, overlap/expiry, and disabled/Creative cleanup. Storm client visuals and separate-client multiplayer remain unverified.
 
 ### v3.0.0: optional libraries and compatibility cleanup
 
@@ -398,31 +404,34 @@ Do not describe excluded features as supported. Check `build.gradle` source excl
 ### Optional integrations and library choices
 
 - **Overflowing Bars:** optional; interoperate through its Fabric shared HUD-height values. Do not add it as a required dependency.
-- **Fzzy Config:** required as of 2.0.0 and replaces Forge Config API Port. It needs Fabric Language Kotlin. Its license forbids jar-in-jar, so users install it separately. See [Configuration (Fzzy Config)](#configuration-fzzy-config).
+- **Fzzy Config:** strongly recommended, not required, from v3.0.0 for in-game editing; it was required in 2.0.0 through 2.8.1. Installing it still requires Fabric Language Kotlin. Its license forbids jar-in-jar, so it remains a separate optional download. See [Configuration](#configuration-standalone-toml-and-optional-fzzy-config).
+- **Trinkets:** strongly recommended, not required, from v3.0.0 for accessory slots and the Respirator's face-slot equip path. Without it, supported held-item and vanilla equipment checks remain, but there are no accessory slots/auto-equip or new vanilla mask-equip path.
 - **Mod Menu:** optional. Fzzy Config provides the config screen for the Mod Menu config button. LSO's `fabric.mod.json` supplies the icon, links, and wiki entry.
 - **Forge Config API Port:** used by 1.x only; no longer needed from 2.0.0.
-- **Cardinal Components:** stores player survival component data on Fabric.
+- **Cardinal Components:** bundled base/entity modules store player survival component data on Fabric.
+- **NightConfig:** bundled core/TOML 3.6.7 provides standalone config files without Fzzy or Kotlin.
 - **Thermoo:** not required. LSO's model and data-driven configuration are being kept intact; optional interoperability may be considered later.
 - **Balm:** not required; the inspected source branch targeted a substantially newer Minecraft/Java stack and was not a compatible drop-in.
 
-## Configuration (Fzzy Config)
+## Configuration (standalone TOML and optional Fzzy Config)
 
-As of 2.2.0, nine LSO configs (`common`, `temperature`, `seasons`, `thirst`, `health`, `body_damage`, `client`, `air`, `trinkets`) are Fzzy Config classes in `sfiomn.legendarysurvivaloverhaul.config`. The seven original configs migrated in 2.0.0; Air arrived in 2.1.0 and Trinkets in 2.2.0.
+As of v3.1.0, nine dependency-free LSO schemas (`common`, `temperature`, `seasons`, `thirst`, `health`, `body_damage`, `client`, `air`, `trinkets`) in `sfiomn.legendarysurvivaloverhaul.config` define 263 settings. `FileConfigStore` persists existing flat TOML files through bundled NightConfig. Optional `config.fzzy` adapters share the schemas' defaults and validation rather than duplicating them. The original seven configs migrated in 2.0.0; Air arrived in 2.1.0 and Trinkets in 2.2.0.
 
 **Editing in-game**
-- All 259 options can be edited from the Mod Menu config button or with `/configure legendarysurvivaloverhaul`.
-- `client` is client-only. The other eight are registered as synced (`RegisterType.BOTH`), so the server's values are pushed to clients, and operators can edit them in-game; real remote-client permissions/synchronization remain a validation follow-up.
+- With Fzzy Config and its Kotlin dependency installed, all 263 options can be edited from the Mod Menu config button or with `/configure legendarysurvivaloverhaul`.
+- Without the editor, edit `config/legendarysurvivaloverhaul/<name>.toml` while the instance is stopped, then restart.
+- `client` is client-only. LSO's own `config_sync` channel synchronizes the other eight gameplay configs independently of editor installations and restores local preferences on disconnect. The optional Fzzy adapters retain `RegisterType.BOTH`; real remote-client packet flow and editor permissions remain validation follow-ups.
 - Options keep their original names. Labels and descriptions come from `en_us.json`, using the keys `legendarysurvivaloverhaul.<config>.<field>` and `.desc`.
 - Related options are grouped as they were in the Forge sections, e.g. "HUD - Temperature".
 - Numeric options keep their original ranges. Small ranges are edited with sliders.
 
 **Applying changes**
-- Each config's `onSyncClient`, `onSyncServer`, `onUpdateClient`, and `onUpdateServer` hooks call `Config.bake(...)`, which refreshes the `Config.Baked` values the rest of the mod reads.
-- Changes take effect without a restart, except for settings that are only read at startup.
+- Optional editor hooks copy validated values into the schemas and call `Config.bake(...)`; LSO's sync path also refreshes `Config.Baked`, which runtime consumers read.
+- Editor/sync changes apply without a restart except for startup-only settings. Manual file edits require restarting; external file hot-reload is not claimed.
 
 **Migrating 1.x configs**
-- Fzzy uses the same paths as Forge Config API Port: `config/legendarysurvivaloverhaul/<name>.toml`.
-- `ForgeConfigMigration` detects a legacy file by its quoted Forge key names, renames it to `<name>.toml.forge-backup`, and lets Fzzy write defaults.
+- Standalone TOML and the optional Fzzy editor use the same paths as Forge Config API Port: `config/legendarysurvivaloverhaul/<name>.toml`.
+- `ForgeConfigMigration` detects a legacy file by its quoted Forge key names, retains `<name>.toml.forge-backup`, and maps values onto the validated schemas without requiring Fzzy.
 - It then copies each legacy value onto the matching field using `assets/legendarysurvivaloverhaul/forge_config_migration.json`.
 - Values are validated: out-of-range numbers are clamped, and invalid enum values are skipped with a warning.
 - Verified on a dedicated dev server: legacy enum, int, double, boolean, and string/double-list values migrated, and an out-of-range radius (99) was clamped to its maximum (32).

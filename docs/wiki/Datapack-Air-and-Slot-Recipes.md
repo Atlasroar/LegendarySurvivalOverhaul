@@ -69,6 +69,8 @@ This extends the custom air tick eligibility. Test mob air/drowning behavior and
 
 ## Add a custom Trinkets slot
 
+This section requires Trinkets to be installed; it is optional for LSO itself. Slot JSON and LSO configuration alone cannot supply accessory slots without the API.
+
 The example adds **chest/lso_charm** to the existing chest group, avoiding a new group's layout decisions.
 
 `data/trinkets/slots/chest/lso_charm.json`

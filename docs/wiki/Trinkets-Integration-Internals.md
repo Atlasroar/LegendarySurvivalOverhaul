@@ -82,4 +82,4 @@ The global predicate wrapper is intentionally narrow but other mods may also rep
 
 If another mod should own datapack slot tags, disable Use Configured Slots. To add slot types/capacity, use [the recipes](Datapack-Air-and-Slot-Recipes). Do not edit LSO config to an undefined ID and expect a new UI slot.
 
-[Player configuration](Trinkets-Configuration) | [Architecture](Architecture-and-APIs) | [Trinkets API source](https://github.com/emilyploszaj/trinkets/tree/1.20.1/src/main/java/dev/emi/trinkets/api)
+[Player configuration](Trinkets-Configuration) | [Architecture](Architecture-and-APIs) | [Internal Jars](Internal-Jars-and-Dependencies) | [Trinkets API source](https://github.com/emilyploszaj/trinkets/tree/1.20.1/src/main/java/dev/emi/trinkets/api)
