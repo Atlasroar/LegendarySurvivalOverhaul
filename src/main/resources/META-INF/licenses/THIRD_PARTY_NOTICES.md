@@ -1,5 +1,47 @@
 # Third-party notices
 
+## Scorchful and Frostiful
+
+Copyright TheDeathlyCow and respective project contributors. The following
+imports/adaptations remain under GNU LGPL version 3. Full license texts are
+`Scorchful-LGPL-3.0.txt` and `Frostiful-LGPL-3.0.txt`; the incorporated GPL v3
+terms are reproduced in `nightconfig-GPL-3.0.txt`.
+
+LSO adaptation date: 2026-11-02.
+
+Scorchful source: https://github.com/TheDeathlyCow/scorchful/tree/d74712e9b5fc4348aa8ad9c417ce938daf8bc0a1
+
+- Unmodified `textures/block/{crimson_lily,warped_lily}.png` and shared
+  `models/block/nether_lily.json`, relocated to LSO's asset namespace.
+- `common/blocks/NetherLilyBlock.java` adapts upstream `NetherLilyBlock`,
+  `CrimsonLilyBlock` and `NetherLilyBehaviours`: Mojang mappings, LSO wetness
+  and canteens, vanilla splash effects/sounds, water-potion validation,
+  nylium/rooted-dirt substrates and natural forest patches. No rooted
+  blocks, farm structures, Thermoo API or Scorchful water skins are included.
+- Root repository license added in upstream commit
+  `1b51ffed952fedb29330515394524e5ab635b2b6`; the older all-rights-reserved
+  mod metadata is not copied into LSO.
+
+Frostiful source: https://github.com/TheDeathlyCow/frostiful/tree/f017b15a2b23a6474d03d8e4b4e9e244247ffa24
+
+- Unmodified non-armored `fur_{helmet,chestplate,leggings,boots}.png` and
+  `frostiful_fur_layer_{1,2}.png`, relocated to LSO's existing snow clothing
+  texture paths. Existing LSO IDs, stats, durability and recipes remain.
+- Unmodified `textures/item/ice_skates.png` and `textures/entity/skates.png`,
+  relocated to LSO's namespace.
+- `common/items/armor/IceSkating.java` and
+  `mixin/LivingEntityIceSkatingMixin.java` adapt `IceSkater` and
+  `LivingEntityMovementMixin`: mapped friction hook, locally computed state,
+  distinct LSO tag/attribute UUID, no CCA flags or Thermoo, vanilla particles.
+- `client/render/IceSkateRenderer.java` adapts `IceSkateModel` blade geometry,
+  using Fabric ArmorRenderer with LSO fur boots instead of the upstream
+  feature-renderer wiring.
+
+All modifications are in this repository's corresponding source files and
+are available with the release sources. These notices do not relicense
+unrelated existing LSO or third-party files. Thermoo was studied for API
+comparison only; none of its code or assets is copied.
+
 ## NightConfig
 
 The unmodified NightConfig `core` and `toml` 3.6.7 libraries by TheElectronWill

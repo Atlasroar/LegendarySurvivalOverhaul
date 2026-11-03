@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{ "items": ["legendarysurvivaloverhaul:snow_boots"] }] }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": { "recipe": "legendarysurvivaloverhaul:ice_skates" }
+    }
+  },
+  "requirements": [["has_boots", "has_the_recipe"]],
+  "rewards": { "recipes": ["legendarysurvivaloverhaul:ice_skates"] }
+}

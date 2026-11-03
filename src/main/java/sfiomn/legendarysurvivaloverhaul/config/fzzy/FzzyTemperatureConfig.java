@@ -111,8 +111,11 @@ public class FzzyTemperatureConfig extends me.fzzyhmstrs.fzzy_config.config.Conf
 	@Comment("List of mounts that provide a wetness immunity.")
 	public ValidatedList<String> wetnessImmunityMounts = FzzyConfigBridge.field("temperature", "wetnessImmunityMounts");
 
-	@Comment("How much being wet influences the player's temperature. It means that for a value of -10, the body temperature of the player is reduced by 10.")
+	@Comment("Target temperature offset at full wetness, scaled by saturation. Does not directly change body temperature.")
 	public ValidatedDouble wetMultiplier = FzzyConfigBridge.field("temperature", "wetMultiplier");
+
+	@Comment("Cooling speed while wet, in every biome. Default 1.5; 1 restores normal speed. Only cooling steps are multiplied, not warming or the target offset. Multiplies with snowstorm cooling; disabled with wetness.")
+	public ValidatedDouble wetCoolingRateMultiplier = FzzyConfigBridge.field("temperature", "wetCoolingRateMultiplier");
 
 	@Comment("How frequently the wetness is modified. By default, every 10 ticks, the wetness will either increase or decrease, based on the conditions.")
 	public ValidatedInt wetnessTickTimer = FzzyConfigBridge.field("temperature", "wetnessTickTimer");

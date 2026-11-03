@@ -20,6 +20,7 @@ import sfiomn.legendarysurvivaloverhaul.common.integration.weathering.Weathering
 import sfiomn.legendarysurvivaloverhaul.common.integration.weathering.WeatheringStorms.Exposure;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
+import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -172,7 +173,11 @@ public class TemperatureCapability implements ITemperatureCapability
 			if (getTemperatureLevel() != this.targetTemp) {
 				boolean accelerated = (storm == Exposure.SNOW && getTemperatureLevel() > this.targetTemp)
 						|| (storm == Exposure.SAND && getTemperatureLevel() < this.targetTemp);
-				tickTemperature(getTemperatureLevel(), this.targetTemp, accelerated ? 2.0 : 1.0);
+				double rate = accelerated ? 2.0 : 1.0;
+				if (Config.Baked.wetnessEnabled && getTemperatureLevel() > this.targetTemp
+						&& CapabilityUtil.getWetnessCapability(player).getWetness() > 0)
+					rate *= Config.Baked.wetCoolingRateMultiplier;
+				tickTemperature(getTemperatureLevel(), this.targetTemp, rate);
 			}
 
 			TemperatureEnum tempEnum = getTemperatureEnum();

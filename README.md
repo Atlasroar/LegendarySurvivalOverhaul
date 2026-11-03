@@ -4,7 +4,7 @@
 
 **Make survival matter.** This Fabric 1.20.1 port of Legendary Survival Overhaul adds configurable environmental survival, hydration, injuries, health, and air quality.
 
-[**Download v3.1.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.1.0) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
+[**Download v3.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.0) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
 
 ## Features
 
@@ -13,7 +13,7 @@
 - **Localized injuries:** body-part damage, secondary effects, healing supplies, and a limb-health screen (**H** by default).
 - **Expanded health:** broken, shield, and additional hearts, with optional Overflowing Bars HUD spacing.
 - **Air quality:** integrated Thin Air mechanics, dimension/height hazards, lava fumes, soul sources, Safety Lanterns, Air Bladders, Respirators, and Turtle Helmet protection. Water Breathing is displayed as **Free Breathing** in English.
-- **Configuration:** **263 settings across nine configs**, including **LSO - Air** and **LSO - Trinkets**. File-based configuration works standalone; optional Fzzy Config adds in-game editing.
+- **Configuration:** **264 settings across nine configs**, including **LSO - Air** and **LSO - Trinkets**. File-based configuration works standalone; optional Fzzy Config adds in-game editing.
 - **Biome compatibility:** native climates for modded biomes, datapack-only temperature overrides, and optional VanillaBackport sulfur-cave air. Equipped Respirators prevent new Nausea effects.
 - **Accessory slot customization:** choose allowed slots for eight LSO accessories; the Respirator remains excluded.
 - **Datapack customization:** tune consumables, equipment resistance, environment profiles, and body-damage rules.
@@ -43,6 +43,15 @@ Build from source with **JDK 17**: `.\gradlew.bat build` on Windows or `./gradle
 ## Optional storm integration
 
 v3.1.0 adds optional [Atlasroar/Immersive-Weathering](https://github.com/Atlasroar/Immersive-Weathering) **2.5.0+** storm integration. Exposed snow/sand storms drive dangerous cold/heat at 2x speed with Cold Hunger/Heat Thirst, countered by Hot Drink/Cold Drink respectively. A complete centered 3x3 sky-blocking roof within 10 blocks above eye level provides shelter. Freezing-wind hits separately apply 10 seconds of Cold Hunger. See the [versioned compatibility guide](docs/wiki/Mod-Compatibility.md#immersive-weathering-storms-v310) for exact scope and the independent toggle.
+
+## Wet cooling and survival gear
+
+**New in v3.2.0:** configurable 1.5x wet cooling, standalone
+Scorchful crimson/warped lilies, Frostiful ice skates, and non-armored fur
+textures replacing winter clothing without changing its IDs or protection.
+No Scorchful, Frostiful or Thermoo dependency is added. See the
+[survival guide](docs/wiki/Survival-Systems.md#wetness-nether-lilies-fur-and-skates-v320)
+and [wetness comparison](docs/wiki/Mod-Compatibility.md#wetness-comparison-and-content-ports-v320).
 
 ## Credits
 

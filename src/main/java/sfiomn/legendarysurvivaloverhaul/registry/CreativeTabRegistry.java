@@ -56,6 +56,9 @@ public class CreativeTabRegistry {
                         ItemRegistry.TONIC.get().getDefaultInstance(),
 
                         ItemRegistry.SNOW_BOOTS.get().getDefaultInstance(),
+                        ItemRegistry.ICE_SKATES.get().getDefaultInstance(),
+                        BlockRegistry.CRIMSON_LILY.get().asItem().getDefaultInstance(),
+                        BlockRegistry.WARPED_LILY.get().asItem().getDefaultInstance(),
                         ItemRegistry.SNOW_CHEST.get().getDefaultInstance(),
                         ItemRegistry.SNOW_HELMET.get().getDefaultInstance(),
                         ItemRegistry.SNOW_LEGGINGS.get().getDefaultInstance(),

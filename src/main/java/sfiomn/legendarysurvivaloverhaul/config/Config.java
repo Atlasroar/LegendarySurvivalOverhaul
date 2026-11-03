@@ -227,6 +227,7 @@ public class Config
 		public static boolean wetnessEnabled;
 		public static List<? extends String> wetnessImmunityMounts;
 		public static double wetMultiplier;
+		public static double wetCoolingRateMultiplier;
 		public static int wetnessTickTimer;
 		public static int wetnessDecrease;
 		public static int wetnessRainIncrease;
@@ -570,6 +571,7 @@ public class Config
 				wetnessEnabled = TEMPERATURE.wetnessEnabled.get();
 				wetnessImmunityMounts = TEMPERATURE.wetnessImmunityMounts.get();
 				wetMultiplier = TEMPERATURE.wetMultiplier.get();
+				wetCoolingRateMultiplier = TEMPERATURE.wetCoolingRateMultiplier.get();
 				wetnessTickTimer = TEMPERATURE.wetnessTickTimer.get();
 				wetnessDecrease = TEMPERATURE.wetnessDecrease.get();
 				wetnessRainIncrease = TEMPERATURE.wetnessRainIncrease.get();

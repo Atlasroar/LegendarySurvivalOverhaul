@@ -1,0 +1,25 @@
+allprojects {
+    afterEvaluate {
+        tasks.register('compileWetContentCheck', JavaCompile) {
+            dependsOn tasks.named('classes')
+            source = fileTree(layout.projectDirectory.dir('test-runtime/wet-content')) { include '*.java' }
+            classpath = sourceSets.main.compileClasspath + sourceSets.main.output
+            destinationDirectory = layout.buildDirectory.dir('wet-content-check/classes')
+            options.release = 17
+        }
+        tasks.register('jarWetContentCheck', Jar) {
+            dependsOn tasks.named('compileWetContentCheck')
+            from layout.buildDirectory.dir('wet-content-check/classes')
+            from(layout.projectDirectory.dir('test-runtime/wet-content')) { include 'fabric.mod.json' }
+            archiveFileName = 'lso-wet-content-check.jar'
+            destinationDirectory = layout.buildDirectory.dir('wet-content-server/mods')
+        }
+        tasks.register('copyWetContentClientCheck', Copy) {
+            dependsOn tasks.named('jarWetContentCheck')
+            from layout.buildDirectory.file('wet-content-server/mods/lso-wet-content-check.jar')
+            into layout.buildDirectory.dir('wet-content-client/mods')
+        }
+        loom.runs.server.runDir('build/wet-content-server')
+        loom.runs.client.runDir('build/wet-content-client')
+    }
+}

@@ -18,6 +18,28 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v3.2.0
+====
+Wetness keeps its saturation-scaled target temperature offset and now
+multiplies cooling-only temperature steps by 1.5 in every biome by default.
+Configure wetCoolingRateMultiplier in temperature.toml or the optional
+Fzzy editor (1 restores normal speed). Warming is unchanged, and cooling
+clamps at the target. Stacks multiplicatively with IW snowstorm cooling.
+
+Added standalone crimson and warped lilies adapted from Scorchful, with
+natural crimson/warped forest patches. Moist substrate refills their water:
+nylium/rooted dirt is required in ultra-warm dimensions. Full crimson
+lilies burst and soak players; full warped lilies fill bottles/canteens.
+Water bottles/canteens can refill crimson lilies.
+
+Replaced winter clothing visuals/names with Frostiful's non-armored fur
+suit while preserving snow_* IDs, recipes, armor/cold values and durability.
+Added craftable ice skates with Frostiful-style ice gliding, sprinting,
+sneak braking, off-ice walking penalty and blade rendering.
+
+Imported/adapted Scorchful/Frostiful portions remain LGPL-3.0 with bundled
+attribution and license texts. Neither mod nor Thermoo is required.
+
 v3.1.0
 ====
 Added optional support for Atlasroar's Immersive Weathering 2.5.0+ storms.

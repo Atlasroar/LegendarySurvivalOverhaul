@@ -15,6 +15,8 @@ import java.util.List;
 
 public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> ICE_FERN_PLACED_KEY = registerKey("ice_fern_placed");
+    public static final ResourceKey<PlacedFeature> CRIMSON_LILY_PLACED_KEY = registerKey("crimson_lily_patch");
+    public static final ResourceKey<PlacedFeature> WARPED_LILY_PLACED_KEY = registerKey("warped_lily_patch");
     public static final ResourceKey<PlacedFeature> SUN_FERN_PLACED_KEY = registerKey("sun_fern_placed");
     public static final ResourceKey<PlacedFeature> WATER_PLANT_PLACED_KEY= registerKey("water_plant_placed");
 

@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.minecraft.client.renderer.RenderType;
+import sfiomn.legendarysurvivaloverhaul.client.render.IceSkateRenderer;
 import sfiomn.legendarysurvivaloverhaul.registry.BlockRegistry;
 import sfiomn.legendarysurvivaloverhaul.client.particles.BreathParticle;
 import sfiomn.legendarysurvivaloverhaul.client.particles.FernBlossomParticle;
@@ -17,12 +18,15 @@ public final class ClientModBusEvents {
     }
 
     public static void register() {
+        IceSkateRenderer.register();
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderType.cutout(),
                 BlockRegistry.ICE_FERN_CROP.get(),
                 BlockRegistry.ICE_FERN_GOLD.get(),
                 BlockRegistry.SUN_FERN_CROP.get(),
                 BlockRegistry.SUN_FERN_GOLD.get(),
                 BlockRegistry.WATER_PLANT_CROP.get(),
+                BlockRegistry.CRIMSON_LILY.get(),
+                BlockRegistry.WARPED_LILY.get(),
                 BlockRegistry.SAFETY_LANTERN.get(),
                 BlockRegistry.SIGNAL_TORCH.get(),
                 BlockRegistry.WALL_SIGNAL_TORCH.get());

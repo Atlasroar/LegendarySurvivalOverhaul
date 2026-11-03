@@ -142,6 +142,41 @@ Storm penalties stop when sheltered, out of the storm, or protected by the match
 
 Dedicated-server assertions pass with IW absent and with the real 2.5.0/Moonlight mods installed, covering the rate, targets, shelter boundaries, drinks, toggles, and a real wind hit. See `test-runtime/weathering-storms/README.md`. Client visuals and separate-client multiplayer remain unverified.
 
+## Wetness comparison and content ports (v3.2.0)
+
+Released in v3.2.0. This is a standalone port of
+selected mechanics/assets, **not** a requirement to install Scorchful,
+Frostiful or Thermoo, nor a claim that running all their temperature systems
+together has been tested.
+
+| System | Water/wetness behavior in the examined 1.20.1 branch |
+| --- | --- |
+| LSO | Player wetness is capped at 400 and builds gradually from fluid contact, rain and water cauldrons; it dries over time or faster while burning/in lava. A saturation-scaled target offset defaults to -10 fully soaked. Canteen self-watering and Sponge accessory behavior remain. The new `wetCoolingRateMultiplier` defaults to 1.5 at any nonzero wetness, multiplying only cooling steps, without biome/humidity restrictions. |
+| Scorchful | Thermoo wetness; submersion immediately soaks, contact/rain adds wetness, dry/fire rates are configurable. Evaporative cooling applies when temperature is positive, with reduced effectiveness in tagged humid biomes. Lily/water-skin mechanics connect wetness to heat survival. |
+| Frostiful | Thermoo wetness; rain/contact/cauldrons add wetness and submersion/bubble columns immediately soak. Block light and fire increase drying. Saturation scales passive cold exposure; frigid-water immunity can bypass that multiplier. |
+| Thermoo | Shared living-entity temperature/wetness framework, rather than LSO's standalone player model. The examined controller defaults to 600 maximum wet ticks, with 0-1 saturation and delegated wetting/drying changes. |
+
+LSO deliberately keeps its existing acquisition/drying rates and target
+model, rather than importing immediate-soak, sweating/dehydration,
+humidity penalties or the complete upstream thermal systems. A warmer
+adjusted target can still warm a wet player. Wet cooling combines with
+IW snowstorm cooling multiplicatively, at 3x baseline by default.
+
+The content port adds Scorchful's crimson/warped lily textures/shared model,
+adapted to LSO wetness and canteens, plus Frostiful's non-armored fur textures
+and ice-skate movement/blade model. Existing winter IDs/protection are
+preserved. Lilies use natural crimson/warped forest patches and
+nylium/rooted-dirt substrates instead of porting rooted blocks/farm
+structures. See [Survival Systems](Survival-Systems#wetness-nether-lilies-fur-and-skates-v320)
+for exact interactions and obtainability.
+
+Source snapshots examined:
+[Scorchful](https://github.com/TheDeathlyCow/scorchful/tree/d74712e9b5fc4348aa8ad9c417ce938daf8bc0a1),
+[Frostiful](https://github.com/TheDeathlyCow/frostiful/tree/f017b15a2b23a6474d03d8e4b4e9e244247ffa24),
+[Thermoo](https://github.com/TheDeathlyCow/thermoo/tree/915def30a0374121e90485c0240001702b507aa5).
+Imported/adapted portions remain LGPL-3.0 with source mapping and license
+texts under `META-INF/licenses`; Thermoo code/assets are not copied.
+
 ## Future integrations
 
 Additional mod support is the next development phase. Targets and desired interactions must be selected before implementation. New adapters should remain optional where possible and preserve behavior without the target mod installed.

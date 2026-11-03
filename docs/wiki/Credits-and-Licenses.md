@@ -29,6 +29,16 @@ The Overflowing Bars adaptation is `client/render/OverflowingBarsHealthRenderer.
 
 ## Libraries and APIs
 
+The v3.2.0 lilies/fur/skates port includes LGPL-3.0 material from
+[Scorchful](https://github.com/TheDeathlyCow/scorchful/tree/d74712e9b5fc4348aa8ad9c417ce938daf8bc0a1)
+and [Frostiful](https://github.com/TheDeathlyCow/frostiful/tree/f017b15a2b23a6474d03d8e4b4e9e244247ffa24)
+by TheDeathlyCow and contributors. Lily textures/shared model and non-armored
+fur/skate textures are imported; lily behavior, skating movement and blade
+geometry are adapted to LSO. See the bundled `THIRD_PARTY_NOTICES.md` for exact
+source mappings, changes and full license texts. Their LGPL-3.0 terms remain
+on those portions; neither mod nor Thermoo is required. Thermoo is comparison
+material only, not copied code.
+
 | Project | Credits/source | Terms reference |
 | --- | --- | --- |
 | Fabric Loader / Fabric API | [FabricMC](https://fabricmc.net/) | Respective upstream licenses |

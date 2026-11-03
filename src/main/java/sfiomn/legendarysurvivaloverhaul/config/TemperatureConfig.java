@@ -57,6 +57,8 @@ public class TemperatureConfig extends ConfigData
 
 	public ValidatedDouble wetMultiplier = new ValidatedDouble(-10.0, 1000.0, -1000.0, ValidatedNumber.WidgetType.TEXTBOX);
 
+	public ValidatedDouble wetCoolingRateMultiplier = new ValidatedDouble(1.5, 100.0, 0.1, ValidatedNumber.WidgetType.TEXTBOX);
+
 	public ValidatedInt wetnessTickTimer = new ValidatedInt(10, 100000, 1, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);
 
 	public ValidatedInt wetnessDecrease = new ValidatedInt(-3, 0, -1000, ValidatedNumber.WidgetType.TEXTBOX_WITH_BUTTONS);

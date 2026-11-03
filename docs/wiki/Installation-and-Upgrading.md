@@ -1,6 +1,6 @@
 # Installation and Upgrading
 
-## Requirements for v3.1.0
+## Requirements for v3.2.0
 
 | Component | Requirement |
 | --- | --- |
@@ -24,6 +24,20 @@ LSO can run without Trinkets, Fzzy Config, or Fabric Language Kotlin. Configurat
 4. Launch the game. With Fzzy Config and Mod Menu installed, open LSO's config button; otherwise edit the configuration files while the instance is stopped.
 
 For a dedicated server, install LSO and its required server-compatible dependencies there as well. Do not install the client-only Mod Menu on the server. Broader dedicated-server gameplay testing remains open.
+
+## Upgrade to 3.2.0
+
+Back up worlds and configs, then replace the old LSO jar. No new required
+dependencies are added: Scorchful, Frostiful and Thermoo are not needed.
+Existing `snow_*` winter clothing keeps its item IDs, NBT, recipes and
+armor/cold protection; its visuals/names become the non-armored fur suit.
+Lilies generate in newly generated crimson/warped forest chunks.
+
+Existing temperature configs acquire `wetCoolingRateMultiplier = 1.5`.
+Set it to `1` for the previous cooling speed. Wetness's saturation-based
+target reduction remains separate; warming is unchanged. Ice Skates use
+ordinary crafting (Fur Boots and two iron ingots), not an NBT-preserving
+smithing upgrade. See [Survival Systems](Survival-Systems#wetness-nether-lilies-fur-and-skates-v320).
 
 ## Upgrade to 3.1.0
 
