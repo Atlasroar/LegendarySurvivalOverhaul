@@ -98,6 +98,8 @@ See [Client Input and Keybindings](Client-Input-and-Keybindings) for the full ro
 | [#49](https://github.com/Atlasroar/LegendarySurvivalOverhaul/pull/49) | Add hydration datapack support for 8 Let's Do / Farmer's Delight mods (v2.8.0) |
 | [#50](https://github.com/Atlasroar/LegendarySurvivalOverhaul/pull/50) | Fix temperature overlay washout and release v2.8.1 |
 | [#51](https://github.com/Atlasroar/LegendarySurvivalOverhaul/pull/51) | Release v3.0.0: optional integrations and compatibility cleanup |
+| [#52](https://github.com/Atlasroar/LegendarySurvivalOverhaul/pull/52) | Release v3.1.0: optional Immersive Weathering storm integration |
+| [#53](https://github.com/Atlasroar/LegendarySurvivalOverhaul/pull/53) | Release v3.2.0: wet cooling, Nether lilies, fur clothing and Ice Skates |
 
 See [Compatibility Hook Internals](Compatibility-Hook-Internals), [Internal Jars and Dependencies](Internal-Jars-and-Dependencies), and [Releases and Versioning](Releases-and-Versioning) for the current behavior, dependency boundaries, and migration notes.
 
