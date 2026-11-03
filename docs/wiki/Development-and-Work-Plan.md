@@ -60,6 +60,7 @@ Before restoring an excluded integration, inspect build exclusions and registrat
 | Freezing/heat overlay blending | Released in v2.8.1; user-confirmed in-game |
 | Optional libraries / compatibility cleanup / canteen enchants | Released in v3.0.0; standalone TOML/config sync, presence-gated Trinkets/Fzzy, requested data removals, and canteen-only loot enchantments |
 | Immersive Weathering storms | Released in v3.1.0; optional 2x storm temperature penalties, drink protection, 3x3 shelter, and 10-second freezing-wind Cold Hunger |
+| Wet cooling and survival gear | Released in v3.2.0; configurable cooling-only wetness rate, standalone Nether lilies, non-armored fur replacement and Ice Skates with unchanged winter protection |
 
 ## Developer wiki
 
@@ -71,7 +72,7 @@ The wiki includes [Internal Jars and Dependencies](Internal-Jars-and-Dependencie
 .\gradlew.bat -PwithoutOptionalIntegrations -I src\test\resources\config-tests.gradle configRegression configAdapterRegression
 ```
 
-The regressions cover TOML persistence, validation, migration, snapshot application/restoration, missing-library class isolation, and all 263 editor bindings. See `test-runtime/optional-integrations/README.md` for dedicated-server assertions with the optional libraries installed/absent and the distributable resource checker. See `test-runtime/weathering-storms/README.md` for the real IW 2.5.0/Moonlight present/absent fixture covering rates, shelter, drinks, wind impacts/expiry, save roundtrips, and toggle/Creative cleanup. These fixtures do not ship in release JARs.
+The regressions cover TOML persistence, validation, migration, snapshot application/restoration, missing-library class isolation, and all 264 editor bindings. See `test-runtime/optional-integrations/README.md` for dedicated-server assertions with the optional libraries installed/absent and the distributable resource checker. See `test-runtime/weathering-storms/README.md` for the real IW 2.5.0/Moonlight fixture, including the combined 3x wet snowstorm rate. See `test-runtime/wet-content/README.md` for isolated server/client checks covering cooling, lily interactions/worldgen, preserved protection, real skating movement hooks, baked models and packaged resources. Equipped appearance, skating feel and multiplayer movement remain in-game follow-ups. These fixtures do not ship in release JARs.
 
 ## Open validation
 

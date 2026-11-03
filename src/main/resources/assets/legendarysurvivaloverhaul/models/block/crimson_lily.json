@@ -1,0 +1,7 @@
+{
+  "parent": "legendarysurvivaloverhaul:block/nether_lily",
+  "textures": {
+    "0": "legendarysurvivaloverhaul:block/crimson_lily",
+    "particle": "legendarysurvivaloverhaul:block/crimson_lily"
+  }
+}

@@ -18,11 +18,53 @@ The HUD includes temperature and wetness indicators. Dangerous temperatures can 
 
 v2.8.1 fixed the opaque white/yellow freezing and heat overlays by enabling alpha blending. The user confirmed the fix in-game; v3.0.0 includes it.
 
-**Cold Hunger is temperature-managed:** applying it with `/effect` outside dangerous cold does not keep it active for the requested duration; LSO clears it when the temperature condition ends.
+Continuous Cold Hunger is managed by dangerous cold or storm exposure. Finite effects, including freezing-wind hits, retain their duration instead of being removed by normal-temperature cleanup.
 
 Death respawn grants configured temperature immunity (90 seconds by default), including across dimension transitions.
 
 The Thermometer helps inspect world temperature. Environmental/target temperature is different from your current body temperature: protection and consumables affect how the survival system responds over time. Configure the units, HUD and warnings in Client; balance the mechanic in Temperature and Seasons.
+
+## Wetness, Nether lilies, fur and skates (v3.2.0)
+
+These features are included in **v3.2.0** and do not require upstream mods.
+
+Wetness still builds from fluids/rain/cauldrons and lowers the temperature
+target in proportion to saturation (default `-10` fully soaked). Cooling
+steps are now `1.5x` faster at any nonzero wetness in all biomes; configure
+`wetCoolingRateMultiplier` separately from `wetMultiplier`. Warming is not
+accelerated. A hot environment can still warm a wet player if the adjusted
+target is above their current body temperature. Snowstorm cooling combines
+multiplicatively with wetness (`3x` by default).
+
+Crimson/warped lilies generate on nylium in newly generated crimson/warped
+forests. Harvest and replant them on supported ground. They store three
+water levels and refill gradually; in the Nether/other ultra-warm dimensions
+they require nylium or rooted dirt below them (datapack tag
+`legendarysurvivaloverhaul:nether_lily_can_absorb_water`). Elsewhere they
+refill on any supported ground. Full flowers drip.
+
+A full Crimson Lily bursts on contact, fully wetting players and damaging
+water-sensitive tagged mobs, then empties. Refill it with a water bottle or
+one canteen serving. A full Warped Lily gives one normal-water bottle or
+canteen serving when harvested, then empties. Non-water potions are rejected;
+full canteens are not wasted. Purity follows the canteen's normal fill rule.
+These are LSO plants, not a requirement to install Scorchful or Thermoo.
+Scorchful's additional rooted blocks, water skins and farm structures are
+not ported; LSO uses natural forest patches instead.
+
+The existing winter suit now uses Frostiful's **non-armored fur** appearance
+and English names. Its `snow_*` IDs, recipes, repair material, enchantability,
+durability and armor/cold values remain unchanged, so old equipped items and
+datapacks continue to work. This is not the fur-padded chainmail variant.
+
+Craft Ice Skates from Fur Boots and two iron ingots. They retain the boots'
+armor/cold protection and add visible blades. This is ordinary crafting:
+input boot damage, coatings and enchantments are not transferred.
+Ice/packed ice/blue ice allow
+gliding; sprint to accelerate and sneak to brake. Walking on non-ice ground
+is 50% slower; removing skates or leaving the ground clears the penalty.
+Landing on another living entity with the blades deals one point of damage.
+No Frostiful or Thermoo dependency is added.
 
 ## Hydration
 

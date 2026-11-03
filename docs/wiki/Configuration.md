@@ -1,6 +1,6 @@
 # Configuration
 
-v3.1.0 supports **263 settings across nine configs** without extra configuration libraries. **Fzzy Config is strongly recommended, not required**, for in-game editing; Mod Menu supplies a convenient entry to it. Installing Fzzy Config still requires its Fabric Language Kotlin dependency. v2.8.1 and earlier require both libraries.
+v3.2.0 supports **264 settings across nine configs** without extra configuration libraries. **Fzzy Config is strongly recommended, not required**, for in-game editing; Mod Menu supplies a convenient entry to it. Installing Fzzy Config still requires its Fabric Language Kotlin dependency. v2.8.1 and earlier require both libraries.
 
 ## Open and save
 
@@ -57,6 +57,16 @@ The Trinkets settings change allowed locations for eight accessories only when T
 For per-item data and environment rules, use the [datapack guides](Datapack-Customization).
 
 ## Detailed settings
+
+**Added in v3.2.0:** `wetCoolingRateMultiplier` in `temperature.toml` defaults to
+`1.5` (range `0.1` to `100`) and multiplies cooling-only temperature steps
+at any nonzero wetness in every biome/dimension. Set `1` for the old speed.
+It requires `wetnessEnabled`; it does not speed warming or force cooling
+when the adjusted target remains warmer. It multiplies with IW snowstorm
+cooling (default combined rate `3x`), never overshooting the target.
+`wetMultiplier` remains the saturation-scaled target offset (`-10` at full
+wetness), independently configurable. Existing configs receive the new default
+without deleting files. v3.1.0 had 263 settings; v3.2.0 has 264.
 
 **Added in v3.1.0:** `temperature.toml` has the default-enabled `immersiveWeatheringStormsEnabled` switch. It independently controls optional Atlasroar IW 2.5.0+ storm/wind penalties, requires `temperatureEnabled`, and has no effect without IW. Existing configs receive the new default without deleting files. Ambient cold/heat secondary-effect switches do not disable it. See [storm compatibility](Mod-Compatibility#immersive-weathering-storms-v310) for drink protection and shelter rules.
 

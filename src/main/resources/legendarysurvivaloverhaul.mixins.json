@@ -15,6 +15,7 @@
     "LivingEntityEffectMixin",
     "LivingEntityDamageMixin",
     "LivingEntityAirQualityMixin",
+    "LivingEntityIceSkatingMixin",
     "ServerLevelSleepMixin"
   ],
   "client": [

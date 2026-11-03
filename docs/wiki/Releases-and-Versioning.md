@@ -2,6 +2,36 @@
 
 ## Latest full release
 
+[**v3.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.0) targets Minecraft 1.20.1, Fabric, and Java 17.
+
+```text
+legendarysurvivaloverhaul-fabric-1.20.1-3.2.0.jar
+SHA-256: CE43D557E535F37FEBCA7FDEB2E6550D87E57E2B9B917C5E99ADA858373CB2A6
+```
+
+v3.2.0 adds configurable 1.5x cooling-only acceleration at any nonzero
+wetness, in every biome. Existing saturation-scaled target cooling remains;
+warming is unchanged. Set `wetCoolingRateMultiplier = 1` for the previous
+speed. IW snowstorm cooling multiplies with wet cooling (3x by default).
+
+Standalone Crimson/Warped Lilies generate in their Nether forests and
+interact with LSO wetness, bottles and canteens. Ice Skates add gliding,
+sprint acceleration, sneak braking and an off-ice walking penalty.
+Frostiful's non-armored fur visuals replace winter clothing while retaining
+`snow_*` IDs, durability, recipes and armor/cold protection. No Scorchful,
+Frostiful or Thermoo dependency is added; imported/adapted portions retain
+LGPL-3.0 notices and licenses.
+
+There are **264 settings across nine configs**. Existing TOML files remain
+usable and receive the new default. **Fzzy Config and Trinkets remain
+strongly recommended, not required.** Config regressions, packaged-resource
+checks, isolated server assertions and client model/resource loading pass.
+Equipped visuals, skating feel and separate-client multiplayer remain
+in-game follow-ups. See [Survival Systems](Survival-Systems#wetness-nether-lilies-fur-and-skates-v320)
+and [Installation and Upgrading](Installation-and-Upgrading).
+
+## Previous releases
+
 [**v3.1.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.1.0) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
@@ -12,8 +42,6 @@ SHA-256: 4C80029DF40A0C28B8299005A8019648AC609F7C033F588A010E0D8FE5F1BD1E
 v3.1.0 adds optional Atlasroar Immersive Weathering 2.5.0+ support: snow/sand storms force dangerous cold/heat targets at 2x rate and apply Cold Hunger/Heat Thirst, blocked by Hot Drink/Cold Drink respectively. Complete centered 3x3 sky-blocking cover within 10 blocks above the eye block provides shelter. Actual freezing-wind hits separately apply 10 seconds of Cold Hunger. The independent, default-enabled `immersiveWeatheringStormsEnabled` setting requires the temperature system and is inert without IW. Neither IW nor Moonlight is bundled or required.
 
 There are **263 settings across nine configs**. Existing TOML files remain usable and acquire the new default. Fzzy Config and Trinkets remain strongly recommended, not required. Real dedicated-server assertions pass with IW 2.5.0/Moonlight installed and absent, covering targets/rates, shelter boundaries, drinks, wind impacts/expiry, overlapping effects, saves, and toggle/Creative cleanup. Storm client visuals and separate-client multiplayer remain unverified. See [Mod Compatibility](Mod-Compatibility#immersive-weathering-storms-v310) for exact boundaries.
-
-## Previous releases
 
 [**v3.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.0.0) targets Minecraft 1.20.1, Fabric, and Java 17.
 
@@ -42,6 +70,7 @@ The user confirmed in-game: the LevelZ health bonus remains stable after death, 
 
 | Version | Milestone |
 | --- | --- |
+| v3.2.0 | Configurable 1.5x wet cooling; standalone Crimson/Warped Lilies; Ice Skates; non-armored fur visuals preserving winter IDs/protection; no new mod dependencies. |
 | v3.1.0 | Optional Atlasroar IW storm/wind integration, 2x dangerous temperature steps, matching drink protection, 3x3 shelter, and 10-second freezing-wind Cold Hunger. |
 | v3.0.0 | Removed explicitly dropped compatibility data; retained Refabricated/BetterEnd; canteen-only loot enchantments; optional Trinkets, Fzzy Config, and Kotlin with standalone TOML configuration. |
 | v2.8.1 | Fixed opaque white/yellow freezing and heat overlays by enabling alpha blending. |

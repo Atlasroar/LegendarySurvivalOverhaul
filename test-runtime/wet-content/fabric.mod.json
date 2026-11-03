@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "lso_wet_content_check",
+  "version": "1.0.0",
+  "name": "LSO wetness and survival content assertions",
+  "environment": "*",
+  "entrypoints": { "main": ["WetContentCheck"], "client": ["WetContentClientCheck"] },
+  "depends": { "legendarysurvivaloverhaul": "*", "fabric-api": "*" }
+}

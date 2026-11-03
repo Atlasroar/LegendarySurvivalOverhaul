@@ -49,6 +49,20 @@ work and licensed under LGPL-2.1 per LICENSE.txt.
   which LSO's strongly recommended, optional accessory slots integrate with.
   https://github.com/emilyploszaj/trinkets
 
+== Nether lilies, fur clothing and ice skates (v3.2.0) ==
+
+- TheDeathlyCow and Scorchful contributors: crimson/warped lily textures,
+  shared Blockbench model and adapted water-storage/burst behavior.
+  https://github.com/TheDeathlyCow/scorchful/tree/1.20.1
+  Imported from commit d74712e9b5fc4348aa8ad9c417ce938daf8bc0a1.
+- TheDeathlyCow and Frostiful contributors: non-armored fur suit textures,
+  ice-skate textures, blade model and adapted skating movement rules.
+  https://github.com/TheDeathlyCow/frostiful/tree/1.20.1
+  Imported from commit f017b15a2b23a6474d03d8e4b4e9e244247ffa24.
+- These imported/adapted portions remain LGPL-3.0. Their license texts,
+  source mapping and modification notes are in META-INF/licenses.
+  No upstream mod or Thermoo dependency is required or bundled.
+
 == Libraries ==
 
 - Cardinal Components API (OnyxStudios and contributors)

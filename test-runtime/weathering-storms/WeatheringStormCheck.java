@@ -44,6 +44,8 @@ public final class WeatheringStormCheck implements ModInitializer {
                 Config.Baked.tempTickTime = 5;
                 Config.Baked.minTemperatureModification = 0.5;
                 Config.Baked.maxTemperatureModification = 0.5;
+                Config.Baked.wetnessEnabled = true;
+                Config.Baked.wetCoolingRateMultiplier = 1.5;
                 Config.Baked.coldTemperatureSecondaryEffects = false;
                 Config.Baked.heatTemperatureSecondaryEffects = false;
                 BlockPos eyes = BlockPos.containing(player.getX(), player.getEyeY(), player.getZ());
@@ -66,9 +68,14 @@ public final class WeatheringStormCheck implements ModInitializer {
                 cap.setTemperatureLevel(20);
                 tick(cap, player);
                 check(cap.getTemperatureLevel() == 19, "Snow cools by exactly twice the 0.5 baseline");
+                float coldTarget = cap.getTargetTemperatureLevel();
+                CapabilityUtil.getWetnessCapability(player).setWetness(400);
+                cap.setTemperatureLevel(20);
+                tick(cap, player);
+                check(cap.getTemperatureLevel() == 18.5f, "Wet cooling multiplies snowstorm rate to 3x baseline");
+                CapabilityUtil.getWetnessCapability(player).setWetness(0);
                 check(cap.getTargetTemperatureLevel() <= 5, "Snow forces frostbite target");
                 check(player.hasEffect(MobEffectRegistry.COLD_HUNGER.get()), "Snow grants hunger above frostbite");
-                float coldTarget = cap.getTargetTemperatureLevel();
                 cap.setTemperatureLevel(coldTarget + 0.25f);
                 tick(cap, player);
                 check(cap.getTemperatureLevel() == coldTarget, "Doubled cooling never overshoots target");

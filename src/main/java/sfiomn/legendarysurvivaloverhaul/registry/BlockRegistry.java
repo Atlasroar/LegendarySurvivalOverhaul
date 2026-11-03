@@ -28,6 +28,8 @@ public class BlockRegistry {
 	public static final RegistryObject<Block> ICE_FERN_CROP = BLOCKS.register("ice_fern_crop", IceFernBlock::new);
 	public static final RegistryObject<Block> ICE_FERN_GOLD = registerBlock("ice_fern_gold", IceFernGoldBlock::new);
 	public static final RegistryObject<Block> WATER_PLANT_CROP = BLOCKS.register("water_plant_crop", WaterPlantBlock::new);
+	public static final RegistryObject<Block> CRIMSON_LILY = registerBlock("crimson_lily", () -> new NetherLilyBlock(true));
+	public static final RegistryObject<Block> WARPED_LILY = registerBlock("warped_lily", () -> new NetherLilyBlock(false));
 
 	// Air Quality
 	public static final RegistryObject<Block> SAFETY_LANTERN = registerBlock("safety_lantern", () -> new SafetyLanternBlock(

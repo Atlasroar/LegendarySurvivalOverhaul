@@ -1,6 +1,11 @@
 # Internal Jars and Dependencies
 
-This page describes **v3.1.0**: what ships inside the LSO JAR, what must be installed alongside it, and what is optional. Check [`build.gradle`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/blob/lso-fabric-1-20-1/build.gradle) for build/packaging declarations and [`fabric.mod.json`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/blob/lso-fabric-1-20-1/src/main/resources/fabric.mod.json) for runtime requirements. v2.8.1 and earlier required Trinkets, Fzzy Config, and Kotlin; v3.0.0+ does not.
+This page describes **v3.2.0**: what ships inside the LSO JAR, what must be installed alongside it, and what is optional. Check [`build.gradle`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/blob/lso-fabric-1-20-1/build.gradle) for build/packaging declarations and [`fabric.mod.json`](https://github.com/Atlasroar/LegendarySurvivalOverhaul/blob/lso-fabric-1-20-1/src/main/resources/fabric.mod.json) for runtime requirements. v2.8.1 and earlier required Trinkets, Fzzy Config, and Kotlin; v3.0.0+ does not.
+
+v3.2.0 includes selected Scorchful/Frostiful content as standalone LSO code
+and assets, with LGPL-3.0 attribution and license texts. Scorchful, Frostiful
+and Thermoo are neither bundled nor required. This is not a new integration
+with their runtime temperature systems.
 
 ## How to read `build.gradle`'s dependency block
 
