@@ -4,7 +4,7 @@
 
 **Make survival matter.** This Fabric 1.20.1 port of Legendary Survival Overhaul adds configurable environmental survival, hydration, injuries, health, and air quality.
 
-[**Download v3.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.0) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
+[**Download v3.2.1**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.1) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
 
 ## Features
 

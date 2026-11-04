@@ -18,6 +18,12 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v3.2.1
+====
+Added Crimson and Warped Lilies to Field Guide's plant tag so the existing
+LSO Flora category includes them alongside the previous crops. Existing
+lily descriptions supply their notes; Field Guide remains optional.
+
 v3.2.0
 ====
 Wetness keeps its saturation-scaled target temperature offset and now

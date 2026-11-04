@@ -2,6 +2,20 @@
 
 ## Latest full release
 
+[**v3.2.1**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.1) targets Minecraft 1.20.1, Fabric, and Java 17.
+
+```text
+legendarysurvivaloverhaul-fabric-1.20.1-3.2.1.jar
+SHA-256: 1805CE46E8ED291B10FC6DB08F2E451A048A0A44C3ABD0FD65A398503E4167D9
+```
+
+v3.2.1 fixes Crimson/Warped Lily inclusion in the existing LSO Flora Field
+Guide category using an additive plant tag. Existing lily lore supplies
+notes; Field Guide remains optional. No gameplay balance or dependency
+changes are introduced. All v3.2.0 features below remain included.
+
+## Previous releases
+
 [**v3.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.0) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
@@ -29,8 +43,6 @@ checks, isolated server assertions and client model/resource loading pass.
 Equipped visuals, skating feel and separate-client multiplayer remain
 in-game follow-ups. See [Survival Systems](Survival-Systems#wetness-nether-lilies-fur-and-skates-v320)
 and [Installation and Upgrading](Installation-and-Upgrading).
-
-## Previous releases
 
 [**v3.1.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.1.0) targets Minecraft 1.20.1, Fabric, and Java 17.
 
@@ -70,6 +82,7 @@ The user confirmed in-game: the LevelZ health bonus remains stable after death, 
 
 | Version | Milestone |
 | --- | --- |
+| v3.2.1 | Add Crimson/Warped Lilies to the existing LSO Flora Field Guide category using the optional integration's plant tag. |
 | v3.2.0 | Configurable 1.5x wet cooling; standalone Crimson/Warped Lilies; Ice Skates; non-armored fur visuals preserving winter IDs/protection; no new mod dependencies. |
 | v3.1.0 | Optional Atlasroar IW storm/wind integration, 2x dangerous temperature steps, matching drink protection, 3x3 shelter, and 10-second freezing-wind Cold Hunger. |
 | v3.0.0 | Removed explicitly dropped compatibility data; retained Refabricated/BetterEnd; canteen-only loot enchantments; optional Trinkets, Fzzy Config, and Kotlin with standalone TOML configuration. |
