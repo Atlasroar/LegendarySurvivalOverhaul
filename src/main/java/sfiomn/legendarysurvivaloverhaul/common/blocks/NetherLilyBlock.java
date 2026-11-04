@@ -36,7 +36,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness.WetnessCapability;
 import sfiomn.legendarysurvivaloverhaul.common.items.drink.CanteenItem;
-import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 
 // Adapted for LSO on 2026-11-02 from Scorchful's NetherLilyBlock, CrimsonLilyBlock and NetherLilyBehaviours (LGPL-3.0).
@@ -131,7 +130,7 @@ public class NetherLilyBlock extends Block {
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!crimson || level.isClientSide || state.getValue(WATER_LEVEL) != 3)
             return;
-        if (entity instanceof Player player && Config.Baked.wetnessEnabled)
+        if (entity instanceof Player player && WetnessCapability.canGetWet(player))
             CapabilityUtil.getWetnessCapability(player).setWetness(WetnessCapability.WETNESS_LIMIT);
         if (entity.getType().is(HURTS))
             entity.hurt(level.damageSources().generic(), 10);

@@ -9,8 +9,17 @@ allprojects {
         }
         tasks.register('jarWetContentCheck', Jar) {
             dependsOn tasks.named('compileWetContentCheck')
+            inputs.property('simulateThermalCoexistence', project.hasProperty('simulateThermalCoexistence'))
             from layout.buildDirectory.dir('wet-content-check/classes')
-            from(layout.projectDirectory.dir('test-runtime/wet-content')) { include 'fabric.mod.json' }
+            from(layout.projectDirectory.dir('test-runtime/wet-content')) {
+                include '**/*.json'
+                if (project.hasProperty('simulateThermalCoexistence')) {
+                    filesMatching('fabric.mod.json') {
+                        filter { line -> line.replace('"provides": []',
+                                '"provides": ["scorchful", "frostiful", "lso_thermal_coexistence_check"]') }
+                    }
+                }
+            }
             archiveFileName = 'lso-wet-content-check.jar'
             destinationDirectory = layout.buildDirectory.dir('wet-content-server/mods')
         }

@@ -29,8 +29,31 @@ The packaged-resource check verifies unchanged winter cold values, valid
 JSON, required textures/licenses, remapped skating hooks and no new upstream
 mod dependency.
 
-The fixture explicitly requires Scorchful/Frostiful/Thermoo absent to prove
-the new content is standalone. This is not a coexistence test.
+The default fixture requires Scorchful/Frostiful/Thermoo absent to prove
+the new content is standalone. It also installs a synthetic higher-priority
+friction redirect and verifies composition both with and without LSO skates.
+Damage assertions cover player/mob attribution, disabled server PvP, team
+friendly-fire and Fabric damage cancellation. Wetness assertions cover held
+Sponge in either hand, deactivation, global disable, protected mounts and
+Creative/Spectator; with Trinkets installed they also equip a real Sponge.
+
+To check the coexistence warning path with real optional libraries:
+
+```powershell
+.\gradlew.bat --console=plain -PsimulateThermalCoexistence -I test-runtime\wet-content\check.gradle jarWetContentCheck runServer
+```
+
+This adds synthetic `scorchful`/`frostiful` loader aliases, not their actual
+mods. Require both the warning and `WET_CONTENT_CHECK_PASSED`; settings must
+remain enabled. This does not establish real upstream runtime compatibility.
+Rebuild without the property before the default/client checks to remove
+the aliases. Fixture mixins and aliases never ship in LSO.
+
+The fixture's `c:ice` tag deliberately includes vanilla glass to exercise a
+tagged surface that is not an `IceBlock`. It checks skating and walking
+penalty removal on that surface and all four vanilla ice variants. This
+test-only tag never ships in LSO. Real IW Thin Ice movement/state coverage
+lives in the weathering-storms fixture.
 
 ## Client
 
@@ -47,7 +70,7 @@ world/equipped-armor visual or multiplayer movement test.
 
 ```powershell
 .\gradlew.bat --console=plain -PwithoutOptionalIntegrations -I src\test\resources\config-tests.gradle build configRegression configAdapterRegression
-python test-runtime\wet-content\check_resources.py build\libs\legendarysurvivaloverhaul-fabric-1.20.1-3.2.1.jar
+python test-runtime\wet-content\check_resources.py build\libs\legendarysurvivaloverhaul-fabric-1.20.1-3.2.2.jar
 .\gradlew.bat --console=plain -PwithoutOptionalIntegrations -PwithWeathering -I test-runtime\weathering-storms\check.gradle jarWeatheringStormCheck runServer
 ```
 

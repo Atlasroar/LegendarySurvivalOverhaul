@@ -2,6 +2,36 @@
 
 ## Latest full release
 
+[**v3.2.2**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.2) targets Minecraft 1.20.1, Fabric, and Java 17.
+
+```text
+legendarysurvivaloverhaul-fabric-1.20.1-3.2.2.jar
+SHA-256: 2447B92FD0BDABE18152EBD349AF96E2E07CA1DEFD6BCED4D7C1F2CF863E54E7
+```
+
+v3.2.2 hardens skating and lily compatibility. Friction uses a composable
+expression hook, player blade hits use player-attack attribution with
+normal PvP/team/damage-cancellation handling, and wetting respects Sponge,
+per-player deactivation, configured mount immunity and Creative/Spectator.
+Skating and off-ice penalties share recognition of vanilla ice, `IceBlock`
+subclasses (including IW Thin Ice), common ice tags and the extensible
+`legendarysurvivaloverhaul:skateable_ice` block tag. Thin ice still cracks,
+breaks and melts normally.
+
+Scorchful/Frostiful detection logs overlap/configuration guidance without
+automatically disabling or bridging their independent thermal systems.
+No new required dependencies or settings are added; there remain **264
+settings across nine configs**. Fzzy Config and Trinkets remain strongly
+recommended, not required. All v3.2.0/v3.2.1 features remain included.
+
+Assertions cover synthetic friction-redirect composition, vanilla PvP/team
+rules, Fabric damage cancellation, held/equipped Sponge, actual IW Thin Ice
+travel across all block states, and common-tag/custom-surface recognition.
+Actual Scorchful/Frostiful coexistence and arbitrary third-party movement/
+protection mods are not claimed as tested. See [Mod Compatibility](Mod-Compatibility#thermal-and-skating-coexistence-v322).
+
+## Previous releases
+
 [**v3.2.1**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.1) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
@@ -13,8 +43,6 @@ v3.2.1 fixes Crimson/Warped Lily inclusion in the existing LSO Flora Field
 Guide category using an additive plant tag. Existing lily lore supplies
 notes; Field Guide remains optional. No gameplay balance or dependency
 changes are introduced. All v3.2.0 features below remain included.
-
-## Previous releases
 
 [**v3.2.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.0) targets Minecraft 1.20.1, Fabric, and Java 17.
 
@@ -82,6 +110,7 @@ The user confirmed in-game: the LevelZ health bonus remains stable after death, 
 
 | Version | Milestone |
 | --- | --- |
+| v3.2.2 | Composable skating friction, player-attributed blade damage, lily wetness immunities, modded/thin-ice surfaces and independent thermal-system coexistence guidance. |
 | v3.2.1 | Add Crimson/Warped Lilies to the existing LSO Flora Field Guide category using the optional integration's plant tag. |
 | v3.2.0 | Configurable 1.5x wet cooling; standalone Crimson/Warped Lilies; Ice Skates; non-armored fur visuals preserving winter IDs/protection; no new mod dependencies. |
 | v3.1.0 | Optional Atlasroar IW storm/wind integration, 2x dangerous temperature steps, matching drink protection, 3x3 shelter, and 10-second freezing-wind Cold Hunger. |

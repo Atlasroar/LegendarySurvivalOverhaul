@@ -3,7 +3,6 @@ package sfiomn.legendarysurvivaloverhaul.common.capabilities.wetness;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -27,6 +26,7 @@ import sfiomn.legendarysurvivaloverhaul.common.integration.meadow.MeadowUtil;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 import sfiomn.legendarysurvivaloverhaul.util.MathUtil;
+import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 import sfiomn.legendarysurvivaloverhaul.util.WorldUtil;
 
 public class WetnessCapability implements IWetnessCapability
@@ -88,6 +88,21 @@ public class WetnessCapability implements IWetnessCapability
 		this.setWetnessTickTimer(this.getWetnessTickTimer() + tickTimer);
 	}
 
+	public static boolean canGetWet(Player player) {
+		return Config.Baked.wetnessEnabled && !isImmuneToWetness(player) && !isMountProtected(player);
+	}
+
+	private static boolean isImmuneToWetness(Player player) {
+		return player.isCreative() || player.isSpectator()
+				|| CapabilityUtil.getWetnessCapability(player).getWetnessTickTimer() == -1
+				|| TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.SPONGE.get());
+	}
+
+	private static boolean isMountProtected(Player player) {
+		return player.getVehicle() != null && Config.Baked.wetnessImmunityMounts.contains(
+				BuiltInRegistries.ENTITY_TYPE.getKey(player.getVehicle().getType()).toString());
+	}
+
 	/**
 	 * This probably isn't too terribly performance friendly but it's something at least<br>
 	 * <br>
@@ -96,7 +111,7 @@ public class WetnessCapability implements IWetnessCapability
 	@Override
 	public void tickUpdate(Player player, Level level, TickPhase phase)
 	{
-		if (getWetnessTickTimer() == -1 || TrinketsUtil.isTrinketItemEquipped(player, ItemRegistry.SPONGE.get())) {
+		if (isImmuneToWetness(player)) {
 			if (this.getWetness() > 0)
 				this.setWetness(0);
 			return;
@@ -118,13 +133,10 @@ public class WetnessCapability implements IWetnessCapability
 		
 		BlockPos pos = player.blockPosition();
 
-		if (player.getVehicle() != null) {
-			ResourceLocation entityRegistryName = BuiltInRegistries.ENTITY_TYPE.getKey(player.getVehicle().getType());
-			if (entityRegistryName != null && Config.Baked.wetnessImmunityMounts.contains(entityRegistryName.toString())) {
-				if (this.wetness > 0)
-					this.addWetness(Config.Baked.wetnessDecrease);
-				return;
-			}
+		if (isMountProtected(player)) {
+			if (this.wetness > 0)
+				this.addWetness(Config.Baked.wetnessDecrease);
+			return;
 		}
 		
 		// If the player is not riding a living entity, shift the position used for calculations up by one block

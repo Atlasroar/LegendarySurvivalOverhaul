@@ -8,6 +8,8 @@ imports/adaptations remain under GNU LGPL version 3. Full license texts are
 terms are reproduced in `nightconfig-GPL-3.0.txt`.
 
 LSO adaptation date: 2026-11-02.
+Compatibility revisions on 2026-11-04 add wetness-immunity checks,
+composable friction adjustments and player-attributed blade damage.
 
 Scorchful source: https://github.com/TheDeathlyCow/scorchful/tree/d74712e9b5fc4348aa8ad9c417ce938daf8bc0a1
 

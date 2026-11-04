@@ -4,7 +4,7 @@
 
 **Make survival matter.** This Fabric 1.20.1 port of Legendary Survival Overhaul adds configurable environmental survival, hydration, injuries, health, and air quality.
 
-[**Download v3.2.1**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.1) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
+[**Download v3.2.2**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.2) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
 
 ## Features
 
@@ -45,6 +45,13 @@ Build from source with **JDK 17**: `.\gradlew.bat build` on Windows or `./gradle
 v3.1.0 adds optional [Atlasroar/Immersive-Weathering](https://github.com/Atlasroar/Immersive-Weathering) **2.5.0+** storm integration. Exposed snow/sand storms drive dangerous cold/heat at 2x speed with Cold Hunger/Heat Thirst, countered by Hot Drink/Cold Drink respectively. A complete centered 3x3 sky-blocking roof within 10 blocks above eye level provides shelter. Freezing-wind hits separately apply 10 seconds of Cold Hunger. See the [versioned compatibility guide](docs/wiki/Mod-Compatibility.md#immersive-weathering-storms-v310) for exact scope and the independent toggle.
 
 ## Wet cooling and survival gear
+
+**v3.2.2 compatibility fixes:** skating supports ice subclasses (including
+Immersive Weathering's Thin Ice) and common/custom ice tags, composes with
+other friction adjustments, and uses player-attributed blade damage.
+Crimson Lily soaking respects wetness immunity. Scorchful/Frostiful detection
+warns about independent overlapping thermal systems without disabling them.
+See [compatibility guidance](docs/wiki/Mod-Compatibility.md#thermal-and-skating-coexistence-v322).
 
 **New in v3.2.0:** configurable 1.5x wet cooling, standalone
 Scorchful crimson/warped lilies, Frostiful ice skates, and non-armored fur

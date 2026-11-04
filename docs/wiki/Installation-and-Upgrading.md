@@ -1,6 +1,6 @@
 # Installation and Upgrading
 
-## Requirements for v3.2.0
+## Requirements for v3.2.2
 
 | Component | Requirement |
 | --- | --- |
@@ -24,6 +24,19 @@ LSO can run without Trinkets, Fzzy Config, or Fabric Language Kotlin. Configurat
 4. Launch the game. With Fzzy Config and Mod Menu installed, open LSO's config button; otherwise edit the configuration files while the instance is stopped.
 
 For a dedicated server, install LSO and its required server-compatible dependencies there as well. Do not install the client-only Mod Menu on the server. Broader dedicated-server gameplay testing remains open.
+
+## Upgrade to 3.2.2
+
+Back up worlds/configs and replace the old LSO JAR. No new required
+dependencies, settings or save migrations are introduced. Existing lily
+Field Guide entries from v3.2.1 remain included. Ice Skates now recognize
+modded ice classes/tags including IW Thin Ice; its cracking/melting behavior
+is unchanged. Positive wetness gains respect existing immunity rules.
+
+If Scorchful/Frostiful is installed, the new warning does not disable either
+system. Choose a thermal-system owner deliberately; see
+[coexistence guidance](Mod-Compatibility#thermal-and-skating-coexistence-v322)
+for the two LSO toggles and custom ice-tag path.
 
 ## Upgrade to 3.2.0
 

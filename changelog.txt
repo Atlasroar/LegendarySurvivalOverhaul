@@ -18,6 +18,24 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v3.2.2
+====
+Ice Skates use a composable friction-expression hook rather than an
+exclusive redirect, preserving other mods' friction adjustments.
+Skating and off-ice penalties share an ice-surface check covering vanilla
+ice, IceBlock subclasses (including IW thin ice), common ice tags and the
+extensible legendarysurvivaloverhaul:skateable_ice block tag.
+Player blade hits use player-attack damage with normal PvP/team/protection
+handling; mob-worn skates retain mob damage.
+
+Crimson Lily soaking and positive wetness API gains respect held/equipped
+Sponge protection, per-player wetness deactivation, configured mount
+immunity and Creative/Spectator mode.
+
+Detecting Scorchful or Frostiful logs a coexistence warning with LSO
+temperature/wetness disable guidance. Systems remain independent: no
+automatic disabling, item aliases, wetness synchronization or new dependency.
+
 v3.2.1
 ====
 Added Crimson and Warped Lilies to Field Guide's plant tag so the existing

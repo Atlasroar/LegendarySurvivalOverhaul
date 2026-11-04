@@ -61,6 +61,8 @@ Before restoring an excluded integration, inspect build exclusions and registrat
 | Optional libraries / compatibility cleanup / canteen enchants | Released in v3.0.0; standalone TOML/config sync, presence-gated Trinkets/Fzzy, requested data removals, and canteen-only loot enchantments |
 | Immersive Weathering storms | Released in v3.1.0; optional 2x storm temperature penalties, drink protection, 3x3 shelter, and 10-second freezing-wind Cold Hunger |
 | Wet cooling and survival gear | Released in v3.2.0; configurable cooling-only wetness rate, standalone Nether lilies, non-armored fur replacement and Ice Skates with unchanged winter protection |
+| Lily Field Guide entries | Released in v3.2.1; additive optional plant tag |
+| Skating/wetness compatibility | Released in v3.2.2; composable friction, player blade attribution, immunity-aware wetting, modded/thin-ice surfaces and independent thermal coexistence warning |
 
 ## Developer wiki
 

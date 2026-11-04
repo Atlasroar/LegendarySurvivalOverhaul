@@ -71,6 +71,11 @@ public class LegendarySurvivalOverhaul implements ModInitializer
 		trinketsLoaded = FabricLoader.getInstance().isModLoaded("trinkets");
 
 		Config.register();
+		if (FabricLoader.getInstance().isModLoaded("scorchful") || FabricLoader.getInstance().isModLoaded("frostiful"))
+			LOGGER.warn("Scorchful/Frostiful detected alongside LSO: temperature and wetness systems remain independent "
+					+ "and can apply overlapping penalties. To use the other mod's thermal system, set "
+					+ "temperatureEnabled=false and wetnessEnabled=false in LSO temperature.toml. "
+					+ "Items are not interchangeable; LSO does not automatically disable or bridge either mod.");
 		FabricServerNetworkHandler.register();
 		registerContent();
 		if (trinketsLoaded)
