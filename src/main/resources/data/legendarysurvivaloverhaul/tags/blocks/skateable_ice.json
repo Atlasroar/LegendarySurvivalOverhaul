@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:ice",
+    { "id": "#c:ice", "required": false },
+    { "id": "#c:ices", "required": false },
+    { "id": "#immersive_weathering:ice", "required": false },
+    { "id": "immersive_weathering:thin_ice", "required": false }
+  ]
+}

@@ -4,11 +4,18 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
@@ -17,8 +24,10 @@ import sfiomn.legendarysurvivaloverhaul.common.capabilities.temperature.Temperat
 import sfiomn.legendarysurvivaloverhaul.common.capabilities.ModCapabilities;
 import sfiomn.legendarysurvivaloverhaul.common.integration.weathering.WeatheringStorms;
 import sfiomn.legendarysurvivaloverhaul.common.integration.weathering.WeatheringStorms.Exposure;
+import sfiomn.legendarysurvivaloverhaul.common.items.armor.IceSkating;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
+import sfiomn.legendarysurvivaloverhaul.registry.ItemRegistry;
 import sfiomn.legendarysurvivaloverhaul.util.CapabilityUtil;
 
 import java.util.UUID;
@@ -63,6 +72,7 @@ public final class WeatheringStormCheck implements ModInitializer {
                     return;
                 }
 
+                thinIce(level);
                 biome(level, Biomes.SNOWY_PLAINS);
                 check(WeatheringStorms.exposure(player) == Exposure.SNOW, "Thunder in snowy biome detected");
                 cap.setTemperatureLevel(20);
@@ -196,6 +206,36 @@ public final class WeatheringStormCheck implements ModInitializer {
     static void tick(TemperatureCapability cap, ServerPlayer player) {
         cap.setTemperatureTickTimer(4);
         cap.tickUpdate(player, player.level(), TickPhase.END);
+    }
+
+    static void thinIce(ServerLevel level) {
+        ResourceLocation id = new ResourceLocation("immersive_weathering", "thin_ice");
+        check(BuiltInRegistries.BLOCK.containsKey(id), "Real IW thin ice is registered");
+        var ice = BuiltInRegistries.BLOCK.get(id);
+        var skater = EntityType.ZOMBIE.create(level);
+        check(skater != null, "Thin-ice skater created");
+        skater.setNoGravity(true);
+        skater.setItemSlot(EquipmentSlot.FEET, new ItemStack(ItemRegistry.ICE_SKATES.get()));
+        for (var state : ice.getStateDefinition().getPossibleStates()) {
+            check(IceSkating.isSkateableIce(state), "All thin-ice crack states support skating");
+            for (int x = 5; x <= 11; x++)
+                for (int z = 5; z <= 11; z++)
+                    level.setBlock(new BlockPos(x, 199, z), state, 2);
+            skater.setPos(8.5, 200, 8.5);
+            skater.setOnGround(true);
+            skater.setDeltaMovement(0.3, 0, 0);
+            skater.travel(Vec3.ZERO);
+            check(Math.abs(skater.getDeltaMovement().x - 0.3 * 1.075 * 0.91) < 0.0001,
+                    "Actual travel glides on thin ice");
+            IceSkating.updateWalkingPenalty(skater, Blocks.STONE.defaultBlockState());
+            IceSkating.updateWalkingPenalty(skater, state);
+            check(skater.getAttribute(Attributes.MOVEMENT_SPEED).getModifier(IceSkating.WALK_PENALTY_ID) == null,
+                    "Thin ice does not apply the off-ice penalty");
+        }
+        skater.discard();
+        for (int x = 5; x <= 11; x++)
+            for (int z = 5; z <= 11; z++)
+                level.setBlock(new BlockPos(x, 199, z), Blocks.AIR.defaultBlockState(), 2);
     }
 
     static void roof(ServerLevel level, BlockPos eyes, int height, net.minecraft.world.level.block.Block block) {

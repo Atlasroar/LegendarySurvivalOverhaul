@@ -1,6 +1,6 @@
 # Configuration
 
-v3.2.0 supports **264 settings across nine configs** without extra configuration libraries. **Fzzy Config is strongly recommended, not required**, for in-game editing; Mod Menu supplies a convenient entry to it. Installing Fzzy Config still requires its Fabric Language Kotlin dependency. v2.8.1 and earlier require both libraries.
+v3.2.2 supports **264 settings across nine configs** without extra configuration libraries. **Fzzy Config is strongly recommended, not required**, for in-game editing; Mod Menu supplies a convenient entry to it. Installing Fzzy Config still requires its Fabric Language Kotlin dependency. v2.8.1 and earlier require both libraries.
 
 ## Open and save
 

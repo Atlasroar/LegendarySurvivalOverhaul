@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "lso.test",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": ["FrictionCompatMixin"],
+  "injectors": { "defaultRequire": 1 }
+}

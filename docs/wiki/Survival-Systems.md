@@ -66,6 +66,12 @@ is 50% slower; removing skates or leaving the ground clears the penalty.
 Landing on another living entity with the blades deals one point of damage.
 No Frostiful or Thermoo dependency is added.
 
+**Added in v3.2.2:** modded ice support covers `IceBlock` subclasses such as
+Immersive Weathering's Thin Ice, plus common ice tags and LSO's extensible
+`legendarysurvivaloverhaul:skateable_ice` block tag. Both gliding and the
+off-ice penalty use the same recognition. Thin ice can still crack, break
+and melt normally.
+
 ## Hydration
 
 Hydration and saturation are tracked alongside food. Use drinking, purification, canteens, and configured consumables. Jumping, successful block breaking, and attacking can consume hydration according to settings; Creative/Spectator are excluded from these tested exhaustion paths.

@@ -184,6 +184,66 @@ Source snapshots examined:
 Imported/adapted portions remain LGPL-3.0 with source mapping and license
 texts under `META-INF/licenses`; Thermoo code/assets are not copied.
 
+## Thermal and skating coexistence (v3.2.2)
+
+LSO keeps its own temperature/wetness state when Scorchful or Frostiful is
+installed. Detection logs a startup warning, not an automatic config change.
+To let their thermal system own temperature/wetness, stop the instance and
+set **both** `temperatureEnabled = false` and `wetnessEnabled = false` in
+LSO's `config/legendarysurvivaloverhaul/temperature.toml`. Setting only
+`wetCoolingRateMultiplier = 1` is not sufficient: the saturation-based
+target reduction remains. If LSO should own temperature instead, use the
+other mod's documented configuration to disable its overlapping mechanics;
+LSO does not edit another mod's settings.
+
+LSO lilies and skates remain separate registered items. Their counterparts
+from Scorchful/Frostiful do not automatically wet LSO players or count as
+LSO skates. Do not tag an upstream skate into both systems expecting a
+single movement implementation: both mods can then apply their own
+friction/walking/blade effects. No cross-mod wetness bridge is supplied.
+
+The skating hook modifies the friction result rather than exclusively
+redirecting the call. Its skating adjustment scales the incoming value,
+retaining other mods' friction multipliers; non-skating movement returns
+the incoming value unchanged. This reduces conflicts, but mods that replace
+the entire movement method still require individual testing.
+
+Gliding, ice particles and removal of the off-ice walking penalty share
+one surface predicate: `IceBlock` subclasses or
+`legendarysurvivaloverhaul:skateable_ice`. Defaults include `minecraft:ice`
+and optional `c:ice`, `c:ices`, `immersive_weathering:ice` tags and IW's
+`immersive_weathering:thin_ice` block. Missing optional mods/tags are valid.
+This covers vanilla frosted ice and IW thin ice in every crack state without
+changing vanilla's global ice tag. Thin ice retains IW's own cracking,
+breaking and melting behavior; skates do not make it safe or unbreakable.
+
+Other mods' entirely custom ice blocks that neither extend `IceBlock` nor
+use a recognized tag can be added by a datapack at
+`data/legendarysurvivaloverhaul/tags/blocks/skateable_ice.json`, with
+`"replace": false` and their block IDs in `"values"`. No name-based guessing
+is used, so ice-themed decorative/non-ice blocks do not become skateable
+merely because their names contain "ice".
+
+Player blade hits now use normal player-attack damage and respect vanilla
+PvP/team restrictions and Fabric damage cancellation hooks. This is not a
+claim that every claims/protection mod has been tested. Spectators cannot
+inflict blade damage; mobs retain mob-attack attribution.
+
+Lily contact and positive wetness API gains now check the same Sponge and
+mount protections used by ordinary wetness, plus per-player deactivation
+and Creative/Spectator mode. Immune contact can still burst/drain the plant;
+it simply cannot add wetness. Protected mounts retain normal drying of
+already accumulated wetness.
+
+Runtime assertions cover a synthetic competing friction redirect, player/
+mob damage attribution, vanilla PvP and team rules, a Fabric cancellation
+hook, held Sponge with libraries absent and a real equipped Trinkets
+Sponge. A loader-alias fixture checks Scorchful/Frostiful detection without
+their classes or automatic disabling. **Actual Scorchful/Frostiful together
+with LSO, arbitrary movement mods and multiplayer remain unverified.**
+The real IW 2.5.0/Moonlight server fixture additionally checks actual travel
+and absence of an off-ice penalty across all thin-ice block states.
+
 ## Future integrations
 
 Additional mod support is the next development phase. Targets and desired interactions must be selected before implementation. New adapters should remain optional where possible and preserve behavior without the target mod installed.

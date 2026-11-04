@@ -7,7 +7,8 @@ public class WetnessUtil
 	public static IWetnessUtil internal;
 
 	/**
-	 * Add wetness value to the wetness of the given player
+	 * Add wetness to the given player. Positive gains respect wetness
+	 * deactivation, Sponge protection, immune mounts and Creative/Spectator.
 	 *
 	 * @param player The player to which wetness is added
 	 * @param wetness The wetness value

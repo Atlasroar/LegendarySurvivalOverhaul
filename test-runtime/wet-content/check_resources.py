@@ -25,6 +25,11 @@ with zipfile.ZipFile(sys.argv[1]) as jar:
     assert {"type": "auto_populate", "strategy": "mod_plants:legendarysurvivaloverhaul"} in flora["contents"]
     plants = json.loads(jar.read("data/fieldguide/tags/blocks/plants.json"))
     assert plants["replace"] is False
+    ice = json.loads(jar.read("data/legendarysurvivaloverhaul/tags/blocks/skateable_ice.json"))
+    assert ice["replace"] is False
+    assert "#minecraft:ice" in ice["values"]
+    assert {"id": "immersive_weathering:thin_ice", "required": False} in ice["values"]
+    assert "data/c/tags/blocks/ice.json" not in jar.namelist()
     for lily in ("crimson_lily", "warped_lily"):
         assert f"legendarysurvivaloverhaul:{lily}" in plants["values"]
         assert f"lore.legendarysurvivaloverhaul.{lily}" in json.loads(jar.read(
@@ -46,5 +51,8 @@ with zipfile.ZipFile(sys.argv[1]) as jar:
     assert "method_" in skate["travel"]
     assert "method_" in skate["aiStep"]
     assert "method_" in skate["push"]
+    assert "fieldguide" not in metadata["depends"]
+    for name in jar.namelist():
+        assert not name.endswith(("FrictionCompatMixin.class", "wet-content.mixins.json"))
 
 print("WET_CONTENT_RESOURCES_CHECK_PASSED")

@@ -2,8 +2,10 @@
   "schemaVersion": 1,
   "id": "lso_wet_content_check",
   "version": "1.0.0",
+  "provides": [],
   "name": "LSO wetness and survival content assertions",
   "environment": "*",
   "entrypoints": { "main": ["WetContentCheck"], "client": ["WetContentClientCheck"] },
+  "mixins": ["wet-content.mixins.json"],
   "depends": { "legendarysurvivaloverhaul": "*", "fabric-api": "*" }
 }

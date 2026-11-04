@@ -31,6 +31,9 @@ cold/heat targets, roof holes and height-10/height-11 boundaries, transparent
 glass, drink protection, ordinary snowfall, integration/immunity switches,
 real wind impact interception, a full 200-tick hunger countdown, overlapping
 wind/storm duration, and preservation of ordinary frostbite hunger.
+With IW installed, it also places every Thin Ice block state and checks
+actual skating travel friction and removal of the off-ice walking penalty.
+The fixture does not suppress IW's cracking/melting behavior.
 
 The optional-library configuration regressions remain separate:
 
