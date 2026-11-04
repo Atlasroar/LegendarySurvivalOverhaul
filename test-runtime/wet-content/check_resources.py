@@ -21,7 +21,14 @@ with zipfile.ZipFile(sys.argv[1]) as jar:
     for layer in (1, 2):
         image = jar.read(f"assets/legendarysurvivaloverhaul/textures/models/armor/snow_layer_{layer}.png")
         assert struct.unpack(">II", image[16:24]) == (64, 32)
+    flora = json.loads(jar.read("data/legendarysurvivaloverhaul/fieldguide/categories/flora.json"))
+    assert {"type": "auto_populate", "strategy": "mod_plants:legendarysurvivaloverhaul"} in flora["contents"]
+    plants = json.loads(jar.read("data/fieldguide/tags/blocks/plants.json"))
+    assert plants["replace"] is False
     for lily in ("crimson_lily", "warped_lily"):
+        assert f"legendarysurvivaloverhaul:{lily}" in plants["values"]
+        assert f"lore.legendarysurvivaloverhaul.{lily}" in json.loads(jar.read(
+            "assets/legendarysurvivaloverhaul/lang/en_us.json"))
         assert jar.read(f"assets/legendarysurvivaloverhaul/textures/block/{lily}.png").startswith(b"\x89PNG")
         for path in (f"assets/legendarysurvivaloverhaul/blockstates/{lily}.json",
                      f"assets/legendarysurvivaloverhaul/models/item/{lily}.json",

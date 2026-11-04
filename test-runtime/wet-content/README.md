@@ -47,7 +47,7 @@ world/equipped-armor visual or multiplayer movement test.
 
 ```powershell
 .\gradlew.bat --console=plain -PwithoutOptionalIntegrations -I src\test\resources\config-tests.gradle build configRegression configAdapterRegression
-python test-runtime\wet-content\check_resources.py build\libs\legendarysurvivaloverhaul-fabric-1.20.1-3.2.0.jar
+python test-runtime\wet-content\check_resources.py build\libs\legendarysurvivaloverhaul-fabric-1.20.1-3.2.1.jar
 .\gradlew.bat --console=plain -PwithoutOptionalIntegrations -PwithWeathering -I test-runtime\weathering-storms\check.gradle jarWeatheringStormCheck runServer
 ```
 
