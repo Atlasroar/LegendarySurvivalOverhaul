@@ -100,6 +100,8 @@ See [Client Input and Keybindings](Client-Input-and-Keybindings) for the full ro
 | [#51](https://github.com/Atlasroar/LegendarySurvivalOverhaul/pull/51) | Release v3.0.0: optional integrations and compatibility cleanup |
 | [#52](https://github.com/Atlasroar/LegendarySurvivalOverhaul/pull/52) | Release v3.1.0: optional Immersive Weathering storm integration |
 | [#53](https://github.com/Atlasroar/LegendarySurvivalOverhaul/pull/53) | Release v3.2.0: wet cooling, Nether lilies, fur clothing and Ice Skates |
+| [#54](https://github.com/Atlasroar/LegendarySurvivalOverhaul/pull/54) | Release v3.2.1: include Nether lilies in Field Guide flora |
+| [#55](https://github.com/Atlasroar/LegendarySurvivalOverhaul/pull/55) | Release v3.2.2: skating, wetness and modded ice compatibility |
 
 See [Compatibility Hook Internals](Compatibility-Hook-Internals), [Internal Jars and Dependencies](Internal-Jars-and-Dependencies), and [Releases and Versioning](Releases-and-Versioning) for the current behavior, dependency boundaries, and migration notes.
 
