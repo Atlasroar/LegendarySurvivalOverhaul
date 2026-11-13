@@ -18,6 +18,22 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v3.2.3
+====
+Optimized nearby air-provider scanning: reject positions outside the
+maximum-radius sphere before loaded-block lookups, and classify each
+distinct block state only once per scan. At the default maximum radius,
+a block-centered scan needs 3,071 lookups rather than 6,859.
+Provider-specific radii, lava precedence, fluids at eye level, breathing
+rules and the existing 10-tick entity cache remain unchanged.
+
+Runtime regressions compare against the previous scan and cover fractional
+positions/radii, maximum-radius boundaries, unloaded chunks and cache
+expiry/invalidation. Local empty-air uncached benchmarks were about 6-7.5x
+faster; this is not a server-MSPT guarantee. The supplied Spark profile's
+inconsistent timing totals prevent reliable whole-server attribution.
+No new settings, dependencies or save/config migrations.
+
 v3.2.2
 ====
 Ice Skates use a composable friction-expression hook rather than an

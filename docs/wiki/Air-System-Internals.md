@@ -19,7 +19,7 @@ An unlit block with a `LIT` property is not a provider. The nearby scan explicit
 
 Qualities are ordered `GREEN`, `BLUE`, `YELLOW`, `RED`. Among nearby providers the highest ordinal wins; RED returns immediately. Provider precedence is evaluated before ambient quality, allowing soul/portal sources to affect otherwise hazardous dimensions. “Hazards win” refers to nearby provider comparison, not simply taking the maximum of ambient and all providers.
 
-Distances are squared Euclidean distances from block centers to the entity's eye position. Each candidate uses its own radius; the outer scan cube uses the maximum configured radius. Blocks outside loaded areas are skipped.
+Distances are squared Euclidean distances from block centers to the entity's eye position. Each candidate uses its own radius; the outer scan cube uses the maximum configured radius. Positions outside the maximum-radius sphere are rejected before accessing world blocks. Blocks outside loaded areas are skipped.
 
 ## Cache and cost
 
@@ -27,7 +27,11 @@ Distances are squared Euclidean distances from block centers to the entity's eye
 
 Cache invalidates naturally on movement/dimension change/expiry. `Config.Baked.bakeAir()` also clears it after config sync/edits. Weak keys avoid permanently retaining removed entities.
 
-For maximum radius `r`, the scan visits up to `(2 * ceil(r) + 1)^3` positions before short-circuiting. A 32-block limit is a validation bound, not a recommendation for server performance. Do not call the uncached compute method repeatedly per frame.
+For maximum radius `r`, the scan bounds cover `(2 * ceil(r) + 1)^3` positions, but world lookups only occur inside the maximum-radius sphere. At the default maximum radius of 9, a block-centered eye position requires 3,071 candidate lookups instead of 6,859. The exact count varies with the fractional eye position.
+
+Within each scan, provider quality (including lava) is classified once per distinct immutable block state, rather than repeating lit-property and provider-tag checks at every position. This memoization is discarded after the scan, so no additional cross-tick or cross-reload state is retained. Provider distances, worst-quality precedence, and the existing entity-cache duration are unchanged.
+
+Search volume still grows cubically. A 32-block limit is a validation bound, not a recommendation for server performance. Do not call the uncached compute method repeatedly per frame.
 
 ## Ambient precedence
 
