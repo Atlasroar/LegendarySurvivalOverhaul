@@ -19,6 +19,7 @@ import sfiomn.legendarysurvivaloverhaul.common.integration.vanillabackport.Vanil
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.registry.AirQualityTagRegistry;
 
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -90,26 +91,46 @@ public final class AirQualityUtil {
      */
     private static AirQualityLevel scanForNearbyAirProvider(Level level, Vec3 location) {
         AirQualityLevel worst = null;
+        AirQualityLevel[] qualities = AirQualityLevel.values();
+        double[] radiiSquared = new double[qualities.length];
         double maxRadius = 0;
-        for (AirQualityLevel airQualityLevel : AirQualityLevel.values()) {
-            maxRadius = Math.max(maxRadius, airQualityLevel.getAirProviderRadius());
+        for (AirQualityLevel quality : qualities) {
+            double providerRadius = quality.getAirProviderRadius();
+            radiiSquared[quality.ordinal()] = providerRadius * providerRadius;
+            maxRadius = Math.max(maxRadius, providerRadius);
         }
+        double maxRadiusSquared = maxRadius * maxRadius;
         int radius = (int) Math.ceil(maxRadius);
         BlockPos center = BlockPos.containing(location);
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        // Block states are shared palette entries; memoize only for this scan so tag reloads remain visible.
+        Map<BlockState, Integer> providerQualities = new IdentityHashMap<>();
         for (int dx = -radius; dx <= radius; dx++) {
+            double xDistance = center.getX() + dx + 0.5 - location.x;
+            double xDistanceSquared = xDistance * xDistance;
+            if (xDistanceSquared > maxRadiusSquared) continue;
             for (int dy = -radius; dy <= radius; dy++) {
+                double yDistance = center.getY() + dy + 0.5 - location.y;
+                double xyDistanceSquared = xDistanceSquared + yDistance * yDistance;
+                if (xyDistanceSquared > maxRadiusSquared) continue;
                 for (int dz = -radius; dz <= radius; dz++) {
+                    double zDistance = center.getZ() + dz + 0.5 - location.z;
+                    double distanceSq = xyDistanceSquared + zDistance * zDistance;
+                    if (distanceSq > maxRadiusSquared) continue;
                     mutable.set(center.getX() + dx, center.getY() + dy, center.getZ() + dz);
                     if (!level.isLoaded(mutable)) continue;
                     BlockState blockState = level.getBlockState(mutable);
-                    AirQualityLevel candidate = AirQualityLevel.getAirQualityFromBlock(blockState);
-                    if (blockState.getFluidState().is(FluidTags.LAVA)) {
-                        candidate = AirQualityLevel.RED;
+                    Integer candidateIndex = providerQualities.get(blockState);
+                    if (candidateIndex == null) {
+                        AirQualityLevel candidate = AirQualityLevel.getAirQualityFromBlock(blockState);
+                        if (blockState.getFluidState().is(FluidTags.LAVA)) {
+                            candidate = AirQualityLevel.RED;
+                        }
+                        candidateIndex = candidate == null ? -1 : candidate.ordinal();
+                        providerQualities.put(blockState, candidateIndex);
                     }
-                    if (candidate == null) continue;
-                    double distanceSq = Vec3.atCenterOf(mutable).distanceToSqr(location);
-                    if (distanceSq > candidate.getAirProviderRadius() * candidate.getAirProviderRadius()) continue;
+                    if (candidateIndex < 0 || distanceSq > radiiSquared[candidateIndex]) continue;
+                    AirQualityLevel candidate = qualities[candidateIndex];
                     if (candidate == AirQualityLevel.RED) return AirQualityLevel.RED;
                     if (worst == null || candidate.ordinal() > worst.ordinal()) worst = candidate;
                 }

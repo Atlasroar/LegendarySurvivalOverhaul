@@ -72,6 +72,7 @@ public final class WetContentCheck implements ModInitializer {
                     check(Config.Baked.temperatureEnabled && Config.Baked.wetnessEnabled,
                             "Coexistence warning does not disable LSO systems");
                 ServerLevel level = server.overworld();
+                lso.check.AirScanCheck.run(level);
                 level.getChunk(0, 0);
                 ServerPlayer player = new ServerPlayer(server, level, new GameProfile(UUID.randomUUID(), "WetCheck"));
                 player.connection = new ServerGamePacketListenerImpl(server, new Connection(PacketFlow.SERVERBOUND), player);

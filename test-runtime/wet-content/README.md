@@ -55,6 +55,15 @@ penalty removal on that surface and all four vanilla ice variants. This
 test-only tag never ships in LSO. Real IW Thin Ice movement/state coverage
 lives in the weathering-storms fixture.
 
+The server fixture also requires `AIR_SCAN_CHECK_PASSED`. Air checks compare
+the optimized scan with the previous algorithm at fractional eye positions
+and provider radii, including negative coordinates, overlapping lava/portals,
+lit/unlit providers, flowing lava, eye fluids, maximum radii, unloaded chunks,
+and entity-cache expiry/invalidation. A test-only mixin counts actual provider
+classifications and requires the empty-air scan to reduce thousands of calls
+to a handful. A warmed uncached timing comparison is printed for diagnostics;
+it is not a server-MSPT prediction or a timing-sensitive pass threshold.
+
 ## Client
 
 ```powershell

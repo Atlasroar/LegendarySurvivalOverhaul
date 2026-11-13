@@ -2,6 +2,30 @@
 
 ## Latest full release
 
+[**v3.2.3**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.3) targets Minecraft 1.20.1, Fabric, and Java 17.
+
+```text
+legendarysurvivaloverhaul-fabric-1.20.1-3.2.3.jar
+SHA-256: 0A04F6620EAB06BD741DD10AC3837E9BDFBEFC03E581F8417C0F006FB7B3456B
+```
+
+v3.2.3 optimizes nearby air-provider scans without changing provider radii,
+hazard precedence, eye-fluid handling, breathing rules or entity-cache timing.
+Out-of-range positions are rejected before world lookups; each distinct
+block state is classified only once per scan. Local empty-air uncached
+benchmarks were about 6-7.5x faster, not a whole-server MSPT guarantee.
+
+The supplied Spark tree contains LSO scans in player and villager ticks,
+but inconsistent parent/child timings prevent trustworthy server-time
+percentages. A fresh profile using a Spark build containing
+[lucko/spark#588](https://github.com/lucko/spark/pull/588) is needed to
+quantify server-wide gains. See [Air System Internals](Air-System-Internals#cache-and-cost).
+
+All v3.2.2 features remain included. No new settings, dependencies or
+save/config migrations are required.
+
+## Previous releases
+
 [**v3.2.2**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.2) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
@@ -29,8 +53,6 @@ rules, Fabric damage cancellation, held/equipped Sponge, actual IW Thin Ice
 travel across all block states, and common-tag/custom-surface recognition.
 Actual Scorchful/Frostiful coexistence and arbitrary third-party movement/
 protection mods are not claimed as tested. See [Mod Compatibility](Mod-Compatibility#thermal-and-skating-coexistence-v322).
-
-## Previous releases
 
 [**v3.2.1**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.1) targets Minecraft 1.20.1, Fabric, and Java 17.
 
@@ -110,6 +132,7 @@ The user confirmed in-game: the LevelZ health bonus remains stable after death, 
 
 | Version | Milestone |
 | --- | --- |
+| v3.2.3 | Reduce air-scan world lookups and repeated block-state classification without changing breathing rules, provider precedence or cache timing. |
 | v3.2.2 | Composable skating friction, player-attributed blade damage, lily wetness immunities, modded/thin-ice surfaces and independent thermal-system coexistence guidance. |
 | v3.2.1 | Add Crimson/Warped Lilies to the existing LSO Flora Field Guide category using the optional integration's plant tag. |
 | v3.2.0 | Configurable 1.5x wet cooling; standalone Crimson/Warped Lilies; Ice Skates; non-armored fur visuals preserving winter IDs/protection; no new mod dependencies. |
