@@ -34,6 +34,13 @@ Files live in `config/legendarysurvivaloverhaul`. Manual editing should be done 
 
 LSO's own config-sync channel sends gameplay settings independently of Fzzy Config, so clients and servers can have different optional editor installations. Client-only settings are excluded, received values are validated before application, and local preferences are restored on disconnect.
 
+**v3.2.4 performance work:** gameplay values still get checked every
+20 server ticks, but unchanged settings reuse their serialized snapshot.
+Joining players receive current values immediately, even before the next
+poll, and server shutdown clears the snapshot cache. Client-only edits do
+not rebuild gameplay JSON. This does not add external TOML hot-reloading or
+change editing permissions.
+
 Edit/sync hooks refresh the baked values used by gameplay. Air changes clear cached quality results; with Trinkets installed, its changes replace the insertion lookup. Some other options are only consulted during startup, so they still require a restart. Actual multiplayer packet flow and exhaustive in-game edit/permission validation remain open.
 
 ## Upgrading existing files

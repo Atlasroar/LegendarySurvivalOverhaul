@@ -24,13 +24,20 @@ public abstract class LivingEntityIceSkatingMixin extends Entity {
     @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/world/level/block/Block;getFriction()F"))
     private float legendarysurvivaloverhaul$skateFriction(float original) {
+        LivingEntity entity = (LivingEntity) (Object) this;
+        if (!IceSkating.wearingSkates(entity))
+            return original;
         BlockState floor = level().getBlockState(getBlockPosBelowThatAffectsMyMovement());
-        return IceSkating.friction((LivingEntity) (Object) this, floor, original);
+        return IceSkating.friction(entity, floor, original);
     }
 
     @Inject(method = "aiStep", at = @At("TAIL"))
     private void legendarysurvivaloverhaul$skateTick(CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
+        if (!IceSkating.wearingSkates(entity)) {
+            IceSkating.removeWalkingPenalty(entity);
+            return;
+        }
         BlockState floor = level().getBlockState(getBlockPosBelowThatAffectsMyMovement());
         IceSkating.updateWalkingPenalty(entity, floor);
         if (level().isClientSide && onGround() && IceSkating.skating(entity, floor)

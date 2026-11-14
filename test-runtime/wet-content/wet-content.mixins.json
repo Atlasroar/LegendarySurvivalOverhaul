@@ -2,6 +2,6 @@
   "required": true,
   "package": "lso.test",
   "compatibilityLevel": "JAVA_17",
-  "mixins": ["FrictionCompatMixin", "AirClassificationCountMixin"],
+  "mixins": ["FrictionCompatMixin", "AirClassificationCountMixin", "AirChunkLookupMixin", "SkateSupportLookupMixin", "EquipmentCalculationCountMixin", "ConfigSnapshotCountMixin", "ConfigSyncSendMixin", "WetnessEnvironmentLookupMixin", "WetnessParticleCheckMixin"],
   "injectors": { "defaultRequire": 1 }
 }

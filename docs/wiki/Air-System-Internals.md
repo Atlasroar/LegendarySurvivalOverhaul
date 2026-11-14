@@ -31,6 +31,19 @@ For maximum radius `r`, the scan bounds cover `(2 * ceil(r) + 1)^3` positions, b
 
 Within each scan, provider quality (including lava) is classified once per distinct immutable block state, rather than repeating lit-property and provider-tag checks at every position. This memoization is discarded after the scan, so no additional cross-tick or cross-reload state is retained. Provider distances, worst-quality precedence, and the existing entity-cache duration are unchanged.
 
+v3.2.4 also reuses chunk references within a scan.
+A small array covers the scan's chunk bounds; each encountered chunk is
+checked once and, if available, fetched with `ChunkStatus.FULL` and
+`create=false`. Missing chunks are skipped. Positions outside build height
+are rejected as before. Block states are still read at every eligible
+position, directly from the resolved chunk; there is no persistent provider
+index or cross-scan chunk cache.
+
+For the block-centered, default-radius empty-air fixture, chunk-availability
+checks and fetches together drop from 6,143 in v3.2.3 to 11, including the
+unchanged eye-block fetch. This does not mean only 11 block states are read:
+the same 3,071 spherical candidate positions remain covered.
+
 Search volume still grows cubically. A 32-block limit is a validation bound, not a recommendation for server performance. Do not call the uncached compute method repeatedly per frame.
 
 ## Ambient precedence

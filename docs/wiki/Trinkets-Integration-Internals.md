@@ -64,6 +64,21 @@ The Thermometer's override displays a temperature message, then calls `super.use
 
 Vanilla equipment has a separate server-tick reconciliation path in `FabricEquipmentAttributeHooks`, using persistent per-equipment-slot UUIDs and removing modifiers when gear/data/config no longer apply.
 
+v3.2.4 caches built-in temperature calculations per
+player/equipment slot. Full copied stacks detect item, count, damage,
+enchantment and other NBT changes, including legacy coat-tag migration.
+Live temperature-data values and the current coat strength detect datapack,
+sync, config and in-place resistance-data changes without waiting for a timer.
+The cache uses weak player keys and contains no player references in its values.
+
+This fast path is limited to the two built-in item/coating modifiers with the
+native item-data provider and temperature utility. Custom modifiers,
+subclasses or replacement temperature providers/utilities retain per-tick
+calculation. Body-resistance data and equipment eligibility are still read
+each tick. Attribute reconciliation is never skipped: it repairs removed or
+changed slot modifiers and immediately clears disabled/unequipped values.
+Trinkets' own accessory modifier lifecycle is unchanged.
+
 `TrinketsUtil.findEquippedItem` searches equipped stacks by tag; `isTrinketItemEquipped` checks both hands and equipped components. Keep those semantics in mind: an accessory's effect can have held-item support even though its inventory slot is configured.
 
 `TrinketsUtil` is an absence-safe facade: without Trinkets it retains hand/head checks, returns no accessory equipment, and does not attempt auto-equip. It does not create vanilla accessory slots or a new way to equip the Respirator.

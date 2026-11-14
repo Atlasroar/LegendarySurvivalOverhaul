@@ -10,6 +10,12 @@ import net.minecraft.resources.ResourceLocation;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonBodyPartResistance;
 import sfiomn.legendarysurvivaloverhaul.api.data.json.JsonTemperatureResistance;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.BodyDamageDataManager;
+import sfiomn.legendarysurvivaloverhaul.api.data.manager.TemperatureDataManager;
+import sfiomn.legendarysurvivaloverhaul.api.item.CoatEnum;
+import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
+import sfiomn.legendarysurvivaloverhaul.common.listeners.TemperatureItemListener;
+import sfiomn.legendarysurvivaloverhaul.common.temperature.attribute.CoatAttributeModifier;
+import sfiomn.legendarysurvivaloverhaul.common.temperature.attribute.ItemAttributeModifier;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.AttributeModifierBase;
 import sfiomn.legendarysurvivaloverhaul.registry.TemperatureModifierRegistry;
@@ -18,35 +24,103 @@ import sfiomn.legendarysurvivaloverhaul.util.ItemUtil;
 import sfiomn.legendarysurvivaloverhaul.util.internal.BodyDamageUtilInternal;
 import sfiomn.legendarysurvivaloverhaul.util.internal.TemperatureUtilInternal;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
+import java.util.WeakHashMap;
 
 public final class FabricEquipmentAttributeHooks {
+    private static final EquipmentSlot[] SLOTS = EquipmentSlot.values();
+    private static final Map<Player, CachedTemperature[]> TEMPERATURE_CACHE =
+            Collections.synchronizedMap(new WeakHashMap<>());
+
     private FabricEquipmentAttributeHooks() {
     }
 
     public static void updatePlayerEquipmentModifiers(Player player) {
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            if (slot == EquipmentSlot.MAINHAND || slot == EquipmentSlot.OFFHAND
-                    || slot == EquipmentSlot.HEAD || slot == EquipmentSlot.CHEST
-                    || slot == EquipmentSlot.LEGS || slot == EquipmentSlot.FEET) {
-                updateSlotModifiers(player, slot, player.getItemBySlot(slot));
-            }
+        CachedTemperature[] cache = null;
+        if (canCacheTemperature()) {
+            cache = TEMPERATURE_CACHE.computeIfAbsent(player, ignored -> new CachedTemperature[SLOTS.length]);
+        } else {
+            TEMPERATURE_CACHE.remove(player);
+        }
+        for (EquipmentSlot slot : SLOTS) {
+            updateSlotModifiers(player, slot, player.getItemBySlot(slot), cache);
         }
     }
 
-    private static void updateSlotModifiers(Player player, EquipmentSlot slot, ItemStack stack) {
+    private static boolean canCacheTemperature() {
+        // Extensions can depend on time, tags or external state rather than just the stack/data.
+        if (TemperatureDataManager.internalItem == null
+                || TemperatureDataManager.internalItem.getClass() != TemperatureItemListener.class
+                || TemperatureUtil.internal == null
+                || TemperatureUtil.internal.getClass() != TemperatureUtilInternal.class
+                || TemperatureModifierRegistry.ITEM_ATTRIBUTE_MODIFIERS_REGISTRY.size() != 2)
+            return false;
+
+        boolean item = false;
+        boolean coat = false;
+        for (AttributeModifierBase modifier : TemperatureModifierRegistry.ITEM_ATTRIBUTE_MODIFIERS_REGISTRY) {
+            if (modifier.getClass() == ItemAttributeModifier.class)
+                item = true;
+            else if (modifier.getClass() == CoatAttributeModifier.class)
+                coat = true;
+            else
+                return false;
+        }
+        return item && coat;
+    }
+
+    private static JsonTemperatureResistance getTemperature(EquipmentSlot slot, ItemStack stack,
+                                                            ResourceLocation itemId, CachedTemperature[] cache) {
+        if (!Config.Baked.temperatureEnabled || itemId == null) {
+            if (cache != null)
+                cache[slot.ordinal()] = null;
+            return null;
+        }
+
+        JsonTemperatureResistance itemValues = cache == null ? null : TemperatureDataManager.getItem(itemId);
+        CachedTemperature cached = cache == null ? null : cache[slot.ordinal()];
+        if (cached != null && cached.matches(stack, itemValues))
+            return cached.temperature;
+
+        JsonTemperatureResistance temperature = new JsonTemperatureResistance();
+        for (AttributeModifierBase modifier : TemperatureModifierRegistry.ITEM_ATTRIBUTE_MODIFIERS_REGISTRY) {
+            temperature.add(modifier.getItemAttributes(stack));
+        }
+        if (cache != null) {
+            CoatEnum coat = CoatEnum.getFromId(TemperatureUtil.getArmorCoatTag(stack));
+            JsonTemperatureResistance snapshot = itemValues == null ? null : new JsonTemperatureResistance(
+                    itemValues.temperature, itemValues.heatResistance, itemValues.coldResistance,
+                    itemValues.thermalResistance);
+            // Copy after calculation, since reading a legacy coat tag migrates the stack's NBT.
+            cache[slot.ordinal()] = new CachedTemperature(stack.copy(), snapshot, coat,
+                    coat == null ? 0 : coat.modifier(), temperature);
+        }
+        return temperature;
+    }
+
+    private record CachedTemperature(ItemStack stack, JsonTemperatureResistance itemValues,
+                                     CoatEnum coat, double coatModifier, JsonTemperatureResistance temperature) {
+        private boolean matches(ItemStack current, JsonTemperatureResistance values) {
+            return ItemStack.matches(stack, current)
+                    && Double.compare(coatModifier, coat == null ? 0 : coat.modifier()) == 0
+                    && (itemValues == null ? values == null : values != null
+                    && Float.compare(itemValues.temperature, values.temperature) == 0
+                    && Float.compare(itemValues.heatResistance, values.heatResistance) == 0
+                    && Float.compare(itemValues.coldResistance, values.coldResistance) == 0
+                    && Float.compare(itemValues.thermalResistance, values.thermalResistance) == 0);
+        }
+    }
+
+    private static void updateSlotModifiers(Player player, EquipmentSlot slot, ItemStack stack,
+                                            CachedTemperature[] cache) {
         UUID temperatureUuid = TemperatureUtilInternal.equipmentSlotTemperatureUuid.get(slot);
         UUID bodyResistanceUuid = BodyDamageUtilInternal.equipmentSlotBodyResistanceUuid.get(slot);
         boolean supportedStack = !stack.isEmpty() && ItemUtil.canBeEquippedInSlot(stack, slot);
         ResourceLocation itemId = supportedStack ? BuiltInRegistries.ITEM.getKey(stack.getItem()) : null;
 
-        JsonTemperatureResistance temperature = null;
-        if (Config.Baked.temperatureEnabled && itemId != null) {
-            temperature = new JsonTemperatureResistance();
-            for (AttributeModifierBase modifier : TemperatureModifierRegistry.ITEM_ATTRIBUTE_MODIFIERS_REGISTRY) {
-                temperature.add(modifier.getItemAttributes(stack));
-            }
-        }
+        JsonTemperatureResistance temperature = getTemperature(slot, stack, itemId, cache);
         setModifier(player, TemperatureUtilInternal.HEATING_TEMPERATURE, temperatureUuid,
                 temperature == null ? 0 : Math.max(temperature.temperature, 0));
         setModifier(player, TemperatureUtilInternal.COOLING_TEMPERATURE, temperatureUuid,

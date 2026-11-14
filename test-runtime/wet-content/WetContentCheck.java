@@ -60,6 +60,8 @@ public final class WetContentCheck implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        lso.check.WetnessLookupCheck.register();
+        lso.check.EquipmentCheck.register();
         ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) ->
                 !entity.getUUID().equals(protectedVictim));
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
@@ -72,7 +74,14 @@ public final class WetContentCheck implements ModInitializer {
                     check(Config.Baked.temperatureEnabled && Config.Baked.wetnessEnabled,
                             "Coexistence warning does not disable LSO systems");
                 ServerLevel level = server.overworld();
+                try {
+                    sfiomn.legendarysurvivaloverhaul.config.ConfigNetworkingCheck.run(server);
+                } catch (ReflectiveOperationException e) {
+                    throw new IllegalStateException("Cannot run config-cache integration checks", e);
+                }
+                lso.check.EquipmentCheck.run(level);
                 lso.check.AirScanCheck.run(level);
+                lso.check.WetnessLookupCheck.run(level);
                 level.getChunk(0, 0);
                 ServerPlayer player = new ServerPlayer(server, level, new GameProfile(UUID.randomUUID(), "WetCheck"));
                 player.connection = new ServerGamePacketListenerImpl(server, new Connection(PacketFlow.SERVERBOUND), player);
@@ -285,7 +294,9 @@ public final class WetContentCheck implements ModInitializer {
         zombie.setPos(8.5, 200, 8.5);
         zombie.setOnGround(true);
         zombie.setDeltaMovement(0.3, 0, 0);
+        lso.check.SkateLookupCheck.begin(zombie);
         zombie.travel(Vec3.ZERO);
+        int wornTravelLookups = lso.check.SkateLookupCheck.finish();
         close(zombie.getDeltaMovement().x, 0.3 * 1.075 * 0.91, "Actual travel uses skate friction mixin");
         System.setProperty("lso.test.externalFriction", "true");
         zombie.setPos(8.5, 200, 8.5);
@@ -297,8 +308,12 @@ public final class WetContentCheck implements ModInitializer {
         zombie.setPos(8.5, 200, 8.5);
         zombie.setOnGround(true);
         zombie.setDeltaMovement(0.3, 0, 0);
+        lso.check.SkateLookupCheck.begin(zombie);
         zombie.travel(Vec3.ZERO);
+        int unwornTravelLookups = lso.check.SkateLookupCheck.finish();
         close(zombie.getDeltaMovement().x, 0.3 * 0.98 * 0.5 * 0.91, "External friction unchanged without LSO skates");
+        check(unwornTravelLookups + 1 == wornTravelLookups,
+                "Non-skater travel skips LSO's extra supporting-block lookup");
         System.clearProperty("lso.test.externalFriction");
         zombie.setItemSlot(EquipmentSlot.FEET, new ItemStack(ItemRegistry.ICE_SKATES.get()));
         zombie.setNoAi(true);
@@ -314,11 +329,17 @@ public final class WetContentCheck implements ModInitializer {
         zombie.setDeltaMovement(Vec3.ZERO);
         zombie.setOnGround(true);
         double base = zombie.getAttributeValue(Attributes.MOVEMENT_SPEED);
+        lso.check.SkateLookupCheck.begin(zombie);
         zombie.aiStep();
+        int wornTickLookups = lso.check.SkateLookupCheck.finish();
         close(zombie.getAttributeValue(Attributes.MOVEMENT_SPEED), base * 0.5, "Actual movement tick applies off-ice penalty");
         zombie.setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
+        lso.check.SkateLookupCheck.begin(zombie);
         zombie.aiStep();
+        int unwornTickLookups = lso.check.SkateLookupCheck.finish();
         close(zombie.getAttributeValue(Attributes.MOVEMENT_SPEED), base, "Removing skates cleans walking penalty");
+        check(unwornTickLookups + 1 == wornTickLookups,
+                "Unequip cleanup skips LSO's supporting-block lookup");
         zombie.setItemSlot(EquipmentSlot.FEET, new ItemStack(ItemRegistry.ICE_SKATES.get()));
         for (var block : new Block[] {Blocks.ICE, Blocks.PACKED_ICE, Blocks.BLUE_ICE, Blocks.FROSTED_ICE, Blocks.GLASS}) {
             check(IceSkating.isSkateableIce(block.defaultBlockState()), "Ice class or common tag recognized: " + block);

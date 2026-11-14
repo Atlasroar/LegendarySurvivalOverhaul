@@ -58,6 +58,22 @@ Editor updates copy into the schemas and call `Config.bake`. Runtime consumers c
 
 LSO's `config_sync` channel synchronizes the eight gameplay configs even when client and server have different optional UI libraries. Client-only settings are excluded; received values are validated before application, and local preferences are restored on disconnect. The optional editor's own synchronization remains supported. Real multiplayer/UI interaction still needs an in-game check.
 
+The v3.2.4 `FileConfigStore.SnapshotCache` compares captured gameplay
+values before constructing JSON. Native scalar values are immutable; lists
+are recursively copied and custom mutable values get detached JSON trees.
+Polling still reads the current config fields, so setting/config replacement
+and all existing validation/load/sync paths remain visible without new
+invalidation hooks. The cached wire string and last broadcast string are
+separate: a fresh join snapshot cannot consume a pending change for existing
+players. Shutdown clears both cache state and the polling counter.
+
+Wetness's v3.2.4 lookup cleanup reads the selected fluid position and
+the block above once per due update, sharing those states between particle
+checks and wetting/drying calculations. The floating-vehicle offset and its
+lower-block-only particle rule are unchanged; block state is still read
+through the world API. Immunity and mount checks remain live, and no fluid
+or accessory state is cached across updates.
+
 Field labels use `legendarysurvivaloverhaul.<config>.<field>`, descriptions use `.desc` or `@Comment`, and group labels follow the config/group key. Keep translations aligned with field names.
 
 ## Survival facades

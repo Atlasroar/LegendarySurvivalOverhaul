@@ -18,6 +18,29 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v3.2.4
+====
+Completed six behavior-preserving performance stages:
+- Skip skating support-block lookups for non-wearers while still removing
+  stale walking penalties after unequipping skates.
+- Reuse temperature scan directions and its existing sky condition.
+- Resolve available air-scan chunks once per scan without creating new
+  chunks. Default empty-air chunk checks/fetches drop from 6,143 to 11;
+  all 3,071 eligible block positions remain covered.
+- Cache built-in equipment temperature calculations until stack/NBT,
+  temperature data or coat strength changes. Attribute reconciliation
+  remains live; custom modifiers/providers retain uncached behavior.
+- Rebuild gameplay config JSON only when captured values change, preserving
+  20-tick polling, immediate join snapshots and pending broadcasts.
+- Reuse both fluid states within each wetness update. Partially submerged
+  wet updates use two fluid reads instead of four; block reads remain one.
+
+Survival balance, mob air sensitivity, provider radii/precedence, cache
+timing, wetness immunity and mount behavior remain unchanged. No new
+settings, required dependencies or save/config migrations.
+Operation counts are focused fixture results, not server-wide MSPT claims;
+a new installed-release Spark profile is needed to quantify overall gains.
+
 v3.2.3
 ====
 Optimized nearby air-provider scanning: reject positions outside the
