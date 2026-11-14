@@ -69,7 +69,7 @@ Air profiles are loaded server-side with no dedicated client dataset packet. Oxy
 
 The mixin captures air at `LivingEntity.baseTick` HEAD. It applies LSO's result once after vanilla's update (TAIL), with an earlier injection before vanilla's drowning check when oxygen is exhausted. A sentinel prevents double application.
 
-The custom path only applies while enabled and for types in `legendarysurvivaloverhaul:air_quality_sensitive`; invulnerable players are excluded. On the client, it restores the tick-entry air instead of predicting vanilla dry-air refill between server updates.
+The custom path only applies while enabled and to non-invulnerable players in `legendarysurvivaloverhaul:air_quality_sensitive`. The default tag contains only `minecraft:player`; adding mobs to the tag cannot enable LSO breathing for them. Non-player entities retain vanilla breathing and drowning without LSO air scans or suffocation damage. On the client, the player path restores the tick-entry air instead of predicting vanilla dry-air refill between server updates.
 
 ```text
 GREEN  -> +greenAirRefillAmount

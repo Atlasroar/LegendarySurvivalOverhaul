@@ -2,6 +2,31 @@
 
 ## Latest full release
 
+[**v4.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v4.0.0) targets Minecraft 1.20.1, Fabric, and Java 17.
+
+```text
+legendarysurvivaloverhaul-fabric-1.20.1-4.0.0.jar
+SHA-256: 6417D41189AE21305CA9FEB9D629640AA63933F5946CDDE3FD8FBE16AB527925
+
+legendarysurvivaloverhaul-fabric-1.20.1-4.0.0-sources.jar
+SHA-256: 681177014107AC07955620990634096AAE37056EDD4BAE4A351DDB6350C79585
+```
+
+Environmental air quality is strictly player-only. Non-player entities
+retain vanilla breathing and drowning, with no LSO air scans or
+environmental suffocation damage. The default `air_quality_sensitive` tag
+contains only players; datapacks can exclude players but cannot enable
+custom breathing for mobs. This incompatible datapack behavior warrants
+a major release under the repository's SemVer policy.
+
+Player hazards, equipment protection, invulnerable-player exemptions,
+provider radii and entity-cache timing remain unchanged. Drowned melee
+air stealing is separate and still affects living victims as before.
+All v3.2.4 optimizations remain included. No new settings, required
+dependencies or save/config migrations.
+
+## Previous releases
+
 [**v3.2.4**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.4) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
@@ -33,8 +58,6 @@ These are focused operation counts, not a whole-server MSPT guarantee.
 A new Spark capture after installation is needed to measure overall gains.
 All v3.2.3 features remain included. See the
 [staged performance work](Development-and-Work-Plan#staged-performance-work-after-v323).
-
-## Previous releases
 
 [**v3.2.3**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.3) targets Minecraft 1.20.1, Fabric, and Java 17.
 
@@ -164,6 +187,7 @@ The user confirmed in-game: the LevelZ health bonus remains stable after death, 
 
 | Version | Milestone |
 | --- | --- |
+| v4.0.0 | Strictly player-only environmental air quality; datapack mob opt-in removed, player breathing and Drowned air stealing unchanged. |
 | v3.2.4 | Six behavior-preserving optimization stages covering skating, temperature, air chunks, equipment, config serialization and wetness lookups. |
 | v3.2.3 | Reduce air-scan world lookups and repeated block-state classification without changing breathing rules, provider precedence or cache timing. |
 | v3.2.2 | Composable skating friction, player-attributed blade damage, lily wetness immunities, modded/thin-ice surfaces and independent thermal-system coexistence guidance. |

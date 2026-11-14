@@ -126,6 +126,11 @@ classifications and requires the empty-air scan to reduce thousands of calls
 to a handful. They also count chunk-availability checks/fetches, require at
 most one check/fetch pair per covered chunk, and confirm scans never request
 creation of neighboring chunks. Missing in-range chunks remain absent.
+`AIR_PLAYER_ONLY_CHECK_PASSED` verifies that survival players still lose air
+near lava, Creative/Spectator players remain exempt, and the five formerly
+air-sensitive mob types retain their existing air/health without any LSO
+chunk lookup during the air tick.
+
 A warmed uncached timing comparison against v3.2.3 is printed for diagnostics;
 it is not a server-MSPT prediction or a timing-sensitive pass threshold.
 
@@ -144,7 +149,7 @@ world/equipped-armor visual or multiplayer movement test.
 
 ```powershell
 .\gradlew.bat --console=plain -PwithoutOptionalIntegrations -I src\test\resources\config-tests.gradle build configRegression configAdapterRegression
-python test-runtime\wet-content\check_resources.py build\libs\legendarysurvivaloverhaul-fabric-1.20.1-3.2.4.jar
+python test-runtime\wet-content\check_resources.py build\libs\legendarysurvivaloverhaul-fabric-1.20.1-4.0.0.jar
 .\gradlew.bat --console=plain -PwithoutOptionalIntegrations -PwithWeathering -I test-runtime\weathering-storms\check.gradle jarWeatheringStormCheck runServer
 ```
 

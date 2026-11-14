@@ -18,6 +18,21 @@ LegendarySurvivalOverhaul:
 
 == Fabric port (SemVer) ==
 
+v4.0.0
+====
+Environmental air quality is now strictly player-only. Villagers,
+wandering traders, pillagers, evokers and vindicators no longer perform
+LSO air scans or receive LSO air depletion/suffocation. All non-player
+entities retain vanilla breathing and drowning.
+
+The air_quality_sensitive entity tag now contains only minecraft:player.
+Datapacks may still exclude players, but cannot enable custom breathing
+for mobs. This intentional incompatible datapack behavior follows the
+major-version policy. Player hazards, breathing equipment, invulnerable
+player exemptions, provider radii and cache timing remain unchanged.
+Drowned melee air stealing remains separate and unchanged for living
+victims. No new settings, dependencies or save/config migration.
+
 v3.2.4
 ====
 Completed six behavior-preserving performance stages:

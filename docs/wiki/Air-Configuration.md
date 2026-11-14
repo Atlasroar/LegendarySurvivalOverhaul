@@ -18,7 +18,7 @@
 | `redAirProviderRadius` | `3.0` | 1-32 blocks; includes lava |
 | `greenAirProviderRadius` | `9.0` | 1-32 blocks; includes portals |
 
-Large radii are expensive: the search volume grows cubically. Use modest values and measure server tick performance, especially with many sensitive entities.
+Large radii are expensive: the search volume grows cubically. Use modest values and measure server tick performance, especially with many players. LSO's custom air-quality tick does not evaluate non-player entities.
 
 ## Dimension and height controls
 
