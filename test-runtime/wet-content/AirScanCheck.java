@@ -4,17 +4,23 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.PacketFlow;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityLevel;
 import sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityUtil;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.AirQualityDataManager;
 import sfiomn.legendarysurvivaloverhaul.common.integration.vanillabackport.VanillaBackportCompat;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
+import sfiomn.legendarysurvivaloverhaul.common.events.airquality.AirQualityHooks;
 
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -197,6 +203,8 @@ public final class AirScanCheck {
 
             ServerPlayer player = new ServerPlayer(level.getServer(), level,
                     new GameProfile(UUID.randomUUID(), "AirScanCheck"));
+            player.connection = new ServerGamePacketListenerImpl(level.getServer(),
+                    new Connection(PacketFlow.SERVERBOUND), player);
             player.setPos(eyes.x, eyes.y - player.getEyeHeight(), eyes.z);
             AirQualityUtil.invalidateCache();
             check(AirQualityUtil.getAirQualityAtLocation(player) == AirQualityLevel.GREEN,
@@ -208,6 +216,36 @@ public final class AirScanCheck {
             level.getServer().getWorldData().overworldData().setGameTime(time + 10);
             check(AirQualityUtil.getAirQualityAtLocation(player) == AirQualityLevel.RED,
                     "Expired cache detects the new hazard");
+            check(AirQualityUtil.isSensitiveToAirQuality(player), "Survival player remains air-sensitive");
+            player.setAirSupply(200);
+            int playerChange = AirQualityLevel.RED.getAirAmountAfterProtection(player);
+            AirQualityHooks.onAirSupplyTick(player, 200);
+            check(player.getAirSupply() == 200 + playerChange && playerChange < 0,
+                    "Player still loses air in a lava hazard");
+            for (var type : java.util.List.of(EntityType.VILLAGER, EntityType.WANDERING_TRADER,
+                    EntityType.PILLAGER, EntityType.EVOKER, EntityType.VINDICATOR)) {
+                var mob = type.create(level);
+                check(mob != null, "Create former air-sensitive mob: " + type);
+                mob.setPos(player.getX(), player.getY(), player.getZ());
+                check(!AirQualityUtil.isSensitiveToAirQuality(mob), "Mobs are never LSO air-sensitive");
+                mob.setAirSupply(123);
+                float health = mob.getHealth();
+                counting = true;
+                resetChunkLookups();
+                AirQualityHooks.onAirSupplyTick(mob, -20);
+                counting = false;
+                check(chunkLookups == 0 && mob.getAirSupply() == 123 && mob.getHealth() == health,
+                        "Mob air tick leaves vanilla air/health untouched and performs no scan: " + type);
+            }
+            player.setGameMode(GameType.CREATIVE);
+            check(!AirQualityUtil.isSensitiveToAirQuality(player), "Creative player remains exempt");
+            player.setAirSupply(123);
+            AirQualityHooks.onAirSupplyTick(player, -20);
+            check(player.getAirSupply() == 123, "Creative player air remains untouched");
+            player.setGameMode(GameType.SPECTATOR);
+            check(!AirQualityUtil.isSensitiveToAirQuality(player), "Spectator remains exempt");
+            player.setGameMode(GameType.SURVIVAL);
+            System.out.println("AIR_PLAYER_ONLY_CHECK_PASSED");
             level.setBlock(lava, Blocks.AIR.defaultBlockState(), 2);
             AirQualityUtil.invalidateCache();
             check(AirQualityUtil.getAirQualityAtLocation(player) == AirQualityLevel.GREEN,

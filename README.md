@@ -4,7 +4,7 @@
 
 **Make survival matter.** This Fabric 1.20.1 port of Legendary Survival Overhaul adds configurable environmental survival, hydration, injuries, health, and air quality.
 
-[**Download v3.2.4**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.4) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
+[**Download v4.0.0**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v4.0.0) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
 
 ## Features
 
@@ -12,7 +12,7 @@
 - **Hydration:** thirst and saturation, drinking, canteens, purification, consumable effects, and hydration tooltips.
 - **Localized injuries:** body-part damage, secondary effects, healing supplies, and a limb-health screen (**H** by default).
 - **Expanded health:** broken, shield, and additional hearts, with optional Overflowing Bars HUD spacing.
-- **Air quality:** integrated Thin Air mechanics, dimension/height hazards, lava fumes, soul sources, Safety Lanterns, Air Bladders, Respirators, and Turtle Helmet protection. Water Breathing is displayed as **Free Breathing** in English.
+- **Air quality:** player-only integrated Thin Air mechanics, dimension/height hazards, lava fumes, soul sources, Safety Lanterns, Air Bladders, Respirators, and Turtle Helmet protection. Mobs retain vanilla breathing and drowning. Water Breathing is displayed as **Free Breathing** in English.
 - **Configuration:** **264 settings across nine configs**, including **LSO - Air** and **LSO - Trinkets**. File-based configuration works standalone; optional Fzzy Config adds in-game editing.
 - **Biome compatibility:** native climates for modded biomes, datapack-only temperature overrides, and optional VanillaBackport sulfur-cave air. Equipped Respirators prevent new Nausea effects.
 - **Accessory slot customization:** choose allowed slots for eight LSO accessories; the Respirator remains excluded.
@@ -45,6 +45,12 @@ Build from source with **JDK 17**: `.\gradlew.bat build` on Windows or `./gradle
 v3.1.0 adds optional [Atlasroar/Immersive-Weathering](https://github.com/Atlasroar/Immersive-Weathering) **2.5.0+** storm integration. Exposed snow/sand storms drive dangerous cold/heat at 2x speed with Cold Hunger/Heat Thirst, countered by Hot Drink/Cold Drink respectively. A complete centered 3x3 sky-blocking roof within 10 blocks above eye level provides shelter. Freezing-wind hits separately apply 10 seconds of Cold Hunger. See the [versioned compatibility guide](docs/wiki/Mod-Compatibility.md#immersive-weathering-storms-v310) for exact scope and the independent toggle.
 
 ## Performance optimizations
+
+**v4.0.0 makes environmental air quality player-only:** mobs no longer scan
+LSO air or receive its environmental suffocation damage, even if a datapack
+tags them as air-sensitive. Player breathing and Drowned melee air stealing
+remain unchanged. The major version reflects this incompatible datapack
+behavior; existing saves and configs require no migration.
 
 **v3.2.4 completes six performance stages:** non-wearer skating fast paths,
 temperature scan housekeeping, scan-local air chunk reuse, built-in

@@ -57,15 +57,15 @@ Add the item to both tags for YELLOW and RED protection:
 
 This is equipment protection, not automatic GREEN air. It prevents hazardous drain and follows the configured durability interval. Tags alone do not turn a normal armor item into a Trinkets item or register a new wearable API implementation.
 
-## Add an entity to breathing evaluation
+## Player breathing eligibility
 
 `data/legendarysurvivaloverhaul/tags/entity_types/air_quality_sensitive.json`
 
 ```json
-{"replace": false, "values": ["minecraft:villager"]}
+{"replace": true, "values": ["minecraft:player"]}
 ```
 
-This extends the custom air tick eligibility. Test mob air/drowning behavior and server load; it does not add a player-style HUD to that entity.
+LSO air quality is player-only. This tag can include or exclude players from custom breathing evaluation, but adding a mob does not enable LSO air mechanics for it. An empty replacement disables custom player breathing; non-player entities always retain vanilla breathing and drowning.
 
 ## Add a custom Trinkets slot
 

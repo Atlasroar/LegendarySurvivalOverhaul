@@ -162,8 +162,9 @@ public final class AirQualityUtil {
     }
 
     public static boolean isSensitiveToAirQuality(LivingEntity entity) {
-        return entity.getType().is(AirQualityTagRegistry.AIR_QUALITY_SENSITIVE_ENTITY_TYPE_TAG) && (
-                !(entity instanceof Player player) || !player.getAbilities().invulnerable);
+        return entity instanceof Player player
+                && !player.getAbilities().invulnerable
+                && entity.getType().is(AirQualityTagRegistry.AIR_QUALITY_SENSITIVE_ENTITY_TYPE_TAG);
     }
 
     public static ItemStack findEquippedBreathingEquipment(LivingEntity entity, TagKey<Item> tagKey) {
