@@ -35,6 +35,7 @@ public final class ConfigFallbackTest {
             persistence(directory);
             migration(directory);
             synchronization();
+            snapshotCaching();
             absenceSafety();
             System.out.println("PASS: config TOML, validation, synchronization, restoration and optional-class isolation");
         } finally {
@@ -167,6 +168,76 @@ public final class ConfigFallbackTest {
         // Loading these APIs must work with neither Fzzy nor the Kotlin standard library on the classpath.
         check(new CommonConfig().routinePacketSync.get() == 30, "real schema default");
         check(new TrinketsConfig().thermometerSlots.get().equals(List.of("legs/belt")), "optional Trinkets schema default");
+    }
+
+    private static void snapshotCaching() throws Exception {
+        Settings settings = new Settings();
+        ClientConfig client = new ClientConfig();
+        List<ConfigData> configs = List.of(settings, client);
+        FileConfigStore.SnapshotCache cache = new FileConfigStore.SnapshotCache();
+        String first = cache.get(configs);
+        check(first.equals(referenceSnapshot(configs)), "cached wire representation matches original");
+        client.foodSaturationDisplayed.validateAndSet(false);
+        settings.count.validateAndSet(4);
+        settings.slots.validateAndSet(List.of("legs/belt"));
+        check(cache.get(configs) == first, "client-only and equal validated values reuse serialized snapshot");
+        settings.count.validateAndSet(999);
+        String changed = cache.get(configs);
+        check(changed.equals(referenceSnapshot(configs)) && changed != first, "clamped change refreshes snapshot");
+        settings.count.validateAndSet(999);
+        check(cache.get(configs) == changed, "same clamped result does not serialize again");
+        settings.slots.validateAndSet(List.of());
+        check(cache.get(configs).equals(referenceSnapshot(configs)), "list edits refresh snapshot");
+        settings.count = new ConfigValue.ValidatedInt(7, 20, 1);
+        check(cache.get(configs).equals(referenceSnapshot(configs)), "replacement setting is detected");
+        Files.writeString(LegendarySurvivalOverhaul.modConfigPath.resolve("test.toml"), "count = 8\n");
+        FileConfigStore.load(settings);
+        check(cache.get(configs).equals(referenceSnapshot(configs)) && settings.count.get() == 8,
+                "TOML load refreshes cached values");
+        JsonObject saved = FileConfigStore.snapshot(configs);
+        settings.radius.validateAndSet(10.0);
+        cache.get(configs);
+        FileConfigStore.apply(configs, saved);
+        check(cache.get(configs).equals(saved.toString()), "network restoration refreshes cached values");
+        Settings replacement = new Settings();
+        configs = List.of(replacement, client);
+        String restored = cache.get(configs);
+        check(restored.equals(referenceSnapshot(configs)), "replacement config is detected");
+        cache.clear();
+        check(cache.get(configs).equals(restored) && cache.get(configs) != restored,
+                "restart resets serialization cache");
+
+        MutableSettings mutable = new MutableSettings();
+        configs = List.of(mutable);
+        cache.get(configs);
+        mutable.object.get().addProperty("value", 2);
+        check(cache.get(configs).equals(referenceSnapshot(configs)), "custom mutable object is detached");
+        mutable.list.get().get(0).addProperty("value", 3);
+        check(cache.get(configs).equals(referenceSnapshot(configs)), "mutable list elements are detached");
+    }
+
+    private static String referenceSnapshot(Iterable<ConfigData> configs) {
+        var gson = new com.google.gson.Gson();
+        JsonObject root = new JsonObject();
+        for (ConfigData config : configs) {
+            if (config instanceof ClientConfig) continue;
+            JsonObject fields = new JsonObject();
+            config.fields().forEach((name, value) -> fields.add(name, gson.toJsonTree(value.get())));
+            root.add(config.name, fields);
+        }
+        return root.toString();
+    }
+
+    public static final class MutableObject extends ConfigValue<JsonObject> {
+        public MutableObject() { super(JsonParser.parseString("{\"value\":1}").getAsJsonObject()); }
+        protected JsonObject validate(JsonObject value) { return value; }
+    }
+
+    public static final class MutableSettings extends ConfigData {
+        public MutableObject object = new MutableObject();
+        public ConfigValue.ValidatedList<JsonObject> list = new MutableObject().toList(
+                List.of(JsonParser.parseString("{\"value\":1}").getAsJsonObject()));
+        public MutableSettings() { super("mutable"); }
     }
 
     private static void check(boolean condition, String message) {

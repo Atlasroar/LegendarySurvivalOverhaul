@@ -110,14 +110,63 @@ public final class FileConfigStore {
     }
 
     public static JsonObject snapshot(Iterable<ConfigData> configs) {
-        JsonObject root = new JsonObject();
+        return serializeSnapshot(snapshotValues(configs));
+    }
+
+    private static Map<String, Map<String, Object>> snapshotValues(Iterable<ConfigData> configs) {
+        Map<String, Map<String, Object>> values = new LinkedHashMap<>();
         for (ConfigData config : configs) {
             if (config instanceof ClientConfig) continue;
-            JsonObject fields = new JsonObject();
-            config.fields().forEach((name, value) -> fields.add(name, GSON.toJsonTree(value.get())));
-            root.add(config.name, fields);
+            Map<String, Object> fields = new LinkedHashMap<>();
+            config.fields().forEach((name, value) -> fields.put(name, snapshotValue(value.get())));
+            values.put(config.name, fields);
         }
+        return values;
+    }
+
+    private static Object snapshotValue(Object value) {
+        if (value instanceof String || value instanceof Boolean || value instanceof Character
+                || value instanceof Byte || value instanceof Short || value instanceof Integer
+                || value instanceof Long || value instanceof Float || value instanceof Double
+                || value instanceof Enum<?>)
+            return value;
+        if (value instanceof List<?> list) {
+            List<Object> copy = new ArrayList<>(list.size());
+            for (Object entry : list) copy.add(snapshotValue(entry));
+            return List.copyOf(copy);
+        }
+        // Custom settings may expose mutable values; keep a detached tree for comparison.
+        return GSON.toJsonTree(value);
+    }
+
+    private static JsonObject serializeSnapshot(Map<String, Map<String, Object>> values) {
+        JsonObject root = new JsonObject();
+        values.forEach((name, settings) -> {
+            JsonObject fields = new JsonObject();
+            settings.forEach((key, value) -> fields.add(key, GSON.toJsonTree(value)));
+            root.add(name, fields);
+        });
         return root;
+    }
+
+    static final class SnapshotCache {
+        private Map<String, Map<String, Object>> lastValues;
+        private String serialized;
+
+        String get(Iterable<ConfigData> configs) {
+            Map<String, Map<String, Object>> values = snapshotValues(configs);
+            if (!values.equals(lastValues)) {
+                String snapshot = serializeSnapshot(values).toString();
+                lastValues = values;
+                serialized = snapshot;
+            }
+            return serialized;
+        }
+
+        void clear() {
+            lastValues = null;
+            serialized = null;
+        }
     }
 
     /** Validate the entire packet before changing any live settings. Unknown keys are forward compatible. */

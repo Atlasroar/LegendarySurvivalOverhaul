@@ -6,7 +6,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.Vec3;
 import sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityLevel;
 import sfiomn.legendarysurvivaloverhaul.api.airquality.AirQualityUtil;
@@ -14,15 +16,39 @@ import sfiomn.legendarysurvivaloverhaul.api.data.manager.AirQualityDataManager;
 import sfiomn.legendarysurvivaloverhaul.common.integration.vanillabackport.VanillaBackportCompat;
 import sfiomn.legendarysurvivaloverhaul.config.Config;
 
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
 public final class AirScanCheck {
     private static boolean counting;
     private static int classifications;
+    private static int chunkLookups;
+    private static int creatingChunkLookups;
+    private static final Map<Long, Integer> loadedChecks = new HashMap<>();
+    private static final Map<Long, Integer> nonCreatingFetches = new HashMap<>();
 
     public static void recordClassification() {
         if (counting) classifications++;
+    }
+
+    public static void recordChunkLookup(int x, int z, boolean create, boolean loadedCheck) {
+        if (counting) {
+            chunkLookups++;
+            if (create) creatingChunkLookups++;
+            if (loadedCheck || !create) {
+                Map<Long, Integer> counts = loadedCheck ? loadedChecks : nonCreatingFetches;
+                counts.merge(ChunkPos.asLong(x, z), 1, Integer::sum);
+            }
+        }
+    }
+
+    private static void resetChunkLookups() {
+        chunkLookups = creatingChunkLookups = 0;
+        loadedChecks.clear();
+        nonCreatingFetches.clear();
     }
 
     private static void check(boolean value, String message) {
@@ -60,6 +86,21 @@ public final class AirScanCheck {
             check(previousClassifications == 6860, "Reference visits the default 19-cubed scan plus eyes");
             check(optimizedClassifications <= 4,
                     "Empty-air scan classifies shared states once, not thousands of times");
+            counting = true;
+            resetChunkLookups();
+            referenceCurrent(level, eyes);
+            int previousChunkLookups = chunkLookups;
+            resetChunkLookups();
+            AirQualityUtil.computeAirQualityAtLocation(level, eyes);
+            int optimizedChunkLookups = chunkLookups;
+            counting = false;
+            check(previousChunkLookups == 6143, "v3.2.3 resolves loaded chunks per spherical position");
+            check(optimizedChunkLookups <= 19 && optimizedChunkLookups < previousChunkLookups / 100,
+                    "Resolve each encountered chunk once, not once per provider position");
+            check(loadedChecks.values().stream().allMatch(count -> count == 1)
+                            && nonCreatingFetches.values().stream().allMatch(count -> count == 1),
+                    "Each encountered chunk has exactly one availability check and at most one fetch");
+            check(creatingChunkLookups == 1, "Only the unchanged eye-block lookup requests a chunk");
 
             BlockPos portal = center.offset(2, 0, 0);
             BlockPos lava = center.offset(-3, 0, 0);
@@ -108,6 +149,8 @@ public final class AirScanCheck {
                         random.nextDouble() - 0.5, random.nextDouble() - 0.5);
                 check(AirQualityUtil.computeAirQualityAtLocation(level, position) == reference(level, position),
                         "Fractional radius/eye-position parity, negative coordinates and flowing lava: " + i);
+                check(AirQualityUtil.computeAirQualityAtLocation(level, position) == referenceCurrent(level, position),
+                        "Chunk reuse matches the v3.2.3 spherical scanner: " + i);
                 level.setBlock(source, Blocks.AIR.defaultBlockState(), 2);
             }
             Config.Baked.blueAirProviderRadius = 6;
@@ -123,10 +166,34 @@ public final class AirScanCheck {
                     "Maximum-radius provider excludes positions just beyond the boundary");
             level.setBlock(farProvider, Blocks.AIR.defaultBlockState(), 2);
             Config.Baked.blueAirProviderRadius = 6;
+            for (int y : new int[] {level.getMinBuildHeight(), level.getMaxBuildHeight() - 1}) {
+                BlockPos boundaryProvider = new BlockPos(center.getX(), y, center.getZ());
+                var originalState = level.getBlockState(boundaryProvider);
+                try {
+                    level.setBlock(boundaryProvider, Blocks.SOUL_TORCH.defaultBlockState(), 2);
+                    double outsideY = y == level.getMinBuildHeight() ? y - 0.5 : y + 1.5;
+                    Vec3 boundaryEyes = new Vec3(eyes.x, outsideY, eyes.z);
+                    check(AirQualityUtil.computeAirQualityAtLocation(level, boundaryEyes) == AirQualityLevel.BLUE
+                                    && referenceCurrent(level, boundaryEyes) == AirQualityLevel.BLUE,
+                            "Outside-height eyes can still see an in-range provider inside build bounds: " + y);
+                } finally {
+                    level.setBlock(boundaryProvider, originalState, 2);
+                }
+            }
             Vec3 unloaded = new Vec3(1000000.5, 128.5, -1000000.5);
             check(AirQualityUtil.computeAirQualityAtLocation(level, unloaded) == reference(level, unloaded),
                     "Unloaded neighborhoods preserve ambient fallback");
             check(!level.hasChunk(62500, -62500), "Scan does not load absent chunks");
+            check(!level.hasChunk(62499, -62500), "Test neighborhood has an absent in-range west chunk");
+            int loadedChunks = level.getChunkSource().getLoadedChunksCount();
+            counting = true;
+            resetChunkLookups();
+            AirQualityUtil.computeAirQualityAtLocation(level, unloaded);
+            counting = false;
+            check(creatingChunkLookups == 1, "Scan never creates absent neighboring chunks");
+            check(!level.hasChunk(62499, -62500)
+                            && level.getChunkSource().getLoadedChunksCount() == loadedChunks,
+                    "Absent neighboring chunks remain absent after a second scan");
 
             ServerPlayer player = new ServerPlayer(level.getServer(), level,
                     new GameProfile(UUID.randomUUID(), "AirScanCheck"));
@@ -152,20 +219,22 @@ public final class AirScanCheck {
             level.setBlock(center.east(), Blocks.AIR.defaultBlockState(), 2);
 
             for (int i = 0; i < 40; i++) {
-                reference(level, eyes);
+                referenceCurrent(level, eyes);
                 AirQualityUtil.computeAirQualityAtLocation(level, eyes);
             }
             long before = System.nanoTime();
-            for (int i = 0; i < 200; i++) reference(level, eyes);
+            for (int i = 0; i < 200; i++) referenceCurrent(level, eyes);
             long previousNanos = System.nanoTime() - before;
             before = System.nanoTime();
             for (int i = 0; i < 200; i++) AirQualityUtil.computeAirQualityAtLocation(level, eyes);
             long optimizedNanos = System.nanoTime() - before;
-            System.out.printf("AIR_SCAN_CHECK_PASSED classifications=%d->%d reference_ms=%.2f optimized_ms=%.2f%n",
+            System.out.printf("AIR_SCAN_CHECK_PASSED classifications=%d->%d chunk_lookups=%d->%d v3.2.3_ms=%.2f optimized_ms=%.2f%n",
                     previousClassifications, optimizedClassifications,
+                    previousChunkLookups, optimizedChunkLookups,
                     previousNanos / 1.0e6, optimizedNanos / 1.0e6);
         } finally {
             counting = false;
+            resetChunkLookups();
             Config.Baked.airQualityEnabled = enabled;
             Config.Baked.greenAirProviderRadius = green;
             Config.Baked.blueAirProviderRadius = blue;
@@ -174,6 +243,57 @@ public final class AirScanCheck {
             level.getServer().getWorldData().overworldData().setGameTime(time);
             AirQualityUtil.invalidateCache();
         }
+    }
+
+    private static AirQualityLevel referenceCurrent(ServerLevel level, Vec3 location) {
+        BlockPos center = BlockPos.containing(location);
+        AirQualityLevel atEyes = AirQualityLevel.getAirQualityAtEyes(level.getBlockState(center));
+        if (atEyes != null) return atEyes;
+        AirQualityLevel[] qualities = AirQualityLevel.values();
+        double[] radiiSquared = new double[qualities.length];
+        double maxRadius = 0;
+        for (AirQualityLevel quality : qualities) {
+            double radius = quality.getAirProviderRadius();
+            radiiSquared[quality.ordinal()] = radius * radius;
+            maxRadius = Math.max(maxRadius, radius);
+        }
+        double maxRadiusSquared = maxRadius * maxRadius;
+        int radius = (int) Math.ceil(maxRadius);
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        Map<BlockState, Integer> providerQualities = new IdentityHashMap<>();
+        AirQualityLevel worst = null;
+        for (int dx = -radius; dx <= radius; dx++) {
+            double xDistance = center.getX() + dx + 0.5 - location.x;
+            double xDistanceSquared = xDistance * xDistance;
+            if (xDistanceSquared > maxRadiusSquared) continue;
+            for (int dy = -radius; dy <= radius; dy++) {
+                double yDistance = center.getY() + dy + 0.5 - location.y;
+                double xyDistanceSquared = xDistanceSquared + yDistance * yDistance;
+                if (xyDistanceSquared > maxRadiusSquared) continue;
+                for (int dz = -radius; dz <= radius; dz++) {
+                    double zDistance = center.getZ() + dz + 0.5 - location.z;
+                    double distanceSquared = xyDistanceSquared + zDistance * zDistance;
+                    if (distanceSquared > maxRadiusSquared) continue;
+                    pos.set(center.getX() + dx, center.getY() + dy, center.getZ() + dz);
+                    if (!level.isLoaded(pos)) continue;
+                    var state = level.getBlockState(pos);
+                    Integer candidateIndex = providerQualities.get(state);
+                    if (candidateIndex == null) {
+                        AirQualityLevel candidate = AirQualityLevel.getAirQualityFromBlock(state);
+                        if (state.getFluidState().is(FluidTags.LAVA)) candidate = AirQualityLevel.RED;
+                        candidateIndex = candidate == null ? -1 : candidate.ordinal();
+                        providerQualities.put(state, candidateIndex);
+                    }
+                    if (candidateIndex < 0 || distanceSquared > radiiSquared[candidateIndex]) continue;
+                    AirQualityLevel candidate = qualities[candidateIndex];
+                    if (candidate == AirQualityLevel.RED) return candidate;
+                    if (worst == null || candidate.ordinal() > worst.ordinal()) worst = candidate;
+                }
+            }
+        }
+        if (worst != null) return worst;
+        if (VanillaBackportCompat.hasSulfurAir(level, center)) return AirQualityLevel.YELLOW;
+        return AirQualityDataManager.getAirQualityAtLevelByDimension(level, center.getY());
     }
 
     private static AirQualityLevel reference(ServerLevel level, Vec3 location) {

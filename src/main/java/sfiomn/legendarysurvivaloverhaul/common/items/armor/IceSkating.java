@@ -76,4 +76,10 @@ public final class IceSkating {
         else if (!slowed && speed.hasModifier(WALK_PENALTY))
             speed.removeModifier(WALK_PENALTY_ID);
     }
+
+    public static void removeWalkingPenalty(LivingEntity entity) {
+        var speed = entity.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (speed != null && speed.hasModifier(WALK_PENALTY))
+            speed.removeModifier(WALK_PENALTY_ID);
+    }
 }

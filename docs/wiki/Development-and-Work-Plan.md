@@ -90,6 +90,30 @@ The user's beta.1 report confirmed biome/sulfur air behavior but found the mask 
 
 ## Next phase
 
+### Staged performance work after v3.2.3
+
+The follow-up profile has consistent timings and places LSO at roughly
+2.13% of sampled server-thread wall time (including waiting), or an
+estimated 1.18 ms per recorded tick. These are sampling estimates, not
+CPU percentages or guarantees about individual tick spikes.
+
+Implement and validate each stage independently. All six stages are
+included in v3.2.4:
+
+| Stage | Scope and required invariant | Status |
+| --- | --- | --- |
+| 1. Skating early exits | Check boots before supporting-block lookups; preserve vanilla/other-mod friction and remove stale walking penalties on unequip. | Implemented; actual movement and lookup-count assertions pass. |
+| 2. Temperature-scan housekeeping | Reuse direction arrays and the existing scan-wide sky condition; preserve traversal order, spread geometry and temperature calculations. | Implemented; existing survival runtime assertions pass. |
+| 3. Loaded-chunk reuse in air scans | Resolve loaded chunks once per scan; preserve provider-specific radii, eye fluids, build-height boundaries, hazard precedence and entity-cache timing. | Implemented; default empty-air chunk checks/fetches drop from 6,143 to 11. Parity assertions cover v3.2.3 and the original scanner, including height bounds and absent neighbors. |
+| 4. Equipment-change detection | Avoid repeated recalculation only where safe; account for stack NBT/enchantments, config/datapack reloads and dynamic third-party modifier behavior. | Implemented; unchanged six-slot built-in temperature calculations drop from 240 to 0 over 20 updates. Full stack snapshots, live resistance values and coat strength detect changes; reconciliation/body-data reads remain live, and custom modifier/provider paths stay uncached. |
+| 5. Config serialization on changes | Avoid rebuilding unchanged JSON while retaining TOML/Fzzy edits, reloads, connection sync and server restarts. | Implemented; 20 unchanged polls perform 0 JSON rebuilds instead of 20. Captured values retain the existing 20-tick cadence, immediate fresh joins, independent broadcast tracking and restart reset. Assertions cover TOML, lists, replacements, restoration, rejected updates and the real Fzzy update hook. |
+| 6. Wetness lookup reuse | Reuse block/fluid states within one update; preserve immediate immunity, boat/mount behavior, cauldrons, wetness changes and particles. | Implemented; partially submerged wet updates use 2 fluid reads instead of 4, with the same single block read. Assertions cover original particle decisions, flowing-fluid/cauldron boundaries, lava/fire drying, rain/snow, boat/living mounts and immediate immunity. No state is retained across updates. |
+
+None of these stages removes mob air sensitivity, changes scan radii,
+lengthens cache durations or changes survival balance. Keep benchmark
+results separate from server-wide gains, which require another profile.
+The skating lookup instrumentation is test-only and never packaged in LSO.
+
 Add additional mod integrations after the user selects targets and desired behavior. Keep dependencies optional where appropriate, preserve current behavior, validate with and without the target mod, and document exact support boundaries.
 
 Origins and Meds and Herbs remain intentionally unsupported; Forge datagen is a deliberate developer-workflow omission, not an unfinished gameplay task.

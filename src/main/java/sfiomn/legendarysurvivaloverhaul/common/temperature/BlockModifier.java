@@ -21,6 +21,7 @@ import java.util.*;
 
 public class BlockModifier extends ModifierBase
 {
+	private static final Direction[] DIRECTIONS = Direction.values();
 	private float coldestValue = 0.0f;
 	private float hottestValue = 0.0f;
 	private float hotTotal = 0.0f;
@@ -88,13 +89,14 @@ public class BlockModifier extends ModifierBase
 		visitedSpreadPoints.add(spreadPointHeadPlayer);
 
 		boolean hasCeiling = level.dimensionType().hasCeiling();
+		boolean canSeeSky = !hasCeiling || level.canSeeSky(pos);
 
 		while (!spreadPointsToProcess.isEmpty()) {
 			SpreadPoint spreadPoint = spreadPointsToProcess.poll();
-			spreadPoint.setCanSeeSky(!hasCeiling || level.canSeeSky(pos));
+			spreadPoint.setCanSeeSky(canSeeSky);
 			Direction oppositeDirection = spreadPoint.originalDirection().getOpposite();
 
-			for (Direction direction : Direction.values()) {
+			for (Direction direction : DIRECTIONS) {
 				//  Avoid spreading to the direction we are coming from
 				if (direction != oppositeDirection) {
 					if (!spreadPoint.isValidSpreadDirection(direction))
@@ -103,7 +105,7 @@ public class BlockModifier extends ModifierBase
 					SpreadPoint spreadPoint1 = this.processDirectionTo(spreadPointsToProcess, visitedBlockPos, visitedSpreadPoints, spreadPoint, spreadPoint.position().offset(newPosVector), direction, 1.0f);
 
 					if (spreadPoint1 != null) {
-						for (Direction direction1 : Direction.values()) {
+						for (Direction direction1 : DIRECTIONS) {
 							//  Check plan diagonal blocks
 							if (direction1.getAxis() != direction.getAxis() && direction1 != oppositeDirection) {
 								if (!spreadPoint1.isValidSpreadDirection(direction))
@@ -112,7 +114,7 @@ public class BlockModifier extends ModifierBase
 								SpreadPoint spreadPoint2 = this.processDirectionTo(spreadPointsToProcess, visitedBlockPos, visitedSpreadPoints, spreadPoint, spreadPoint.position().offset(newPosVector), direction1, 1.414f);
 
 								if (spreadPoint2 != null) {
-									for (Direction direction2 : Direction.values()) {
+									for (Direction direction2 : DIRECTIONS) {
 										//  Check 3D diagonal blocks
 										if (direction2.getAxis() != direction1.getAxis() && direction2.getAxis() != direction.getAxis() && direction2 != oppositeDirection) {
 											if (!spreadPoint2.isValidSpreadDirection(direction))

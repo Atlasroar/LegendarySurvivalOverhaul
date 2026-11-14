@@ -11,6 +11,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.phys.Vec3;
 import sfiomn.legendarysurvivaloverhaul.LegendarySurvivalOverhaul;
 import sfiomn.legendarysurvivaloverhaul.api.data.manager.AirQualityDataManager;
@@ -103,23 +105,43 @@ public final class AirQualityUtil {
         int radius = (int) Math.ceil(maxRadius);
         BlockPos center = BlockPos.containing(location);
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        int minChunkX = (center.getX() - radius) >> 4;
+        int minChunkZ = (center.getZ() - radius) >> 4;
+        int chunkCountX = ((center.getX() + radius) >> 4) - minChunkX + 1;
+        int chunkCountZ = ((center.getZ() + radius) >> 4) - minChunkZ + 1;
+        ChunkAccess[] chunks = new ChunkAccess[chunkCountX * chunkCountZ];
+        boolean[] checkedChunks = new boolean[chunks.length];
         // Block states are shared palette entries; memoize only for this scan so tag reloads remain visible.
         Map<BlockState, Integer> providerQualities = new IdentityHashMap<>();
         for (int dx = -radius; dx <= radius; dx++) {
-            double xDistance = center.getX() + dx + 0.5 - location.x;
+            int blockX = center.getX() + dx;
+            int chunkX = blockX >> 4;
+            int chunkRow = (chunkX - minChunkX) * chunkCountZ;
+            double xDistance = blockX + 0.5 - location.x;
             double xDistanceSquared = xDistance * xDistance;
             if (xDistanceSquared > maxRadiusSquared) continue;
             for (int dy = -radius; dy <= radius; dy++) {
-                double yDistance = center.getY() + dy + 0.5 - location.y;
+                int blockY = center.getY() + dy;
+                if (level.isOutsideBuildHeight(blockY)) continue;
+                double yDistance = blockY + 0.5 - location.y;
                 double xyDistanceSquared = xDistanceSquared + yDistance * yDistance;
                 if (xyDistanceSquared > maxRadiusSquared) continue;
                 for (int dz = -radius; dz <= radius; dz++) {
-                    double zDistance = center.getZ() + dz + 0.5 - location.z;
+                    int blockZ = center.getZ() + dz;
+                    double zDistance = blockZ + 0.5 - location.z;
                     double distanceSq = xyDistanceSquared + zDistance * zDistance;
                     if (distanceSq > maxRadiusSquared) continue;
-                    mutable.set(center.getX() + dx, center.getY() + dy, center.getZ() + dz);
-                    if (!level.isLoaded(mutable)) continue;
-                    BlockState blockState = level.getBlockState(mutable);
+                    int chunkZ = blockZ >> 4;
+                    int chunkIndex = chunkRow + chunkZ - minChunkZ;
+                    if (!checkedChunks[chunkIndex]) {
+                        checkedChunks[chunkIndex] = true;
+                        if (level.getChunkSource().hasChunk(chunkX, chunkZ))
+                            chunks[chunkIndex] = level.getChunk(chunkX, chunkZ, ChunkStatus.FULL, false);
+                    }
+                    ChunkAccess chunk = chunks[chunkIndex];
+                    if (chunk == null) continue;
+                    mutable.set(blockX, blockY, blockZ);
+                    BlockState blockState = chunk.getBlockState(mutable);
                     Integer candidateIndex = providerQualities.get(blockState);
                     if (candidateIndex == null) {
                         AirQualityLevel candidate = AirQualityLevel.getAirQualityFromBlock(blockState);

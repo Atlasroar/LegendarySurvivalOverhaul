@@ -2,6 +2,40 @@
 
 ## Latest full release
 
+[**v3.2.4**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.4) targets Minecraft 1.20.1, Fabric, and Java 17.
+
+```text
+legendarysurvivaloverhaul-fabric-1.20.1-3.2.4.jar
+SHA-256: ECA6EE774AEBEF1E65427C6140367C26A9E2197694C983293A2FE882326D0BDF
+
+legendarysurvivaloverhaul-fabric-1.20.1-3.2.4-sources.jar
+SHA-256: 4D8D662F9A11E09ADA2E9CA56FD83D7C5D8703F6F309318438A58B2CD0029225
+```
+
+v3.2.4 completes six performance stages: non-wearer skating fast paths,
+temperature scan housekeeping, scan-local air chunk reuse, built-in
+equipment temperature caching, change-detected config serialization and
+per-update wetness fluid reuse.
+
+The default empty-air fixture reduces chunk checks/fetches from 6,143 to 11,
+while retaining all 3,071 spherical block candidates. Twenty unchanged
+config polls rebuild zero JSON snapshots rather than 20. Partially
+submerged wet updates read two fluid states instead of four, with the
+existing block read unchanged.
+
+Survival balance, mob air sensitivity, provider-specific radii and hazard
+precedence, entity-cache timing, wetness immunity and mount behavior remain
+unchanged. Equipment attribute reconciliation remains live, with uncached
+fallbacks for custom modifiers/providers. There are no new settings,
+required dependencies or save/config migrations.
+
+These are focused operation counts, not a whole-server MSPT guarantee.
+A new Spark capture after installation is needed to measure overall gains.
+All v3.2.3 features remain included. See the
+[staged performance work](Development-and-Work-Plan#staged-performance-work-after-v323).
+
+## Previous releases
+
 [**v3.2.3**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.3) targets Minecraft 1.20.1, Fabric, and Java 17.
 
 ```text
@@ -23,8 +57,6 @@ quantify server-wide gains. See [Air System Internals](Air-System-Internals#cach
 
 All v3.2.2 features remain included. No new settings, dependencies or
 save/config migrations are required.
-
-## Previous releases
 
 [**v3.2.2**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.2) targets Minecraft 1.20.1, Fabric, and Java 17.
 
@@ -132,6 +164,7 @@ The user confirmed in-game: the LevelZ health bonus remains stable after death, 
 
 | Version | Milestone |
 | --- | --- |
+| v3.2.4 | Six behavior-preserving optimization stages covering skating, temperature, air chunks, equipment, config serialization and wetness lookups. |
 | v3.2.3 | Reduce air-scan world lookups and repeated block-state classification without changing breathing rules, provider precedence or cache timing. |
 | v3.2.2 | Composable skating friction, player-attributed blade damage, lily wetness immunities, modded/thin-ice surfaces and independent thermal-system coexistence guidance. |
 | v3.2.1 | Add Crimson/Warped Lilies to the existing LSO Flora Field Guide category using the optional integration's plant tag. |

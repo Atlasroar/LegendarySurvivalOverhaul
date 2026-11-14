@@ -1,5 +1,11 @@
 allprojects {
     afterEvaluate {
+        def aliases = []
+        if (providers.gradleProperty('simulateThermalCoexistence').isPresent())
+            aliases.addAll(['scorchful', 'frostiful', 'lso_thermal_coexistence_check'])
+        if (providers.gradleProperty('simulateDynamicEquipment').isPresent())
+            aliases.add('lso_dynamic_equipment_check')
+        def providedMods = groovy.json.JsonOutput.toJson(aliases)
         tasks.register('compileWetContentCheck', JavaCompile) {
             dependsOn tasks.named('classes')
             source = fileTree(layout.projectDirectory.dir('test-runtime/wet-content')) { include '*.java' }
@@ -9,15 +15,12 @@ allprojects {
         }
         tasks.register('jarWetContentCheck', Jar) {
             dependsOn tasks.named('compileWetContentCheck')
-            inputs.property('simulateThermalCoexistence', project.hasProperty('simulateThermalCoexistence'))
+            inputs.property('providedMods', providedMods)
             from layout.buildDirectory.dir('wet-content-check/classes')
             from(layout.projectDirectory.dir('test-runtime/wet-content')) {
                 include '**/*.json'
-                if (project.hasProperty('simulateThermalCoexistence')) {
-                    filesMatching('fabric.mod.json') {
-                        filter { line -> line.replace('"provides": []',
-                                '"provides": ["scorchful", "frostiful", "lso_thermal_coexistence_check"]') }
-                    }
+                filesMatching('fabric.mod.json') {
+                    filter { line -> line.replace('"provides": []', '"provides": ' + providedMods) }
                 }
             }
             archiveFileName = 'lso-wet-content-check.jar'

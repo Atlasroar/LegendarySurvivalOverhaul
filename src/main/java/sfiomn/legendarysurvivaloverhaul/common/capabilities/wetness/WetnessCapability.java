@@ -103,11 +103,6 @@ public class WetnessCapability implements IWetnessCapability
 				BuiltInRegistries.ENTITY_TYPE.getKey(player.getVehicle().getType()).toString());
 	}
 
-	/**
-	 * This probably isn't too terribly performance friendly but it's something at least<br>
-	 * <br>
-	 * TODO: optimization!!
-	 */
 	@Override
 	public void tickUpdate(Player player, Level level, TickPhase phase)
 	{
@@ -141,19 +136,16 @@ public class WetnessCapability implements IWetnessCapability
 		
 		// If the player is not riding a living entity, shift the position used for calculations up by one block
 		// This way, sitting in a boat that's floating on the water won't increase a player's wetness
-		if (player.getVehicle() != null && !(player.getVehicle() instanceof LivingEntity) && !player.getVehicle().hasImpulse)
-		{
+		boolean floatingVehicle = player.getVehicle() != null
+				&& !(player.getVehicle() instanceof LivingEntity) && !player.getVehicle().hasImpulse;
+		if (floatingVehicle)
 			pos = pos.above();
-			if (this.wetness > 0 && level.getFluidState(pos).isEmpty())
-				worldParticles(player, level);
-		} else {
-			if (this.wetness > 0 && (level.getFluidState(pos).isEmpty() || level.getFluidState(pos.above()).isEmpty()))
-				worldParticles(player, level);
-		}
 
 		FluidState fluidState = level.getFluidState(pos);
-		BlockState blockState = level.getBlockState(pos);
 		FluidState fluidStateUp = level.getFluidState(pos.above());
+		if (this.wetness > 0 && (fluidState.isEmpty() || !floatingVehicle && fluidStateUp.isEmpty()))
+			worldParticles(player, level);
+		BlockState blockState = level.getBlockState(pos);
 
 		// If no fluid on the pos of the player (or above if in a boat)
 		// only check for raining on pos above player (to avoid issue with half blocks)

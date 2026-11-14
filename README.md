@@ -4,7 +4,7 @@
 
 **Make survival matter.** This Fabric 1.20.1 port of Legendary Survival Overhaul adds configurable environmental survival, hydration, injuries, health, and air quality.
 
-[**Download v3.2.3**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.3) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
+[**Download v3.2.4**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/releases/tag/v3.2.4) | [**Player and developer wiki**](https://github.com/Atlasroar/LegendarySurvivalOverhaul/wiki) | [Report an issue](https://github.com/Atlasroar/LegendarySurvivalOverhaul/issues)
 
 ## Features
 
@@ -44,12 +44,23 @@ Build from source with **JDK 17**: `.\gradlew.bat build` on Windows or `./gradle
 
 v3.1.0 adds optional [Atlasroar/Immersive-Weathering](https://github.com/Atlasroar/Immersive-Weathering) **2.5.0+** storm integration. Exposed snow/sand storms drive dangerous cold/heat at 2x speed with Cold Hunger/Heat Thirst, countered by Hot Drink/Cold Drink respectively. A complete centered 3x3 sky-blocking roof within 10 blocks above eye level provides shelter. Freezing-wind hits separately apply 10 seconds of Cold Hunger. See the [versioned compatibility guide](docs/wiki/Mod-Compatibility.md#immersive-weathering-storms-v310) for exact scope and the independent toggle.
 
-## Wet cooling and survival gear
+## Performance optimizations
+
+**v3.2.4 completes six performance stages:** non-wearer skating fast paths,
+temperature scan housekeeping, scan-local air chunk reuse, built-in
+equipment temperature caching, change-detected config serialization and
+per-update wetness fluid reuse. Survival balance, mob air sensitivity,
+provider coverage, cache timing and optional-mod fallbacks remain unchanged.
+No new settings or dependencies are required. See the
+[staged work and measured operation counts](docs/wiki/Development-and-Work-Plan.md#staged-performance-work-after-v323);
+whole-server gains require a new Spark profile after updating.
 
 **v3.2.3 air-scan optimization:** rejects out-of-range positions before
 world lookups and classifies each distinct block state once per scan.
 Provider radii, hazard precedence, breathing behavior and cache timing
 are unchanged. See [air internals](docs/wiki/Air-System-Internals.md#cache-and-cost).
+
+## Wet cooling and survival gear
 
 **v3.2.2 compatibility fixes:** skating supports ice subclasses (including
 Immersive Weathering's Thin Ice) and common/custom ice tags, composes with
